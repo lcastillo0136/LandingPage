@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <loading :loading="stillLoading"></loading>
-    <div id="page">
+    <div id="page" :class="{'menu-open': mobileMenuOpen}">
       <router-view/>
     </div>
   </div>
@@ -18,7 +18,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'stillLoading'
+      'stillLoading',
+      'mobileMenuOpen'
     ])
   },
   methods: {

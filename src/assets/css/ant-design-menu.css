@@ -1,0 +1,31 @@
+.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+  border-bottom: solid 1px rgba(0,0,0,.1);
+  margin-left: 24px;
+  padding-left: 0 !important;
+  box-sizing: border-box;
+  width: calc(100% - 24px);
+}
+
+.ant-menu-sub.ant-menu-inline .ant-menu-item-group-title {
+    border-bottom: solid 1px rgba(0,0,0,.1);
+    margin-left: 48px;
+    padding-left: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: calc(100% - 48px);
+}
+
+.ant-menu-sub.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+    margin-left: 48px;
+    width: calc(100% - 48px);
+}
+
+.ant-menu-item-group-list .ant-menu-item, .ant-menu-item-group-list .ant-menu-submenu-title {
+    padding: 0 !important;
+    border-bottom: solid 1px rgba(0,0,0,.1);
+    margin-left: 72px;
+    padding-left: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: calc(100% - 72px);
+}

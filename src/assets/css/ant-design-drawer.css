@@ -1,0 +1,46 @@
+.ant-drawer-title {
+    margin: 0;
+    color: rgba(0,0,0,.3);
+    font-weight: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    padding: 10px 0;
+}
+
+.ant-drawer-header {
+    position: relative;
+    color: rgba(0, 0, 0, 0.65);
+    background: #fff;
+    border-radius: 0 0;
+    border-bottom: 1px solid;
+    border-color: rgba(0,0,0,.1);
+    text-align: center;
+    line-height: 20px;
+    height: 40px;
+    padding: 0 40px;
+    margin: 0;
+    left: 0;
+    right: 0;
+}
+
+.ant-drawer-body {
+    padding: 0px; 
+    font-size: 14px; 
+    line-height: 1.5; 
+    word-wrap: break-word;
+}
+
+#page {
+    left: 0;
+    transition: left 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
+}
+
+#page.menu-open {
+    position: fixed;
+    left: 80%;
+    width: 100%;
+}
