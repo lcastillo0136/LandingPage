@@ -1,28 +1,53 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <loading :loading="stillLoading"></loading>
+    <div id="page">
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { mapGetters, mapMutations } from 'vuex'
+import Loading from '@/components/loading'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Loading
+  },
+  computed: {
+    ...mapGetters([
+      'stillLoading'
+    ])
+  },
+  methods: {
+    ...mapMutations([
+      'toggleLoading'
+    ])
+  },
+  mounted () {
+    setTimeout(() => {
+      this.toggleLoading()
+    }, 3000);
   }
 }
 </script>
 
 <style>
+.size{
+  width: 100%;
+  height: 100%;
+}
+html,body{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  width: 100%;
+  height: 100%;
 }
 </style>
