@@ -1,72 +1,18 @@
 <template>
   <div>
-    <header class="header_sticky">  
-      <HamburgerButton></HamburgerButton>
+    <header class="header_sticky" :class="headerClasses">  
+      <HamburgerButton :options="options"></HamburgerButton>
       <div class="container">
         <div class="row">
           <div class="col-lg-3 col-6">
-            <div id="logo_home">
-              <h1><a href="index-2.html" title="Findoctor">Findoctor</a></h1>
-            </div>
+            <Logo></Logo>
           </div>
           <div class="col-lg-9 col-6">
             <ul id="top_access">
-              <li><a href="login.html"><i class="pe-7s-user"></i></a></li>
-              <li><a href="register-doctor.html"><i class="pe-7s-add-user"></i></a></li>
+              <li><User></User></li>
+              <li><Register></Register></li>
             </ul>
-            <nav id="menu" class="main-menu">
-              <ul>
-                <li>
-                  <span><a href="#0">Home</a></span>
-                  <ul>
-                    <li><a href="index-2.html">Home Default</a></li>
-                    <li><a href="index-3.html">Home Version 2</a></li>
-                    <li><a href="index-4.html">Home Version 3</a></li>
-                    <li><a href="index-5.html">Home Version 4</a></li>
-                                      <li><a href="index-6.html">Revolution Slider</a></li>
-                    <li><a href="index-7.html">With Cookie Bar (EU law)</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <span><a href="#0">Pages</a></span>
-                  <ul>
-                    <li><a href="list.html">List page</a></li>
-                    <li><a href="grid-list.html">List grid page</a></li>
-                    <li><a href="list-map.html">List map page</a></li>
-                    <li><a href="detail-page.html">Detail page</a></li>
-                    <li><a href="detail-page-2.html">Detail page 2</a></li>
-                                      <li><a href="detail-page-3.html">Detail page 3</a></li>
-                    <li><a href="blog-1.html">Blog</a></li>
-                    <li><a href="badges.html">Badges</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="login-2.html">Login 2</a></li>
-                    <li><a href="register-doctor.html">Register Doctor</a></li>
-                    <li><a href="register.html">Register</a></li>
-                    <li><a href="contacts.html">Contacts</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <span><a href="#0">Extra Elements</a></span>
-                  <ul>
-                                    <li><a href="detail-page-working-booking.html">Detail working booking</a></li>
-                                      <li><a href="booking-page.html">Booking page</a></li>
-                                      <li><a href="confirm.html">Confirm page</a></li>
-                                    <li><a href="faq.html">Faq page</a></li>
-                                      <li><a href="coming_soon/index.html">Coming soon</a></li>
-                                       <li><a href="pricing-tables.html">Responsive pricing tables</a></li>
-                                       <li><a href="pricing-tables-2.html">Responsive pricing tables 2</a></li>
-                                       <li><a href="register-doctor-working.html">Working doctor register</a></li>
-                    <li><a href="icon-pack-1.html">Icon pack 1</a></li>
-                    <li><a href="icon-pack-2.html">Icon pack 2</a></li>
-                    <li><a href="icon-pack-3.html">Icon pack 3</a></li>
-                    <li><a href="404.html">404 page</a></li>
-                  </ul>
-                </li>
-                              <li><span><a href="menu_2/index.html">Menu V2</a></span></li>
-                <li><span><a href="admin_section/index.html" target="_blank">Admin</a></span></li>
-                <li><span><a href="https://themeforest.net/item/findoctor-doctors-directory-and-book-online-template/20876478?ref=ansonika">Buy this template</a></span></li>
-              </ul>
-            </nav>
+            <Menu :options="options"></Menu>
             <!-- /main-menu -->
           </div>
         </div>
@@ -77,27 +23,161 @@
 </template>
 <script>
 import HamburgerButton from './components/hamburger-button'
+import Logo from './components/logo'
+import User from './components/user'
+import Register from './components/register'
+import Menu from './components/menu'
+
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Header',
+  props: {
+    sticky: Boolean
+  },
   components: {
-    HamburgerButton
+    HamburgerButton,
+    Logo,
+    User,
+    Register,
+    Menu
   },
   data () {
     return {
+      options: [{
+        url: '/',
+        text: 'Home',
+        childrens: [{
+          url: '/',
+          text: 'Home Default'
+        }, {
+          url: '/',
+          text: 'Home Default 2'
+        }, {
+          url: '/',
+          text: 'Home Default 3'
+        }, {
+          url: '/',
+          text: 'Home Default 4'
+        }, {
+          url: '/',
+          text: 'Revolution Slider'
+        }, {
+          url: '/',
+          text: 'With Cookie Bar (EU law)'
+        }]
+      }, {
+        url: '/',
+        text: 'Pages',
+        childrens: [{
+          url: '/',
+          text: 'List page'
+        }, {
+          url: '/',
+          text: 'List grid page'
+        }, {
+          url: '/',
+          text: 'List map page'
+        }, {
+          url: '/',
+          text: 'Detail page'
+        }, {
+          url: '/',
+          text: 'Detail page 2'
+        }, {
+          url: '/',
+          text: 'Detail page 3'
+        }, {
+          url: '/',
+          text: 'Blog'
+        }, {
+          url: '/',
+          text: 'Badges'
+        }, {
+          url: '/',
+          text: 'Login'
+        }, {
+          url: '/',
+          text: 'Login 2'
+        }, {
+          url: '/',
+          text: 'Register Doctor'
+        }, {
+          url: '/',
+          text: 'Register'
+        }, {
+          url: '/',
+          text: 'Contacts'
+        }]
+      }, {
+        url: '/',
+        text: 'Extra Elements',
+        childrens: [{
+          url: '/',
+          text: 'Detail working booking'
+        }, {
+          url: '/',
+          text: 'Booking page'
+        }, {
+          url: '/',
+          text: 'Confirm page'
+        }, {
+          url: '/',
+          text: 'Faq page'
+        }, {
+          url: '/',
+          text: 'Coming soon'
+        }, {
+          url: '/',
+          text: 'Responsive pricing tables'
+        }, {
+          url: '/',
+          text: 'Responsive pricing tables 2'
+        }, {
+          url: '/',
+          text: 'Working doctor register'
+        }, {
+          url: '/',
+          text: 'Icon pack 1'
+        }, {
+          url: '/',
+          text: 'Icon pack 2'
+        }, {
+          url: '/',
+          text: 'Icon pack 3'
+        }, {
+          url: '/',
+          text: '404 page'
+        }]
+      }, {
+        url: '/',
+        text: 'Menu V2'
+      }, {
+        url: 'admin_section/index.html',
+        text: 'Admin'
+      }, {
+        url: 'https://themeforest.net/item/findoctor-doctors-directory-and-book-online-template/20876478?ref=ansonika',
+        text: 'Buy this template'
+      }],
+      isSticky: false
     }
   },
   computed: {
     ...mapGetters([
       'stillLoading'
-    ])
+    ]),
+    headerClasses () {
+      return {
+        'sticky': this.sticky && this.isSticky
+      }
+    }
   },
   methods: {
   },
   watch: {
   },
   mounted () {
+    window.addEventListener('scroll', () => this.isSticky = window.scrollY > 1)
   }
 }
 </script>

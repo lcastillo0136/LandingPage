@@ -28,7 +28,7 @@ export default [
     },
     children: [
       {
-        path: '/home',
+        path: '/',
         name: 'home',
         meta: {
           hideInMenu: true,
@@ -39,5 +39,26 @@ export default [
         component: () => import('@/view/' + config.theme + '/single-page/home')
       }
     ]
-  },
+  }, {
+    path: '/login',
+    name: '_login',
+    component: Main,
+    meta: {
+      hideInMenu: true,
+      notCache: true
+    },
+    children: [
+      {
+        path: '/login',
+        name: 'login',
+        meta: {
+          hideInMenu: true,
+          title: 'login.title',
+          notCache: true,
+          icon: 'md-user'
+        },
+        component: () => import('../view/' + config.theme + '/login/login.vue')
+      }
+    ]
+  }
 ]

@@ -1,38 +1,24 @@
 <template>
-  <div>  
-    <a-drawer title="MENU" placement="left" :closable="false" :visible="mobileMenuOpen" @close="toggleMenuMobile" width="80%">
-      <a-menu mode="inline" >
-        <a-sub-menu v-for="(option, option_i) in options" :key="option_i">
-          <span slot="title"><span>
-            <router-link :to="option.url" v-if="!isExternal(option.url)" @click.stop.prevent="toggleMenuMobile">{{ option.text }}</router-link>
-            <a :href="option.url" v-if="isExternal(option.url)" @click.stop.prevent="toggleMenuMobile">{{ option.text }}</a></span>
-          </span>
-          <a-menu-item-group key="g1">
-            <template slot="title"></template>
-            <template v-if="option.childrens">
-              <a-menu-item  v-for="(child, child_i) in option.childrens" :key="child_i">
-                <router-link :to="child.url" v-if="!isExternal(child.url)" @click.stop.prevent="toggleMenuMobile">{{ child.text }}</router-link>
-                <a :href="child.url" v-if="isExternal(child.url)" @click.stop.prevent="toggleMenuMobile">{{ child.text }}</a>
-              </a-menu-item>
-            </template>
-          </a-menu-item-group>
-        </a-sub-menu>
-      </a-menu>
-    </a-drawer>
-    <a href="#menu" class="btn_mobile" @click.stop.prevent="toggleMenuMobile">
-      <div class="hamburger hamburger--spin" :class="{'is-active': mobileMenuOpen}">
-        <div class="hamburger-box">
-          <div class="hamburger-inner"></div>
-        </div>
-      </div>
-    </a>
-    <!-- /btn_mobile-->
-  </div>
+  <nav id="menu" class="main-menu">
+    <ul>
+      <li v-for="(option, option_i) in options" :key="option_i">
+        <span>
+          <router-link :to="option.url" v-if="!isExternal(option.url)">{{ option.text }}</router-link>
+          <a :href="option.url" v-if="isExternal(option.url)">{{ option.text }}</a>
+        </span>
+        <ul v-if="option.childrens">
+          <li v-for="(child, child_i) in option.childrens" :key="child_i">
+            <router-link :to="child.url" v-if="!isExternal(child.url)">{{ child.text }}</router-link>
+            <a :href="child.url" v-if="isExternal(child.url)">{{ child.text }}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
 </template>
 <script>
-import { mapGetters, mapMutations } from 'vuex'
-export default {
-  name: 'HamburgerButton',
+  export default {
+    name: 'Menu',
     props: {
       options: {
         type: Array,
@@ -155,33 +141,10 @@ export default {
         }
       }
     },
-  components: {
-  },
-  data () {
-    return {
+    methods: {
+      isExternal (route) {
+        return (this.$router.matcher.match(route) || { name: null }).name === null
+      }
     }
-  },
-  computed: {
-    ...mapGetters([
-      'mobileMenuOpen'
-    ])
-  },
-  methods: {
-    ...mapMutations([
-      'toggleMenuMobile'
-    ]),
-    isExternal (route) {
-      return (this.$router.matcher.match(route) || { name: null }).name === null
-    }
-  },
-  watch: {
-  },
-  mounted () {
   }
-}
 </script>
-<style>
-  .ant-menu-item-group-title {
-    display: none;
-  }
-</style>
