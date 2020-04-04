@@ -3,6 +3,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
+import VueWow from 'vue-wow'
 
 import i18n from '@/locale'
 import config from '@/config'
@@ -16,6 +17,7 @@ import '@/assets/css/ant-design-menu.css'
 Vue.use(Drawer)
 Vue.use(Menu)
 Vue.use(Icon)
+Vue.use(VueWow)
 
 Vue.config.productionTip = false
 Vue.prototype.$config = config
