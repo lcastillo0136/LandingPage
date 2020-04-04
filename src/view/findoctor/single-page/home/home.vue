@@ -2,11 +2,11 @@
   <main>
     <div class="hero_home version_1">
       <div class="content">
-        <h3>Find a Doctor!</h3>
-        <p>
+        <h3 :class="classOnload">Find a Doctor!</h3>
+        <p :class="classOnload">
           Ridiculus sociosqu cursus neque cursus curae ante scelerisque vehicula.
         </p>
-        <form method="post" action="/findoctor/list.html">
+        <form method="post" action="/findoctor/list.html" :class="classOnload">
           <div id="custom-search-input">
             <div class="input-group">
               <input type="text" class=" search-query" placeholder="Ex. Name, Specialization ....">
@@ -70,7 +70,7 @@
           <h2>Most Viewed doctors</h2>
           <p>Usu habeo equidem sanctus no. Suas summo id sed, erat erant oporteat cu pri.</p>
         </div>
-        <div id="reccomended" class="owl-carousel owl-theme">
+        <carousel id="reccomended" :nav="false" :center="true" :items="2" :loop="true" :margin="10" :responsive="{0: {items: 1},600: {items: 2},1000: {items: 4}}">
           <div class="item">
             <a href="detail-page.html">
               <div class="views"><i class="icon-eye-7"></i>140</div>
@@ -111,7 +111,7 @@
               </div><img src="img/doctor_5_carousel.jpg" alt="">
             </a>
           </div>
-        </div>
+        </carousel>
         <!-- /carousel -->
       </div>
       <!-- /container -->
@@ -200,15 +200,30 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import carousel from 'vue-owl-carousel'
+
 export default {
   props: {
+  },
+  components: { 
+    carousel
   },
   data () {
     return {}
   },
   computed: {
+    classOnload () {
+      return {
+        'fadeInUp animated': !this.stillLoading
+      }
+    },
+    ...mapGetters([
+      'stillLoading'
+    ])
   },
   methods: {
+
   }
 }
 </script>
