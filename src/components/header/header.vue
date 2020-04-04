@@ -51,7 +51,7 @@ export default {
           url: '/',
           text: 'Home Default'
         }, {
-          url: '/',
+          url: '/home-2',
           text: 'Home Default 2'
         }, {
           url: '/',

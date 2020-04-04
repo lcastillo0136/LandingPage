@@ -40,6 +40,27 @@ export default [
       }
     ]
   }, {
+    path: '/home-2',
+    name: '_home-2',
+    component: Main,
+    meta: {
+      hideInMenu: true,
+      notCache: true
+    },
+    children: [
+      {
+        path: '/home-2',
+        name: 'home-2',
+        meta: {
+          hideInMenu: true,
+          title: 'home.title',
+          notCache: true,
+          icon: 'md-user'
+        },
+        component: () => import('../view/' + config.theme + '/single-page/home-2')
+      }
+    ]
+  }, {
     path: '/login',
     name: '_login',
     component: Main,
