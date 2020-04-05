@@ -1,5 +1,5 @@
 <template>
-  <div class="hero_home version_1">
+  <div class="hero_home" :class="classVersion">
     <div class="content">
       <h3 :class="classOnload">Find a Doctor!</h3>
       <p :class="classOnload">
@@ -34,6 +34,12 @@
   import { mapGetters } from 'vuex'
   export default {
     name: 'FindForm',
+    props: {
+      version: {
+        type: Number,
+        default: 1
+      }
+    },
     data () {
       return {
 
@@ -44,6 +50,9 @@
         return {
           'fadeInUp animated': !this.stillLoading
         }
+      },
+      classVersion () {
+        return ['version_' + this.version]
       },
       ...mapGetters([
         'stillLoading'

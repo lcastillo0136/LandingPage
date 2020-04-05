@@ -47,6 +47,28 @@ export default [
           icon: 'md-home'
         },
         component: () => import('../view/' + config.theme + '/single-page/home-2')
+      },
+      {
+        path: '/home-3',
+        name: 'home-3',
+        meta: {
+          hideInMenu: true,
+          title: 'home.title',
+          notCache: true,
+          icon: 'md-home'
+        },
+        component: () => import('../view/' + config.theme + '/single-page/home-3')
+      },
+      {
+        path: '/home-4',
+        name: 'home-4',
+        meta: {
+          hideInMenu: true,
+          title: 'home.title',
+          notCache: true,
+          icon: 'md-home'
+        },
+        component: () => import('../view/' + config.theme + '/single-page/home-4')
       }, {
         path: '/login',
         name: 'login',

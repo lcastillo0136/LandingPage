@@ -438,7 +438,7 @@ export default {
     doctors: 'Doctors',
     clinic: 'Clinics',
     specialization: 'Specialization',
-    join_doctor: 'Join as Doctor',
+    join_doctor: 'Join as a Doctor',
     download_app: 'Download App',
     contact_us: 'Contact with Us',
     follow_us: 'Follow Us',
