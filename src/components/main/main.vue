@@ -4,10 +4,14 @@
       <router-view/>
     <Footer></Footer>
     <ToTop></ToTop>
+    <cookie-law theme="dark-lime" v-if="cookieEnabled && !stillLoading"></cookie-law>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import CookieLaw from 'vue-cookie-law'
+import config from '@/config'
+
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import ToTop from '@/components/totop'
@@ -23,7 +27,8 @@ export default {
   components: {
     Header,
     Footer,
-    ToTop
+    ToTop,
+    CookieLaw
   },
   data () {
     return {
@@ -32,7 +37,10 @@ export default {
   computed: {
     ...mapGetters([
       'stillLoading'
-    ])
+    ]),
+    cookieEnabled () {
+      return config.cookieExpires === 1
+    }
   },
   methods: {
   },

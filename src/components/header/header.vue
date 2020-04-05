@@ -72,12 +72,6 @@ export default {
         }, {
           url: '/home-4',
           text: this.$t('header.menu.home_4')
-        }, {
-          url: '/revolution-slider',
-          text: this.$t('header.menu.revolution_slider')
-        }, {
-          url: '/home-cookie',
-          text: this.$t('header.menu.home_cookie')
         }]
       }, {
         url: '/',
