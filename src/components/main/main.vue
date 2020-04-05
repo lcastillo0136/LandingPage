@@ -1,9 +1,7 @@
 <template>
 	<div>
     <Header :sticky="true"></Header>
-    <keep-alive>
       <router-view/>
-    </keep-alive>
     <Footer></Footer>
     <ToTop></ToTop>
   </div>

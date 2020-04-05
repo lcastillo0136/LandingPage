@@ -67,103 +67,103 @@ export default {
           url: '/home-2',
           text: this.$t('header.menu.home_2')
         }, {
-          url: '/',
+          url: '/home-3',
           text: this.$t('header.menu.home_3')
         }, {
-          url: '/',
+          url: '/home-4',
           text: this.$t('header.menu.home_4')
         }, {
-          url: '/',
+          url: '/revolution-slider',
           text: this.$t('header.menu.revolution_slider')
         }, {
-          url: '/',
+          url: '/home-cookie',
           text: this.$t('header.menu.home_cookie')
         }]
       }, {
         url: '/',
         text: this.$t('header.menu.pages'),
         childrens: [{
-          url: '/',
+          url: '/list-page',
           text: this.$t('header.menu.list_page')
         }, {
-          url: '/',
+          url: '/list-grid',
           text: this.$t('header.menu.list_grid')
         }, {
-          url: '/',
+          url: '/list-map',
           text: this.$t('header.menu.list_map')
         }, {
-          url: '/',
+          url: '/details-page',
           text: this.$t('header.menu.detail_page')
         }, {
-          url: '/',
+          url: '/details-page-2',
           text: this.$t('header.menu.detail_page_2')
         }, {
-          url: '/',
+          url: '/detail-page-3',
           text: this.$t('header.menu.detail_page_3')
         }, {
-          url: '/',
+          url: '/blog',
           text: this.$t('header.menu.blog')
         }, {
-          url: '/',
+          url: '/badges',
           text: this.$t('header.menu.badges')
         }, {
-          url: '/',
+          url: '/login',
           text: this.$t('header.menu.login')
         }, {
-          url: '/',
+          url: '/login-2',
           text: this.$t('header.menu.login_2')
         }, {
-          url: '/',
+          url: '/register-doctor',
           text: this.$t('header.menu.register_doctor')
         }, {
-          url: '/',
+          url: '/register',
           text: this.$t('header.menu.register')
         }, {
-          url: '/',
+          url: '/contacts',
           text: this.$t('header.menu.contacts')
         }]
       }, {
         url: '/',
         text: this.$t('header.menu.extra_elements'),
         childrens: [{
-          url: '/',
+          url: '/detail-working-booking',
           text: this.$t('header.menu.detail_working_booking')
         }, {
-          url: '/',
+          url: '/booking-page',
           text: this.$t('header.menu.booking_page')
         }, {
-          url: '/',
+          url: '/confirm-page',
           text: this.$t('header.menu.confirm_page')
         }, {
-          url: '/',
+          url: '/faq-page',
           text: this.$t('header.menu.faq_page')
         }, {
-          url: '/',
+          url: '/comming-soon',
           text: this.$t('header.menu.comming_soon')
         }, {
-          url: '/',
+          url: '/responseive-pricing-table',
           text: this.$t('header.menu.responsive_pricing_table')
         }, {
-          url: '/',
+          url: '/responseive-pricing-table-2',
           text: this.$t('header.menu.responsive_pricing_table_2')
         }, {
-          url: '/',
+          url: '/working-doctor-register',
           text: this.$t('header.menu.working_doctor_register')
         }, {
-          url: '/',
+          url: '/icon-pack-1',
           text: this.$t('header.menu.icon_pack_1')
         }, {
-          url: '/',
+          url: '/icon-pack-2',
           text: this.$t('header.menu.icon_pack_2')
         }, {
-          url: '/',
+          url: '/icon-pack-3',
           text: this.$t('header.menu.icon_pack_3')
         }, {
-          url: '/',
+          url: '/no-found',
           text: this.$t('header.menu.no_found_page')
         }]
       }, {
-        url: '/',
+        url: '/menu-v2',
         text: this.$t('header.menu.menu_v2')
       }, {
         url: 'admin_section/index.html',

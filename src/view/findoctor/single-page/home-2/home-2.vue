@@ -9,7 +9,7 @@
   <!-- /main content -->
 </template>
 <script>
-import FindForm from './components/find-form'
+import FindForm from '../home/components/find-form-video'
 import Discover from '../home/components/discover'
 import Carousel from '../home/components/carousel'
 import AppSection from '../home/components/app-section'

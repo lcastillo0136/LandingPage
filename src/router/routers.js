@@ -20,7 +20,6 @@ import config from '@/config'
 export default [
   {
     path: '/',
-    name: '_home',
     component: Main,
     meta: {
       hideInMenu: true,
@@ -37,17 +36,7 @@ export default [
           icon: 'md-home'
         },
         component: () => import('@/view/' + config.theme + '/single-page/home')
-      }
-    ]
-  }, {
-    path: '/home-2',
-    name: '_home-2',
-    component: Main,
-    meta: {
-      hideInMenu: true,
-      notCache: true
-    },
-    children: [
+      },
       {
         path: '/home-2',
         name: 'home-2',
@@ -55,21 +44,10 @@ export default [
           hideInMenu: true,
           title: 'home.title',
           notCache: true,
-          icon: 'md-user'
+          icon: 'md-home'
         },
         component: () => import('../view/' + config.theme + '/single-page/home-2')
-      }
-    ]
-  }, {
-    path: '/login',
-    name: '_login',
-    component: Main,
-    meta: {
-      hideInMenu: true,
-      notCache: true
-    },
-    children: [
-      {
+      }, {
         path: '/login',
         name: 'login',
         meta: {
@@ -79,6 +57,9 @@ export default [
           icon: 'md-user'
         },
         component: () => import('../view/' + config.theme + '/login/login.vue')
+      }, {
+        path: "*", 
+        component: () => import('../view/' + config.theme + '/404')
       }
     ]
   }
