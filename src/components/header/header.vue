@@ -46,118 +46,118 @@ export default {
     return {
       options: [{
         url: '/',
-        text: 'Home',
+        text: this.$t('header.menu.home'),
         childrens: [{
           url: '/',
-          text: 'Home Default'
+          text: this.$t('header.menu.home_default')
         }, {
           url: '/home-2',
-          text: 'Home Default 2'
+          text: this.$t('header.menu.home_2')
         }, {
           url: '/',
-          text: 'Home Default 3'
+          text: this.$t('header.menu.home_3')
         }, {
           url: '/',
-          text: 'Home Default 4'
+          text: this.$t('header.menu.home_4')
         }, {
           url: '/',
-          text: 'Revolution Slider'
+          text: this.$t('header.menu.revolution_slider')
         }, {
           url: '/',
-          text: 'With Cookie Bar (EU law)'
+          text: this.$t('header.menu.home_cookie')
         }]
       }, {
         url: '/',
-        text: 'Pages',
+        text: this.$t('header.menu.pages'),
         childrens: [{
           url: '/',
-          text: 'List page'
+          text: this.$t('header.menu.list_page')
         }, {
           url: '/',
-          text: 'List grid page'
+          text: this.$t('header.menu.list_grid')
         }, {
           url: '/',
-          text: 'List map page'
+          text: this.$t('header.menu.list_map')
         }, {
           url: '/',
-          text: 'Detail page'
+          text: this.$t('header.menu.detail_page')
         }, {
           url: '/',
-          text: 'Detail page 2'
+          text: this.$t('header.menu.detail_page_2')
         }, {
           url: '/',
-          text: 'Detail page 3'
+          text: this.$t('header.menu.detail_page_3')
         }, {
           url: '/',
-          text: 'Blog'
+          text: this.$t('header.menu.blog')
         }, {
           url: '/',
-          text: 'Badges'
+          text: this.$t('header.menu.badges')
         }, {
           url: '/',
-          text: 'Login'
+          text: this.$t('header.menu.login')
         }, {
           url: '/',
-          text: 'Login 2'
+          text: this.$t('header.menu.login_2')
         }, {
           url: '/',
-          text: 'Register Doctor'
+          text: this.$t('header.menu.register_doctor')
         }, {
           url: '/',
-          text: 'Register'
+          text: this.$t('header.menu.register')
         }, {
           url: '/',
-          text: 'Contacts'
+          text: this.$t('header.menu.contacts')
         }]
       }, {
         url: '/',
-        text: 'Extra Elements',
+        text: this.$t('header.menu.extra_elements'),
         childrens: [{
           url: '/',
-          text: 'Detail working booking'
+          text: this.$t('header.menu.detail_working_booking')
         }, {
           url: '/',
-          text: 'Booking page'
+          text: this.$t('header.menu.booking_page')
         }, {
           url: '/',
-          text: 'Confirm page'
+          text: this.$t('header.menu.confirm_page')
         }, {
           url: '/',
-          text: 'Faq page'
+          text: this.$t('header.menu.faq_page')
         }, {
           url: '/',
-          text: 'Coming soon'
+          text: this.$t('header.menu.comming_soon')
         }, {
           url: '/',
-          text: 'Responsive pricing tables'
+          text: this.$t('header.menu.responsive_pricing_table')
         }, {
           url: '/',
-          text: 'Responsive pricing tables 2'
+          text: this.$t('header.menu.responsive_pricing_table_2')
         }, {
           url: '/',
-          text: 'Working doctor register'
+          text: this.$t('header.menu.working_doctor_register')
         }, {
           url: '/',
-          text: 'Icon pack 1'
+          text: this.$t('header.menu.icon_pack_1')
         }, {
           url: '/',
-          text: 'Icon pack 2'
+          text: this.$t('header.menu.icon_pack_2')
         }, {
           url: '/',
-          text: 'Icon pack 3'
+          text: this.$t('header.menu.icon_pack_3')
         }, {
           url: '/',
-          text: '404 page'
+          text: this.$t('header.menu.no_found_page')
         }]
       }, {
         url: '/',
-        text: 'Menu V2'
+        text: this.$t('header.menu.menu_v2')
       }, {
         url: 'admin_section/index.html',
-        text: 'Admin'
+        text: this.$t('header.menu.admin')
       }, {
         url: 'https://themeforest.net/item/findoctor-doctors-directory-and-book-online-template/20876478?ref=ansonika',
-        text: 'Buy this template'
+        text: this.$t('header.menu.buy_template')
       }],
       isSticky: false
     }
