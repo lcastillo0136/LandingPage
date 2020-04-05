@@ -6,9 +6,9 @@
           <p><img src="img/app_img.svg" alt="" class="img-fluid" width="500" height="433"></p>
         </div>
         <div class="col-md-6">
-          <small>Application</small>
-          <h3>Download <strong>Findoctor App</strong> Now!</h3>
-          <p class="lead">Tota omittantur necessitatibus mei ei. Quo paulo perfecto eu, errem percipit ponderum no eos. Has eu mazim sensibus. Ad nonumes dissentiunt qui, ei menandri electram eos. Nam iisque consequuntur cu.</p>
+          <small>{{ $t('home_page.app_section.application') }}</small>
+          <h3 class="text-nowrap">{{ $t('home_page.app_section.download_app') }}&nbsp;<strong>{{ $t('home_page.app_section.app_name', { name: appName }) }}</strong>&nbsp;{{ $t('home_page.app_section.download_now') }}</h3>
+          <p class="lead">{{ $t('home_page.app_section.app_description') }}</p>
           <u-animate-container>
             <u-animate
               name="fadeIn"
@@ -41,6 +41,7 @@
   <!-- /app_section -->
 </template>
 <script>
+  import config from '@/config' 
   export default {
     name: 'AppSection',
     data () {
@@ -53,6 +54,9 @@
         return {
           'fadeIn animated': this.animationMobileEnded
         }
+      },
+      appName () {
+        return config.title
       }
     },
     methods: {

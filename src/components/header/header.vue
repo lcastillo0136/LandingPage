@@ -44,7 +44,20 @@ export default {
   },
   data () {
     return {
-      options: [{
+      isSticky: false
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'stillLoading'
+    ]),
+    headerClasses () {
+      return {
+        'sticky': this.sticky && this.isSticky
+      }
+    },
+    options () {
+      return [{
         url: '/',
         text: this.$t('header.menu.home'),
         childrens: [{
@@ -158,18 +171,7 @@ export default {
       }, {
         url: 'https://themeforest.net/item/findoctor-doctors-directory-and-book-online-template/20876478?ref=ansonika',
         text: this.$t('header.menu.buy_template')
-      }],
-      isSticky: false
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'stillLoading'
-    ]),
-    headerClasses () {
-      return {
-        'sticky': this.sticky && this.isSticky
-      }
+      }]
     }
   },
   methods: {

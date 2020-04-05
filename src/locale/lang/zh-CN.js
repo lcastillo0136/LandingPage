@@ -488,5 +488,14 @@ export default {
       admin: 'Admin',
       buy_template: 'But this template'
     }
+  },
+  home_page: {
+    app_section: {
+      application: 'Application',
+      download_app: 'Download',
+      app_name: '{name} App',
+      download_now: 'Now!',
+      app_description: 'I\'ve created a simple app where you can search for head lice and track your progress and see if you are out of lice yet. Check it out at https://findoctorapp.com Check out my projects on GitHub Findoctor App & my project http://getchik.me - A mobile app for tracking kids with cancer'
+    }
   }
 }
