@@ -33,7 +33,8 @@ export default [
           hideInMenu: true,
           title: 'home.title',
           notCache: true,
-          icon: 'md-home'
+          icon: 'md-home',
+          headerSticky: true
         },
         component: () => import('@/view/' + config.theme + '/single-page/home')
       },
@@ -44,7 +45,8 @@ export default [
           hideInMenu: true,
           title: 'home.title',
           notCache: true,
-          icon: 'md-home'
+          icon: 'md-home',
+          headerSticky: true
         },
         component: () => import('../view/' + config.theme + '/single-page/home-2')
       },
@@ -55,7 +57,8 @@ export default [
           hideInMenu: true,
           title: 'home.title',
           notCache: true,
-          icon: 'md-home'
+          icon: 'md-home',
+          headerSticky: true
         },
         component: () => import('../view/' + config.theme + '/single-page/home-3')
       },
@@ -66,10 +69,24 @@ export default [
           hideInMenu: true,
           title: 'home.title',
           notCache: true,
-          icon: 'md-home'
+          icon: 'md-home',
+          headerSticky: true
         },
         component: () => import('../view/' + config.theme + '/single-page/home-4')
-      }, {
+      }, 
+      {
+        path: '/list-page',
+        name: 'lit-page',
+        meta: {
+          hideInMenu: true,
+          title: 'list-page.title',
+          notCache: true,
+          icon: 'md-list',
+          headerSticky: false
+        },
+        component: () => import('../view/' + config.theme + '/list-page')
+      }, 
+      {
         path: '/login',
         name: 'login',
         meta: {

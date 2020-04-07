@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <div class="container margin_60_35">
+    <div class=" margin_60_35" :class="containerClasses">
       <div class="row">
         <div class="col-lg-3 col-md-12">
           <p>
@@ -63,7 +63,20 @@
   </footer>
 </template>
 <script>
+
+  import { mapGetters } from 'vuex'
   export default {
-    name: 'Footer'
+    name: 'Footer',
+    computed: {
+      ...mapGetters([
+        'container'
+      ]),
+      containerClasses () {
+        return {
+          'container': this.container,
+          'container-fluid': !this.container
+        }
+      }
+    },
   }
 </script>

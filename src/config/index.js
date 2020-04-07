@@ -34,5 +34,6 @@ export default {
     }
   },
   theme: 'findoctor',
-  defaultLang: 'zh-CN'
+  defaultLang: 'zh-CN',
+  container: true
 }

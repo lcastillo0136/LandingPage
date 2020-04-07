@@ -1,6 +1,6 @@
 <template>
 	<div>
-    <Header :sticky="true"></Header>
+    <Header :sticky="headerSticky"></Header>
       <router-view/>
     <Footer></Footer>
     <ToTop></ToTop>
@@ -40,6 +40,9 @@ export default {
     ]),
     cookieEnabled () {
       return config.cookieExpires === 1
+    },
+    headerSticky () {
+      return this.$route.meta && this.$route.meta.headerSticky
     }
   },
   methods: {

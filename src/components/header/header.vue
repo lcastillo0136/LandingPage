@@ -1,25 +1,23 @@
 <template>
-  <div>
-    <header class="header_sticky" :class="headerClasses">  
-      <HamburgerButton :options="options"></HamburgerButton>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-3 col-6">
-            <Logo></Logo>
-          </div>
-          <div class="col-lg-9 col-6">
-            <ul id="top_access">
-              <li><User></User></li>
-              <li><Register></Register></li>
-            </ul>
-            <Menu :options="options"></Menu>
-            <!-- /main-menu -->
-          </div>
+  <header class="header_sticky" :class="headerClasses">  
+    <HamburgerButton :options="options"></HamburgerButton>
+    <div :class="containerClasses">
+      <div class="row">
+        <div class="col-lg-3 col-6">
+          <Logo></Logo>
+        </div>
+        <div class="col-lg-9 col-6">
+          <ul id="top_access">
+            <li><User></User></li>
+            <li><Register></Register></li>
+          </ul>
+          <Menu :options="options"></Menu>
+          <!-- /main-menu -->
         </div>
       </div>
-      <!-- /container -->
-    </header>
-  </div>
+    </div>
+    <!-- /container -->
+  </header>
 </template>
 <script>
 import HamburgerButton from './components/hamburger-button'
@@ -49,7 +47,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'stillLoading'
+      'stillLoading',
+      'container'
     ]),
     headerClasses () {
       return {
@@ -166,6 +165,12 @@ export default {
         url: 'https://themeforest.net/item/findoctor-doctors-directory-and-book-online-template/20876478?ref=ansonika',
         text: this.$t('header.menu.buy_template')
       }]
+    },
+    containerClasses () {
+      return {
+        'container': this.container,
+        'container-fluid': !this.container
+      }
     }
   },
   methods: {

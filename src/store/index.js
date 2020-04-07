@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import config from '@/config'
 
 Vue.use(Vuex)
 
@@ -8,6 +9,9 @@ export default new Vuex.Store({
     fullLoaded: false,
     mobile: {
       open: false
+    },
+    page: {
+      container: config.container
     }
   },
   mutations: {
@@ -16,6 +20,9 @@ export default new Vuex.Store({
     },
     toggleMenuMobile (state) {
       state.mobile.open = !state.mobile.open
+    },
+    toggleContainer (state) {
+      state.page.container = !state.page.container
     }
   },
   getters: {
@@ -24,6 +31,9 @@ export default new Vuex.Store({
     },
     mobileMenuOpen (state) {
       return state.mobile.open
+    },
+    container (state) {
+      return state.page.container
     }
   },
   actions: {

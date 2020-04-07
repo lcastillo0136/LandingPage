@@ -81,7 +81,7 @@ ul#cat_nav {
 .main_title_3,
 .main_title_3 h3,
 main {
-    position: relative
+    /*position: relative*/
 }
 
 hr,
@@ -1727,7 +1727,12 @@ video {
 }
 
 #results.is_stuck {
-    z-index: 99
+    z-index: 99;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999
 }
 
 #results h4 {
@@ -2386,7 +2391,8 @@ a.wish_bt:hover:after {
     -moz-border-radius: 5px;
     -ms-border-radius: 5px;
     border-radius: 5px;
-    margin-bottom: 25px
+    margin-bottom: 25px;
+    background-color: #e0e0e0;
 }
 
 .content-left {
