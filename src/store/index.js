@@ -12,6 +12,13 @@ export default new Vuex.Store({
     },
     page: {
       container: config.container
+    },
+    header: {
+      visible: true,
+      sticky: false,
+    },
+    footer: {
+      visible: true
     }
   },
   mutations: {
@@ -23,6 +30,15 @@ export default new Vuex.Store({
     },
     toggleContainer (state) {
       state.page.container = !state.page.container
+    },
+    toggleHeader (state) {
+      state.header.visible = !state.header.visible
+    },
+    toggleFooter (state) {
+      state.footer.visible = !state.footer.visible
+    },
+    toggleHeaderSticky (state) {
+      state.header.sticky = !state.header.sticky
     }
   },
   getters: {
@@ -34,6 +50,15 @@ export default new Vuex.Store({
     },
     container (state) {
       return state.page.container
+    },
+    headerVisibility (state) {
+      return state.header.visible
+    },
+    footerVisibility (state) {
+      return state.footer.visible
+    },
+    headerSticky (state) {
+      return state.header.sticky
     }
   },
   actions: {

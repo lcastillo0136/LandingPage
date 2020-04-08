@@ -48,7 +48,7 @@ export default [
           icon: 'md-home',
           headerSticky: true
         },
-        component: () => import('../view/' + config.theme + '/single-page/home-2')
+        component: () => import('@/view/' + config.theme + '/single-page/home-2')
       },
       {
         path: '/home-3',
@@ -60,7 +60,7 @@ export default [
           icon: 'md-home',
           headerSticky: true
         },
-        component: () => import('../view/' + config.theme + '/single-page/home-3')
+        component: () => import('@/view/' + config.theme + '/single-page/home-3')
       },
       {
         path: '/home-4',
@@ -72,11 +72,11 @@ export default [
           icon: 'md-home',
           headerSticky: true
         },
-        component: () => import('../view/' + config.theme + '/single-page/home-4')
+        component: () => import('@/view/' + config.theme + '/single-page/home-4')
       }, 
       {
         path: '/list-page',
-        name: 'lit-page',
+        name: 'list-page',
         meta: {
           hideInMenu: true,
           title: 'list-page.title',
@@ -84,7 +84,19 @@ export default [
           icon: 'md-list',
           headerSticky: false
         },
-        component: () => import('../view/' + config.theme + '/list-page')
+        component: () => import('@/view/' + config.theme + '/list-page')
+      },
+      {
+        path: '/details-page',
+        name: 'details-page',
+        meta: {
+          hideInMenu: true,
+          title: 'details-page.title',
+          notCache: true,
+          icon: 'md-details',
+          headerSticky: false
+        },
+        component: () => import('@/view/' + config.theme + '/details-page')
       }, 
       {
         path: '/login',
@@ -95,10 +107,10 @@ export default [
           notCache: true,
           icon: 'md-user'
         },
-        component: () => import('../view/' + config.theme + '/login/login.vue')
+        component: () => import('@/view/' + config.theme + '/login/login.vue')
       }, {
         path: "*", 
-        component: () => import('../view/' + config.theme + '/404')
+        component: () => import('@/view/' + config.theme + '/404')
       }
     ]
   }

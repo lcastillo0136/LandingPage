@@ -1,14 +1,14 @@
 <template>
 	<div>
-    <Header :sticky="headerSticky"></Header>
+    <Header :sticky="headerSticky" v-if="headerVisibility"></Header>
       <router-view/>
-    <Footer></Footer>
+    <Footer v-if="footerVisibility"></Footer>
     <ToTop></ToTop>
     <cookie-law theme="dark-lime" v-if="cookieEnabled && !stillLoading"></cookie-law>
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import CookieLaw from 'vue-cookie-law'
 import config from '@/config'
 
@@ -36,7 +36,9 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'stillLoading'
+      'stillLoading',
+      'headerVisibility',
+      'footerVisibility'
     ]),
     cookieEnabled () {
       return config.cookieExpires === 1
@@ -46,6 +48,10 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'toggleHeader',
+      'toggleFooter'
+    ])
   },
   watch: {
   },

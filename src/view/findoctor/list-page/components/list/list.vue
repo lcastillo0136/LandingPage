@@ -1,7 +1,7 @@
 <template>
   <div>
     <u-animate-container v-for="(doctor,doctor_i) in data" :key="doctor_i">
-      <u-animate name="fadeIn" delay="1s" duration="2s" :iteration="1" :offset="100" animateClass="animated" :begin="false" @end="changeAnimationEnd(doctor)" class="strip_list fadeIn" :class="animationEnded(doctor)" >
+      <u-animate name="fadeIn" delay="0s" duration="1s" :iteration="1" :offset="100" animateClass="animated" :begin="false" @end="changeAnimationEnd(doctor)" class="strip_list" :class="animationEnded(doctor)" >
         <a href="#0" class="wish_bt"></a>
         <figure>
           <a href="detail-page.html"><img :src="doctor.img" alt=""></a>
@@ -75,7 +75,7 @@
       },
       animationEnded (doctor) {
         return {
-          'animated': doctor.isVisible,
+          'fadeIn animated': doctor.isVisible,
           'wow': !doctor.isVisible
         }
       }

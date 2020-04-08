@@ -1,22 +1,41 @@
 <template>
   <main class="theia-exception">
-    <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" @onSearch="onSearch($event)"></SearchBar>
-    <FilterList :types="types" :sort="sort" @onFilter="onFilter($event)"></FilterList>
+    <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" v-if="selectedLayout !== 'map'"></SearchBar>
+    <FilterList :types="types" :sort="sort" :layout="layout" @onFilter="onFilter($event)" v-if="selectedLayout !== 'map'"></FilterList>
     
-    <div class="container margin_60_35">
-      <div class="row">
-        <div class="col-lg-7">
+    <div class="" :class="containerMap">
+      <div class="row" :class="{ 'row-height': selectedLayout === 'map' }">
+        <div class="col-lg-7" v-if="selectedLayout === 'list'">
+          <List :data="doctors"></List>
+          <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
+        </div>
+        <div class="col-lg-8" v-if="selectedLayout === 'grid'">
+          <Grid :data="doctors"></Grid>
+          <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
+        </div>
+        <div class="col-lg-5 content-left" v-if="selectedLayout === 'map'">
+          <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" :onlyInput="true"></SearchBar>
+          <FilterList :types="types" :sort="sort" :layout="layout" @onFilter="onFilter($event)"></FilterList>
+          
           <List :data="doctors"></List>
           <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
         </div>
         <!-- /col -->
         
-        <aside class="col-lg-5" id="sidebar">
+        <aside class="col-lg-5" id="sidebar" v-if="selectedLayout === 'list'">
           <div id="map_listing" class="normal_list">
           </div>
         </aside>
+        <aside class="col-lg-4" id="sidebar" v-if="selectedLayout === 'grid'">
+          <div id="map_listing" class="normal_list">
+          </div>
+        </aside>
+
+        <div class="col-lg-7 map-right Fixed" v-if="selectedLayout === 'map'">
+          <div id="map_listing" class="map_list"></div>
+          <!-- map-->
+        </div>
         <!-- /aside -->
-        
       </div>
       <!-- /row -->
     </div>
@@ -28,19 +47,23 @@
   import SearchBar from '@/components/search-bar'
   import FilterList from '@/components/filter-list'
   import List from './components/list'
+  import Grid from './components/grid'
   import Paginator from '@/components/paginator'
+  import { localRead, localSave } from '@/libs/util'
 
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapMutations } from 'vuex'
   export default {
     components: {
       SearchBar,
       FilterList,
       List,
+      Grid,
       Paginator
     },
     data () {
       return {
-        searchValue: 'My Search',
+        searchValue: '',
+        searchSticky: true,
         types: [
           { text: 'All', value: 'all' },
           { text: 'Pacients', value: 'pacients', selected: true },
@@ -110,7 +133,19 @@
         paginator: {
           pages: 10,
           page: 3
+        },
+        layout: localRead('page.layout') || 'list'
+      }
+    },
+    watch: {
+      layout (new_val, old_val) {
+        if (old_val === 'map' || new_val === 'map') {
+          this.toggleFooter()
+          this.toggleContainer()
+          this.toggleHeaderSticky()
+          this.searchSticky = !this.searchSticky
         }
+        localSave('page.layout', new_val)
       }
     },
     computed: {
@@ -123,14 +158,44 @@
           'container': this.container,
           'container-fluid': !this.container
         }
+      },
+      selectedType () {
+        return (this.types.find(t => t.selected) || {})
+      },
+      selectedLayout () {
+        return this.layout
+      },
+      containerMap () {
+        return {
+          'margin_60_35 container': this.layout !== 'map',
+          'container-fluid full-height': this.layout === 'map'
+        }
       }
     },
     methods: {
+      ...mapMutations([
+        'toggleHeader',
+        'toggleFooter',
+        'toggleContainer',
+        'toggleHeaderSticky'
+      ]),
       onSearch (val) {
         console.log(val)
       },
       onFilter (val) {
-        console.log(val)
+        let type = this.types.find(t => t.selected && t.value !== val.type)
+        if(type) type.selected = false
+
+        type = this.types.find(t => t.value === val.type && t.selected === false)
+        if (type) type.selected = true
+
+        this.layout = val.layout
+
+        this.$nextTick().then(() => {
+          window['$']('#sidebar').theiaStickySidebar({
+            additionalMarginTop: 95
+          })
+        })
       },
       onPage (val) {
         console.log(val)
@@ -140,6 +205,20 @@
       window['$']('#sidebar').theiaStickySidebar({
         additionalMarginTop: 95
       });
+      if (this.selectedLayout === 'map') {
+        this.toggleFooter()
+        this.toggleContainer()
+        this.toggleHeaderSticky()
+        this.searchSticky = !this.searchSticky
+      }
+    },
+    beforeDestroy () {
+      if (this.layout === 'map') {
+        this.toggleFooter()
+        this.toggleContainer()
+        this.toggleHeaderSticky()
+        this.searchSticky = !this.searchSticky
+      }
     }
   }
 </script>

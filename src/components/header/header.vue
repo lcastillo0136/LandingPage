@@ -1,23 +1,26 @@
 <template>
-  <header class="header_sticky" :class="headerClasses">  
-    <HamburgerButton :options="options"></HamburgerButton>
-    <div :class="containerClasses">
-      <div class="row">
-        <div class="col-lg-3 col-6">
-          <Logo></Logo>
-        </div>
-        <div class="col-lg-9 col-6">
-          <ul id="top_access">
-            <li><User></User></li>
-            <li><Register></Register></li>
-          </ul>
-          <Menu :options="options"></Menu>
-          <!-- /main-menu -->
+  <div>
+    <header class="header_sticky" :class="headerClasses">  
+      <HamburgerButton :options="options"></HamburgerButton>
+      <div :class="containerClasses">
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <Logo></Logo>
+          </div>
+          <div class="col-lg-9 col-6">
+            <ul id="top_access">
+              <li><User></User></li>
+              <li><Register></Register></li>
+            </ul>
+            <Menu :options="options"></Menu>
+            <!-- /main-menu -->
+          </div>
         </div>
       </div>
-    </div>
-    <!-- /container -->
-  </header>
+      <!-- /container -->
+    </header>
+    <div :style="{'margin-top': this.headerStickyHeight + 'px'}" v-if="(this.sticky && this.isSticky) || (this.headerSticky && this.isSticky)"></div>
+  </div>
 </template>
 <script>
 import HamburgerButton from './components/hamburger-button'
@@ -48,11 +51,12 @@ export default {
   computed: {
     ...mapGetters([
       'stillLoading',
-      'container'
+      'container',
+      'headerSticky'
     ]),
     headerClasses () {
       return {
-        'sticky': this.sticky && this.isSticky
+        'sticky': (this.sticky && this.isSticky) || (this.headerSticky && this.isSticky)
       }
     },
     options () {
@@ -78,12 +82,6 @@ export default {
         childrens: [{
           url: '/list-page',
           text: this.$t('header.menu.list_page')
-        }, {
-          url: '/list-grid',
-          text: this.$t('header.menu.list_grid')
-        }, {
-          url: '/list-map',
-          text: this.$t('header.menu.list_map')
         }, {
           url: '/details-page',
           text: this.$t('header.menu.detail_page')
@@ -171,6 +169,9 @@ export default {
         'container': this.container,
         'container-fluid': !this.container
       }
+    },
+    headerStickyHeight () {
+      return window['$']('.header_sticky').outerHeight() + 1
     }
   },
   methods: {
