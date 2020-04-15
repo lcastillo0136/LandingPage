@@ -104,7 +104,7 @@
   cursor: pointer;
 }
 .datepicker table tr td.day {
-	background-color: #f8f8f8;
+	background-color: #f1f1f1;
 	border: 2px solid #fff;
 }
 .datepicker table tr td.old,
@@ -213,10 +213,9 @@ fieldset[disabled] .datepicker table tr td.today.active,
 fieldset[disabled] .datepicker table tr td.today:hover.active,
 fieldset[disabled] .datepicker table tr td.today.disabled.active,
 fieldset[disabled] .datepicker table tr td.today.disabled:hover.active {
-  background-color: #ffdb99;
-  border-color: #ffb733;
+ 
 }
-.datepicker table tr td.today:hover:hover {
+.datepicker table tr td.today:not(.disabled):hover {
   color: #fff;
 }
 .datepicker table tr td.today.active:hover {
@@ -792,15 +791,15 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 }
 
 .datepicker .disabled.disabled-date.day, .datepicker .disabled.disabled-date.day:hover{
-	background-color:#eb525b !important;
+	background-color: #ee6c73 !important;
 	color:#fff !important;
 }
-.datepicker .day:hover{
+.datepicker .day:not(.disabled):hover{
 	background:#8ec549 !important;
 	color:#fff;
 }
-.datepicker .old.day:hover, .datepicker .new.day:hover{
-	background:#f8f8f8 !important;
+.datepicker .old.day:not(.disabled):hover, .datepicker .new.day:not(.disabled):hover{
+	background:#f8f8f8;
 	color:#999;
 }
 

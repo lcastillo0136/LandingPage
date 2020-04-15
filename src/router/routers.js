@@ -94,7 +94,7 @@ export default [
           title: 'details-page.title',
           notCache: true,
           icon: 'md-details',
-          headerSticky: false
+          headerSticky: true
         },
         component: () => import('@/view/' + config.theme + '/details-page')
       }, 

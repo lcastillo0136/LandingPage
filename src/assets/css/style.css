@@ -172,7 +172,7 @@ body {
     font-size: 14px;
     font-size: .875rem;
     line-height: 1.4;
-    font-family: Poppins, Helvetica, sans-serif;
+    font-family: Poppins,Helvetica,sans-serif;
     color: #555
 }
 
@@ -398,7 +398,7 @@ strong {
 .main_title_4 h3 i {
     position: relative;
     top: 1px;
-    margin-right: 5px
+    margin-right: 1px
 }
 
 a {
@@ -2011,7 +2011,7 @@ a.wish_bt {
     -ms-border-radius: 5px
 }
 
-.datepicker .day:hover,
+.datepicker .day:not(.disabled):hover,
 .strip_list ul li:last-child a {
     -moz-transition: all .3s ease-in-out;
     -o-transition: all .3s ease-in-out;
@@ -2725,7 +2725,8 @@ a.wish_bt:hover:after {
     display: inline-block;
     padding-right: 8px;
     margin-right: 3px;
-    position: relative
+    position: relative;
+    margin-right: 6px;
 }
 
 #breadcrumb ul li a {
@@ -3008,7 +3009,7 @@ ul.time_select li label {
     color: #fff !important
 }
 
-.datepicker .day:hover {
+.datepicker .day:not(.disabled):hover {
     background: #8ec549 !important;
     color: #fff;
     transition: all .3s ease-in-out
@@ -3040,7 +3041,7 @@ ul.legend li:first-child strong {
 }
 
 ul.legend li:last-child strong {
-    background-color: #eb525b
+    background-color: #ee6c73
 }
 
 ul.time_select.version_2 li {
@@ -3266,7 +3267,12 @@ label.css-label strong {
     color: #fff;
     padding: 3px 10px;
     font-size: 12px;
-    font-size: .75rem
+    font-size: .75rem;
+    margin-right: 4px;
+}
+
+.box_profile ul.statistic li:last-child {
+    margin-right: 0;
 }
 
 .box_profile ul.contacts {
@@ -3344,7 +3350,8 @@ a.social_bt {
     padding: 8px 10px 5px;
     font-size: 12px;
     font-size: .75rem;
-    text-align: center
+    text-align: center;
+    margin-right: 4px;
 }
 
 .profile ul.contacts {
@@ -4823,4 +4830,8 @@ ul#cat_nav li:last-child a:hover {
 .cta_subscribe a.btn_1:hover {
     background-color: #fff;
     color: #e74e84
+}
+
+:not(table):not(tr):not(td):not(th):not(tbody):not(thead):not(tfoot)::after {
+    content: ' '
 }

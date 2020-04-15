@@ -21,6 +21,7 @@ import "@/assets/css/style.css"
 import "@/assets/css/menu.css"
 import "@/assets/css/vendors.css"
 import "@/assets/css/icon_fonts/css/all_icons_min.css"
+import "@/assets/css/date_picker.css"
 
 export default {
   name: 'Main',
