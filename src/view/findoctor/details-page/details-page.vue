@@ -25,7 +25,9 @@
             <ServiceChoosen @onSelectService="onSelectService($event)"></ServiceChoosen>
             
             <hr>
-            <div class="text-center"><a href="booking-page.html" class="btn_1 medium">Book Now</a></div>
+            <div class="text-center">
+              <a href="#" class="btn_1 medium" @click.stop.prevent="proceedBooking">Book Now</a>
+            </div>
           </div>
           <!-- /box_general -->
           
@@ -312,6 +314,19 @@
       },
       onSelectService (value) {
         this.booking.service = value
+      },
+      proceedBooking () {
+        if (this.booking.date && this.booking.time) {
+          this.$router.push({
+            name: 'booking-page', 
+            params: {
+              booking: this.booking,
+              dr: this.doctor
+            }
+          })
+        } else {
+          this.$swal('Missing Information','','error') 
+        }
       }
     },
     mounted() {

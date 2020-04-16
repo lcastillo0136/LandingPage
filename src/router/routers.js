@@ -99,6 +99,18 @@ export default [
         component: () => import('@/view/' + config.theme + '/details-page')
       }, 
       {
+        path: '/booking-page',
+        name: 'booking-page',
+        meta: {
+          hideInMenu: true,
+          title: 'booking-page.title',
+          notCache: true,
+          icon: 'md-booking',
+          headerSticky: true
+        },
+        component: () => import('@/view/' + config.theme + '/booking-page')
+      }, 
+      {
         path: '/login',
         name: 'login',
         meta: {

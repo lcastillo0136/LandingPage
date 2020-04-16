@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import VueWow from 'vue-wow'
 import Moment from 'vue-moment'
+import VueSweetalert2 from 'vue-sweetalert2'
 
 import i18n from '@/locale'
 import config from '@/config'
@@ -15,7 +16,8 @@ import 'ant-design-vue/lib/menu/style/index.css';
 import 'ant-design-vue/lib/tabs/style/index.css';
 import '@/assets/css/ant-design-drawer.css'
 import '@/assets/css/ant-design-menu.css'
-
+ 
+Vue.use(VueSweetalert2);
 Vue.use(Drawer)
 Vue.use(Menu)
 Vue.use(Icon)
