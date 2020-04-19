@@ -64,104 +64,46 @@ export default {
         url: '/',
         text: this.$t('header.menu.home'),
         childrens: [{
-          url: '/',
+          url: '/index.html',
           text: this.$t('header.menu.home_default')
         }, {
-          url: '/home-2',
+          url: '/home-2.html',
           text: this.$t('header.menu.home_2')
         }, {
-          url: '/home-3',
+          url: '/home-3.html',
           text: this.$t('header.menu.home_3')
         }, {
-          url: '/home-4',
+          url: '/home-4.html',
           text: this.$t('header.menu.home_4')
         }]
       }, {
         url: '/',
         text: this.$t('header.menu.pages'),
         childrens: [{
-          url: '/list-page',
+          url: '/list-page.html',
           text: this.$t('header.menu.list_page')
         }, {
-          url: '/details-page',
+          url: '/details-page.html',
           text: this.$t('header.menu.detail_page')
         }, {
-          url: '/details-page-2',
-          text: this.$t('header.menu.detail_page_2')
-        }, {
-          url: '/detail-page-3',
-          text: this.$t('header.menu.detail_page_3')
-        }, {
-          url: '/blog',
-          text: this.$t('header.menu.blog')
-        }, {
-          url: '/badges',
-          text: this.$t('header.menu.badges')
-        }, {
-          url: '/login',
+          url: '/login.html',
           text: this.$t('header.menu.login')
         }, {
-          url: '/login-2',
+          url: '/login-2.html',
           text: this.$t('header.menu.login_2')
         }, {
-          url: '/register-doctor',
+          url: '/register-doctor.html',
           text: this.$t('header.menu.register_doctor')
         }, {
-          url: '/register',
+          url: '/register.html',
           text: this.$t('header.menu.register')
         }, {
-          url: '/contacts',
+          url: '/contacts.html',
           text: this.$t('header.menu.contacts')
         }]
       }, {
-        url: '/',
-        text: this.$t('header.menu.extra_elements'),
-        childrens: [{
-          url: '/detail-working-booking',
-          text: this.$t('header.menu.detail_working_booking')
-        }, {
-          url: '/booking-page',
-          text: this.$t('header.menu.booking_page')
-        }, {
-          url: '/confirm-page',
-          text: this.$t('header.menu.confirm_page')
-        }, {
-          url: '/faq-page',
-          text: this.$t('header.menu.faq_page')
-        }, {
-          url: '/comming-soon',
-          text: this.$t('header.menu.comming_soon')
-        }, {
-          url: '/responseive-pricing-table',
-          text: this.$t('header.menu.responsive_pricing_table')
-        }, {
-          url: '/responseive-pricing-table-2',
-          text: this.$t('header.menu.responsive_pricing_table_2')
-        }, {
-          url: '/working-doctor-register',
-          text: this.$t('header.menu.working_doctor_register')
-        }, {
-          url: '/icon-pack-1',
-          text: this.$t('header.menu.icon_pack_1')
-        }, {
-          url: '/icon-pack-2',
-          text: this.$t('header.menu.icon_pack_2')
-        }, {
-          url: '/icon-pack-3',
-          text: this.$t('header.menu.icon_pack_3')
-        }, {
-          url: '/no-found',
-          text: this.$t('header.menu.no_found_page')
-        }]
-      }, {
-        url: '/menu-v2',
-        text: this.$t('header.menu.menu_v2')
-      }, {
         url: 'admin_section/index.html',
         text: this.$t('header.menu.admin')
-      }, {
-        url: 'https://themeforest.net/item/findoctor-doctors-directory-and-book-online-template/20876478?ref=ansonika',
-        text: this.$t('header.menu.buy_template')
       }]
     },
     containerClasses () {

@@ -27,7 +27,8 @@ export default [
     },
     children: [
       {
-        path: '/',
+        path: '/index.html',
+        alias: '/',
         name: 'home',
         meta: {
           hideInMenu: true,
@@ -39,7 +40,7 @@ export default [
         component: () => import('@/view/' + config.theme + '/single-page/home')
       },
       {
-        path: '/home-2',
+        path: '/home-2.html',
         name: 'home-2',
         meta: {
           hideInMenu: true,
@@ -51,7 +52,7 @@ export default [
         component: () => import('@/view/' + config.theme + '/single-page/home-2')
       },
       {
-        path: '/home-3',
+        path: '/home-3.html',
         name: 'home-3',
         meta: {
           hideInMenu: true,
@@ -63,7 +64,7 @@ export default [
         component: () => import('@/view/' + config.theme + '/single-page/home-3')
       },
       {
-        path: '/home-4',
+        path: '/home-4.html',
         name: 'home-4',
         meta: {
           hideInMenu: true,
@@ -75,7 +76,7 @@ export default [
         component: () => import('@/view/' + config.theme + '/single-page/home-4')
       }, 
       {
-        path: '/list-page',
+        path: '/list-page.html',
         name: 'list-page',
         meta: {
           hideInMenu: true,
@@ -87,7 +88,7 @@ export default [
         component: () => import('@/view/' + config.theme + '/list-page')
       },
       {
-        path: '/details-page',
+        path: '/details-page.html',
         name: 'details-page',
         meta: {
           hideInMenu: true,
@@ -99,7 +100,7 @@ export default [
         component: () => import('@/view/' + config.theme + '/details-page')
       }, 
       {
-        path: '/booking-page',
+        path: '/booking-page.html',
         name: 'booking-page',
         meta: {
           hideInMenu: true,
@@ -111,7 +112,7 @@ export default [
         component: () => import('@/view/' + config.theme + '/booking-page')
       }, 
       {
-        path: '/review',
+        path: '/review.html',
         name: 'review-page',
         meta: {
           hideInMenu: true,
@@ -123,7 +124,7 @@ export default [
         component: () => import('@/view/' + config.theme + '/review-page')
       }, 
       {
-        path: '/login',
+        path: '/login.html',
         name: 'login',
         meta: {
           hideInMenu: true,
