@@ -2,6 +2,6 @@
 /* Your custom styles below */
 /*============================================================================================*/
 
-.swal2-container {
+div.swal2-container {
   z-index: 9999
 }

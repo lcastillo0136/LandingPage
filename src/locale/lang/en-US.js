@@ -483,7 +483,7 @@ export default {
       no_found_page: '404 Page',
       menu_v2: 'Menu V2',
       admin: 'Admin',
-      buy_template: 'But this template'
+      buy_template: 'Buy this template'
     }
   },
   home_page: {

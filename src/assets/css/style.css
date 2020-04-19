@@ -4194,6 +4194,17 @@ ul.treatments.checkout li.total {
     margin: 30px -30px
 }
 
+.box_general_3.write_review h1 {
+    font-weight: 500;
+    font-size: 28px;
+    font-size: 1.75rem;
+    margin-bottom: 20px
+}
+
+.box_general_3.write_review label {
+    font-weight: 500
+}
+
 ul.bullets {
     line-height: 1.8;
     margin-bottom: 0
@@ -4834,4 +4845,49 @@ ul#cat_nav li:last-child a:hover {
 
 :not(table):not(tr):not(td):not(th):not(tbody):not(thead):not(tfoot)::after {
     content: ' '
+}
+
+.rating {
+    display: inline-block
+}
+
+.rating-input {
+    display: none
+}
+
+.rating-input:checked~.rating-star,.rating:hover .rating-star:hover,.rating:hover .rating-star:hover~.rating-star {
+    background-position: 0 0
+}
+
+.rating-star,.rating:hover .rating-star {
+    cursor: pointer;
+    float: right;
+    display: block;
+    margin-right: 3px;
+    width: 37px;
+    height: 37px;
+    background: url(/img/stars.svg) 0 -38px
+}
+
+.fileupload {
+    width: 320px
+}
+
+input[type=file] {
+    background-color: #fff;
+    border: 1px solid #e1e8ed;
+    padding: 5px;
+    height: auto;
+    color: #999;
+    border-radius: 3px
+}
+
+input[type=file].invalid::-webkit-file-upload-button,input[type=file].valid::-webkit-file-upload-button,input[type=file]::-webkit-file-upload-button {
+    color: #fff;
+    font-size: 13px;
+    border: 0;
+    border-radius: 3px;
+    padding: 8px 10px 8px 38px;
+    background: url(/img/camera.svg) 8px center no-repeat #3f4079;
+    outline: 0
 }

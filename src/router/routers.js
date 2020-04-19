@@ -111,6 +111,18 @@ export default [
         component: () => import('@/view/' + config.theme + '/booking-page')
       }, 
       {
+        path: '/review',
+        name: 'review-page',
+        meta: {
+          hideInMenu: true,
+          title: 'review-page.title',
+          notCache: true,
+          icon: 'md-review',
+          headerSticky: true
+        },
+        component: () => import('@/view/' + config.theme + '/review-page')
+      }, 
+      {
         path: '/login',
         name: 'login',
         meta: {
