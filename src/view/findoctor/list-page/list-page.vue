@@ -65,11 +65,11 @@
         searchValue: '',
         searchSticky: true,
         types: [
-          { text: 'All', value: 'all' },
+          { text: 'All', value: 'all', selected: false },
           { text: 'Pacients', value: 'pacients', selected: true },
-          { text: 'Doctors', value: 'doctors' },
-          { text: 'Nurses', value: 'nurses' },
-          { text: 'Clinics', value: 'clinics' }
+          { text: 'Doctors', value: 'doctors', selected: false},
+          { text: 'Nurses', value: 'nurses', selected: false },
+          { text: 'Clinics', value: 'clinics', selected: false }
         ],
         sort: [
           { text: 'Closest', value: 'closest', selected: true },
@@ -205,6 +205,19 @@
       window['$']('#sidebar').theiaStickySidebar({
         additionalMarginTop: 95
       });
+      if (this.$route.params) {
+        if (this.$route.params.search) {
+          this.searchValue = this.$route.params.search
+        }
+        if (this.$route.params.type) {
+          let type = this.types.find(t => t.selected && t.value !== this.$route.params.type)
+          if(type) type.selected = false
+
+          type = this.types.find(t => t.value === this.$route.params.type && t.selected === false)
+          if (type) type.selected = true
+
+        }
+      }
       if (this.selectedLayout === 'map') {
         this.toggleFooter()
         this.toggleContainer()

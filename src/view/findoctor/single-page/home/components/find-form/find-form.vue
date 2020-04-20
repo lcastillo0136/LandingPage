@@ -8,21 +8,13 @@
       <form method="post" action="/findoctor/list.html" :class="classOnload">
         <div id="custom-search-input">
           <div class="input-group">
-            <input type="text" class=" search-query" placeholder="Ex. Name, Specialization ....">
-            <input type="submit" class="btn_search" value="Search">
+            <input type="text" class=" search-query" placeholder="Ex. Name, Specialization ...." v-model="form.search">
+            <input type="submit" class="btn_search" value="Search" @click.stop.prevent="handleSearch">
           </div>
           <ul>
-            <li>
-              <input type="radio" id="all" name="radio_search" value="all" checked>
-              <label for="all">All</label>
-            </li>
-            <li>
-              <input type="radio" id="doctor" name="radio_search" value="doctor">
-              <label for="doctor">Doctor</label>
-            </li>
-            <li>
-              <input type="radio" id="clinic" name="radio_search" value="clinic">
-              <label for="clinic">Clinic</label>
+            <li v-for="(type, type_i) in types" :key="type_i">
+              <input type="radio" :id="'search_type_' + type_i" name="radio_search" :value="type.value" v-model="form.type">
+              <label :for="'search_type_' + type_i">{{ type.text }}</label>
             </li>
           </ul>
         </div>
@@ -38,11 +30,26 @@
       version: {
         type: Number,
         default: 1
+      },
+      types: {
+        type: Array,
+        default: function () {
+          return [
+            { text: 'All', value: 'all' },
+            { text: 'Pacients', value: 'pacients', selected: true },
+            { text: 'Doctors', value: 'doctors' },
+            { text: 'Nurses', value: 'nurses' },
+            { text: 'Clinics', value: 'clinics' }
+          ]
+        }
       }
     },
     data () {
       return {
-
+        form: {
+          search: '',
+          type: 'all'
+        }
       }
     },
     computed: {
@@ -57,6 +64,19 @@
       ...mapGetters([
         'stillLoading'
       ])
+    },
+    methods: {
+      handleSearch () {
+        this.$router.push({ 
+          name: 'list-page', 
+          params: {
+            search: this.form.search,
+            type: this.form.type
+          }
+        }, () => {
+          this.$emit('onSearch', this.form)
+        })
+      }
     }
   }
 </script>
