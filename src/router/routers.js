@@ -132,7 +132,40 @@ export default [
           notCache: true,
           icon: 'md-user'
         },
-        component: () => import('@/view/' + config.theme + '/login/login.vue')
+        component: () => import('@/view/' + config.theme + '/login')
+      }, 
+      {
+        path: '/login-2.html',
+        name: 'login2',
+        meta: {
+          hideInMenu: true,
+          title: 'login2.title',
+          notCache: true,
+          icon: 'md-user'
+        },
+        component: () => import('@/view/' + config.theme + '/login-2')
+      }, 
+      {
+        path: '/register-doctor.html',
+        name: 'registerDoctor',
+        meta: {
+          hideInMenu: true,
+          title: 'registerDoctor.title',
+          notCache: true,
+          icon: 'md-doctor'
+        },
+        component: () => import('@/view/' + config.theme + '/register-doctor')
+      }, 
+      {
+        path: '/register.html',
+        name: 'register',
+        meta: {
+          hideInMenu: true,
+          title: 'register.title',
+          notCache: true,
+          icon: 'md-user'
+        },
+        component: () => import('@/view/' + config.theme + '/register')
       }, {
         path: "*", 
         component: () => import('@/view/' + config.theme + '/404')
