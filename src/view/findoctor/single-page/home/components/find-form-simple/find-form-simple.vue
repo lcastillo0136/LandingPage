@@ -5,7 +5,7 @@
       <p :class="classOnload">
         Ridiculus sociosqu cursus neque cursus curae ante scelerisque vehicula. Mea maiorum menandri vituperata ea, quodsi conceptam in vis.
       </p>
-      <a href="list.html" class="btn_1 medium" :class="classOnload">View all Doctors</a>
+      <router-link :to="{ name: 'list-page', params: { type: 'doctors' }}"class="btn_1 medium" :class="classOnload">View all Doctors</router-link>
     </div>
   </div>
   <!-- /Hero -->

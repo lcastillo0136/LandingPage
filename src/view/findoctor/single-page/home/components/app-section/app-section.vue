@@ -27,8 +27,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" class="draw-arrow tail-1" d="M40.6,78.1C39,71.3,37.2,64.6,35.2,58" />
                   <path stroke-linecap="round" stroke-linejoin="round" class="draw-arrow tail-2" d="M39.8,78.5c-7.2,1.7-14.3,3.3-21.5,4.9" />
                 </svg>
-                <a href="#0" class="fadeIn" style="margin-right: 4px;"><img src="img/apple_app.png" alt="" width="150" height="50" data-retina="true"></a>
-                <a href="#0" class="fadeIn"><img src="img/google_play_app.png" alt="" width="150" height="50" data-retina="true"></a>
+                <a href="itms-apps://itunes.apple.com/app/apple-store/id375380948?mt=8" class="fadeIn" style="margin-right: 4px;"><img src="img/apple_app.png" alt="" width="150" height="50" data-retina="true"></a>
+                <a href="market://details?id=package_name" class="fadeIn"><img src="img/google_play_app.png" alt="" width="150" height="50" data-retina="true"></a>
               </div>
             </u-animate>
           </u-animate-container>

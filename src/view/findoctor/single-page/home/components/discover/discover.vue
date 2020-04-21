@@ -27,7 +27,9 @@
       </div>
     </div>
     <!-- /row -->
-    <p class="text-center"><a href="list.html" class="btn_1 medium" :class="classOnload">Find Doctor</a></p>
+    <p class="text-center">
+      <router-link :to="{ name: 'list-page', params: { type: 'all' }}" class="btn_1 medium" :class="classOnload">Find Doctor</router-link>
+    </p>
   </div>
   <!-- /container -->
 </template>

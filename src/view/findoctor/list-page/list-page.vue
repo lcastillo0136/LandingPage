@@ -1,7 +1,7 @@
 <template>
   <main class="theia-exception">
     <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" v-if="selectedLayout !== 'map'"></SearchBar>
-    <FilterList :types="types" :sort="sort" :layout="layout" @onFilter="onFilter($event)" v-if="selectedLayout !== 'map'"></FilterList>
+    <FilterList ref="filterBar" :types="types" :sort="sort" :layout="layout" @onFilter="onFilter($event)" v-if="selectedLayout !== 'map'"></FilterList>
     
     <div class="" :class="containerMap">
       <div class="row" :class="{ 'row-height': selectedLayout === 'map' }">
@@ -15,7 +15,7 @@
         </div>
         <div class="col-lg-5 content-left" v-if="selectedLayout === 'map'">
           <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" :onlyInput="true"></SearchBar>
-          <FilterList :types="types" :sort="sort" :layout="layout" @onFilter="onFilter($event)"></FilterList>
+          <FilterList ref="filterBar" :types="types" :sort="sort" :layout="layout" @onFilter="onFilter($event)"></FilterList>
           
           <List :data="doctors"></List>
           <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
@@ -183,13 +183,16 @@
         console.log(val)
       },
       onFilter (val) {
-        let type = this.types.find(t => t.selected && t.value !== val.type)
-        if(type) type.selected = false
+        if (val.type) {
+          let type = this.types.find(t => t.selected && t.value !== val.type)
+          if(type) type.selected = false
 
-        type = this.types.find(t => t.value === val.type && t.selected === false)
-        if (type) type.selected = true
+          type = this.types.find(t => t.value === val.type && t.selected === false)
+          if (type) type.selected = true
+        }
 
-        this.layout = val.layout
+        if (val.layout)
+          this.layout = val.layout
 
         this.$nextTick().then(() => {
           window['$']('#sidebar').theiaStickySidebar({
@@ -209,14 +212,19 @@
         if (this.$route.params.search) {
           this.searchValue = this.$route.params.search
         }
+
         if (this.$route.params.type) {
-          let type = this.types.find(t => t.selected && t.value !== this.$route.params.type)
-          if(type) type.selected = false
-
-          type = this.types.find(t => t.value === this.$route.params.type && t.selected === false)
-          if (type) type.selected = true
-
+          this.$refs.filterBar.selectType(this.$route.params.type)
         }
+
+        if (this.$route.params.layout) {
+          this.$refs.filterBar.selectLayout(this.$route.params.layout)
+        }
+
+        this.onFilter({
+          type: this.$route.params.type,
+          layout: this.$route.params.layout
+        })
       }
       if (this.selectedLayout === 'map') {
         this.toggleFooter()

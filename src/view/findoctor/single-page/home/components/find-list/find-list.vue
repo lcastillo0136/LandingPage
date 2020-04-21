@@ -12,16 +12,8 @@
             <h3>Search by City or Zone</h3>
           </div>
           <ul>
-            <li><a href="list.html"><strong>23</strong>Albany</a></li>
-            <li><a href="list.html"><strong>23</strong>Albuquerque</a></li>
-            <li><a href="list.html"><strong>23</strong>Atlanta</a></li>
-            <li><a href="list.html"><strong>23</strong>Baltimore</a></li>
-            <li><a href="list.html"><strong>23</strong>Baton Rouge</a></li>
-            <li><a href="list.html"><strong>23</strong>Birmingham</a></li>
-            <li><a href="list.html"><strong>23</strong>Boston</a></li>
-            <li><a href="list.html"><strong>23</strong>Buffalo</a></li>
-            <li><a href="list.html"><strong>23</strong>Charleston</a></li>
-            <li><a href="list.html">More...</a></li>
+            <li v-for="(zone, zone_i) in lists.zones" :key="zone_i"><router-link :to="{ name: 'list-page', params: { layout: 'map', search: zone.name }}"><strong>{{ zone.total }}</strong>{{ zone.name }}</router-link></li>
+            <li><router-link :to="{ name: 'list-page', params: { layout: 'map' }}">More...</router-link></li>
           </ul>
         </div>
       </div>
@@ -32,16 +24,8 @@
             <h3>Search by type</h3>
           </div>
           <ul>
-            <li><a href="list.html"><strong>23</strong>Allergist</a></li>
-            <li><a href="list.html"><strong>23</strong>Cardiologist</a></li>
-            <li><a href="list.html"><strong>23</strong>Chiropractor</a></li>
-            <li><a href="list.html"><strong>23</strong>Dentist</a></li>
-            <li><a href="list.html"><strong>23</strong>Dermatologist</a></li>
-            <li><a href="list.html"><strong>23</strong>Gastroenterologist</a></li>
-            <li><a href="list.html"><strong>23</strong>Ophthalmologist</a></li>
-            <li><a href="list.html"><strong>23</strong>Optometrist</a></li>
-            <li><a href="list.html"><strong>23</strong>Pediatrician</a></li>
-            <li><a href="list.html">More....</a></li>
+            <li v-for="(type, type_i) in lists.types" :key="type_i"><router-link :to="{ name: 'list-page', params: { layout: 'list', search: type.name }}"><strong>{{ type.total }}</strong>{{ type.name }}</router-link></li>
+            <li><router-link :to="{ name: 'list-page', params: { layout: 'list' }}">More....</router-link></li>
           </ul>
         </div>
       </div>
@@ -52,6 +36,34 @@
 </template>
 <script>
   export default {
-    name: 'FindList'
+    name: 'FindList',
+    data () {
+      return {
+        lists: {
+          zones: [
+            { name: 'Albany', total: 23 },
+            { name: 'Albuquerque', total: 23 },
+            { name: 'Atlanta', total: 23 },
+            { name: 'Baltimore', total: 23 },
+            { name: 'Baton Rouge', total: 23 },
+            { name: 'Birmingham', total: 23 },
+            { name: 'Boston', total: 23 },
+            { name: 'Buffalo', total: 23 },
+            { name: 'Charleston', total: 23 }
+          ],
+          types: [
+            { name: 'Allergist', total: 23 },
+            { name: 'Cardiologist', total: 23 },
+            { name: 'Chiropractor', total: 23 },
+            { name: 'Dentist', total: 23 },
+            { name: 'Dermatologist', total: 23 },
+            { name: 'Gastroenterologist', total: 23 },
+            { name: 'Ophthalmologist', total: 23 },
+            { name: 'Optometrist', total: 23 },
+            { name: 'Pediatrician', total: 23 }
+          ]
+        }
+      }
+    }
   }
 </script>

@@ -115,6 +115,12 @@
           layout: this.selected.layout,
           sort: this.selected.sort
         })
+      },
+      selectType (type) {
+        this.selected.type = type
+      },
+      selectLayout (layout) {
+        this.selected.layout = layout
       }
     },
     mounted() {
