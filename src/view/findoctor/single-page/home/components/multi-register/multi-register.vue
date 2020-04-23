@@ -7,7 +7,7 @@
             <figure><img src="img/doctors_icon.svg" alt=""></figure>
             <h3>Are you a Doctor?</h3>
             <p>The service allows you to get maximum visibility online and to manage appointments and contacts coming from the site, in a simple and fast way.</p>
-            <a href="register-doctor.html" class="btn_1">Read more</a>
+            <router-link :to="{ name: 'registerDoctor' }" class="btn_1">Read more</router-link>
           </div>
         </div>
         <div class="col-md-6 p-0">
@@ -15,7 +15,7 @@
             <figure><img src="img/patient_icon.svg" alt=""></figure>
             <h3>Are you a patient?</h3>
             <p>Choosing a specialist has never been so fast! You can filter search results by location and medical specialization, and book medical examination online.</p>
-            <a href="register.html" class="btn_1">Read more</a>
+            <router-link :to="{ name: 'register' }" class="btn_1">Read more</router-link>
           </div>
         </div>
       </div>

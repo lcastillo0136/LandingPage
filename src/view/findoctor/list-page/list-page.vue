@@ -90,6 +90,7 @@
           },
           img: 'img/doctor_listing_1.jpg',
           isVisible: false,
+          fav: false
         }, {
           speciality: 'Psicologist',
           name: 'Dr. Shoemaker',
@@ -100,6 +101,7 @@
           },
           img: 'img/doctor_listing_2.jpg',
           isVisible: false,
+          fav: false
         }, {
           speciality: 'Pediatrician',
           name: 'Dr. Lachinet',
@@ -110,6 +112,7 @@
           },
           img: 'img/doctor_listing_3.jpg',
           isVisible: false,
+          fav: false
         }, {
           speciality: 'Pediatrician',
           name: 'Dr. Rainwater',
@@ -120,6 +123,7 @@
           },
           img: 'img/doctor_listing_4.jpg',
           isVisible: false,
+          fav: false
         }, {
           speciality: 'Psicologist',
           name: 'Dr. Manzone',
@@ -130,6 +134,7 @@
           },
           img: 'img/doctor_listing_5.jpg',
           isVisible: false,
+          fav: false
         }],
         paginator: {
           pages: 10,

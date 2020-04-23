@@ -19,7 +19,9 @@
               <i :class="{ 'icon_star':1, 'voted': r <= doctor.rating.rate }" v-for="r in rateTotal" :key="r"></i>
               <small>({{ doctor.rating.comments }})</small>
             </span>
-            <a href="badges.html" data-toggle="tooltip" data-placement="top" data-original-title="Badge Level" class="badge_list_1"><img src="img/badges/badge_1.svg" width="15" height="15" alt=""></a>
+            <a-tooltip placement="top" title="Badge Level">
+              <a href="" class="badge_list_1"><img src="img/badges/badge_1.svg" width="15" height="15" alt=""></a>
+            </a-tooltip>
           </div>
           <ul>
             <li><a href="#0" class="btn_listing">View on Map</a></li>
