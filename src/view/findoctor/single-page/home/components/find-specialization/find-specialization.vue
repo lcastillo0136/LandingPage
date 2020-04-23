@@ -5,93 +5,16 @@
         <p>Nec graeci sadipscing disputationi ne, mea ea nonumes percipitur. Nonumy ponderum oporteat cu mel, pro movet cetero at.</p>
       </div>
       <div class="row">
-        <div class="col-lg-3 col-md-6">
-          <a href="list.html" class="box_cat_home">
+        <div class="col-lg-3 col-md-6" v-for="(spec, spec_i) in specializations" :key="spec_i">
+          <router-link :to="{ name: 'list-page', params: { layout: 'list', search: spec.text }}" class="box_cat_home">
             <i class="icon-info-4"></i>
-            <img src="img/icon_cat_1.svg" width="60" height="60" alt="">
-            <h3>Primary Care</h3>
+            <img :src="spec.icon" width="60" height="60" alt="">
+            <h3>{{ spec.text }}</h3>
             <ul class="clearfix">
-              <li><strong>124</strong>Doctors</li>
-              <li><strong>60</strong>Clinics</li>
+              <li><strong>{{ spec.count.doctors }}</strong>Doctors</li>
+              <li><strong>{{ spec.count.clinics }}</strong>Clinics</li>
             </ul>
-          </a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <a href="list.html" class="box_cat_home">
-            <i class="icon-info-4"></i>
-            <img src="img/icon_cat_2.svg" width="60" height="60" alt="">
-            <h3>Cardiology</h3>
-            <ul class="clearfix">
-              <li><strong>124</strong>Doctors</li>
-              <li><strong>60</strong>Clinics</li>
-            </ul>
-          </a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <a href="list.html" class="box_cat_home">
-            <i class="icon-info-4"></i>
-            <img src="img/icon_cat_3.svg" width="60" height="60" alt="">
-            <h3>MRI Resonance</h3>
-            <ul class="clearfix">
-              <li><strong>124</strong>Doctors</li>
-              <li><strong>60</strong>Clinics</li>
-            </ul>
-          </a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <a href="list.html" class="box_cat_home">
-            <i class="icon-info-4"></i>
-            <img src="img/icon_cat_4.svg" width="60" height="60" alt="">
-            <h3>Blood test</h3>
-            <ul class="clearfix">
-              <li><strong>124</strong>Doctors</li>
-              <li><strong>60</strong>Clinics</li>
-            </ul>
-          </a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <a href="list.html" class="box_cat_home">
-            <i class="icon-info-4"></i>
-            <img src="img/icon_cat_7.svg" width="60" height="60" alt="">
-            <h3>Laboratory</h3>
-            <ul class="clearfix">
-              <li><strong>124</strong>Doctors</li>
-              <li><strong>60</strong>Clinics</li>
-            </ul>
-          </a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <a href="list.html" class="box_cat_home">
-            <i class="icon-info-4"></i>
-            <img src="img/icon_cat_5.svg" width="60" height="60" alt="">
-            <h3>Dentistry</h3>
-            <ul class="clearfix">
-              <li><strong>124</strong>Doctors</li>
-              <li><strong>60</strong>Clinics</li>
-            </ul>
-          </a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <a href="list.html" class="box_cat_home">
-            <i class="icon-info-4"></i>
-            <img src="img/icon_cat_6.svg" width="60" height="60" alt="">
-            <h3>X - Ray</h3>
-            <ul class="clearfix">
-              <li><strong>124</strong>Doctors</li>
-              <li><strong>60</strong>Clinics</li>
-            </ul>
-          </a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <a href="list.html" class="box_cat_home">
-            <i class="icon-info-4"></i>
-            <img src="img/icon_cat_8.svg" width="60" height="60" alt="">
-            <h3>Piscologist</h3>
-            <ul class="clearfix">
-              <li><strong>124</strong>Doctors</li>
-              <li><strong>60</strong>Clinics</li>
-            </ul>
-          </a>
+          </router-link>
         </div>
       </div>
       <!-- /row -->
@@ -100,6 +23,67 @@
 </template>
 <script>
   export default {
-    name: 'Specialization'
+    name: 'Specialization',
+    data () {
+      return {
+        specializations: [{
+          text: 'Primary Care',
+          count: {
+            doctors: 124,
+            clinics: 60
+          },
+          icon: 'img/icon_cat_1.svg'
+        }, {
+          text: 'Cardiology',
+          count: {
+            doctors: 124,
+            clinics: 60
+          },
+          icon: 'img/icon_cat_2.svg'
+        }, {
+          text: 'MRI Resonance',
+          count: {
+            doctors: 124,
+            clinics: 60
+          },
+          icon: 'img/icon_cat_3.svg'
+        }, {
+          text: 'Blood test',
+          count: {
+            doctors: 124,
+            clinics: 60
+          },
+          icon: 'img/icon_cat_4.svg'
+        }, {
+          text: 'Laboratory',
+          count: {
+            doctors: 124,
+            clinics: 60
+          },
+          icon: 'img/icon_cat_7.svg'
+        }, {
+          text: 'Dentistry',
+          count: {
+            doctors: 124,
+            clinics: 60
+          },
+          icon: 'img/icon_cat_5.svg'
+        }, {
+          text: 'X - Ray',
+          count: {
+            doctors: 124,
+            clinics: 60
+          },
+          icon: 'img/icon_cat_6.svg'
+        }, {
+          text: 'Piscologist',
+          count: {
+            doctors: 124,
+            clinics: 60
+          },
+          icon: 'img/icon_cat_8.svg'
+        }]
+      }
+    }
   }
 </script>
