@@ -1,37 +1,37 @@
 <template>
   <main class="theia-exception">
-    <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" v-if="selectedLayout !== 'map'"></SearchBar>
-    <FilterList ref="filterBar" :types="types" :sort="sort" :layout="layout" @onFilter="onFilter($event)" v-if="selectedLayout !== 'map'"></FilterList>
+    <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" v-if="filter.layout !== 'map'"></SearchBar>
+    <FilterList :types="types" :sorts="sort" :selected="filter" @onFilter="onFilter($event)" v-if="filter.layout !== 'map'"></FilterList>
     
     <div class="" :class="containerMap">
-      <div class="row" :class="{ 'row-height': selectedLayout === 'map' }">
-        <div class="col-lg-7" v-if="selectedLayout === 'list'">
+      <div class="row" :class="{ 'row-height': filter.layout === 'map' }">
+        <div class="col-lg-7" v-if="filter.layout === 'list'">
           <List :data="doctors"></List>
           <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
         </div>
-        <div class="col-lg-8" v-if="selectedLayout === 'grid'">
+        <div class="col-lg-8" v-if="filter.layout === 'grid'">
           <Grid :data="doctors"></Grid>
           <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
         </div>
-        <div class="col-lg-5 content-left" v-if="selectedLayout === 'map'">
+        <div class="col-lg-5 content-left" v-if="filter.layout === 'map'">
           <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" :onlyInput="true"></SearchBar>
-          <FilterList ref="filterBar" :types="types" :sort="sort" :layout="layout" @onFilter="onFilter($event)"></FilterList>
+          <FilterList :types="types" :sorts="sort" :selected="filter" @onFilter="onFilter($event)"></FilterList>
           
           <List :data="doctors"></List>
           <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
         </div>
         <!-- /col -->
         
-        <aside class="col-lg-5" id="sidebar" v-if="selectedLayout === 'list'">
+        <aside class="col-lg-5" id="sidebar" v-if="filter.layout === 'list'">
           <div id="map_listing" class="normal_list">
           </div>
         </aside>
-        <aside class="col-lg-4" id="sidebar" v-if="selectedLayout === 'grid'">
+        <aside class="col-lg-4" id="sidebar" v-if="filter.layout === 'grid'">
           <div id="map_listing" class="normal_list">
           </div>
         </aside>
 
-        <div class="col-lg-7 map-right Fixed" v-if="selectedLayout === 'map'">
+        <div class="col-lg-7 map-right Fixed" v-if="filter.layout === 'map'">
           <div id="map_listing" class="map_list"></div>
           <!-- map-->
         </div>
@@ -53,6 +53,7 @@
 
   import { mapGetters, mapMutations } from 'vuex'
   export default {
+    name: 'ListPage',
     components: {
       SearchBar,
       FilterList,
@@ -65,19 +66,19 @@
         searchValue: '',
         searchSticky: true,
         types: [
-          { text: 'All', value: 'all', selected: false },
-          { text: 'Pacients', value: 'pacients', selected: true },
-          { text: 'Doctors', value: 'doctors', selected: false},
-          { text: 'Nurses', value: 'nurses', selected: false },
-          { text: 'Clinics', value: 'clinics', selected: false }
+          { text: 'All', value: 'all' },
+          { text: 'Pacients', value: 'pacients' },
+          { text: 'Doctors', value: 'doctors' },
+          { text: 'Nurses', value: 'nurses' },
+          { text: 'Clinics', value: 'clinics' }
         ],
         sort: [
-          { text: 'Closest', value: 'closest', selected: true },
-          { text: 'Best rated', value: 'best_rated', selected: false },
-          { text: 'Men', value: 'men', selected: false },
-          { text: 'Women', value: 'women', selected: false },
-          { text: 'Oldest', value: 'oldest', selected: false },
-          { text: 'Youngest', value: 'youngest', selected: false },
+          { text: 'Closest', value: 'closest' },
+          { text: 'Best rated', value: 'best_rated' },
+          { text: 'Men', value: 'men' },
+          { text: 'Women', value: 'women' },
+          { text: 'Oldest', value: 'oldest' },
+          { text: 'Youngest', value: 'youngest' },
         ],
         doctors: [{
           speciality: 'Pediatrician',
@@ -134,11 +135,15 @@
           pages: 10,
           page: 3
         },
-        layout: localRead('page.layout') || 'list'
+        filter: {
+          type: localRead('page.type') || 'doctors',
+          layout: localRead('page.layout') || 'list',
+          sort: localRead('page.sort') || 'best_rated'
+        }
       }
     },
     watch: {
-      layout (new_val, old_val) {
+      'filter.layout' (new_val, old_val) {
         if (old_val === 'map' || new_val === 'map') {
           this.toggleFooter()
           this.toggleContainer()
@@ -146,6 +151,12 @@
           this.searchSticky = !this.searchSticky
         }
         localSave('page.layout', new_val)
+      },
+      'filter.type' (new_val) {
+          localSave('page.type', new_val)
+      },
+      'filter.sort' (new_val) {
+        localSave('page.sort', new_val)
       }
     },
     computed: {
@@ -162,13 +173,10 @@
       selectedType () {
         return (this.types.find(t => t.selected) || {})
       },
-      selectedLayout () {
-        return this.layout
-      },
       containerMap () {
         return {
-          'margin_60_35 container': this.layout !== 'map',
-          'container-fluid full-height': this.layout === 'map'
+          'margin_60_35 container': this.filter.layout !== 'map',
+          'container-fluid full-height': this.filter.layout === 'map'
         }
       }
     },
@@ -183,19 +191,8 @@
         console.log(val)
       },
       onFilter (val) {
-        if (val.type) {
-          let type = this.types.find(t => t.selected && t.value !== val.type)
-          if(type) type.selected = false
-
-          type = this.types.find(t => t.value === val.type && t.selected === false)
-          if (type) type.selected = true
-        }
-
-        if (val.layout)
-          this.layout = val.layout
-
         this.$nextTick().then(() => {
-          window['$']('#sidebar').theiaStickySidebar({
+          window['$']('#sidebar', this.$el).theiaStickySidebar({
             additionalMarginTop: 95
           })
         })
@@ -205,41 +202,45 @@
       }
     },
     mounted() {
-      window['$']('#sidebar').theiaStickySidebar({
+      window['$']('#sidebar', this.$el).theiaStickySidebar({
         additionalMarginTop: 95
       });
+      
+      if (this.filter.layout === 'map') {
+        this.toggleFooter()
+        this.toggleContainer()
+        this.toggleHeaderSticky()
+        this.searchSticky = !this.searchSticky
+      }
+
       if (this.$route.params) {
         if (this.$route.params.search) {
           this.searchValue = this.$route.params.search
         }
 
         if (this.$route.params.type) {
-          this.$refs.filterBar.selectType(this.$route.params.type)
+          this.filter.type = this.$route.params.type
         }
 
         if (this.$route.params.layout) {
-          this.$refs.filterBar.selectLayout(this.$route.params.layout)
+          this.filter.layout = this.$route.params.layout
         }
-
-        this.onFilter({
-          type: this.$route.params.type,
-          layout: this.$route.params.layout
-        })
       }
-      if (this.selectedLayout === 'map') {
+
+    },
+    beforeRouteLeave (to, from, next) {
+      if (this.filter.layout === 'map') {
         this.toggleFooter()
         this.toggleContainer()
         this.toggleHeaderSticky()
         this.searchSticky = !this.searchSticky
       }
+      next(vm => {
+        // access to component instance via `vm`
+      })
     },
     beforeDestroy () {
-      if (this.layout === 'map') {
-        this.toggleFooter()
-        this.toggleContainer()
-        this.toggleHeaderSticky()
-        this.searchSticky = !this.searchSticky
-      }
+      
     }
   }
 </script>

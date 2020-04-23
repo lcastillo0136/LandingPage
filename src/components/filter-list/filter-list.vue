@@ -19,10 +19,10 @@
             <a href="#0"@click.stop.prevent="changeLayout('map')" :class="layoutClass('map')"><i class="icon-map-1"></i></a>
           </div>
         </li>
-        <li v-if="sort && sort.length">
+        <li v-if="sorts && sorts.length">
           <h6>Sort by</h6>
           <select name="orderby" class="selectbox" v-model="selected.sort" @change="emitFilter">
-            <option v-for="(s, si) in sort" :value="s.value" :key="si">{{ s.text }}</option>
+            <option v-for="(s, si) in sorts" :value="s.value" :key="si">{{ s.text }}</option>
           </select>
         </li>
       </ul>
@@ -53,7 +53,7 @@
           return ['grid', 'list', 'map'].indexOf(value) !== -1
         }
       },
-      sort: {
+      sorts: {
         type: Array,
         default: function() {
           return [
@@ -67,15 +67,26 @@
       layoutVisible: {
         type: Boolean,
         default: true
+      },
+      selected: {
+        type: Object,
+        default: function () {
+          return  {
+            type: 'doctors',
+            layout: 'list',
+            sort: 'closest'
+          }
+        }
+      }
+    },
+    watch: {
+      'selected.sort' (value) {
+        window['$']('.selectbox', this.$el).selectbox('change', value, (this.sort.find(s => s.value === value)||{}).text, false)
       }
     },
     data () {
       return {
-        selected: {
-          type: '',
-          layout: '',
-          sort: ''
-        }
+        
       }
     },
     computed: {
@@ -110,11 +121,7 @@
         }
       },
       emitFilter () {
-        this.$emit('onFilter', {
-          type: this.selected.type,
-          layout: this.selected.layout,
-          sort: this.selected.sort
-        })
+        this.$emit('onFilter', {...this.selected})
       },
       selectType (type) {
         this.selected.type = type
@@ -124,17 +131,7 @@
       }
     },
     mounted() {
-      if (this.selectedType) {
-        this.selected.type = this.selectedType.value
-      }
-      if (this.selectedSort) {
-        this.selected.sort = this.selectedSort.value
-      }
-      if (this.layout.trim() !== "") {
-        this.selected.layout = this.layout
-      }
-
-      window['$']('.selectbox').selectbox({
+      window['$']('.selectbox', this.$el).selectbox({
         onChange: this.onChange
       })
     }
