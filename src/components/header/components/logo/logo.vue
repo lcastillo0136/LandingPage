@@ -1,6 +1,6 @@
 <template>
   <div id="logo_home">
-    <h1><router-link to="/" :title="appName">{{ appName }}</router-link></h1>
+    <h1><router-link :to="{ name: 'home' }" :title="appName">{{ appName }}</router-link></h1>
   </div>
 </template>
 <script>

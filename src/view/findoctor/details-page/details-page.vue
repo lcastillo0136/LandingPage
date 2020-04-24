@@ -34,7 +34,6 @@
           <div class="tabs_styled_2">
             <a-tabs>
               <a-tab-pane tab="General Info" key="1">
-                
                 <p class="lead add_bottom_30">Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
                 <div class="indent_title_in">
                   <i class="pe-7s-user"></i>
@@ -129,64 +128,27 @@
                   </table>
                 </div>
                 <!--  End wrapper_indent -->
-
               </a-tab-pane>
               <a-tab-pane tab="Reviews" key="2">
                 <div class="reviews-container">
                   <div class="row">
                     <div class="col-lg-3">
                       <div id="review_summary">
-                        <strong>4.7</strong>
+                        <strong>{{ avgRating }}</strong>
                         <div class="rating">
-                          <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
+                          <i class="icon_star" :class="{'voted': avgRating >= star}" v-for="(star, star_i) in totalRatings" :key="star_i"></i>
                         </div>
-                        <small>Based on 4 reviews</small>
+                        <small>Based on {{ reviews.length }} reviews</small>
                       </div>
                     </div>
                     <div class="col-lg-9">
-                      <div class="row">
+                      <div class="row" v-for="(ratings, ratings_i) in totalRatingsReverse" :key="ratings_i">
                         <div class="col-lg-10 col-9">
                           <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" :style="{ width: percentStart(ratings) + '%'}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
-                        <div class="col-lg-2 col-3"><small><strong>5 stars</strong></small></div>
-                      </div>
-                      <!-- /row -->
-                      <div class="row">
-                        <div class="col-lg-10 col-9">
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
-                        <div class="col-lg-2 col-3"><small><strong>4 stars</strong></small></div>
-                      </div>
-                      <!-- /row -->
-                      <div class="row">
-                        <div class="col-lg-10 col-9">
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
-                        <div class="col-lg-2 col-3"><small><strong>3 stars</strong></small></div>
-                      </div>
-                      <!-- /row -->
-                      <div class="row">
-                        <div class="col-lg-10 col-9">
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
-                        <div class="col-lg-2 col-3"><small><strong>2 stars</strong></small></div>
-                      </div>
-                      <!-- /row -->
-                      <div class="row">
-                        <div class="col-lg-10 col-9">
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
-                        <div class="col-lg-2 col-3"><small><strong>1 stars</strong></small></div>
+                        <div class="col-lg-2 col-3"><small><strong>{{ ratings }} stars</strong></small></div>
                       </div>
                       <!-- /row -->
                     </div>
@@ -194,58 +156,19 @@
                   <!-- /row -->
                   
                   <hr>
-                  
-                  <div class="review-box clearfix">
-                    <figure class="rev-thumb"><img src="img/avatar1.jpg" alt="">
+                  <div class="review-box clearfix" v-for="(review,review_i) in reviews" :key="review_i">
+                    <figure class="rev-thumb"><img :src="review.img" alt="">
                     </figure>
                     <div class="rev-content">
                       <div class="rating">
-                        <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
+                        <i class="icon_star" :class="{'voted': review.rating >= star}" v-for="(star, star_i) in totalRatings"></i>
                       </div>
                       <div class="rev-info">
-                        Admin – April 03, 2016:
+                        {{ review.name }} – {{ review.date }}:
                       </div>
                       <div class="rev-text">
                         <p>
-                          Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- End review-box -->
-
-                  <div class="review-box clearfix">
-                    <figure class="rev-thumb"><img src="img/avatar2.jpg" alt="">
-                    </figure>
-                    <div class="rev-content">
-                      <div class="rating">
-                        <i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
-                      </div>
-                      <div class="rev-info">
-                        Ahsan – April 01, 2016
-                      </div>
-                      <div class="rev-text">
-                        <p>
-                          Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- End review-box -->
-
-                  <div class="review-box clearfix">
-                    <figure class="rev-thumb"><img src="img/avatar3.jpg" alt="">
-                    </figure>
-                    <div class="rev-content">
-                      <div class="rating">
-                        <i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
-                      </div>
-                      <div class="rev-info">
-                        Sara – March 31, 2016
-                      </div>
-                      <div class="rev-text">
-                        <p>
-                          Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
+                          {{ review.comment }}
                         </p>
                       </div>
                     </div>
@@ -282,7 +205,11 @@
     },
     data () {
       return {
-        breadcrumb: [{route: '/',text: 'Home'}, {route: 'Category',text: 'Category'}, {text: 'Page active'}],
+        breadcrumb: [
+          { route: { name: 'home' }, text: 'Home' }, 
+          { route: { name:'category' }, text: 'Category' }, 
+          { text: 'Page active' }
+        ],
         doctor: {
           speciality: 'PRIMARY CARE - INTERNIST',
           name: 'DR. Julia Jhones',
@@ -298,11 +225,53 @@
           img: 'img/doctor_listing_1.jpg',
           isVisible: false,
         },
+        reviews: [{
+          rating: 4,
+          img: 'img/avatar1.jpg',
+          name: 'Admin',
+          date: '03/04/2016',
+          comment: 'Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis'
+        }, {
+          rating: 5,
+          img: 'img/avatar2.jpg',
+          name: 'Ahsan',
+          date: '01/04/2016',
+          comment: 'Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis'
+        }, {
+          rating: 3,
+          img: 'img/avatar3.jpg',
+          name: 'Sara',
+          date: '31/03/2016',
+          comment: 'Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis'
+        },  {
+          rating: 5,
+          img: 'img/avatar3.jpg',
+          name: 'Sara',
+          date: '31/03/2016',
+          comment: 'Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis'
+        }, {
+          rating: 5,
+          img: 'img/avatar3.jpg',
+          name: 'Sara',
+          date: '25/03/2016',
+          comment: 'Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis'
+        },],
         booking: {
           date: '',
           time: '',
           service: ''
         }
+      }
+    },
+    computed: {
+      totalRatings () {
+        return new Array(5).fill(true).map((e, i) => i + 1)
+      },
+      totalRatingsReverse () {
+        return new Array(5).fill(true).map((e, i) => i + 1).sort((a, b) => b - a)
+      },
+      avgRating () {
+        return this.reviews.map(m => m.rating).reduce((a,b) => a + b, 0) / this.reviews.length
       }
     },
     methods: {
@@ -327,6 +296,12 @@
         } else {
           this.$swal('Missing Information','','error') 
         }
+      },
+      countStars (query) {
+        return this.reviews.filter(f => f.rating === query).length
+      },
+      percentStart (star) {
+        return (this.countStars(star) * 100) / this.reviews.length
       }
     },
     mounted() {

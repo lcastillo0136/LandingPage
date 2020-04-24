@@ -1621,7 +1621,8 @@ a.box_cat_home ul li strong {
 
 @media (max-width:991px) {
     #app_section {
-        padding: 60px 0 35px
+        padding: 60px 0 35px;
+        overflow: hidden;
     }
 
     .header-video {
@@ -4849,7 +4850,7 @@ ul#cat_nav li:last-child a:hover {
     color: #e74e84
 }
 
-:not(table):not(tr):not(td):not(th):not(tbody):not(thead):not(tfoot)::after {
+:not(table):not(tr):not(td):not(th):not(tbody):not(thead):not(tfoot):not(.review_summary):not(.review_summary *)::after {
     content: ' '
 }
 

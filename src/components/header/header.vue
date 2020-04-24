@@ -61,7 +61,6 @@ export default {
     },
     options () {
       return [{
-        url: '/',
         text: this.$t('header.menu.home'),
         childrens: [{
           url: '/index.html',
@@ -77,7 +76,6 @@ export default {
           text: this.$t('header.menu.home_4')
         }]
       }, {
-        url: '/',
         text: this.$t('header.menu.pages'),
         childrens: [{
           url: '/list-page.html',
