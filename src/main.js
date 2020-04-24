@@ -6,6 +6,7 @@ import store from './store'
 import VueWow from 'vue-wow'
 import Moment from 'vue-moment'
 import VueSweetalert2 from 'vue-sweetalert2'
+import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
 
 import i18n from '@/locale'
 import config from '@/config'
@@ -17,7 +18,14 @@ import 'ant-design-vue/lib/tabs/style/index.css';
 import 'ant-design-vue/lib/tooltip/style/index.css';
 import '@/assets/css/ant-design-drawer.css'
 import '@/assets/css/ant-design-menu.css'
- 
+import 'leaflet/dist/leaflet.css';
+
+Vue.component('l-map', LMap);
+Vue.component('l-tile-layer', LTileLayer);
+Vue.component('l-marker', LMarker);
+Vue.component('l-icon-default', LIconDefault)
+Vue.component('l-popup', LPopup)
+
 Vue.use(VueSweetalert2);
 Vue.use(Drawer)
 Vue.use(Menu)

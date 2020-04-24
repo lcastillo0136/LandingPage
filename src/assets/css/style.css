@@ -2290,7 +2290,7 @@ a.wish_bt:hover:after, a.wish_bt.active:after {
     margin-bottom: 10px
 }
 
-.marker_info:after {
+.marker_info1:after {
     right: 100%;
     top: 50%;
     border: solid transparent;

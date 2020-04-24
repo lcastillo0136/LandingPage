@@ -6,33 +6,37 @@
     <div class="" :class="containerMap">
       <div class="row" :class="{ 'row-height': filter.layout === 'map' }">
         <div class="col-lg-7" v-if="filter.layout === 'list'">
-          <List :data="doctors"></List>
+          <List :data="doctors" @onViewMapClick="showInMap"></List>
           <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
         </div>
         <div class="col-lg-8" v-if="filter.layout === 'grid'">
-          <Grid :data="doctors"></Grid>
+          <Grid :data="doctors" @onViewMapClick="showInMap"></Grid>
           <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
         </div>
         <div class="col-lg-5 content-left" v-if="filter.layout === 'map'">
           <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" :onlyInput="true"></SearchBar>
           <FilterList :types="types" :sorts="sort" :selected="filter" @onFilter="onFilter($event)"></FilterList>
           
-          <List :data="doctors"></List>
+          <List :data="doctors" @onViewMapClick="showInMap"></List>
           <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
         </div>
         <!-- /col -->
         
         <aside class="col-lg-5" id="sidebar" v-if="filter.layout === 'list'">
           <div id="map_listing" class="normal_list">
+            <ListMap ref="map" :map="map"></ListMap>
           </div>
         </aside>
         <aside class="col-lg-4" id="sidebar" v-if="filter.layout === 'grid'">
           <div id="map_listing" class="normal_list">
+            <ListMap ref="map" :map="map"></ListMap>
           </div>
         </aside>
 
         <div class="col-lg-7 map-right Fixed" v-if="filter.layout === 'map'">
-          <div id="map_listing" class="map_list"></div>
+          <div id="map_listing" class="map_list">
+            <ListMap ref="map" :map="map"></ListMap>
+          </div>
           <!-- map-->
         </div>
         <!-- /aside -->
@@ -49,6 +53,7 @@
   import List from './components/list'
   import Grid from './components/grid'
   import Paginator from '@/components/paginator'
+  import ListMap from './components/map'
   import { localRead, localSave } from '@/libs/util'
 
   import { mapGetters, mapMutations } from 'vuex'
@@ -59,7 +64,8 @@
       FilterList,
       List,
       Grid,
-      Paginator
+      Paginator,
+      ListMap
     },
     data () {
       return {
@@ -90,7 +96,12 @@
           },
           img: 'img/doctor_listing_1.jpg',
           isVisible: false,
-          fav: false
+          fav: false,
+          map: {
+            latitude: 48.873792,
+            longitude: 2.295028,
+            address: '35 Newtownards Road, Belfast, BT4.'
+          }
         }, {
           speciality: 'Psicologist',
           name: 'Dr. Shoemaker',
@@ -101,7 +112,12 @@
           },
           img: 'img/doctor_listing_2.jpg',
           isVisible: false,
-          fav: false
+          fav: false,
+          map: {
+            latitude: 48.800040,
+            longitude: 2.139670,
+            address: '35 Newtownards Road, Belfast, BT4.'
+          }
         }, {
           speciality: 'Pediatrician',
           name: 'Dr. Lachinet',
@@ -112,7 +128,12 @@
           },
           img: 'img/doctor_listing_3.jpg',
           isVisible: false,
-          fav: false
+          fav: false,
+          map: {
+            latitude: 48.846222,
+            longitude: 2.346414,
+            address: '35 Newtownards Road, Belfast, BT4.'
+          }
         }, {
           speciality: 'Pediatrician',
           name: 'Dr. Rainwater',
@@ -123,7 +144,12 @@
           },
           img: 'img/doctor_listing_4.jpg',
           isVisible: false,
-          fav: false
+          fav: false,
+          map: {
+            latitude: 48.873792,
+            longitude: 2.295028,
+            address: '35 Newtownards Road, Belfast, BT4.'
+          }
         }, {
           speciality: 'Psicologist',
           name: 'Dr. Manzone',
@@ -134,7 +160,12 @@
           },
           img: 'img/doctor_listing_5.jpg',
           isVisible: false,
-          fav: false
+          fav: false,
+          map: {
+            latitude: 48.800040,
+            longitude: 2.139670,
+            address: '35 Newtownards Road, Belfast, BT4.'
+          }
         }],
         paginator: {
           pages: 10,
@@ -144,6 +175,12 @@
           type: localRead('page.type') || 'doctors',
           layout: localRead('page.layout') || 'list',
           sort: localRead('page.sort') || 'best_rated'
+        },
+        map: {
+          zoom: 3,
+          center: [47.413220, -1.219482],
+          marker: null,
+          trackResize: false
         }
       }
     },
@@ -204,6 +241,24 @@
       },
       onPage (val) {
         console.log(val)
+      },
+      showInMap (doctor) {
+        this.map.zoom = 15
+        setTimeout(() => {
+          this.map.marker = {
+            latitude: doctor.map.latitude,
+            longitude: doctor.map.longitude,
+            img: doctor.img,
+            speciality: doctor.speciality,
+            name: doctor.name,
+            address: doctor.map.address,
+            phone: '(811) 1533 136'
+          }
+          this.map.center = [doctor.map.latitude , doctor.map.longitude]
+          this.$nextTick().then(() => {
+            this.$refs.map.openPopup()
+          })
+        }, 400)
       }
     },
     mounted() {
