@@ -92,40 +92,42 @@
                 </div>
                 <div class="wrapper_indent">
                   <p>Zril causae ancillae sit ea. Dicam veritus mediocritatem sea ex, nec id agam eius. Te pri facete latine salutandi, scripta mediocrem et sed, cum ne mundi vulputate. Ne his sint graeco detraxit, posse exerci volutpat has in.</p>
-                  <table class="table table-responsive table-striped">
-                    <thead>
-                      <tr>
-                        <th>Service - Visit</th>
-                        <th>Price</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>New patient visit</td>
-                        <td>$34</td>
-                      </tr>
-                      <tr>
-                        <td>General consultation</td>
-                        <td>$60</td>
-                      </tr>
-                      <tr>
-                        <td>Back Pain</td>
-                        <td>$40</td>
-                      </tr>
-                      <tr>
-                        <td>Diabetes Consultation</td>
-                        <td>$55</td>
-                      </tr>
-                      <tr>
-                        <td>Eating disorder</td>
-                        <td>$60</td>
-                      </tr>
-                      <tr>
-                        <td>Foot Pain</td>
-                        <td>$35</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div class="table-responsive">
+                    <table class="table  table-striped">
+                      <thead>
+                        <tr>
+                          <th>Service - Visit</th>
+                          <th>Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>New patient visit</td>
+                          <td>$34</td>
+                        </tr>
+                        <tr>
+                          <td>General consultation</td>
+                          <td>$60</td>
+                        </tr>
+                        <tr>
+                          <td>Back Pain</td>
+                          <td>$40</td>
+                        </tr>
+                        <tr>
+                          <td>Diabetes Consultation</td>
+                          <td>$55</td>
+                        </tr>
+                        <tr>
+                          <td>Eating disorder</td>
+                          <td>$60</td>
+                        </tr>
+                        <tr>
+                          <td>Foot Pain</td>
+                          <td>$35</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <!--  End wrapper_indent -->
               </a-tab-pane>

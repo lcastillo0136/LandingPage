@@ -63,40 +63,40 @@ export default {
       return [{
         text: this.$t('header.menu.home'),
         childrens: [{
-          url: '/index.html',
+          url: { name: 'home' },
           text: this.$t('header.menu.home_default')
         }, {
-          url: '/home-2.html',
+          url: { name: 'home-2' },
           text: this.$t('header.menu.home_2')
         }, {
-          url: '/home-3.html',
+          url: { name: 'home-3' },
           text: this.$t('header.menu.home_3')
         }, {
-          url: '/home-4.html',
+          url: { name: 'home-4' },
           text: this.$t('header.menu.home_4')
         }]
       }, {
         text: this.$t('header.menu.pages'),
         childrens: [{
-          url: '/list-page.html',
+          url: { name: 'list-page' },
           text: this.$t('header.menu.list_page')
         }, {
-          url: '/details-page.html',
+          url: { name: 'details-page' },
           text: this.$t('header.menu.detail_page')
         }, {
-          url: '/login.html',
+          url: { name: 'login' },
           text: this.$t('header.menu.login')
         }, {
-          url: '/login-2.html',
+          url: { name: 'login-2' },
           text: this.$t('header.menu.login_2')
         }, {
-          url: '/register-doctor.html',
+          url: { name: 'register-doctor' },
           text: this.$t('header.menu.register_doctor')
         }, {
-          url: '/register.html',
+          url: { name: 'register' },
           text: this.$t('header.menu.register')
         }, {
-          url: '/contacts.html',
+          url: { name: 'contacts' },
           text: this.$t('header.menu.contacts')
         }]
       }, {

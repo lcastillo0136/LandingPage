@@ -136,10 +136,10 @@ export default [
       }, 
       {
         path: '/login-2.html',
-        name: 'login2',
+        name: 'login-2',
         meta: {
           hideInMenu: true,
-          title: 'login2.title',
+          title: 'login-2.title',
           notCache: true,
           icon: 'md-user'
         },
@@ -147,10 +147,10 @@ export default [
       }, 
       {
         path: '/register-doctor.html',
-        name: 'registerDoctor',
+        name: 'register-doctor',
         meta: {
           hideInMenu: true,
-          title: 'registerDoctor.title',
+          title: 'register-doctor.title',
           notCache: true,
           icon: 'md-doctor'
         },
@@ -167,7 +167,7 @@ export default [
         },
         component: () => import('@/view/' + config.theme + '/register')
       }, {
-        path: "*", 
+        path: "*",
         component: () => import('@/view/' + config.theme + '/404')
       }
     ]

@@ -7,7 +7,7 @@
             <figure><img src="img/doctors_icon.svg" alt=""></figure>
             <h3>Are you a Doctor?</h3>
             <p>The service allows you to get maximum visibility online and to manage appointments and contacts coming from the site, in a simple and fast way.</p>
-            <router-link :to="{ name: 'registerDoctor' }" class="btn_1">Read more</router-link>
+            <router-link :to="{ name: 'register-doctor' }" class="btn_1">Read more</router-link>
           </div>
         </div>
         <div class="col-md-6 p-0">

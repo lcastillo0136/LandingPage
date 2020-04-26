@@ -34,7 +34,7 @@
               </div>
             </div>
           </form>
-          <p class="text-center link_bright">Do not have an account yet? <router-link to="/register"><strong>Register now!</strong></router-link></p>
+          <p class="text-center link_bright">Do not have an account yet? <router-link :to="{ name: 'register-doctor' }"><strong>Register now!</strong></router-link></p>
         </div>
         <!-- /login -->
       </div>
