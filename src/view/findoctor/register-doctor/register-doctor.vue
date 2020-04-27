@@ -4,22 +4,22 @@
       <div class="container margin_120_95">     
         <div class="row">
           <div class="col-lg-6">
-            <h1>It's time to find you!</h1>
-            <p class="lead">Te pri adhuc simul. No eros errem mea. Diam mandamus has ad. Invenire senserit ad has, has ei quis iudico, ad mei nonumes periculis.</p>
+            <h1>{{ $t('register_doctor.form.title') }}</h1>
+            <p class="lead">{{ $t('register_doctor.form.content.lead') }}</p>
             <div class="box_feat_2">
               <i class="pe-7s-map-2"></i>
-              <h3>Let patients to Find you!</h3>
-              <p>Ut nam graece accumsan cotidieque. Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet.</p>
+              <h3>{{ $t('register_doctor.form.content.box_1.title') }}</h3>
+              <p>{{ $t('register_doctor.form.content.box_1.content') }}</p>
             </div>
             <div class="box_feat_2">
               <i class="pe-7s-date"></i>
-              <h3>Easly manage Bookings</h3>
-              <p>Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet. Eum no atqui putant democritum, velit nusquam sententiae vis no.</p>
+              <h3>{{ $t('register_doctor.form.content.box_2.title') }}</h3>
+              <p>{{ $t('register_doctor.form.content.box_2.content') }}</p>
             </div>
             <div class="box_feat_2">
               <i class="pe-7s-phone"></i>
-              <h3>Instantly via Mobile</h3>
-              <p>Eos eu epicuri eleifend suavitate, te primis placerat suavitate his. Nam ut dico intellegat reprehendunt, everti audiam diceret in pri, id has clita consequat suscipiantur.</p>
+              <h3>{{ $t('register_doctor.form.content.box_3.title') }}</h3>
+              <p>{{ $t('register_doctor.form.content.box_3.content') }}</p>
             </div>
           </div>
           <!-- /col -->
@@ -29,12 +29,12 @@
                 <div class="row">
                   <div class="col-md-6 ">
                     <div class="form-group">
-                      <input type="text" class="form-control" placeholder="Name" v-model="form.firstname">
+                      <input type="text" class="form-control" :placeholder="$t('register_doctor.form.name')" v-model="form.firstname">
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <input type="text" class="form-control" placeholder="Last Name" v-model="form.lastname">
+                      <input type="text" class="form-control" :placeholder="$t('register_doctor.form.last_name')" v-model="form.lastname">
                     </div>
                   </div>
                 </div>
@@ -43,7 +43,7 @@
                   <div class="col-lg-12">
                     <div class="form-group">
                       <select class="form-control" v-model="form.specialization">
-                        <option value="-1">-- Specialization --</option>
+                        <option value="-1">-- {{ $t('register_doctor.form.specialization') }} --</option>
                         <option value="1">Allergy & Immunology</option>
                         <option Value="2">Anesthesiology</option>
                         <option Value="3">Dermatology</option>
@@ -72,13 +72,13 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <input type="text" class="form-control" placeholder="City" v-model="form.city">
+                      <input type="text" class="form-control" :placeholder="$t('register_doctor.form.city')" v-model="form.city">
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <select class="form-control" v-model="form.country">
-                        <option value="">Country</option>
+                        <option value="">{{ $t('register_doctor.form.country') }}</option>
                         <option value="Europe">Europe</option>
                         <option value="United states">United states</option>
                         <option value="México">México</option>
@@ -91,7 +91,7 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="form-group">
-                      <input type="text" class="form-control" placeholder="Address" v-model="form.address">
+                      <input type="text" class="form-control" :placeholder="$t('register_doctor.form.address')" v-model="form.address">
                     </div>
                   </div>
                 </div>
@@ -99,12 +99,12 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <input type="text" class="form-control" placeholder="Mobile Phone" v-model="form.phone.mobile">
+                      <input type="text" class="form-control" :placeholder="$t('register_doctor.form.mobile_phone')" v-model="form.phone.mobile">
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <input type="text" class="form-control" placeholder="Office Phone" v-model="form.phone.office">
+                      <input type="text" class="form-control" :placeholder="$t('register_doctor.form.office_phone')" v-model="form.phone.office">
                     </div>
                   </div>
                 </div>
@@ -112,13 +112,13 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="form-group">
-                      <input type="email" class="form-control" placeholder="Email Address" v-model="form.email">
+                      <input type="email" class="form-control" :placeholder="$t('register_doctor.form.email_address')" v-model="form.email">
                     </div>
                   </div>
                 </div>
                 <!-- /row -->
-                <div class="add_bottom_30"><input type="submit" class="btn_1" value="Submit" @click.stop.prevent="handleRegister"></div>
-                <div class="text-center"><small>Ut nam graece accumsan cotidieque. Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet.</small></div>
+                <div class="add_bottom_30"><input type="submit" class="btn_1" :value="$t('register_doctor.form.submit')" @click.stop.prevent="handleRegister"></div>
+                <div class="text-center"><small>{{ $t('register_doctor.form.footer_tip') }}</small></div>
               </form>
             </div>
             <!-- /box_form -->
@@ -156,9 +156,9 @@
     methods: {
       handleRegister () {
         if (this.form.firstname !== '' && this.form.lastname !== '' && this.form.specialization !== '' && this.form.city !== '' && this.form.country !== '' && (this.form.phone.mobile !== '' || this.form.phone.office !== '') && this.form.email !== '') {
-          this.$swal('Succesfull Doctor Registered', '', 'success')
+          this.$swal(this.$t('register_doctor.messages.success.sended'), '', 'success')
         } else {
-          this.$swal('Missing Information', '', 'error')
+          this.$swal(this.$t('register_doctor.messages.error.missing_info'), '', 'error')
         }
       }
     }

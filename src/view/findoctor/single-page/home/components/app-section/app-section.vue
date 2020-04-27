@@ -7,7 +7,8 @@
         </div>
         <div class="col-md-6">
           <small>{{ $t('home_page.app_section.application') }}</small>
-          <h3 class="text-nowrap">{{ $t('home_page.app_section.download_app') }}&nbsp;<strong>{{ $t('home_page.app_section.app_name', { name: appName }) }}</strong>&nbsp;{{ $t('home_page.app_section.download_now') }}</h3>
+          <h3 class="text-nowrap d-none d-xl-block">{{ $t('home_page.app_section.download_app') }}&nbsp;<strong>{{ $t('home_page.app_section.app_name', { name: appName }) }}</strong>&nbsp;{{ $t('home_page.app_section.download_now') }}</h3>
+          <h3 class="d-xl-none">{{ $t('home_page.app_section.download_app') }}&nbsp;<strong>{{ $t('home_page.app_section.app_name', { name: appName }) }}</strong>&nbsp;{{ $t('home_page.app_section.download_now') }}</h3>
           <p class="lead">{{ $t('home_page.app_section.app_description') }}</p>
           <u-animate-container>
             <u-animate

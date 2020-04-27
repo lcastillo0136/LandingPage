@@ -26,21 +26,147 @@ export default {
   login: {
     title: 'Entrar en sesion',
     form: {
-      title: 'Ingresa, por favor',
-      username: 'Por favor, ingrese su nombre de usuario',
-      password: 'Por favor, ingrese su contraseña',
-      login: 'Iniciar Sesion',
-      logout: 'Cerrar Sesion'
+      title: '¡Inicia sesion en My doctor!',
+      username: 'Correo electronico',
+      password: 'Contraseña',
+      forgot_question: '¿Olvidaste tu contraseña?',
+      login: 'Entrar',
+      logout: 'Salir',
+      login_form: 'Atras',
+      recover: 'Recuperar',
+      or: 'o'
+    },
+    register: {
+      invitation: '¿Todavia no tienes cuenta?',
+      now: '¡Registrate ahora!'
+    },
+    social: {
+      facebook: 'Entra con tu Facebook',
+      google: 'Entra con tu Google',
+      linkedin: 'Entra con tu Linkedin'
     },
     messages: {
       error: {
         username: 'El nombre de usaurio no puede estar vacío',
         password: 'La contraseña no puede estar vacía',
-        email: 'Formato de email invalido'
+        email: 'Formato de email invalido',
+        missing_info: 'Falta información'
+      },
+      success: {
+        welcome: 'Bienvenido usuario: {username}',
+        recover_send: 'Nueva contraseña enviada al correo {username}'
       }
     },
     tips: {
       bottom: 'Captura cualquier usuario y contraseña'
+    }
+  },
+  register: {
+    title: 'Registrar',
+    form: {
+      title: '¡Registrate en My Doctor!',
+      name: { 
+        label: 'Nombre(s)',
+        placeholder: 'Tu nombre'
+      },
+      last_name: {
+        label: 'Apellido(s)',
+        placeholder: 'Tu apellido'
+      },
+      email: {
+        label: 'Correo electronico',
+        placeholder: 'Tu dirección de correo'
+      },
+      password: {
+        label: 'Contraseña',
+        placeholder: 'Tu contraseña'
+      },
+      confirm_password: {
+        label: 'Confirmar contraseña',
+        placeholder: 'Confirmar contraseña'
+      },
+      agree_terms: 'Estoy de acuerdo con los <strong>Terminos y Condiciones</strong>',
+      send: 'Enviar',
+      footer_tip: 'Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet. Eum no atqui putant democritum, velit nusquam sententiae vis no.'
+    },
+    messages: {
+      error: {
+        missing_info: 'Falta información'
+      },
+      success: {
+        registered: 'Usuario registrado exitosamente'
+      }
+    }
+  },
+  register_doctor: {
+    title: 'Registro doctores',
+    form: {
+      title: '¡Es hora de que te encuentren!',
+      content: {
+        lead: 'Te pri adhuc simul. No eros errem mea. Diam mandamus has ad. Invenire senserit ad has, has ei quis iudico, ad mei nonumes periculis.',
+        box_1: {
+          title: '¡Permite que los pacientes te encuentren!',
+          content: 'Ut nam graece accumsan cotidieque. Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet.',
+        },
+        box_2: {
+          title: 'Facilmente maneja tus citas',
+          content: 'Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet. Eum no atqui putant democritum, velit nusquam sententiae vis no.'
+        },
+        box_3: {
+          title: 'Al instante con tu celular',
+          content: 'Eos eu epicuri eleifend suavitate, te primis placerat suavitate his. Nam ut dico intellegat reprehendunt, everti audiam diceret in pri, id has clita consequat suscipiantur.'
+        }
+      },
+      name: 'Nombre',
+      last_name: 'Apellido',
+      specialization: 'Especialidad',
+      city: 'Ciudad',
+      country: 'Pais',
+      address: 'Dirección',
+      mobile_phone: 'Numero celular',
+      office_phone: 'Numero oficina',
+      email_address: 'Correo electronico',
+      submit: 'Enviar',
+      footer_tip: 'Ut nam graece accumsan cotidieque. Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet.'
+    },
+    messages: {
+      error: {
+        missing_info: 'Falta información'
+      },
+      success: {
+        sended: 'Doctor registrado exitosamente'
+      }
+    }
+  },
+  contacts: {
+    title: 'Contactanos',
+    header: {
+      title: 'Informacion de contacto',
+      administration: 'Administración',
+      questions: 'Preguntas Generales',
+      directions: {
+        title: 'Como llegar',
+        enter_location: 'Entra tu ubicación',
+        send: 'Como llegar'
+      }
+    },
+    form: {
+      title: 'Contactanos',
+      legend: 'Mussum ipsum cacilds, vidis litro abertis.',
+      name: 'Nombre(s)',
+      last_name: 'Apellido(s)',
+      email: 'Correo electronico',
+      phone: 'Numero de telefono',
+      message: 'Hola doctor',
+      submit: 'Enviar'
+    },
+    messages: {
+      error: {
+        missing_info: 'Falta información'
+      },
+      success: {
+        sended: 'Información enviada exitosamente'
+      }
     }
   },
   i18n: {
@@ -492,7 +618,7 @@ export default {
       download_app: 'Descarga la',
       app_name: 'Aplicación {name}',
       download_now: 'Ahora!',
-      app_description: 'I\'ve created a simple app where you can search for head lice and track your progress and see if you are out of lice yet. Check it out at https://findoctorapp.com Check out my projects on GitHub Findoctor App & my project http://getchik.me - A mobile app for tracking kids with cancer'
+      app_description: 'I\'ve created a simple app where you can search for head lice and track your progress and see if you are out of lice yet. Check it out at https://mydoctorapp.com Check out my projects on GitHub Mydoctor App & my project http://getchik.me - A mobile app for tracking kids with cancer'
     }
   }
 }

@@ -166,6 +166,17 @@ export default [
           icon: 'md-user'
         },
         component: () => import('@/view/' + config.theme + '/register')
+      }, 
+      {
+        path: '/contacts.html',
+        name: 'contacts',
+        meta: {
+          hideInMenu: true,
+          title: 'contacts.title',
+          notCache: true,
+          icon: 'md-contacts'
+        },
+        component: () => import('@/view/' + config.theme + '/contacts')
       }, {
         path: "*",
         component: () => import('@/view/' + config.theme + '/404')

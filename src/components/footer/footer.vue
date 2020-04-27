@@ -4,8 +4,8 @@
       <div class="row">
         <div class="col-lg-3 col-md-12">
           <p>
-            <router-link :to="{ name: 'home' }" title="Findoctor">
-              <img src="img/logo.png" data-retina="true" alt="" width="163" height="36" class="img-fluid">
+            <router-link :to="{ name: 'home' }" title="My Doctor">
+              <img src="img/logox2.png" data-retina="true" alt="" width="163" height="36" class="img-fluid">
             </router-link>
           </p>
         </div>
@@ -56,7 +56,7 @@
           </ul>
         </div>
         <div class="col-md-4">
-          <div id="copy">© {{ year }} Findoctor</div>
+          <div id="copy">© {{ year }} My doctor</div>
         </div>
       </div>
     </div>

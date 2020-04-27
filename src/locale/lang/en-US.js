@@ -26,21 +26,147 @@ export default {
   login: {
     title: 'Login',
     form: {
-      title: 'Login please',
-      username: 'Please enter your username',
-      password: 'Please enter your password',
+      title: 'Please login to My Doctor!',
+      username: 'Your email address',
+      password: 'Your password',
+      forgot_question: 'Forgot password?',
       login: 'Login',
-      logout: 'Logout'
+      logout: 'Logout',
+      login_form: 'Back',
+      recover: 'Recover',
+      or: 'Or'
+    },
+    register: {
+      invitation: 'Do not have an account yet?',
+      now: 'Register now!'
+    },
+    social: {
+      facebook: 'Login with Facebook',
+      google: 'Login with Google',
+      linkedin: 'Login with Linkedin'
     },
     messages: {
       error: {
         username: 'Username cannot be empty',
         password: 'Password cannot be empty',
-        email: 'Invalid email format'
+        email: 'Invalid email format',
+        missing_info: 'Missing Information'
+      },
+      success: {
+        welcome: 'Welcome user: {username}',
+        recover_send: 'New Password sended to {username}'
       }
     },
     tips: {
       bottom: 'Enter any username and password'
+    }
+  },
+  register: {
+    title: 'Register',
+    form: {
+      title: 'Please register to My Doctor!',
+      name: { 
+        label: 'Name',
+        placeholder: 'Your name'
+      },
+      last_name: {
+        label: 'Last name',
+        placeholder: 'Your last name'
+      },
+      email: {
+        label: 'Email',
+        placeholder: 'Your email address'
+      },
+      password: {
+        label: 'Password',
+        placeholder: 'Your password'
+      },
+      confirm_password: {
+        label: 'Confirm password',
+        placeholder: 'Confirm password'
+      },
+      agree_terms: 'I Agree to the <strong>Terms &amp; Conditions</strong>',
+      send: 'Submit',
+      footer_tip: 'Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet. Eum no atqui putant democritum, velit nusquam sententiae vis no.'
+    },
+    messages: {
+      error: {
+        missing_info: 'Missing Information'
+      },
+      success: {
+        registered: 'successfully user registered'
+      }
+    }
+  },
+  register_doctor: {
+    title: 'Register doctor',
+    form: {
+      title: 'It\'s time to find you!',
+      content: {
+        lead: 'Te pri adhuc simul. No eros errem mea. Diam mandamus has ad. Invenire senserit ad has, has ei quis iudico, ad mei nonumes periculis.',
+        box_1: {
+          title: 'Let patients to Find you!',
+          content: 'Ut nam graece accumsan cotidieque. Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet.',
+        },
+        box_2: {
+          title: 'Easly manage Bookings',
+          content: 'Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet. Eum no atqui putant democritum, velit nusquam sententiae vis no.'
+        },
+        box_3: {
+          title: 'Instantly via Mobile',
+          content: 'Eos eu epicuri eleifend suavitate, te primis placerat suavitate his. Nam ut dico intellegat reprehendunt, everti audiam diceret in pri, id has clita consequat suscipiantur.'
+        }
+      },
+      name: 'Name',
+      last_name: 'Last Name',
+      specialization: 'Specialization',
+      city: 'City',
+      country: 'Country',
+      address: 'Address',
+      mobile_phone: 'Mobile Phone',
+      office_phone: 'Office Phone',
+      email_address: 'Email Address',
+      submit: 'Submit',
+      footer_tip: 'Ut nam graece accumsan cotidieque. Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet.'
+    },
+    messages: {
+      error: {
+        missing_info: 'Missing Information'
+      },
+      success: {
+        sended: 'successfully Doctor registered'
+      }
+    }
+  },
+  contacts: {
+    title: 'Contact us',
+    header: {
+      title: 'Contacts Info',
+      administration: 'Administration',
+      questions: 'General questions',
+      directions: {
+        title: 'Get directions',
+        enter_location: 'Enter your location',
+        send: 'Get directions'
+      }
+    },
+    form: {
+      title: 'Contact us',
+      legend: 'Mussum ipsum cacilds, vidis litro abertis.',
+      name: 'Name',
+      last_name: 'Last name',
+      email: 'Email',
+      phone: 'Phone number',
+      message: 'Hello doctor',
+      submit: 'Submit'
+    },
+    messages: {
+      error: {
+        missing_info: 'Missing information'
+      },
+      success: {
+        sended: 'successfully Info sended'
+      }
     }
   },
   i18n: {
@@ -492,7 +618,7 @@ export default {
       download_app: 'Download',
       app_name: '{name} App',
       download_now: 'Now!',
-      app_description: 'I\'ve created a simple app where you can search for head lice and track your progress and see if you are out of lice yet. Check it out at https://findoctorapp.com Check out my projects on GitHub Findoctor App & my project http://getchik.me - A mobile app for tracking kids with cancer'
+      app_description: 'I\'ve created a simple app where you can search for head lice and track your progress and see if you are out of lice yet. Check it out at https://mydoctorapp.com Check out my projects on GitHub Mydoctor App & my project http://getchik.me - A mobile app for tracking kids with cancer'
     }
   }
 }
