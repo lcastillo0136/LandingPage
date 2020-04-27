@@ -24,10 +24,10 @@ export default {
     courier_ecommerce: 'Mensajería/e-commerce'
   },
   login: {
-    title: 'Entrar en sesion',
+    title: 'Entrar en sesión',
     form: {
-      title: '¡Inicia sesion en My doctor!',
-      username: 'Correo electronico',
+      title: '¡Inicia sesión en My doctor!',
+      username: 'Correo electrónico',
       password: 'Contraseña',
       forgot_question: '¿Olvidaste tu contraseña?',
       login: 'Entrar',
@@ -74,7 +74,7 @@ export default {
         placeholder: 'Tu apellido'
       },
       email: {
-        label: 'Correo electronico',
+        label: 'Correo electrónico',
         placeholder: 'Tu dirección de correo'
       },
       password: {
@@ -125,7 +125,7 @@ export default {
       address: 'Dirección',
       mobile_phone: 'Numero celular',
       office_phone: 'Numero oficina',
-      email_address: 'Correo electronico',
+      email_address: 'Correo electrónico',
       submit: 'Enviar',
       footer_tip: 'Ut nam graece accumsan cotidieque. Has voluptua vivendum accusamus cu. Ut per assueverit temporibus dissentiet.'
     },
@@ -138,10 +138,13 @@ export default {
       }
     }
   },
+  list_page: {
+    title: 'Listado'
+  },
   contacts: {
-    title: 'Contactanos',
+    title: 'Contáctanos',
     header: {
-      title: 'Informacion de contacto',
+      title: 'Información de contacto',
       administration: 'Administración',
       questions: 'Preguntas Generales',
       directions: {
@@ -151,11 +154,11 @@ export default {
       }
     },
     form: {
-      title: 'Contactanos',
+      title: 'Contáctanos',
       legend: 'Mussum ipsum cacilds, vidis litro abertis.',
       name: 'Nombre(s)',
       last_name: 'Apellido(s)',
-      email: 'Correo electronico',
+      email: 'Correo electrónico',
       phone: 'Numero de telefono',
       message: 'Hola doctor',
       submit: 'Enviar'
@@ -368,7 +371,7 @@ export default {
   errorStore: {
     content1: 'iview-admin automaticamente recogera errores en tu programa, puedes enviar el registro de errores al back-end para guardarlo. Si no necesitas esta mejora, elimina el atributo \'error-store\' del plugin en esta ruta \'./src/config/index.js\'.',
     content2: 'Adiciónalemnte, en el ambiente de desarrollo, los errores en tu programa seran recogidos. Esto puede no ayudarte a corregir los errores. Tu puedes cambiar \'./src/config/index.js\'\'error-store\'\'developmentOff\' y ponerlo en true.',
-    content3: 'Si tu quieres recoger errores en el registro y no buscas que usuarios en sesion vean el registro de errores, puedes negarles el acceso a la vista de registros, solo agrega \'./src/config/index.js\' \'error-store\' \'ShowInHeader\' y ponerlo en false.',
+    content3: 'Si tu quieres recoger errores en el registro y no buscas que usuarios en sesión vean el registro de errores, puedes negarles el acceso a la vista de registros, solo agrega \'./src/config/index.js\' \'error-store\' \'ShowInHeader\' y ponerlo en false.',
     click_test_error: 'Click para probar el disparo de error',
     click_test_ajax_error: 'Click para probar la funciónalidad request de ajax respondiendo error',
     ajax_error_404: 'La interface de peticiónes ajax es una interfaz no existente para el easy-mock request, por lo tanto el servidor responera un error 404, y el mecanismo recolector de errores cachara este error. Existe un cierto retardo de red durante la prueba, por lo tanto sera recolectado despues de que le des al boton de error.'
@@ -550,7 +553,7 @@ export default {
   },
   modal: {
     close: {
-      title: 'Esta seguro que quiere cerrar esta pagina?'
+      title: '¿Esta seguro que quiere cerrar esta página?'
     }
   },
   footer: {

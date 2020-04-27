@@ -53,11 +53,23 @@ export default {
     ...mapMutations([
       'toggleHeader',
       'toggleFooter'
-    ])
+    ]),
+    setTitle (route) {
+      if (route.meta && route.meta.title) {
+        document.title = this.$t(route.meta.title.replace(/[-]/g, '_'))
+      } else {
+        document.title = config.title
+      }
+    }
   },
   watch: {
   },
   mounted () {
+    this.setTitle(this.$route)
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.setTitle(to)
+    next()
   }
 }
 </script>

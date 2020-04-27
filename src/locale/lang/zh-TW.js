@@ -138,6 +138,9 @@ export default {
       }
     }
   },
+  list_page: {
+    title: 'List Page'
+  },
   contacts: {
     title: 'Contact us',
     header: {

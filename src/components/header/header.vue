@@ -101,6 +101,7 @@ export default {
         }]
       }, {
         url: 'admin_section/index.html',
+        external: true,
         text: this.$t('header.menu.admin')
       }]
     },

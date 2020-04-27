@@ -3,8 +3,8 @@
     <ul>
       <li v-for="(option, option_i) in options" :key="option_i">
         <span>
-          <router-link :to="option.url" v-if="!isExternal(option.url) && !isEmpty(option.url)">{{ option.text }}</router-link>
-          <a :href="option.url" v-if="isExternal(option.url) && !isEmpty(option.url)">{{ option.text }}</a>
+          <router-link :to="option.url" v-if="!isExternal(option.url) && !isEmpty(option.url) && !option.external">{{ option.text }}</router-link>
+          <a :href="option.url" v-if="(isExternal(option.url) || option.external) && !isEmpty(option.url)">{{ option.text }}</a>
           <a href="" v-if="isEmpty(option.url)" @click.stop.prevent="">{{ option.text }}</a>
         </span>
         <ul v-if="option.childrens">
