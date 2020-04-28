@@ -111,7 +111,7 @@
         border-bottom: none
     }
 
-    .main-menu ul ul li:hover>a {
+    .main-menu ul ul li:hover>a, .main-menu ul ul li.active>a {
         background-color: #f9f9f9;
         color: #e74e84;
         padding-left: 15px;

@@ -8,7 +8,7 @@
           <a href="" v-if="isEmpty(option.url)" @click.stop.prevent="">{{ option.text }}</a>
         </span>
         <ul v-if="option.childrens">
-          <li v-for="(child, child_i) in option.childrens" :key="child_i">
+          <li v-for="(child, child_i) in option.childrens" :key="child_i" :class="optionListClass(child.url)">
             <router-link :to="child.url" v-if="!isExternal(child.url)">{{ child.text }}</router-link>
             <a :href="child.url" v-if="isExternal(child.url)">{{ child.text }}</a>
           </li>
@@ -30,32 +30,25 @@
             childrens: [{
               url: '/',
               text: 'Home Default'
-            }, {
-              url: '/',
-              text: 'Home Default 2'
-            }, {
-              url: '/',
-              text: 'Home Default 3'
-            }, {
-              url: '/',
-              text: 'Home Default 4'
-            }, {
-              url: '/',
-              text: 'Revolution Slider'
-            }, {
-              url: '/',
-              text: 'With Cookie Bar (EU law)'
             }]
           }]
         }
       }
     },
+    computed: {
+    },
     methods: {
+      optionListClass (url) {
+        return { 'active': url && this.isSelected(url) }
+      },
       isExternal (route) {
         return ((route && this.$router.matcher.match(route)) || { name: null }).name === null
       },
       isEmpty (route) {
         return (route||'').trim() === ""
+      },
+      isSelected(url) {
+        return ((url && this.$router.matcher.match(url)) || { name: null}).name === this.$route.name
       }
     }
   }
