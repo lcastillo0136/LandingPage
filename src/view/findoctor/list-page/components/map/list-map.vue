@@ -74,6 +74,9 @@
       openPopup () {
         this.$refs.marker.mapObject.openPopup()
       },
+      closePopup() {
+        if(this.$refs.marker) this.$refs.marker.mapObject.closePopup()
+      },
       zoomUpdated (zoom) {
         this.map.zoom = zoom;
       },

@@ -81,7 +81,14 @@
     },
     watch: {
       'selected.sort' (value) {
-        window['$']('.selectbox', this.$el).selectbox('change', value, (this.sort.find(s => s.value === value)||{}).text, false)
+        window['$']('.selectbox', this.$el).selectbox('change', value, (this.sorts.find(s => s.value === value)||{}).text, false)
+      },
+      'sorts' () {
+        this.$nextTick().then(() => {
+          window['$']('.selectbox', this.$el).selectbox({
+            onChange: this.onChange
+          })
+        })
       }
     },
     data () {

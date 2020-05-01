@@ -17,16 +17,10 @@
   export default {
     name: 'Paginator',
     props: {
-      page: { type: Number, default: 0 },
-      pages: { type: Number, default: 0 }
+      paginator: { type: Object, default: function () { return { page: 1, pages: 1 } }}
     },
     data () {
-      return {
-        paginator: {
-          page: 0,
-          pages: 0
-        }
-      }
+      return {}
     },
     computed: {
       totalPages () {
@@ -66,12 +60,7 @@
       }
     },
     mounted () {
-      if (this.page !== 0) {
-        this.paginator.page = this.page
-      }
-      if (this.pages !== 0) {
-        this.paginator.pages = this.pages
-      }
+      
     }
   }
 </script>

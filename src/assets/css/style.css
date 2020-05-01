@@ -2583,13 +2583,18 @@ a.wish_bt:hover:after, a.wish_bt.active:after {
     -moz-border-radius: 3px;
     -ms-border-radius: 3px;
     border-radius: 3px;
-    min-width: 160px
+    min-width: 160px;
+    z-index: 405;
 }
 
 .sbOptions,
 .sbSelector,
 .sbToggle {
     position: absolute
+}
+
+.sbToggle.sbToggleOpen {
+    transform: rotate(180deg) translateY(2px);
 }
 
 .sbSelector {
@@ -2613,7 +2618,8 @@ a.wish_bt:hover:after, a.wish_bt.active:after {
 .sbToggle {
     right: 0;
     width: 35px;
-    text-align: center
+    text-align: center;
+    transition: none
 }
 
 .sbToggle:after {

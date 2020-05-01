@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-6" v-for="(doctor,doctor_i) in data" :key="doctor_i">
       <u-animate-container>
-        <u-animate name="fadeIn" delay="0s" duration="1s" :iteration="1" :offset="100" animateClass="animated" :begin="false" @end="changeAnimationEnd(doctor)" class="box_list" :class="animationEnded(doctor)" >
+        <div class="box_list fadeIn animated" >
           <a-tooltip placement="top" title="Add to wishlist">
             <a href="#" class="wish_bt" :class="{'active tada animated': doctor.fav }" @click.stop.prevent="addToWishlist(doctor)"></a>
           </a-tooltip>
@@ -29,7 +29,7 @@
             <li><a href="https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x0:0xa6a9af76b1e2d899!2sAssistance+–+Hôpitaux+De+Paris!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361" target="_blank">Directions</a></li>
             <li><a href="detail-page.html">Book now</a></li>
           </ul>
-        </u-animate>
+        </div>
       </u-animate-container>
       <!-- /strip_list -->
     </div>

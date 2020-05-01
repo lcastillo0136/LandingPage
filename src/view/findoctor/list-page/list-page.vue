@@ -7,18 +7,18 @@
       <div class="row" :class="{ 'row-height': filter.layout === 'map' }">
         <div class="col-lg-7" v-if="filter.layout === 'list'">
           <List :data="doctors" @onViewMapClick="showInMap"></List>
-          <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
+          <Paginator :paginator="paginator"  @onPage="onPage($event)"></Paginator>
         </div>
         <div class="col-lg-8" v-if="filter.layout === 'grid'">
           <Grid :data="doctors" @onViewMapClick="showInMap"></Grid>
-          <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
+          <Paginator :paginator="paginator" @onPage="onPage($event)"></Paginator>
         </div>
         <div class="col-lg-5 content-left" v-if="filter.layout === 'map'">
           <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" :onlyInput="true"></SearchBar>
           <FilterList :types="types" :sorts="sort" :selected="filter" @onFilter="onFilter($event)"></FilterList>
           
           <List :data="doctors" @onViewMapClick="showInMap"></List>
-          <Paginator :pages="paginator.pages" :page="paginator.page" @onPage="onPage($event)"></Paginator>
+          <Paginator :paginator="paginator" @onPage="onPage($event)"></Paginator>
         </div>
         <!-- /col -->
         
@@ -168,8 +168,9 @@
           }
         }],
         paginator: {
-          pages: 10,
-          page: 3
+          pages: 1,
+          page: 1,
+          total: 0
         },
         filter: {
           type: localRead('page.type') || 'doctors',
@@ -243,18 +244,19 @@
         console.log(val)
       },
       showInMap (doctor) {
-        this.map.zoom = 15
+        this.map.zoom = 13
+        this.map.center = [doctor.map.latitude , doctor.map.longitude]
+        this.$refs.map.closePopup()
+        this.map.marker = {
+          latitude: doctor.map.latitude,
+          longitude: doctor.map.longitude,
+          img: doctor.img,
+          speciality: doctor.speciality,
+          name: doctor.name,
+          address: doctor.map.address,
+          phone: doctor.phone
+        }
         setTimeout(() => {
-          this.map.marker = {
-            latitude: doctor.map.latitude,
-            longitude: doctor.map.longitude,
-            img: doctor.img,
-            speciality: doctor.speciality,
-            name: doctor.name,
-            address: doctor.map.address,
-            phone: '(811) 1533 136'
-          }
-          this.map.center = [doctor.map.latitude , doctor.map.longitude]
           this.$nextTick().then(() => {
             this.$refs.map.openPopup()
           })

@@ -623,5 +623,19 @@ export default {
       download_now: 'Ahora!',
       app_description: 'I\'ve created a simple app where you can search for head lice and track your progress and see if you are out of lice yet. Check it out at https://mydoctorapp.com Check out my projects on GitHub Mydoctor App & my project http://getchik.me - A mobile app for tracking kids with cancer'
     }
+  },
+  types: {
+    all: 'Todos',
+    pacients: 'Pacientes',
+    doctors: 'Doctores',
+    nurses: 'Enfermeras',
+    clinics: 'Clinicas'
+  },
+  sorts: {
+    closest: 'Cercanos', 
+    best_rated: 'Mejor Puntuación', 
+    oldest: 'Por Edad 🠕', 
+    youngest: 'Por Edad 🠗',
+    most_viewed: 'Mas vistos'
   }
 }
