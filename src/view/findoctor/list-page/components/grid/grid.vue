@@ -42,37 +42,7 @@
       data: {
         type: Array,
         default: function () {
-          return [{
-            speciality: 'Pediatrician',
-            name: 'Dr. Cornfield',
-            description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-            rating: {
-              rate: 3,
-              comments: 145
-            },
-            img: 'img/doctor_listing_1.jpg',
-            isVisible: false,
-          }, {
-            speciality: 'Psicologist',
-            name: 'Dr. Shoemaker',
-            description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-            rating: {
-              rate: 4,
-              comments: 165
-            },
-            img: 'img/doctor_listing_2.jpg',
-            isVisible: false,
-          }, {
-            speciality: 'Pediatrician',
-            name: 'Dr. Lachinet',
-            description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-            rating: {
-              rate: 2,
-              comments: 45
-            },
-            img: 'img/doctor_listing_3.jpg',
-            isVisible: false,
-          }]
+          return []
         }
       }
     },

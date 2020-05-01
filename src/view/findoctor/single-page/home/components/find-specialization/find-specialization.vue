@@ -8,7 +8,7 @@
         <div class="col-lg-3 col-md-6" v-for="(spec, spec_i) in specializations" :key="spec_i">
           <router-link :to="{ name: 'list-page', params: { layout: 'list', search: spec.text }}" class="box_cat_home">
             <i class="icon-info-4"></i>
-            <img :src="spec.icon" width="60" height="60" alt="">
+            <img :src="getImage()" width="60" height="60" alt="">
             <h3>{{ spec.text }}</h3>
             <ul class="clearfix">
               <li><strong>{{ spec.count.doctors }}</strong>Doctors</li>
@@ -22,68 +22,25 @@
     <!-- /container -->
 </template>
 <script>
+  import { getSpecialitiesList } from '@/api/data.js'
   export default {
     name: 'Specialization',
     data () {
       return {
-        specializations: [{
-          text: 'Primary Care',
-          count: {
-            doctors: 124,
-            clinics: 60
-          },
-          icon: 'img/icon_cat_1.svg'
-        }, {
-          text: 'Cardiology',
-          count: {
-            doctors: 124,
-            clinics: 60
-          },
-          icon: 'img/icon_cat_2.svg'
-        }, {
-          text: 'MRI Resonance',
-          count: {
-            doctors: 124,
-            clinics: 60
-          },
-          icon: 'img/icon_cat_3.svg'
-        }, {
-          text: 'Blood test',
-          count: {
-            doctors: 124,
-            clinics: 60
-          },
-          icon: 'img/icon_cat_4.svg'
-        }, {
-          text: 'Laboratory',
-          count: {
-            doctors: 124,
-            clinics: 60
-          },
-          icon: 'img/icon_cat_7.svg'
-        }, {
-          text: 'Dentistry',
-          count: {
-            doctors: 124,
-            clinics: 60
-          },
-          icon: 'img/icon_cat_5.svg'
-        }, {
-          text: 'X - Ray',
-          count: {
-            doctors: 124,
-            clinics: 60
-          },
-          icon: 'img/icon_cat_6.svg'
-        }, {
-          text: 'Piscologist',
-          count: {
-            doctors: 124,
-            clinics: 60
-          },
-          icon: 'img/icon_cat_8.svg'
-        }]
+        specializations: []
       }
+    },
+    methods: {
+      getImage() {
+        return `img/icon_cat_${Math.ceil(Math.random() * (5))}.svg`
+      }
+    },
+    mounted () {
+      getSpecialitiesList({
+        limit: 8
+      }).then((request) => {
+        this.specializations = request.data.specialities.map(s => Object({ text: s.name, count: { doctors: s.value, clinics: 0 }}))
+      })
     }
   }
 </script>

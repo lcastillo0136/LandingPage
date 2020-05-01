@@ -30,18 +30,6 @@
       version: {
         type: Number,
         default: 1
-      },
-      types: {
-        type: Array,
-        default: function () {
-          return [
-            { text: 'All', value: 'all' },
-            { text: 'Pacients', value: 'pacients', selected: true },
-            { text: 'Doctors', value: 'doctors' },
-            { text: 'Nurses', value: 'nurses' },
-            { text: 'Clinics', value: 'clinics' }
-          ]
-        }
       }
     },
     data () {
@@ -61,9 +49,10 @@
       classVersion () {
         return ['version_' + this.version]
       },
-      ...mapGetters([
-        'stillLoading'
-      ])
+      ...mapGetters({
+        stillLoading: 'stillLoading',
+        types: 'filterTypes'
+      })
     },
     methods: {
       handleSearch () {

@@ -4,6 +4,8 @@ import config from '@/config'
 
 Vue.use(Vuex)
 
+import app from './module/app'
+
 export default new Vuex.Store({
   state: {
     fullLoaded: false,
@@ -62,7 +64,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    
   },
   modules: {
+    app
   }
 })

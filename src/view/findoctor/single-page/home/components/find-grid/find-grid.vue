@@ -12,7 +12,7 @@
               <a href="#" class="wish_bt" :class="{'active tada animated': doctor.fav }" @click.stop.prevent="addToWishlist(doctor)"></a>
             </a-tooltip>
             <figure>
-              <router-link :to="{ name: 'details-page' }"><img :src="doctor.image" class="img-fluid" alt=""></router-link>
+              <router-link :to="{ name: 'details-page' }"><img :src="getImage()" class="img-fluid" alt=""></router-link>
               <div class="preview">
                 <router-link :to="{ name: 'details-page' }"><span>Read more</span></router-link>
               </div>
@@ -22,15 +22,15 @@
               <h3>{{ doctor.name }}</h3>
               <p>Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....</p>
               <span class="rating">
-                <i :class="{ 'icon_star':1, 'voted': r <= doctor.rating.value }" v-for="r in rateTotal" :key="r"></i>
-                <small>({{ doctor.rating.votes }})</small>
+                <i :class="{ 'icon_star':1, 'voted': r <= doctor.rate }" v-for="r in rateTotal" :key="r"></i>
+                <small>({{ doctor.comments }})</small>
               </span>
               <a-tooltip placement="top" title="Badge Level">
                 <a href="" class="badge_list_1"><img src="img/badges/badge_1.svg" width="15" height="15" alt=""></a>
               </a-tooltip>
             </div>
             <ul>
-              <li><i class="icon-eye-7"></i> {{ doctor.views }} Views</li>
+              <li><i class="icon-eye-7"></i> {{ doctor.viewed }} Views</li>
               <li><router-link :to="{ name: 'details-page' }">Book now</router-link></li>
             </ul>
           </div>
@@ -45,77 +45,13 @@
 </template>
 <script>
   import { mapGetters } from 'vuex'
+  import { getDoctorsByFilter } from '@/api/data'
+
   export default {
     name: 'FindForm',
     data () {
       return {
-        doctors: [{
-          image: 'img/doctor_listing_1.jpg',
-          specialization: 'Psicologist',
-          name: 'Dr. Watamaniuk',
-          description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-          rating: {
-            value: 4,
-            votes: 145
-          },
-          views: 854,
-          fav: false
-        }, {
-          image: 'img/doctor_listing_2.jpg',
-          specialization: 'Psicologist',
-          name: 'Dr. Mantooth',
-          description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-          rating: {
-            value: 4,
-            votes: 145
-          },
-          views: 854,
-          fav: false
-        }, {
-          image: 'img/doctor_listing_3.jpg',
-          specialization: 'Psicologist',
-          name: 'Dr. Pullman',
-          description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-          rating: {
-            value: 4,
-            votes: 145
-          },
-          views: 854,
-          fav: false
-        }, {
-          image: 'img/doctor_listing_4.jpg',
-          specialization: 'Psicologist',
-          name: 'Dr. Toothaker',
-          description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-          rating: {
-            value: 4,
-            votes: 145
-          },
-          views: 854,
-          fav: false
-        }, {
-          image: 'img/doctor_listing_5.jpg',
-          specialization: 'Psicologist',
-          name: 'Dr. Brilliant',
-          description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-          rating: {
-            value: 4,
-            votes: 145
-          },
-          views: 854,
-          fav: false
-        }, {
-          image: 'img/doctor_listing_6.jpg',
-          specialization: 'Psicologist',
-          name: 'Dr. Crownover',
-          description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-          rating: {
-            value: 4,
-            votes: 145
-          },
-          views: 854,
-          fav: false
-        }]
+        doctors: []
       }
     },
     computed: {
@@ -132,9 +68,21 @@
       }
     },
     methods: {
+      getImage() {
+        return `img/doctor_listing_${Math.ceil(Math.random() * (5))}.jpg`
+      },
       addToWishlist (doctor) {
         doctor.fav = !doctor.fav
       }
+    },
+    mounted() {
+      getDoctorsByFilter({
+        filter: {},
+        sort: 'most_viewed',
+        limit: '6'
+      }).then((data) => { 
+        this.doctors = data.data.doctors
+      })
     }
   }
 </script>

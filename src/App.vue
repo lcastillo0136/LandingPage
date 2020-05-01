@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import Loading from '@/components/loading'
 
 export default {
@@ -25,12 +25,16 @@ export default {
   methods: {
     ...mapMutations([
       'toggleLoading'
-    ])
+    ]),
+    ...mapActions([
+      'getTypes',
+      'getSorts'
+    ]),
   },
-  mounted () {
-    setTimeout(() => {
-      this.toggleLoading()
-    }, 3000);
+  async mounted () {
+    await this.getTypes()
+    await this.getSorts()
+    this.toggleLoading()    
   }
 }
 </script>

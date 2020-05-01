@@ -1,7 +1,7 @@
 <template>
   <main class="theia-exception">
-    <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" v-if="filter.layout !== 'map'"></SearchBar>
-    <FilterList :types="types" :sorts="sort" :selected="filter" @onFilter="onFilter($event)" v-if="filter.layout !== 'map'"></FilterList>
+    <SearchBar :total="paginator.total" :showing="pageShowing" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" v-if="filter.layout !== 'map'"></SearchBar>
+    <FilterList :types="filterTypes" :sorts="filterSorts" :selected="filter" @onFilter="onFilter($event)" v-if="filter.layout !== 'map'"></FilterList>
     
     <div class="" :class="containerMap">
       <div class="row" :class="{ 'row-height': filter.layout === 'map' }">
@@ -15,7 +15,7 @@
         </div>
         <div class="col-lg-5 content-left" v-if="filter.layout === 'map'">
           <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" :onlyInput="true"></SearchBar>
-          <FilterList :types="types" :sorts="sort" :selected="filter" @onFilter="onFilter($event)"></FilterList>
+          <FilterList :types="filterTypes" :sorts="filterSorts" :selected="filter" @onFilter="onFilter($event)"></FilterList>
           
           <List :data="doctors" @onViewMapClick="showInMap"></List>
           <Paginator :paginator="paginator" @onPage="onPage($event)"></Paginator>
@@ -57,6 +57,8 @@
   import { localRead, localSave } from '@/libs/util'
 
   import { mapGetters, mapMutations } from 'vuex'
+
+  import { getDoctorsByFilter } from '@/api/data'
   export default {
     name: 'ListPage',
     components: {
@@ -71,102 +73,8 @@
       return {
         searchValue: '',
         searchSticky: true,
-        types: [
-          { text: 'All', value: 'all' },
-          { text: 'Pacients', value: 'pacients' },
-          { text: 'Doctors', value: 'doctors' },
-          { text: 'Nurses', value: 'nurses' },
-          { text: 'Clinics', value: 'clinics' }
-        ],
-        sort: [
-          { text: 'Closest', value: 'closest' },
-          { text: 'Best rated', value: 'best_rated' },
-          { text: 'Men', value: 'men' },
-          { text: 'Women', value: 'women' },
-          { text: 'Oldest', value: 'oldest' },
-          { text: 'Youngest', value: 'youngest' },
-        ],
-        doctors: [{
-          speciality: 'Pediatrician',
-          name: 'Dr. Cornfield',
-          description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-          rating: {
-            rate: 3,
-            comments: 145
-          },
-          img: 'img/doctor_listing_1.jpg',
-          isVisible: false,
-          fav: false,
-          map: {
-            latitude: 48.873792,
-            longitude: 2.295028,
-            address: '35 Newtownards Road, Belfast, BT4.'
-          }
-        }, {
-          speciality: 'Psicologist',
-          name: 'Dr. Shoemaker',
-          description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-          rating: {
-            rate: 4,
-            comments: 165
-          },
-          img: 'img/doctor_listing_2.jpg',
-          isVisible: false,
-          fav: false,
-          map: {
-            latitude: 48.800040,
-            longitude: 2.139670,
-            address: '35 Newtownards Road, Belfast, BT4.'
-          }
-        }, {
-          speciality: 'Pediatrician',
-          name: 'Dr. Lachinet',
-          description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-          rating: {
-            rate: 2,
-            comments: 45
-          },
-          img: 'img/doctor_listing_3.jpg',
-          isVisible: false,
-          fav: false,
-          map: {
-            latitude: 48.846222,
-            longitude: 2.346414,
-            address: '35 Newtownards Road, Belfast, BT4.'
-          }
-        }, {
-          speciality: 'Pediatrician',
-          name: 'Dr. Rainwater',
-          description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-          rating: {
-            rate: 5,
-            comments: 245
-          },
-          img: 'img/doctor_listing_4.jpg',
-          isVisible: false,
-          fav: false,
-          map: {
-            latitude: 48.873792,
-            longitude: 2.295028,
-            address: '35 Newtownards Road, Belfast, BT4.'
-          }
-        }, {
-          speciality: 'Psicologist',
-          name: 'Dr. Manzone',
-          description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-          rating: {
-            rate: 4,
-            comments: 145
-          },
-          img: 'img/doctor_listing_5.jpg',
-          isVisible: false,
-          fav: false,
-          map: {
-            latitude: 48.800040,
-            longitude: 2.139670,
-            address: '35 Newtownards Road, Belfast, BT4.'
-          }
-        }],
+        pagelimit: 6,
+        doctors: [],
         paginator: {
           pages: 1,
           page: 1,
@@ -205,7 +113,9 @@
     computed: {
       ...mapGetters([
         'stillLoading',
-        'container'
+        'container',
+        'filterTypes',
+        'filterSorts'
       ]),
       containerClasses () {
         return {
@@ -221,6 +131,9 @@
           'margin_60_35 container': this.filter.layout !== 'map',
           'container-fluid full-height': this.filter.layout === 'map'
         }
+      },
+      pageShowing () {
+        return Math.min(this.pagelimit * this.paginator.page, this.paginator.total)
       }
     },
     methods: {
@@ -231,9 +144,10 @@
         'toggleHeaderSticky'
       ]),
       onSearch (val) {
-        console.log(val)
+        this.searchDoctors()
       },
       onFilter (val) {
+        this.searchDoctors()
         this.$nextTick().then(() => {
           window['$']('#sidebar', this.$el).theiaStickySidebar({
             additionalMarginTop: 95
@@ -241,7 +155,7 @@
         })
       },
       onPage (val) {
-        console.log(val)
+        this.searchDoctors()
       },
       showInMap (doctor) {
         this.map.zoom = 13
@@ -261,9 +175,41 @@
             this.$refs.map.openPopup()
           })
         }, 400)
+      },
+      searchDoctors () {
+        getDoctorsByFilter({
+          filter: this.searchValue,
+          sort: this.filter.sort,
+          type: this.filter.type,
+          limit: this.pagelimit,
+          page: this.paginator.page
+        }).then((data) => { 
+          this.paginator.pages = Math.ceil(data.data.paginator.pages)
+          this.paginator.page = data.data.paginator.page
+          this.paginator.total = data.data.paginator.total
+          this.doctors = data.data.doctors.map(d => Object({
+            speciality: d.speciality,
+            name: `${d.title} ${d.name}`,
+            description: d.description,
+            rating: {
+              rate: d.rate,
+              comments: d.comments
+            },
+            img: `img/doctor_listing_${Math.ceil(Math.random() * (5))}.jpg`,
+            isVisible: false,
+            fav: d.fav,
+            map: {
+              latitude: d.latitude,
+              longitude: d.longitude,
+              address: `${d.address}, ${d.city}`
+            },
+            phone: d.phone
+          }))
+        })
       }
     },
     mounted() {
+      this.searchDoctors()
       window['$']('#sidebar', this.$el).theiaStickySidebar({
         additionalMarginTop: 95
       });

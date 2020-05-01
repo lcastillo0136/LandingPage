@@ -35,35 +35,26 @@
   <!-- /container -->
 </template>
 <script>
+  import { getSpecialitiesList, getCitiesList } from '@/api/data.js'
   export default {
     name: 'FindList',
     data () {
       return {
         lists: {
-          zones: [
-            { name: 'Albany', total: 23 },
-            { name: 'Albuquerque', total: 23 },
-            { name: 'Atlanta', total: 23 },
-            { name: 'Baltimore', total: 23 },
-            { name: 'Baton Rouge', total: 23 },
-            { name: 'Birmingham', total: 23 },
-            { name: 'Boston', total: 23 },
-            { name: 'Buffalo', total: 23 },
-            { name: 'Charleston', total: 23 }
-          ],
-          types: [
-            { name: 'Allergist', total: 23 },
-            { name: 'Cardiologist', total: 23 },
-            { name: 'Chiropractor', total: 23 },
-            { name: 'Dentist', total: 23 },
-            { name: 'Dermatologist', total: 23 },
-            { name: 'Gastroenterologist', total: 23 },
-            { name: 'Ophthalmologist', total: 23 },
-            { name: 'Optometrist', total: 23 },
-            { name: 'Pediatrician', total: 23 }
-          ]
+          zones: [],
+          types: []
         }
       }
+    },
+    mounted () {
+      getSpecialitiesList().then((request) => {
+        this.lists.types = request.data.specialities.map(s => Object({ name: s.name, total: s.value }))
+      })
+      getCitiesList({
+        limit: 9
+      }).then((request) => {
+        this.lists.zones = request.data.cities.map(c => Object({ name: c.name, total: c.value }))
+      })
     }
   }
 </script>
