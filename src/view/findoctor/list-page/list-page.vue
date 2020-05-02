@@ -211,7 +211,6 @@
       }
     },
     mounted() {
-      this.searchDoctors()
       window['$']('#sidebar', this.$el).theiaStickySidebar({
         additionalMarginTop: 95
       });
@@ -238,6 +237,7 @@
         }
       }
 
+      this.searchDoctors()
     },
     beforeRouteLeave (to, from, next) {
       if (this.filter.layout === 'map') {
