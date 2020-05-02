@@ -24,7 +24,7 @@
     },
     computed: {
       totalPages () {
-        return Array(this.paginator.pages).fill(true).map((e, i) => i + 1).slice(Math.max(0, this.paginator.page-5), Math.min(this.paginator.page + 9, this.paginator.pages))
+        return Array(this.paginator.pages).fill(true).map((e, i) => i + 1).slice(Math.max(0, this.paginator.page-5), Math.min(this.paginator.page + 9, this.paginator.pages)).slice(0, 10)
       },
       previousClass () {
         return { 'disabled': this.paginator.page <= 1 }
