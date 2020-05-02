@@ -35,7 +35,7 @@
 
         <div class="col-lg-7 map-right Fixed" v-if="filter.layout === 'map'">
           <div id="map_listing" class="map_list">
-            <ListMap ref="map" :map="map"></ListMap>
+            <ListMap ref="map" :map="map" v-if="!refreshMap"></ListMap>
           </div>
           <!-- map-->
         </div>
@@ -73,6 +73,7 @@
       return {
         searchValue: '',
         searchSticky: true,
+        refreshMap: false,
         pagelimit: 6,
         doctors: [],
         paginator: {
@@ -221,6 +222,10 @@
         this.toggleHeaderSticky()
         this.searchSticky = !this.searchSticky
         this.map.canZoom = !this.map.canZoom
+        this.refreshMap = true
+        this.$nextTick().then(() => {
+          this.refreshMap = false
+        })
       }
 
       if (this.$route.params) {
