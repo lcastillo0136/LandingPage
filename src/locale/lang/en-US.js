@@ -626,10 +626,10 @@ export default {
   },
   types: {
     all: 'All',
-    pacients: 'Pacients',
-    doctors: 'Doctors',
-    nurses: 'Nurses',
-    clinics: 'Clinics'
+    pacient: 'Pacients',
+    doctor: 'Doctors',
+    nurse: 'Nurses',
+    clinic: 'Clinics'
   },
   sorts: {
     closest: 'Closest', 
