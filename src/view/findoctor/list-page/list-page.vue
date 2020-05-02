@@ -89,7 +89,7 @@
           zoom: 3,
           center: [47.413220, -1.219482],
           marker: null,
-          trackResize: false
+          canZoom: false
         }
       }
     },
@@ -100,6 +100,7 @@
           this.toggleContainer()
           this.toggleHeaderSticky()
           this.searchSticky = !this.searchSticky
+          this.map.canZoom = !this.map.canZoom
         }
         localSave('page.layout', new_val)
       },
@@ -145,6 +146,7 @@
       ]),
       onSearch (val) {
         this.searchDoctors()
+        this.searchValue = val
       },
       onFilter (val) {
         this.searchDoctors()
@@ -158,7 +160,7 @@
         this.searchDoctors()
       },
       showInMap (doctor) {
-        this.map.zoom = 13
+        // this.map.zoom = 13
         this.map.center = [doctor.map.latitude , doctor.map.longitude]
         this.$refs.map.closePopup()
         this.map.marker = {
@@ -219,6 +221,7 @@
         this.toggleContainer()
         this.toggleHeaderSticky()
         this.searchSticky = !this.searchSticky
+        this.map.canZoom = !this.map.canZoom
       }
 
       if (this.$route.params) {
@@ -242,6 +245,7 @@
         this.toggleContainer()
         this.toggleHeaderSticky()
         this.searchSticky = !this.searchSticky
+        this.map.canZoom = !this.map.canZoom
       }
       next(vm => {
         // access to component instance via `vm`

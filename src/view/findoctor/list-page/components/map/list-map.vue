@@ -1,5 +1,5 @@
 <template>
-  <l-map ref="mapContent" :zoom="zoom" :center="center" @update:zoom="zoomUpdated" @update:center="centerUpdated" @update:bounds="boundsUpdated" :options="{ trackResize: false, scrollWheelZoom: false }">
+  <l-map ref="mapContent" :zoom="zoom" :center="center" @update:zoom="zoomUpdated" @update:center="centerUpdated" @update:bounds="boundsUpdated" :options="{ trackResize: map.canZoom, scrollWheelZoom: map.canZoom }">
     <l-tile-layer :url="url"></l-tile-layer>
     <l-marker ref="marker" :lat-lng="[ map.marker.latitude, map.marker.longitude ]" :icon="icon" v-if="map.marker">
       <l-popup :options="{ 'className' : 'custom' }">
