@@ -2233,7 +2233,6 @@ a.wish_bt:hover:after, a.wish_bt.active:after {
     background-color: #fefefe;
     background-color: rgba(255, 255, 255, .9);
     position: relative;
-    z-index: 99999;
     font-family: Poppins, Helvetica, sans-serif
 }
 
@@ -2374,7 +2373,8 @@ a.wish_bt:hover:after, a.wish_bt.active:after {
     position: fixed;
     top: 0;
     right: 0;
-    z-index: 0
+    z-index: 0;
+    padding-top: 57px;
 }
 
 @media (max-width:991px) {
