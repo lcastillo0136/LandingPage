@@ -8,14 +8,14 @@
           </div>
           <div class="col-md-6" v-if="!onlyInput">
             <div class="search_bar_list">
-              <input type="text" class="form-control" placeholder="Ex. Specialist, Name, Doctor..." :value="value" v-on:input="updateValue($event.target.value)">
-              <input type="submit" value="Search" @click.prevent.stop="emitClick">
+              <input type="text" class="form-control" placeholder="Ex. Specialist, Name, Doctor..." :value="value" v-on:input="updateValue($event.target.value)" v-on:keyup.enter="emitClick">
+              <input type="submit" value="Search" @click.prevent.stop="emitClick" ref="submitSearch">
             </div>
           </div>
           <div class="col-md-12" v-if="onlyInput">
             <div class="search_bar_list">
-              <input type="text" class="form-control" placeholder="Ex. Specialist, Name, Doctor..." :value="value" v-on:input="updateValue($event.target.value)">
-              <input type="submit" value="Search" @click.prevent.stop="emitClick">
+              <input type="text" class="form-control" placeholder="Ex. Specialist, Name, Doctor..." :value="value" v-on:input="updateValue($event.target.value)" v-on:keyup.enter="emitClick">
+              <input type="submit" value="Search" @click.prevent.stop="emitClick" ref="submitSearch">
             </div>
           </div>
         </div>
@@ -77,6 +77,7 @@
       },
       emitClick () {
         this.$emit('onSearch', this.hasChanges ? this.val : this.value)
+        this.$refs.submitSearch.focus()
       }
     },
     mounted () {

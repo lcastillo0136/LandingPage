@@ -176,7 +176,7 @@
           this.$nextTick().then(() => {
             this.$refs.map.openPopup()
           })
-        }, 400)
+        }, 600)
       },
       searchDoctors () {
         getDoctorsByFilter({
