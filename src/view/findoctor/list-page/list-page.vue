@@ -145,8 +145,8 @@
         'toggleHeaderSticky'
       ]),
       onSearch (val) {
-        this.searchDoctors()
         this.searchValue = val
+        this.searchDoctors()
       },
       onFilter (val) {
         this.searchDoctors()
@@ -197,7 +197,7 @@
               rate: d.rate,
               comments: d.comments
             },
-            img: `img/doctor_listing_${Math.ceil(Math.random() * (5))}.jpg`,
+            img: d.img,
             isVisible: false,
             fav: d.fav,
             map: {
