@@ -22,9 +22,15 @@
         <div class="col-lg-3 col-md-4">
           <h5>{{ $t('footer.useful_links') }}</h5>
           <ul class="links">
-            <li><router-link :to="{ name: 'list-page', params: { type: 'doctors', layout: 'grid' }}">{{ $t('footer.doctors') }}</router-link></li>
-            <li><router-link :to="{ name: 'list-page', params: { type: 'clinics', layout: 'grid' }}">{{ $t('footer.clinic') }}</router-link></li>
-            <li><router-link :to="{ name: 'list-page', params: { type: 'doctors', layout: 'list' }}">{{ $t('footer.specialization') }}</router-link></li>
+            <li>
+              <router-link :to="{ name: 'list-page', params: { type: 'doctor', layout: 'grid' }, hash: newHash('doctor') }" replace>{{ $t('footer.doctors') }}</router-link>
+            </li>
+            <li>
+              <router-link :to="{ name: 'list-page', params: { type: 'clinic', layout: 'grid' }, hash: newHash('clinic') }" replace>{{ $t('footer.clinic') }}</router-link>
+            </li>
+            <li>
+              <router-link :to="{ name: 'list-page', params: { type: 'doctor', layout: 'list' }, hash: newHash('dcotor') }" replace>{{ $t('footer.specialization') }}</router-link>
+            </li>
             <li><router-link :to="{ name: 'register' }">{{ $t('footer.join_doctor') }}</router-link></li>
             <li><router-link :to="{ name: 'home' }">{{ $t('footer.download_app') }}</router-link></li>
           </ul>
@@ -81,5 +87,16 @@
         return this.$moment().format('YYYY')
       }
     },
+    methods: {
+      newHash (page) {
+        var hash = 0, i, chr 
+        for (i = 0; i < page.length; i++) {
+          chr   = page.charCodeAt(i)
+          hash  = ((hash << 5) - hash) + chr
+          hash |= 0 
+        }
+        return '#' + hash
+      }
+    }
   }
 </script>

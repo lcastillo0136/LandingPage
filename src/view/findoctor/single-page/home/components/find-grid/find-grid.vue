@@ -39,7 +39,7 @@
       </div>
       <!-- /row -->
       <p class="text-center add_top_30">
-        <router-link :to="{ name: 'list-page', params: { layout: 'list', type: 'doctors' }}" class="btn_1 medium">View all Doctors</router-link></p>
+        <router-link :to="{ name: 'list-page', params: { layout: 'list', type: 'doctor' }}" class="btn_1 medium">View all Doctors</router-link></p>
     </div>
   </div>
 </template>

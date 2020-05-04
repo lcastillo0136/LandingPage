@@ -82,7 +82,7 @@
           total: 0
         },
         filter: {
-          type: localRead('page.type') || 'doctors',
+          type: localRead('page.type') || 'doctor',
           layout: localRead('page.layout') || 'list',
           sort: localRead('page.sort') || 'best_rated'
         },
@@ -117,7 +117,8 @@
         'stillLoading',
         'container',
         'filterTypes',
-        'filterSorts'
+        'filterSorts',
+        'geoLocation'
       ]),
       containerClasses () {
         return {
@@ -185,7 +186,8 @@
           sort: this.filter.sort,
           type: this.filter.type,
           limit: this.pagelimit,
-          page: this.paginator.page
+          page: this.paginator.page,
+          location: this.geoLocation
         }).then((data) => { 
           this.paginator.pages = Math.ceil(data.data.paginator.pages)
           this.paginator.page = data.data.paginator.page
@@ -209,40 +211,49 @@
             phone: d.phone
           }))
         })
+      },
+      refresh () {
+        window['$']('#sidebar', this.$el).theiaStickySidebar({
+          additionalMarginTop: 95
+        })
+
+        
+        if (this.filter.layout === 'map') {
+          this.toggleFooter()
+          this.toggleContainer()
+          this.toggleHeaderSticky()
+          this.searchSticky = !this.searchSticky
+          this.map.canZoom = !this.map.canZoom
+          this.refreshMap = true
+          this.$nextTick().then(() => {
+            this.refreshMap = false
+          })
+        }
+
+        if (this.$route.params) {
+          if (this.$route.params.search) {
+            this.searchValue = this.$route.params.search
+          }
+
+          if (this.$route.params.type) {
+            this.filter.type = this.$route.params.type
+          }
+
+          if (this.$route.params.layout) {
+            this.filter.layout = this.$route.params.layout
+          }
+        }
+
+        setTimeout(() => {
+          this.$nextTick().then(() => {
+            this.map.center = [this.geoLocation.latitude, this.geoLocation.longitude]
+            this.searchDoctors()
+          })
+        }, 100)  
       }
     },
     mounted() {
-      window['$']('#sidebar', this.$el).theiaStickySidebar({
-        additionalMarginTop: 95
-      });
-      
-      if (this.filter.layout === 'map') {
-        this.toggleFooter()
-        this.toggleContainer()
-        this.toggleHeaderSticky()
-        this.searchSticky = !this.searchSticky
-        this.map.canZoom = !this.map.canZoom
-        this.refreshMap = true
-        this.$nextTick().then(() => {
-          this.refreshMap = false
-        })
-      }
-
-      if (this.$route.params) {
-        if (this.$route.params.search) {
-          this.searchValue = this.$route.params.search
-        }
-
-        if (this.$route.params.type) {
-          this.filter.type = this.$route.params.type
-        }
-
-        if (this.$route.params.layout) {
-          this.filter.layout = this.$route.params.layout
-        }
-      }
-
-      this.searchDoctors()
+      this.refresh()
     },
     beforeRouteLeave (to, from, next) {
       if (this.filter.layout === 'map') {
@@ -258,6 +269,34 @@
     },
     beforeDestroy () {
       
+    },
+    beforeRouteUpdate (to, from ,next) {
+      if (this.filter.layout === 'map') {
+        this.toggleFooter()
+        this.toggleContainer()
+        this.toggleHeaderSticky()
+        this.searchSticky = !this.searchSticky
+        this.map.canZoom = !this.map.canZoom
+        this.refreshMap = true
+        this.$nextTick().then(() => {
+          this.refreshMap = false
+        })
+      }
+
+      if (to.params) {
+        if (to.params.search) {
+          this.searchValue = to.params.search
+        }
+
+        if (to.params.type) {
+          this.filter.type = to.params.type
+        }
+
+        if (to.params.layout) {
+          this.filter.layout = to.params.layout
+        }
+      }
+      next()
     }
   }
 </script>

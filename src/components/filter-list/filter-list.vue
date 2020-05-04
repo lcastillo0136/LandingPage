@@ -41,8 +41,8 @@
         default: function () {
           return [
             { text: 'All', value: 'all', selected: false }, 
-            { text: 'Doctors', value: 'doctors', selected: true }, 
-            { text: 'Clinics', value: 'clinics', selected: false }
+            { text: 'Doctors', value: 'doctor', selected: true }, 
+            { text: 'Clinics', value: 'clinic', selected: false }
           ]
         }
       },
@@ -72,7 +72,7 @@
         type: Object,
         default: function () {
           return  {
-            type: 'doctors',
+            type: 'doctor',
             layout: 'list',
             sort: 'closest'
           }
