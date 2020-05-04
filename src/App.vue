@@ -28,12 +28,15 @@ export default {
     ]),
     ...mapActions([
       'getTypes',
-      'getSorts'
+      'getSorts',
+      'getLocation'
     ]),
   },
   async mounted () {
     await this.getTypes()
     await this.getSorts()
+    this.getLocation().then((data) => {})
+
     this.toggleLoading()    
   }
 }

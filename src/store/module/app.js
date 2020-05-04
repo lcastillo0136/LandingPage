@@ -14,12 +14,17 @@ export default {
     filter: {
       types: [],
       sorts: []
+    },
+    location: {
+      longitude: 0,
+      latitude: 0
     }
   },
   getters: {
     errorCount: state => state.errorList.length,
     filterTypes: state => state.filter.types,
-    filterSorts: state => state.filter.sorts
+    filterSorts: state => state.filter.sorts,
+    geoLocation: state => state.location
   },
   mutations: {
     setLocal (state, lang) {
@@ -41,6 +46,10 @@ export default {
       state.filter.sorts = sorts.map(s => {
         return { text: i18n.t('sorts.' + s), value: s }
       })
+    },
+    setLocation (state, location) {
+      state.location.longitude = location.longitude
+      state.location.latitude = location.latitude
     }
   },
   actions: {
@@ -83,6 +92,24 @@ export default {
           }).catch(err => {
             reject(err)
           })
+        } catch (error) {
+          reject(error)
+        }
+      })
+    },
+    getLocation ({ state, commit }) {
+      return new Promise((resolve, reject) => {
+        try {
+          if(!("geolocation" in navigator)) {
+            reject(new Error('Geolocation is not available.'));
+          }
+
+          navigator.geolocation.getCurrentPosition(pos => {
+            commit('setLocation', pos.coords)
+            resolve(pos);
+          }, err => {
+            reject(err);
+          });
         } catch (error) {
           reject(error)
         }
