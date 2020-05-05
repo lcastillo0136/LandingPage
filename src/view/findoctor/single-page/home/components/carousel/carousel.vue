@@ -7,7 +7,7 @@
         </div>
         <carousel id="reccomended" :nav="false" :center="true" :items="2" :loop="true" :margin="10" :responsive="{0: {items: 1},600: {items: 2},1000: {items: 4}}">
           <div class="item" v-for="(doctor, doctor_i) in doctors" :key="doctor_i">
-            <router-link to="details-page.html">
+            <router-link :to="{ name: 'details-page', params: { id: doctor.id }}">
               <div class="views"><i class="icon-eye-7"></i>{{ doctor.viewed }}</div>
               <div class="title">
                 <h4>{{ doctor.title }} {{ doctor.name }}<em>{{ doctor.speciality }}</em></h4>

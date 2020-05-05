@@ -197,6 +197,8 @@
   import BookingCalendar from './components/booking-calendar'
   import ServiceChoosen from './components/service-choosen'
 
+  import { getDoctorInfo } from '@/api/data'
+
   export default {
     name: 'DetailsPage',
     components: {
@@ -213,18 +215,18 @@
           { text: 'Page active' }
         ],
         doctor: {
-          speciality: 'PRIMARY CARE - INTERNIST',
-          name: 'DR. Julia Jhones',
-          description: 'Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....',
-          address: '859 60th, Brooklyn, NY, 11220',
-          phone_number: '+00043 4323342',
+          speciality: '',
+          name: '',
+          description: '',
+          address: '',
+          phone_number: '',
           rating: {
-            rate: 3,
-            comments: 145,
-            views: 854,
-            patients: 124
+            rate: 0,
+            comments: 0,
+            views: 0,
+            patients: 0
           },
-          img: 'img/doctor_listing_1.jpg',
+          img: '',
           isVisible: false,
         },
         reviews: [{
@@ -304,12 +306,39 @@
       },
       percentStart (star) {
         return (this.countStars(star) * 100) / this.reviews.length
+      },
+      getDoctorInfo (id) {
+        getDoctorInfo({id})
+          .then((response) => {
+            const { doctor } = response.data
+            if (doctor) {
+              this.doctor.speciality = doctor.speciality
+              this.doctor.name = `${doctor.title} ${doctor.name}`
+              this.doctor.description = doctor.description
+              this.doctor.address = doctor.address
+              this.doctor.phone_number = doctor.phone
+              this.doctor.rating.rate = doctor.rate
+              this.doctor.rating.comments = doctor.comments
+              this.doctor.rating.views = doctor.viewed
+              this.doctor.rating.patients = doctor.patients
+              this.doctor.img = doctor.img
+              this.doctor.isVisible = false
+            } else {
+              this.$router.back()
+            }
+          })
       }
     },
     mounted() {
       window['$']('#sidebar').theiaStickySidebar({
         additionalMarginTop: 95
       });
+
+      if (this.$route.params.id) {
+        this.getDoctorInfo(this.$route.params.id)
+      } else {
+        this.$router.back()
+      }
     },
     beforeDestroy () {
     }

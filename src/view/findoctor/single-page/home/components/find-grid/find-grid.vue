@@ -12,9 +12,9 @@
               <a href="#" class="wish_bt" :class="{'active tada animated': doctor.fav }" @click.stop.prevent="addToWishlist(doctor)"></a>
             </a-tooltip>
             <figure>
-              <router-link :to="{ name: 'details-page' }"><img :src="getImage()" class="img-fluid" alt=""></router-link>
+              <router-link :to="{ name: 'details-page', params: { id: doctor.id }  }"><img :src="getImage()" class="img-fluid" alt=""></router-link>
               <div class="preview">
-                <router-link :to="{ name: 'details-page' }"><span>Read more</span></router-link>
+                <router-link :to="{ name: 'details-page', params: { id: doctor.id }  }"><span>Read more</span></router-link>
               </div>
             </figure>
             <div class="wrapper">
@@ -31,7 +31,7 @@
             </div>
             <ul>
               <li><i class="icon-eye-7"></i> {{ doctor.viewed }} Views</li>
-              <li><router-link :to="{ name: 'details-page' }">Book now</router-link></li>
+              <li><router-link :to="{ name: 'details-page', params: { id: doctor.id }  }">Book now</router-link></li>
             </ul>
           </div>
         </div>

@@ -3,15 +3,15 @@
     <l-tile-layer :url="url"></l-tile-layer>
     <l-marker ref="marker" :lat-lng="[ map.marker.latitude, map.marker.longitude ]" :icon="icon" v-if="map.marker">
       <l-popup :options="{ 'className' : 'custom' }">
-        <div class="marker_info">
+        <div class="marker_info" v-if="map.marker">
           <figure>
-            <router-link :to="{ name: 'details-page' }">
+            <router-link :to="{ name: 'details-page', params: { id: map.marker.id }  }">
               <img :src="map.marker.img" alt="Image">
             </router-link>
           </figure>
           <small>{{ map.marker.speciality }}</small>
           <h3>
-            <router-link :to="{ name: 'details-page' }">
+            <router-link :to="{ name: 'details-page', params: { id: map.marker.id }  }">
               {{ map.marker.name }}
             </router-link>
           </h3>
@@ -72,7 +72,7 @@
     },
     methods: {
       openPopup () {
-        this.$refs.marker.mapObject.openPopup()
+        if(this.$refs.marker) this.$refs.marker.mapObject.openPopup()
       },
       closePopup() {
         if(this.$refs.marker) this.$refs.marker.mapObject.closePopup()

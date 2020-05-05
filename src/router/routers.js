@@ -101,7 +101,7 @@ export default [
         component: () => import('@/view/' + config.theme + '/list-page')
       },
       {
-        path: '/details-page.html',
+        path: '/details-page-:id.html',
         name: 'details-page',
         meta: {
           hideInMenu: true,

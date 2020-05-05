@@ -46,9 +46,9 @@ export const getCitiesList = (filter) => {
   })
 }
 
-export const getOrgData = () => {
+export const getDoctorInfo = (data) => {
   return axios.request({
-    url: 'get_org_data',
+    url: `/doctors/${data.id}`,
     method: 'get'
   })
 }

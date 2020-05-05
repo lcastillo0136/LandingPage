@@ -166,6 +166,7 @@
         this.map.center = [doctor.map.latitude , doctor.map.longitude]
         this.$refs.map.closePopup()
         this.map.marker = {
+          id: doctor.id,
           latitude: doctor.map.latitude,
           longitude: doctor.map.longitude,
           img: doctor.img,
@@ -193,6 +194,7 @@
           this.paginator.page = data.data.paginator.page
           this.paginator.total = data.data.paginator.total
           this.doctors = data.data.doctors.map(d => Object({
+            id: d.id,
             speciality: d.speciality,
             name: `${d.title} ${d.name}`,
             description: d.description,
