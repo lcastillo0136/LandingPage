@@ -23,13 +23,13 @@
           <h5>{{ $t('footer.useful_links') }}</h5>
           <ul class="links">
             <li>
-              <router-link :to="{ name: 'list-page', params: { type: 'doctor', layout: 'grid' }, hash: newHash('doctor') }" replace>{{ $t('footer.doctors') }}</router-link>
+              <router-link :to="{ name: 'list-page-type', params: { type: 'doctor', layout: 'grid' }}" replace>{{ $t('footer.doctors') }}</router-link>
             </li>
             <li>
-              <router-link :to="{ name: 'list-page', params: { type: 'clinic', layout: 'grid' }, hash: newHash('clinic') }" replace>{{ $t('footer.clinic') }}</router-link>
+              <router-link :to="{ name: 'list-page-type', params: { type: 'clinic', layout: 'grid' }}" replace>{{ $t('footer.clinic') }}</router-link>
             </li>
             <li>
-              <router-link :to="{ name: 'list-page', params: { type: 'doctor', layout: 'list' }, hash: newHash('dcotor') }" replace>{{ $t('footer.specialization') }}</router-link>
+              <router-link :to="{ name: 'list-page-type', params: { type: 'doctor', layout: 'list' }}" replace>{{ $t('footer.specialization') }}</router-link>
             </li>
             <li><router-link :to="{ name: 'register' }">{{ $t('footer.join_doctor') }}</router-link></li>
             <li><router-link :to="{ name: 'home' }">{{ $t('footer.download_app') }}</router-link></li>

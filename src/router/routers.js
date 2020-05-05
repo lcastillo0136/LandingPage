@@ -88,6 +88,19 @@ export default [
         component: () => import('@/view/' + config.theme + '/list-page')
       },
       {
+        path: '/list-page-:type.html',
+        alias: '/list-page-:type-:layout.html',
+        name: 'list-page-type',
+        meta: {
+          hideInMenu: true,
+          title: 'list-page.title',
+          notCache: true,
+          icon: 'md-list',
+          headerSticky: false
+        },
+        component: () => import('@/view/' + config.theme + '/list-page')
+      },
+      {
         path: '/details-page.html',
         name: 'details-page',
         meta: {
