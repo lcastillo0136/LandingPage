@@ -3150,6 +3150,9 @@ ul.treatments li {
         width: auto;
         float: none
     }
+    ul.time_select.version_2 li {
+        width: auto;
+    }
 }
 
 input[type=checkbox].css-checkbox {
