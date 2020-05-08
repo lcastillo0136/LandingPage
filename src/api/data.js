@@ -49,13 +49,14 @@ export const getCitiesList = (filter) => {
 export const getDoctorInfo = (data) => {
   return axios.request({
     url: `/doctors/${data.id}`,
-    method: 'get'
+    method: 'post'
   })
 }
 
-export const getTreeSelectData = () => {
+export const getDoctorBooking = (data) => {
   return axios.request({
-    url: 'get_tree_select_data',
+    url: `/doctors/${data.id}/booking`,
+    data: data,
     method: 'get'
   })
 }
