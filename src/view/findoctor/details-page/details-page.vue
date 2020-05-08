@@ -13,10 +13,17 @@
           
           <div class="box_general_2 add_bottom_45">
             <div class="main_title_4">
-              <h3><i class="icon_circle-slelected"></i>Select your date and time</h3>
+              <h3><i class="icon_circle-slelected"></i>Select your date</h3>
             </div>
             
-            <BookingCalendar class="add_bottom_45" @onSelectDate="onSelectDate($event)" @onSelectTime="onSelectTime($event)"></BookingCalendar>
+            <BookingCalendar 
+              class="add_bottom_45" 
+              :startDate="startDate"
+              :availableDates="availableDates"
+              @onSelectDate="onSelectDate($event)" 
+              @onSelectTime="onSelectTime($event)"
+              @onSelectMonth="onSelectMonth($event)">
+            </BookingCalendar>
             
             <div class="main_title_4">
               <h3><i class="icon_circle-slelected"></i>Select visit - treatment</h3>
@@ -157,7 +164,7 @@
                   </div>
                   <!-- /row -->
                   
-                  <hr>
+                  <hr v-if="avgRating > 0">
                   <div class="review-box clearfix" v-for="(review,review_i) in reviews" :key="review_i">
                     <figure class="rev-thumb"><img :src="review.img" alt="">
                     </figure>
@@ -197,7 +204,7 @@
   import BookingCalendar from './components/booking-calendar'
   import ServiceChoosen from './components/service-choosen'
 
-  import { getDoctorInfo } from '@/api/data'
+  import { getDoctorInfo, getDoctorBooking } from '@/api/data'
 
   export default {
     name: 'DetailsPage',
@@ -229,13 +236,8 @@
           img: '',
           isVisible: false,
         },
-        reviews1: [{
-          rating: 4,
-          img: 'img/avatar1.jpg',
-          name: 'Admin',
-          date: '03/04/2016',
-          comment: 'Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis'
-        }],
+        startDate: new Date(),
+        availableDates: [],
         booking: {
           date: '',
           time: '',
@@ -251,6 +253,7 @@
         return new Array(5).fill(true).map((e, i) => i + 1).sort((a, b) => b - a)
       },
       avgRating () {
+        if (this.reviews.length == 0) return 0
         return this.reviews.map(m => m.rating).reduce((a,b) => a + b, 0) / this.reviews.length
       },
       commentsRating() {
@@ -276,6 +279,9 @@
       onSelectService (value) {
         this.booking.service = value
       },
+      onSelectMonth (value) {
+
+      },
       proceedBooking () {
         if (this.booking.date && this.booking.time) {
           this.$router.push({
@@ -296,7 +302,7 @@
         return (this.countStars(star) * 100) / this.reviews.length
       },
       getDoctorInfo (id) {
-        getDoctorInfo({id})
+        return getDoctorInfo({id})
           .then((response) => {
             const { doctor } = response.data
             if (doctor) {
@@ -311,9 +317,18 @@
               this.doctor.rating.patients = doctor.patients
               this.doctor.img = doctor.img
               this.doctor.isVisible = false
+
+              return this.doctor
             } else {
               this.$router.back()
             }
+          })
+      },
+      getDoctorBooking(id) {
+        return getDoctorBooking({ id: id ,startDate: this.startDate })
+          .then((response) => {
+            this.availableDates = response.data.dates
+            return response
           })
       }
     },
@@ -323,7 +338,11 @@
       });
 
       if (this.$route.params.id) {
-        this.getDoctorInfo(this.$route.params.id)
+        this.getDoctorInfo(this.$route.params.id).then((d) => {
+          this.getDoctorBooking(this.$route.params.id).then((b) => {
+            
+          })
+        })
       } else {
         this.$router.back()
       }
