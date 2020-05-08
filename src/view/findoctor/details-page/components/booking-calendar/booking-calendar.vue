@@ -31,15 +31,26 @@
       },
       availableDates: {
         type: Array,
-        default: function () { return  ['2020/04/15','2020/04/16','2020/04/17','2020/04/18','2020/04/19','2020/04/20','2020/04/21','2020/04/22','2020/04/23','2020/04/24','2020/04/25','2020/04/26','2020/04/27','2020/04/28','2020/04/29','2020/04/30','2020/04/14','2020/04/13'] }
+        default: function () { return  ['2020-04-15','2020-04-16','2020-04-17'] }
       },
       disabledDates: {
         type: Array,
-        default: function () { return ['2020/04/16','2020/04/21','2020/04/30',] }
+        default: function () { return ['2020-04-16','2020-04-21','2020-04-30'] }
       },
       availableTimes: {
         type: Array,
         default: function () { return  ['09.30am','10.00am','10.30am','11.00am','11.30am','12.00am','12.30am','01.00pm','01.30pm','02.00pm','02.30pm'] }
+      }
+    },
+    watch: {
+      'availableDates' () {
+        window['$']('#calendar', this.$el).datepicker('update')
+      },
+      'disabledDates' () {
+        window['$']('#calendar', this.$el).datepicker('update')
+      },
+      'startDate' () {
+        window['$']('#calendar', this.$el).datepicker('setStartDate', this.startDate)
       }
     },
     methods: {
@@ -48,14 +59,14 @@
       }
     },
     mounted () {
-      window['$']('#calendar').datepicker({
+      window['$']('#calendar', this.$el).datepicker({
         todayHighlight: true,
         daysOfWeekDisabled: [0],
         weekStart: 0,
         format: "yyyy-mm-dd",
         beforeShowDay: (date) => {
           return {
-            enabled: this.availableDates.includes(this.$moment(date).format('YYYY/MM/DD')) && !this.disabledDates.includes(this.$moment(date).format('YYYY/MM/DD'))
+            enabled: this.availableDates.includes(this.$moment(date).format('YYYY-MM-DD')) && !this.disabledDates.includes(this.$moment(date).format('YYYY-MM-DD'))
           }
         },
         datesDisabled: ["2017/10/20", "2017/11/21","2017/12/21", "2018/01/21","2018/02/21","2018/03/21"],
