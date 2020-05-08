@@ -62,6 +62,11 @@
         startDate: this.startDate
       }).on('changeDate', (event) => { 
         this.$emit('onSelectDate', this.$moment(event.date).format('YYYY/MM/DD'))
+      }).on('changeMonth', (event) => {
+        this.$emit('onSelectMonth', Object({ 
+          start: this.$moment(event.date).startOf('month').format('YYYY/MM/DD'),
+          end: this.$moment(event.date).endOf('month').format('YYYY/MM/DD')
+        }))
       });
     }
   }
