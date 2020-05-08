@@ -136,7 +136,7 @@
                   <div class="row">
                     <div class="col-lg-3">
                       <div id="review_summary">
-                        <strong>{{ avgRating }}</strong>
+                        <strong>{{ commentsRating }}</strong>
                         <div class="rating">
                           <i class="icon_star" :class="{'voted': avgRating >= star}" v-for="(star, star_i) in totalRatings" :key="star_i"></i>
                         </div>
@@ -166,7 +166,7 @@
                         <i class="icon_star" :class="{'voted': review.rating >= star}" v-for="(star, star_i) in totalRatings"></i>
                       </div>
                       <div class="rev-info">
-                        {{ review.name }} – {{ review.date }}:
+                        {{ review.name }} – {{ review.date | moment('MMMM DD, YYYY') }}
                       </div>
                       <div class="rev-text">
                         <p>
@@ -222,44 +222,20 @@
           phone_number: '',
           rating: {
             rate: 0,
-            comments: 0,
+            comments: [],
             views: 0,
             patients: 0
           },
           img: '',
           isVisible: false,
         },
-        reviews: [{
+        reviews1: [{
           rating: 4,
           img: 'img/avatar1.jpg',
           name: 'Admin',
           date: '03/04/2016',
           comment: 'Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis'
-        }, {
-          rating: 5,
-          img: 'img/avatar2.jpg',
-          name: 'Ahsan',
-          date: '01/04/2016',
-          comment: 'Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis'
-        }, {
-          rating: 3,
-          img: 'img/avatar3.jpg',
-          name: 'Sara',
-          date: '31/03/2016',
-          comment: 'Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis'
-        },  {
-          rating: 5,
-          img: 'img/avatar3.jpg',
-          name: 'Sara',
-          date: '31/03/2016',
-          comment: 'Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis'
-        }, {
-          rating: 5,
-          img: 'img/avatar3.jpg',
-          name: 'Sara',
-          date: '25/03/2016',
-          comment: 'Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis'
-        },],
+        }],
         booking: {
           date: '',
           time: '',
@@ -276,6 +252,18 @@
       },
       avgRating () {
         return this.reviews.map(m => m.rating).reduce((a,b) => a + b, 0) / this.reviews.length
+      },
+      commentsRating() {
+        return this.avgRating.toFixed(1)
+      },
+      reviews() {
+        return this.doctor.rating.comments.map(c => Object({
+          rating: c.rate,
+          img: c.patient.img,
+          name: c.patient.name,
+          date: c.date,
+          comment: c.comment
+        }))
       }
     },
     methods: {
@@ -377,5 +365,8 @@
   }
   .ant-tabs-ink-bar {
     visibility: hidden;
+  }
+  #review_summary strong, #review_summary small {
+    display: block;
   }
 </style>
