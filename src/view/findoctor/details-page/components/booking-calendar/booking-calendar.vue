@@ -44,10 +44,10 @@
     },
     watch: {
       'availableDates' () {
-        window['$']('#calendar', this.$el).datepicker('update')
+        window['$']('#calendar', this.$el).datepicker('fill')
       },
       'disabledDates' () {
-        window['$']('#calendar', this.$el).datepicker('update')
+        window['$']('#calendar', this.$el).datepicker('fill')
       },
       'startDate' () {
         window['$']('#calendar', this.$el).datepicker('setStartDate', this.startDate)
