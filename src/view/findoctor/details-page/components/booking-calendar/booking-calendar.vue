@@ -1,6 +1,6 @@
 <template>
   <div v-bind="$attrs" class="row">
-    <div class="col-lg-7">
+    <div :class="{'col-lg-7':hasTimes, 'col-lg-12': !hasTimes}">
       <div class="form-group">
         <div id="calendar"></div>
         <input type="hidden" id="my_hidden_input">
@@ -10,10 +10,10 @@
         </ul>
       </div>
     </div>
-    <div class="col-lg-5">
+    <div class="col-lg-5" v-if="hasTimes">
       <ul class="time_select version_2 add_top_20">
-        <li v-for="(time, time_i) in availableTimes" :key="time_i">
-          <input type="radio" :id="'time_' + time_i" name="radio_time" :value="time" @change="selectedTime($event)">
+        <li v-for="(time, time_i) in listTimes" :key="time_i" :class="time_clases(time)">
+          <input :type="timeType" :id="'time_' + time_i" name="radio_time" :value="time" @change="selectedTime($event)" v-if="enabledTime(time)">
           <label :for="'time_' + time_i">{{ time }}</label>
         </li>
       </ul>
@@ -40,6 +40,28 @@
       availableTimes: {
         type: Array,
         default: function () { return  ['09.30am','10.00am','10.30am','11.00am','11.30am','12.00am','12.30am','01.00pm','01.30pm','02.00pm','02.30pm'] }
+      },
+      multiple: {
+        type: Boolean,
+        default: false
+      }
+    },
+    data () {
+      return {
+        selected: {
+          date: ''
+        }
+      }
+    },
+    computed: {
+      hasTimes () {
+        return (this.listTimes||[]).length > 0
+      },
+      timeType () {
+        return this.multiple ? 'checkbox': 'radio'
+      },
+      listTimes () {
+        return this.availableTimes
       }
     },
     watch: {
@@ -55,7 +77,19 @@
     },
     methods: {
       selectedTime (time) {
-        this.$emit('onSelectTime', time.srcElement.value)
+        if (this.multiple) {
+          this.$emit('onSelectTime', [...time.srcElement.parentElement.parentElement.querySelectorAll(':checked')].map(r => r.value))
+        } else {
+          this.$emit('onSelectTime', time.srcElement.value)
+        }
+      },
+      time_clases (time) {
+        return {
+          'disabled': !this.enabledTime(time)
+        }
+      },
+      enabledTime (time) {
+        return this.$moment(`${this.selected.date} ${time}`, 'YYYY-MM-DD hh:mm a').isAfter()
       }
     },
     mounted () {
@@ -64,20 +98,24 @@
         daysOfWeekDisabled: [0],
         weekStart: 0,
         format: "yyyy-mm-dd",
+        defaultViewDate: 'month',
         beforeShowDay: (date) => {
           return {
             enabled: this.availableDates.includes(this.$moment(date).format('YYYY-MM-DD')) && !this.disabledDates.includes(this.$moment(date).format('YYYY-MM-DD'))
           }
         },
+        beforeShowMonth: (date) => {
+        },
         datesDisabled: ["2017/10/20", "2017/11/21","2017/12/21", "2018/01/21","2018/02/21","2018/03/21"],
         startDate: this.startDate
       }).on('changeDate', (event) => { 
-        this.$emit('onSelectDate', this.$moment(event.date).format('YYYY/MM/DD'))
+        this.selected.date = this.$moment(event.date).format('YYYY-MM-DD')
+        this.$emit('onSelectDate', this.selected.date)
       }).on('changeMonth', (event) => {
         this.$emit('onSelectMonth', Object({ 
-          start: this.$moment(event.date).startOf('month').format('YYYY/MM/DD'),
-          end: this.$moment(event.date).endOf('month').format('YYYY/MM/DD')
-        }))
+          start: this.$moment(event.date).startOf('month').format('YYYY-MM-DD'),
+          end: this.$moment(event.date).endOf('month').format('YYYY-MM-DD')
+        })) 
       });
     }
   }
