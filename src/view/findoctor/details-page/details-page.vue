@@ -26,6 +26,7 @@
               class="add_bottom_45 fadeIn animated" 
               :multiple="false"
               :startDate="startDate"
+              :disabledDays="disabledDays"
               :availableDates="bookingDates"
               :availableTimes="availableTimes"
               @onSelectDate="onSelectDate($event)" 
@@ -51,7 +52,7 @@
                   <p>Mussum ipsum cacilds, vidis litro abertis.</p>
                 </div>
                 <div class="wrapper_indent">
-                  <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Nullam mollis. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapi.</p>
+                  <p>{{ doctor.description }}</p>
                   <h6>Specializations</h6>
                   <div class="row">
                     <div class="col-lg-6">
@@ -241,6 +242,7 @@
           services: []
         },
         startDate: new Date(),
+        disabledDays: [0],
         availableDates: [],
         availableTimes: [],
         booking: {
