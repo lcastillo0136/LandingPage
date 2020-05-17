@@ -49,14 +49,14 @@ export const getCitiesList = (filter) => {
 export const getDoctorInfo = (data) => {
   return axios.request({
     url: `/doctors/${data.id}`,
-    method: 'post'
+    method: 'get'
   })
 }
 
 export const getDoctorBooking = (data) => {
   return axios.request({
     url: `/doctors/${data.id}/booking`,
-    data: data,
+    params: data,
     method: 'get'
   })
 }

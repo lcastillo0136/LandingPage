@@ -19,35 +19,7 @@
             name: 'Back Pain visit',
             cost: '55',
             selected: false
-          }, {
-            name: 'Cardiovascular screen',
-            cost: '55',
-            selected: false
-          }, {
-            name: 'Diabetes consultation',
-            cost: '55',
-            selected: false
-          }, {
-            name: 'Icontinence visit',
-            cost: '55',
-            selected: false
-          }, {
-            name: 'Foot Pain visit',
-            cost: '55',
-            selected: false
-          }, {
-            name: 'Food intollerance visit',
-            cost: '55',
-            selected: false
-          }, {
-            name: 'Neck Pain visit',
-            cost: '55',
-            selected: false
-          }, {
-            name: 'Back Pain visit',
-            cost: '55',
-            selected: false
-          }, ]
+          }]
         }
       },
       multiple: {

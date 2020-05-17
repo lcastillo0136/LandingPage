@@ -39,7 +39,7 @@
       },
       availableTimes: {
         type: Array,
-        default: function () { return  ['09.30am','10.00am','10.30am','11.00am','11.30am','12.00am','12.30am','01.00pm','01.30pm','02.00pm','02.30pm'] }
+        default: function () { return  [] }
       },
       multiple: {
         type: Boolean,
@@ -80,7 +80,9 @@
         if (this.multiple) {
           this.$emit('onSelectTime', [...time.srcElement.parentElement.parentElement.querySelectorAll(':checked')].map(r => r.value))
         } else {
-          this.$emit('onSelectTime', time.srcElement.value)
+          if (this.enabledTime(time)) {
+            this.$emit('onSelectTime', time.srcElement.value)
+          }
         }
       },
       time_clases (time) {

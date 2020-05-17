@@ -13,26 +13,29 @@
           
           <div class="box_general_2 add_bottom_45">
             <div class="main_title_4">
-              <h3><i class="icon_circle-slelected"></i>Select your date</h3>
-            </div>
-            
-            <BookingCalendar 
-              class="add_bottom_45" 
-              :startDate="startDate"
-              :availableDates="availableDates"
-              @onSelectDate="onSelectDate($event)" 
-              @onSelectTime="onSelectTime($event)"
-              @onSelectMonth="onSelectMonth($event)">
-            </BookingCalendar>
-            
-            <div class="main_title_4">
               <h3><i class="icon_circle-slelected"></i>Select visit - treatment</h3>
             </div>
 
-            <ServiceChoosen @onSelectService="onSelectService($event)"></ServiceChoosen>
+            <ServiceChoosen :services="doctor.services" @onSelectService="onSelectService"></ServiceChoosen>
             
-            <hr>
-            <div class="text-center">
+            <div class="main_title_4 fadeIn animated" v-if="hasServices">
+              <h3><i class="icon_circle-slelected"></i>Select your date and time</h3>
+            </div>
+            
+            <BookingCalendar 
+              class="add_bottom_45 fadeIn animated" 
+              :multiple="false"
+              :startDate="startDate"
+              :availableDates="bookingDates"
+              :availableTimes="availableTimes"
+              @onSelectDate="onSelectDate($event)" 
+              @onSelectTime="onSelectTime($event)"
+              @onSelectMonth="onSelectMonth($event)"
+              v-if="hasServices">
+            </BookingCalendar>
+            
+            <hr v-if="hasServices && hasDate && hasTime">
+            <div class="text-center" v-if="hasServices && hasDate && hasTime">
               <a href="#" class="btn_1 medium" @click.stop.prevent="proceedBooking">Book Now</a>
             </div>
           </div>
@@ -235,13 +238,15 @@
           },
           img: '',
           isVisible: false,
+          services: []
         },
         startDate: new Date(),
         availableDates: [],
+        availableTimes: [],
         booking: {
           date: '',
           time: '',
-          service: ''
+          service: []
         }
       }
     },
@@ -259,6 +264,18 @@
       commentsRating() {
         return this.avgRating.toFixed(1)
       },
+      hasServices () {
+        return (this.booking.service||[]).length > 0
+      },
+      hasDate () {
+        return (this.booking.date||'').trim() != ""
+      },
+      hasTime () {
+        return typeof this.booking.time == 'string' ? (this.booking.time||"").trim() != "" : (this.booking.time||[]).length > 0
+      },
+      bookingDates () {
+        return this.availableDates.filter(f => f.times.filter(t => this.$moment(`${f.date} ${t}`, 'YYYY-MM-DD hh:mm a').isAfter()).length > 0).map( d => d.date)
+      },
       reviews() {
         return this.doctor.rating.comments.map(c => Object({
           rating: c.rate,
@@ -272,15 +289,19 @@
     methods: {
       onSelectDate (value) {
         this.booking.date = value
+        this.getDoctorBooking(this.$route.params.id, this.booking.date).then(() => {
+          this.availableTimes = this.availableDates.find(d => d.date === value).times
+        })
       },
       onSelectTime (value) {
         this.booking.time = value
       },
       onSelectService (value) {
         this.booking.service = value
+        this.getDoctorBooking(this.$route.params.id, this.$moment().format('YYYY-MM-DD'))
       },
       onSelectMonth (value) {
-
+         this.getDoctorBooking(this.$route.params.id, value.start)
       },
       proceedBooking () {
         if (this.booking.date && this.booking.time) {
@@ -317,6 +338,7 @@
               this.doctor.rating.patients = doctor.patients
               this.doctor.img = doctor.img
               this.doctor.isVisible = false
+              this.doctor.services = doctor.treatments.map(t => Object({...t.treatment, selected: false}))
 
               return this.doctor
             } else {
@@ -324,8 +346,8 @@
             }
           })
       },
-      getDoctorBooking(id) {
-        return getDoctorBooking({ id: id ,startDate: this.startDate })
+      getDoctorBooking(id, start) {
+        return getDoctorBooking({id , start })
           .then((response) => {
             this.availableDates = response.data.dates
             return response
@@ -339,9 +361,7 @@
 
       if (this.$route.params.id) {
         this.getDoctorInfo(this.$route.params.id).then((d) => {
-          this.getDoctorBooking(this.$route.params.id).then((b) => {
-            
-          })
+          this.getDoctorBooking(this.$route.params.id, this.startDate)
         })
       } else {
         this.$router.back()
