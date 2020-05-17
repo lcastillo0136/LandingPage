@@ -29,6 +29,10 @@
         type: Date,
         default: function () { return new Date() }
       },
+      disabledDays: {
+        type: Array,
+        default: function () { return [0] }
+      },
       availableDates: {
         type: Array,
         default: function () { return  ['2020-04-15','2020-04-16','2020-04-17'] }
@@ -71,6 +75,9 @@
       'disabledDates' () {
         window['$']('#calendar', this.$el).datepicker('fill')
       },
+      'disabledDays' () {
+        window['$']('#calendar', this.$el).datepicker('setDaysOfWeekDisabled', this.disabledDays)
+      },
       'startDate' () {
         window['$']('#calendar', this.$el).datepicker('setStartDate', this.startDate)
       }
@@ -97,7 +104,7 @@
     mounted () {
       window['$']('#calendar', this.$el).datepicker({
         todayHighlight: true,
-        daysOfWeekDisabled: [0],
+        daysOfWeekDisabled: this.disabledDays,
         weekStart: 0,
         format: "yyyy-mm-dd",
         defaultViewDate: 'month',
