@@ -183,6 +183,7 @@
         }, 600)
       },
       searchDoctors () {
+        this.loading = true
         getDoctorsByFilter({
           filter: this.searchValue,
           sort: this.filter.sort,
@@ -213,6 +214,7 @@
             },
             phone: d.phone
           }))
+          this.loading = false
         })
       },
       refresh () {
