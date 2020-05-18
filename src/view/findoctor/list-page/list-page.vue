@@ -6,7 +6,7 @@
     <div class="" :class="containerMap">
       <div class="row" :class="{ 'row-height': filter.layout === 'map' }">
         <div class="col-lg-7" v-if="filter.layout === 'list'">
-          <List :data="doctors" @onViewMapClick="showInMap"></List>
+          <List :data="doctors" :loading="loading" @onViewMapClick="showInMap"></List>
           <Paginator :paginator="paginator"  @onPage="onPage($event)"></Paginator>
         </div>
         <div class="col-lg-8" v-if="filter.layout === 'grid'">
@@ -17,7 +17,7 @@
           <SearchBar :total="doctors.length" :showing="doctors.length" :value="searchValue" :sticky="searchSticky" @onSearch="onSearch($event)" :onlyInput="true"></SearchBar>
           <FilterList :types="types" :sorts="sort" :selected="filter" @onFilter="onFilter($event)"></FilterList>
           
-          <List :data="doctors" @onViewMapClick="showInMap"></List>
+          <List :data="doctors" :loading="loading" @onViewMapClick="showInMap"></List>
           <Paginator :paginator="paginator" @onPage="onPage($event)"></Paginator>
         </div>
         <!-- /col -->
@@ -177,6 +177,7 @@
           layout: localRead('page.layout') || 'list',
           sort: localRead('page.sort') || 'best_rated'
         },
+        loading: false,
         map: {
           zoom: 3,
           center: [47.413220, -1.219482],

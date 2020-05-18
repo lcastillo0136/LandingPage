@@ -6,6 +6,7 @@ import store from './store'
 import VueWow from 'vue-wow'
 import Moment from 'vue-moment'
 import VueSweetalert2 from 'vue-sweetalert2'
+import VueSkeletonLoading from 'vue-skeleton-loading';
 import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
 
 import i18n from '@/locale'
@@ -34,6 +35,7 @@ Vue.use(Tabs)
 Vue.use(Tooltip)
 Vue.use(VueWow)
 Vue.use(Moment)
+Vue.use(VueSkeletonLoading)
 
 Vue.config.productionTip = false
 Vue.prototype.$config = config

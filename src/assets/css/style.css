@@ -2216,6 +2216,19 @@ a.wish_bt:hover:after, a.wish_bt.active:after {
     color: #fff !important
 }
 
+.vue-skeleton-loading .strip_list ul li:last-child a,
+.vue-skeleton-loading .strip_list ul li a,
+.vue-skeleton-loading .strip_list ul li a:hover,
+.vue-skeleton-loading .strip_list ul li a:focus,
+.vue-skeleton-loading .strip_list ul li a:active,
+.vue-skeleton-loading .strip_list ul li:last-child a:hover,
+.vue-skeleton-loading .strip_list ul li:last-child a:focus,
+.vue-skeleton-loading .strip_list ul li:last-child a:active {
+    border: 2px solid #e7e7e7;
+    color: #e7e7e7 !important;
+    background-color: #e7e7e7;
+}
+
 @media (max-width:991px) {
     .strip_list ul li:first-child {
         display: none
@@ -4993,4 +5006,38 @@ input[type=file].invalid::-webkit-file-upload-button,input[type=file].valid::-we
     padding: 8px 10px 8px 38px;
     background: url(/img/camera.svg) 8px center no-repeat #3f4079;
     outline: 0
+}
+.row {
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -ms-flex-wrap: wrap !important;
+    flex-wrap: wrap !important;
+    margin-right: -15px !important;
+    margin-left: -15px !important;
+    justify-content: normal !important;
+}
+.vue-skeleton-loading .square,.vue-skeleton-loading .circle {
+    border-radius: 8px;
+    background-image: linear-gradient(90deg, rgb(231, 231, 231) 0px, #f2efe9 40px, rgb(231, 231, 231) 80px);
+    background-size: 600px;
+    -webkit-animation: shine-lines 2s infinite ease-in-out;
+    animation: shine-lines 2s infinite ease-in-out;
+}
+
+@keyframes shine-lines {
+  0% {
+    background-position: -100px;
+  }
+  40%, 100% {
+    background-position: 500px;
+  }
+}
+@keyframes shine-avatar {
+  0% {
+    background-position: -32px;
+  }
+  40%, 100% {
+    background-position: 208px;
+  }
 }
