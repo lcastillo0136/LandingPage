@@ -5040,3 +5040,6 @@ input[type=file].invalid::-webkit-file-upload-button,input[type=file].valid::-we
     background-position: 208px;
   }
 }
+.justify-content-center {
+    justify-content: space-around !important;
+}
