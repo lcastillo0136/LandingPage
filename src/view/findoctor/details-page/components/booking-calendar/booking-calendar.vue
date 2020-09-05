@@ -13,7 +13,7 @@
     <div class="col-lg-5" v-if="hasTimes">
       <ul class="time_select version_2 add_top_20">
         <li v-for="(time, time_i) in listTimes" :key="time_i" :class="time_clases(time)">
-          <input :type="timeType" :id="'time_' + time_i" name="radio_time" :value="time" @change="selectedTime($event)" v-if="enabledTime(time)">
+          <input :type="timeType" :id="'time_' + time_i" name="radio_time" :value="time" @change="selectedTime($event, time)" v-if="enabledTime(time)">
           <label :for="'time_' + time_i">{{ time }}</label>
         </li>
       </ul>
@@ -83,12 +83,12 @@
       }
     },
     methods: {
-      selectedTime (time) {
+      selectedTime ($event, time) {
         if (this.multiple) {
-          this.$emit('onSelectTime', [...time.srcElement.parentElement.parentElement.querySelectorAll(':checked')].map(r => r.value))
+          this.$emit('onSelectTime', [...$event.srcElement.parentElement.parentElement.querySelectorAll(':checked')].map(r => r.value))
         } else {
           if (this.enabledTime(time)) {
-            this.$emit('onSelectTime', time.srcElement.value)
+            this.$emit('onSelectTime', time)
           }
         }
       },

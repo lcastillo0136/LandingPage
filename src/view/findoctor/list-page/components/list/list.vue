@@ -9,7 +9,7 @@
           <router-link :to="{ name: 'details-page', params: { id: doctor.id } }"><img :src="doctor.img" alt=""></router-link>
         </figure>
         <small>{{ doctor.speciality }}</small>
-        <h3>{{ doctor.name }}</h3>
+        <h3><router-link :to="{ name: 'details-page', params: { id: doctor.id } }">{{ doctor.name }}</router-link></h3>
         <p>{{ doctor.description }}.</p>
         <span class="rating">
           <i :class="{ 'icon_star':1, 'voted': r <= doctor.rating.rate }" v-for="r in rateTotal" :key="r"></i>
@@ -20,7 +20,7 @@
         </a-tooltip>
         <ul>
           <li><a href="#" @click.stop.prevent="$emit('onViewMapClick', doctor)" class="btn_listing">View on Map</a></li>
-          <li><a href="https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x0:0xa6a9af76b1e2d899!2sAssistance+–+Hôpitaux+De+Paris!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361" target="_blank">Directions</a></li>
+          <li><a :href="googleMapDir(doctor)" target="_blank">Directions</a></li>
           <li><router-link :to="{ name: 'details-page', params: { id: doctor.id } }">Book now</router-link></li>
         </ul>
       </div>
@@ -96,6 +96,9 @@
       },
       addToWishlist (doctor) {
         doctor.fav = !doctor.fav
+      },
+      googleMapDir(doctor) {
+        return `https://www.google.com/maps/dir//${doctor.map.address}/@${doctor.map.latitude},${doctor.map.longitude},14z/`.replace(/\s/ig, '+')
       }
     }
   }
