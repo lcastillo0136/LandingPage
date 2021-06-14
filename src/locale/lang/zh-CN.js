@@ -91,7 +91,14 @@ export default {
     },
     messages: {
       error: {
-        missing_info: 'Missing Information'
+        missing_info: 'Missing Information',
+        empty_name: 'Please fill this field',
+        empty_email: 'Please fill this field',
+        invalid_email: 'Invalid email format',
+        empty_password: 'Please fill this field',
+        incorrect_password: 'Passwords do not match',
+        please_accept_terms: 'Please accept terms and conditions',
+        'Network Error': 'Unable to connect to web server'
       },
       success: {
         registered: 'successfully user registered'
@@ -632,7 +639,10 @@ export default {
     pacient: 'Pacients',
     doctor: 'Doctors',
     nurse: 'Nurses',
-    clinic: 'Clinics'
+    clinic: 'Clinics',
+    client: 'Clients',
+    customer: 'Customers',
+    provider: 'Providers'
   },
   sorts: {
     closest: 'Closest', 

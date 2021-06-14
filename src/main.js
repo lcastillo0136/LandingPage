@@ -12,7 +12,8 @@ import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
 import i18n from '@/locale'
 import config from '@/config'
 
-import { Drawer, Menu, Icon, Tabs, Tooltip } from 'ant-design-vue'
+import * as Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.css';
 import 'ant-design-vue/lib/drawer/style/index.css';
 import 'ant-design-vue/lib/menu/style/index.css';
 import 'ant-design-vue/lib/tabs/style/index.css';
@@ -28,11 +29,9 @@ Vue.component('l-icon-default', LIconDefault)
 Vue.component('l-popup', LPopup)
 
 Vue.use(VueSweetalert2);
-Vue.use(Drawer)
-Vue.use(Menu)
-Vue.use(Icon)
-Vue.use(Tabs)
-Vue.use(Tooltip)
+
+Vue.use(Antd)
+
 Vue.use(VueWow)
 Vue.use(Moment)
 Vue.use(VueSkeletonLoading)

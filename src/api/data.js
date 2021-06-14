@@ -2,7 +2,7 @@ import axios from '@/libs/api.request'
 
 export const getTypes = () => {
   return axios.request({
-    url: 'types',
+    url: 'roles/list',
     method: 'get'
   })
 }
@@ -58,5 +58,13 @@ export const getDoctorBooking = (data) => {
     url: `/doctors/${data.id}/booking`,
     params: data,
     method: 'get'
+  })
+}
+
+export const registerCustomer = (data) => {
+  return axios.request({
+    url: `/register`,
+    data: data,
+    method: 'post'
   })
 }

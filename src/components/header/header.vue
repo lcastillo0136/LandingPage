@@ -80,9 +80,9 @@ export default {
         childrens: [{
           url: { name: 'list-page' },
           text: this.$t('header.menu.list_page')
-        }, {
-          url: { name: 'details-page' },
-          text: this.$t('header.menu.detail_page')
+        // }, {
+        //   url: { name: 'details-page' },
+        //   text: this.$t('header.menu.detail_page')
         }, {
           url: { name: 'login' },
           text: this.$t('header.menu.login')

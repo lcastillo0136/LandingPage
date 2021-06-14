@@ -61,7 +61,7 @@ class HttpRequest {
         }
       }
       addErrorLog(errorInfo)
-      return Promise.reject(error)
+      return Promise.reject(errorInfo)
     })
   }
   request (options) {

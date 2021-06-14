@@ -190,6 +190,28 @@ export default [
           icon: 'md-contacts'
         },
         component: () => import('@/view/' + config.theme + '/contacts')
+      }, 
+      {
+        path: '/terms-conditions.html',
+        name: 'terms-conditions',
+        meta: {
+          hideInMenu: true,
+          title: 'termsconditions.title',
+          notCache: true,
+          icon: 'md-contacts'
+        },
+        component: () => import('@/view/' + config.theme + '/contacts')
+      }, 
+      {
+        path: '/privacy.html',
+        name: 'privacy',
+        meta: {
+          hideInMenu: true,
+          title: 'privacy.title',
+          notCache: true,
+          icon: 'md-contacts'
+        },
+        component: () => import('@/view/' + config.theme + '/contacts')
       }, {
         path: "*",
         component: () => import('@/view/' + config.theme + '/404')

@@ -25,7 +25,7 @@
         </ul>
       </div>
     </u-animate-container>
-    <skeleton-loading v-for="sk in loadingData">
+    <skeleton-loading v-for="sk in loadingData" :key="index">
       <div class="strip_list">
         <div class="float-right clearfix">
           <square-skeleton :count="1" :boxProperties="{width: '42px', height: '42px'}"></square-skeleton>

@@ -59,6 +59,7 @@
   import { mapGetters, mapMutations } from 'vuex'
 
   import { getDoctorsByFilter } from '@/api/data'
+  
   export default {
     name: 'ListPage',
     components: {

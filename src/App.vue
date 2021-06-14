@@ -33,7 +33,16 @@ export default {
     ]),
   },
   async mounted () {
-    await this.getTypes()
+    await this.getTypes().catch((err) => {
+      if (err.data.message) {
+        this.$notification.error({
+          message: `Error: ${err.config.url}`,
+          description: err.data.message, 
+          placement: 'bottomLeft',
+          duration: 5
+        });
+      }
+    })
     await this.getSorts()
     this.getLocation().then((data) => {})
 

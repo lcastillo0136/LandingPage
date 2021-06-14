@@ -91,7 +91,14 @@ export default {
     },
     messages: {
       error: {
-        missing_info: 'Falta información'
+        missing_info: 'Falta información',
+        empty_name: 'Por favor complete este campo',
+        empty_email: 'Por favor complete este campo',
+        invalid_email: 'Formato de correo inválido',
+        empty_password: 'Por favor complete este campo',
+        incorrect_password: 'Las contraseñas no coinciden',
+        please_accept_terms: 'Acepta los términos y condiciones',
+        'Network Error': 'Unable to connect to web server'
       },
       success: {
         registered: 'Usuario registrado exitosamente'
@@ -629,7 +636,10 @@ export default {
     pacient: 'Pacientes',
     doctor: 'Doctores',
     nurse: 'Enfermeras',
-    clinic: 'Clinicas'
+    clinic: 'Clinicas',
+    client: 'Clientes',
+    customer: 'Comensales',
+    provider: 'Proveedores'
   },
   sorts: {
     closest: 'Cercanos', 

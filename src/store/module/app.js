@@ -38,8 +38,8 @@ export default {
       state.hasReadErrorPage = status
     },
     setTypes (state, types) {
-      state.filter.types = types.map(t => {
-        return { text: i18n.t('types.' + t), value: t }
+      state.filter.types = types.filter(f=>f.available_online).map(t => {
+        return { text: i18n.t('types.' + t.name), value: t.name }
       })
     },
     setSorts (state, sorts) {
@@ -71,9 +71,9 @@ export default {
       return new Promise((resolve, reject) => {
         try {
           getTypes(state.token).then(res => {
-            const data = res.data
-            commit('setTypes', ['all'].concat(data.types))
-            resolve(data)
+            const response = res.data
+            commit('setTypes', [{ name: 'all', available_online: true }].concat(response.data))
+            resolve(response)
           }).catch(err => {
             reject(err)
           })
