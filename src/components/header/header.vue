@@ -62,19 +62,7 @@ export default {
     options () {
       return [{
         text: this.$t('header.menu.home'),
-        childrens: [{
-          url: { name: 'home' },
-          text: this.$t('header.menu.home_default')
-        }, {
-          url: { name: 'home-2' },
-          text: this.$t('header.menu.home_2')
-        }, {
-          url: { name: 'home-3' },
-          text: this.$t('header.menu.home_3')
-        }, {
-          url: { name: 'home-4' },
-          text: this.$t('header.menu.home_4')
-        }]
+        url: '/'
       }, {
         text: this.$t('header.menu.pages'),
         childrens: [{

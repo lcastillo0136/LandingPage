@@ -639,7 +639,8 @@ export default {
     clinic: 'Clinics',
     client: 'Clients',
     customer: 'Customers',
-    provider: 'Providers'
+    provider: 'Providers',
+    enfermero_a: 'Nurses'
   },
   sorts: {
     closest: 'Closest', 

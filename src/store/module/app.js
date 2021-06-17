@@ -39,7 +39,7 @@ export default {
     },
     setTypes (state, types) {
       state.filter.types = types.filter(f=>f.available_online).map(t => {
-        return { text: i18n.t('types.' + t.name), value: t.name }
+        return { text: i18n.t('types.' + (t.name || '').trim().toLowerCase().replace(/[\/\(\)\[\]]/ig, '_')), value: t.name }
       })
     },
     setSorts (state, sorts) {

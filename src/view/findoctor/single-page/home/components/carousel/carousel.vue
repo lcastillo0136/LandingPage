@@ -10,8 +10,8 @@
             <router-link :to="{ name: 'details-page', params: { id: doctor.id }}">
               <div class="views"><i class="icon-eye-7"></i>{{ doctor.viewed }}</div>
               <div class="title">
-                <h4>{{ doctor.title }} {{ doctor.name }}<em>{{ doctor.speciality }}</em></h4>
-              </div><img :src="getImage()" alt="">
+                <h4>{{ doctor.title }} {{ doctor.first_name }} {{ doctor.last_name }}<em>{{ doctor.especialidad }}</em></h4>
+              </div><img :src="doctor.avatar" alt="">
             </router-link>
           </div>
         </carousel>
@@ -23,6 +23,7 @@
 </template>
 <script>
   import carousel from 'vue-owl-carousel'
+  import config from '@/config'
   import { getDoctorsByFilter } from '@/api/data'
 
   export default {
@@ -36,9 +37,6 @@
       }
     },
     methods: {
-      getImage() {
-        return `img/doctor_${Math.ceil(Math.random() * (5))}_carousel.jpg`
-      }
     },
     mounted() {
       getDoctorsByFilter({
@@ -46,7 +44,7 @@
         sort: 'most_viewed',
         limit: '7'
       }).then((data) => { 
-        this.doctors = data.data.doctors
+        this.doctors = data.data.data.doctors
       })
     }
   }

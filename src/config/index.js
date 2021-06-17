@@ -18,6 +18,7 @@ export default {
    */
   baseUrl: {
     dev: 'http://localhost:8000/api/',
+    storage: 'http://localhost:8000',
     pro: 'https://produce.com/'
   },
   /**

@@ -39,7 +39,7 @@
       getSpecialitiesList({
         limit: 8
       }).then((request) => {
-        this.specializations = request.data.specialities.map(s => Object({ text: s.name, count: { doctors: s.value, clinics: 0 }}))
+        this.specializations = request.data.data.specialities.map(s => Object({ text: s.name, count: { doctors: s.value, clinics: 0 }}))
       })
     }
   }

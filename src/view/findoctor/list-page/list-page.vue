@@ -59,6 +59,7 @@
   import { mapGetters, mapMutations } from 'vuex'
 
   import { getDoctorsByFilter } from '@/api/data'
+
   
   export default {
     name: 'ListPage',
@@ -193,19 +194,19 @@
           page: this.paginator.page,
           location: this.geoLocation
         }).then((data) => { 
-          this.paginator.pages = Math.ceil(data.data.paginator.pages)
-          this.paginator.page = data.data.paginator.page
-          this.paginator.total = data.data.paginator.total
-          this.doctors = data.data.doctors.map(d => Object({
+          this.paginator.pages = Math.ceil(data.data.data.paginator.pages)
+          this.paginator.page = data.data.data.paginator.page
+          this.paginator.total = data.data.data.paginator.total
+          this.doctors = Object.values(data.data.data.doctors).map(d => Object({
             id: d.id,
             speciality: d.speciality,
-            name: `${d.title} ${d.name}`,
-            description: d.description,
+            name: `${d.title} ${d.first_name} ${d.last_name}`,
+            description: d.biography,
             rating: {
               rate: d.rate,
               comments: d.comments
             },
-            img: d.img,
+            img: d.avatar,
             isVisible: false,
             fav: d.fav,
             map: {

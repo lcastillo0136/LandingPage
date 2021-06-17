@@ -48,12 +48,12 @@
     },
     mounted () {
       getSpecialitiesList().then((request) => {
-        this.lists.types = request.data.specialities.map(s => Object({ name: s.name, total: s.value }))
+        this.lists.types = request.data.data.specialities.map(s => Object({ name: s.name, total: s.value }))
       })
       getCitiesList({
         limit: 9
       }).then((request) => {
-        this.lists.zones = request.data.cities.map(c => Object({ name: c.name, total: c.value }))
+        this.lists.zones = request.data.data.cities.map(c => Object({ name: c.name, total: c.value }))
       })
     }
   }

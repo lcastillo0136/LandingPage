@@ -19,13 +19,14 @@
           <a href="#" class="badge_list_1" @click.stop.prevent=""><img src="img/badges/badge_1.svg" width="15" height="15" alt=""></a>
         </a-tooltip>
         <ul>
-          <li><a href="#" @click.stop.prevent="$emit('onViewMapClick', doctor)" class="btn_listing">View on Map</a></li>
-          <li><a :href="googleMapDir(doctor)" target="_blank">Directions</a></li>
+          <li v-if="hasLocation(doctor)"><a href="#" @click.stop.prevent="$emit('onViewMapClick', doctor)" class="btn_listing">View on Map</a></li>
+          <li v-if="hasLocation(doctor)"><a :href="googleMapDir(doctor)" target="_blank">Directions</a></li>
+          <li v-if="!hasLocation(doctor)">&nbsp;</li>
           <li><router-link :to="{ name: 'details-page', params: { id: doctor.id } }">Book now</router-link></li>
         </ul>
       </div>
     </u-animate-container>
-    <skeleton-loading v-for="sk in loadingData" :key="index">
+    <skeleton-loading v-for="(sk, index) in loadingData" :key="index">
       <div class="strip_list">
         <div class="float-right clearfix">
           <square-skeleton :count="1" :boxProperties="{width: '42px', height: '42px'}"></square-skeleton>
@@ -99,6 +100,9 @@
       },
       googleMapDir(doctor) {
         return `https://www.google.com/maps/dir//${doctor.map.address}/@${doctor.map.latitude},${doctor.map.longitude},14z/`.replace(/\s/ig, '+')
+      },
+      hasLocation(doctor) {
+        return doctor.map.latitude && doctor.map.longitude
       }
     }
   }

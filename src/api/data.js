@@ -16,7 +16,7 @@ export const getSorts = () => {
 
 export const getDoctorsByFilter = (filter) => {
   return axios.request({
-    url: 'doctors',
+    url: 'doctors/list',
     data: filter,
     method: 'post'
   })
@@ -32,7 +32,7 @@ export const saveErrorLogger = info => {
 
 export const getSpecialitiesList = (filter) => {
   return axios.request({
-    url: 'specialities',
+    url: 'specialities/list',
     data: filter,
     method: 'post'
   })
@@ -40,7 +40,7 @@ export const getSpecialitiesList = (filter) => {
 
 export const getCitiesList = (filter) => {
   return axios.request({
-    url: 'cities',
+    url: 'cities/list',
     data: filter,
     method: 'post'
   })
