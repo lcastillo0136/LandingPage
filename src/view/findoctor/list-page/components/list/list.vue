@@ -8,21 +8,22 @@
         <figure>
           <router-link :to="{ name: 'details-page', params: { id: doctor.id } }"><img :src="doctor.img" alt=""></router-link>
         </figure>
-        <small>{{ doctor.speciality }}</small>
+        <small>{{ doctor.especialidad }}</small>
         <h3><router-link :to="{ name: 'details-page', params: { id: doctor.id } }">{{ doctor.name }}</router-link></h3>
-        <p>{{ doctor.description }}.</p>
+        <p v-if="doctor.description" v-html="doctor.description.substring(0, 150)"></p>
+        <br v-else>
         <span class="rating">
           <i :class="{ 'icon_star':1, 'voted': r <= doctor.rating.rate }" v-for="r in rateTotal" :key="r"></i>
-          <small>({{ doctor.rating.comments }})</small>
+          <small>({{ doctor.views }})</small>
         </span>
         <a-tooltip placement="top" title="Badge Level">
           <a href="#" class="badge_list_1" @click.stop.prevent=""><img src="img/badges/badge_1.svg" width="15" height="15" alt=""></a>
         </a-tooltip>
         <ul>
-          <li v-if="hasLocation(doctor)"><a href="#" @click.stop.prevent="$emit('onViewMapClick', doctor)" class="btn_listing">View on Map</a></li>
-          <li v-if="hasLocation(doctor)"><a :href="googleMapDir(doctor)" target="_blank">Directions</a></li>
+          <li v-if="hasLocation(doctor)"><a href="#" @click.stop.prevent="$emit('onViewMapClick', doctor)" class="btn_listing">Ver en mapa</a></li>
+          <li v-if="hasLocation(doctor)"><a :href="googleMapDir(doctor)" target="_blank">Direcciones</a></li>
           <li v-if="!hasLocation(doctor)">&nbsp;</li>
-          <li><router-link :to="{ name: 'details-page', params: { id: doctor.id } }">Book now</router-link></li>
+          <li><router-link :to="{ name: 'details-page', params: { id: doctor.id } }">Agendar ahora</router-link></li>
         </ul>
       </div>
     </u-animate-container>
@@ -51,9 +52,9 @@
           <a href="#" class="badge_list_1" @click.stop.prevent=""><img src="img/badges/badge_0.svg" width="15" height="15" alt=""></a>
         </a-tooltip>
         <ul>
-          <li><a href="#" class="btn_listing">View on Map</a></li>
-          <li><a href="" target="_blank">Directions</a></li>
-          <li><router-link to="">Book now</router-link></li>
+          <li><a href="#" class="btn_listing">Ver en mapa</a></li>
+          <li><a href="" target="_blank">Direcciones</a></li>
+          <li><router-link to="">Agendar ahora</router-link></li>
         </ul>
       </div>
     </skeleton-loading>
@@ -99,7 +100,7 @@
         doctor.fav = !doctor.fav
       },
       googleMapDir(doctor) {
-        return `https://www.google.com/maps/dir//${doctor.map.address}/@${doctor.map.latitude},${doctor.map.longitude},14z/`.replace(/\s/ig, '+')
+        return `https://www.google.com/maps/search/?api=1&query=${doctor.map.latitude},${doctor.map.longitude}`
       },
       hasLocation(doctor) {
         return doctor.map.latitude && doctor.map.longitude

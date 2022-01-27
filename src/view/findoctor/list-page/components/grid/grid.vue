@@ -13,9 +13,9 @@
             </router-link>
           </figure>
           <div class="wrapper">
-            <small>{{ doctor.speciality }}</small>
+            <small>{{ doctor.especialidad }}</small>
             <h3>{{ doctor.name }}</h3>
-            <p>{{ doctor.description }}.</p>
+            <p v-if="doctor.description" v-html="doctor.description.substring(0, 150)"></p>
             <span class="rating">
               <i :class="{ 'icon_star':1, 'voted': r <= doctor.rating.rate }" v-for="r in rateTotal" :key="r"></i>
               <small>({{ doctor.rating.comments }})</small>
@@ -25,9 +25,9 @@
             </a-tooltip>
           </div>
           <ul>
-            <li><a href="#" @click.stop.prevent="$emit('onViewMapClick', doctor)" class="btn_listing">View on Map</a></li>
-            <li><a :href="googleMapDir(doctor)" target="_blank">Directions</a></li>
-            <li><router-link :to="{ name: 'details-page', params: { id: doctor.id } }">Book now</router-link></li>
+            <li><a href="#" @click.stop.prevent="$emit('onViewMapClick', doctor)" class="btn_listing">Ver en mapa</a></li>
+            <li><a :href="googleMapDir(doctor)" target="_blank">Direcciones</a></li>
+            <li><router-link :to="{ name: 'details-page', params: { id: doctor.id } }">Agendar ahora</router-link></li>
           </ul>
         </div>
       </u-animate-container>

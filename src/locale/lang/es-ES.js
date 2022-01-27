@@ -640,13 +640,14 @@ export default {
     client: 'Clientes',
     customer: 'Comensales',
     provider: 'Proveedores',
-    enfermero_a: 'Enfermero/a'
+    enfermero_a: 'Enfermero/a',
+    sucursal: 'Sucursales'
   },
   sorts: {
     closest: 'Cercanos', 
     best_rated: 'Mejor Puntuación', 
-    oldest: 'Por Edad 🠕', 
-    youngest: 'Por Edad 🠗',
+    oldest: 'Por Edad ↑', 
+    youngest: 'Por Edad ↓',
     most_viewed: 'Mas vistos'
   }
 }

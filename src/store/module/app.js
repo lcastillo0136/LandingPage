@@ -86,7 +86,7 @@ export default {
       return new Promise((resolve, reject) => {
         try {
           getSorts(state.token).then(res => {
-            const data = res.data
+            const data = res.data.data
             commit('setSorts', [].concat(data.sorts))
             resolve(data)
           }).catch(err => {

@@ -167,7 +167,7 @@ html * {
     -moz-osx-font-smoothing: grayscale
 }
 
-body {
+body.landing {
     background: #fff;
     font-size: 14px;
     font-size: .875rem;
@@ -2271,7 +2271,6 @@ a.wish_bt:hover:after, a.wish_bt.active:after {
 .marker_info {
     width: 200px;
     padding: 20px 15px 15px;
-    height: 250px;
     text-align: center;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;

@@ -17,7 +17,7 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    dev: 'http://localhost:8000/api/',
+    dev: 'https://doctors-api.onix-software.com/api/',
     storage: 'http://localhost:8000',
     pro: 'https://produce.com/'
   },

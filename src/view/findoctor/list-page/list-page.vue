@@ -165,7 +165,6 @@
         this.searchDoctors()
       },
       showInMap (doctor) {
-        // this.map.zoom = 13
         this.map.center = [doctor.map.latitude , doctor.map.longitude]
         this.$refs.map.closePopup()
         this.map.marker = {
@@ -173,7 +172,7 @@
           latitude: doctor.map.latitude,
           longitude: doctor.map.longitude,
           img: doctor.img,
-          speciality: doctor.speciality,
+          especialidad: doctor.especialidad,
           name: doctor.name,
           address: doctor.map.address,
           phone: doctor.phone
@@ -199,7 +198,7 @@
           this.paginator.total = data.data.data.paginator.total
           this.doctors = Object.values(data.data.data.doctors).map(d => Object({
             id: d.id,
-            speciality: d.speciality,
+            especialidad: d.especialidad,
             name: `${d.title} ${d.first_name} ${d.last_name}`,
             description: d.biography,
             rating: {
@@ -210,11 +209,12 @@
             isVisible: false,
             fav: d.fav,
             map: {
-              latitude: d.latitude,
-              longitude: d.longitude,
-              address: `${d.address}, ${d.city}`
+              latitude: d.address.latitude,
+              longitude: d.address.longitude,
+              address: `${d.address.street} ${d.address.suburb}, ${d.address.city}`
             },
-            phone: d.phone
+            phone: d.phone,
+            views: d.viewed,
           }))
           this.loading = false
         })

@@ -4,33 +4,36 @@
     <l-marker ref="marker" :lat-lng="[ map.marker.latitude, map.marker.longitude ]" :icon="icon" v-if="map.marker">
       <l-popup :options="{ 'className' : 'custom' }">
         <div class="marker_info" v-if="map.marker">
-          <figure>
+          <figure v-if="map.marker.img">
             <router-link :to="{ name: 'details-page', params: { id: map.marker.id }  }">
               <img :src="map.marker.img" alt="Image">
             </router-link>
           </figure>
-          <small>{{ map.marker.speciality }}</small>
+          <small v-if="map.marker.especialidad">{{ map.marker.especialidad }}</small>
           <h3>
             <router-link :to="{ name: 'details-page', params: { id: map.marker.id }  }">
               {{ map.marker.name }}
             </router-link>
           </h3>
-          <span>{{ map.marker.address }}</span>
+          <span v-if="map.marker.address">{{ map.marker.address }}</span>
           <div class="marker_tools">
             <form action="http://maps.google.com/maps" method="get" target="_blank" style="display:inline-block">
-              <input name="saddr" value="" type="hidden">
+              <input type="hidden" name="saddr" :value="geoLocation.latitude+','+geoLocation.longitude">
               <input type="hidden" name="daddr" :value="map.marker.latitude+','+ map.marker.longitude">
-              <button type="submit" value="Get directions" class="btn_infobox_get_directions">Directions</button>
+              <button type="submit" value="Get directions" class="btn_infobox_get_directions">Direcciones</button>
             </form>
-            <a :href="'tel:' + map.marker.phone" class="btn_infobox_phone">{{ map.marker.phone }}</a>
+            <a :href="'tel:' + map.marker.phone" class="btn_infobox_phone" v-if="map.marker.phone">{{ map.marker.phone | phone }}</a>
           </div>
         </div>
       </l-popup>
+    </l-marker>
+    <l-marker ref="markerHome" :lat-lng="[ geoLocation.latitude, geoLocation.longitude ]" :icon="iconHome" v-if="geoLocation">
     </l-marker>
   </l-map>
 </template>
 <script>
   import { latLng, icon } from "leaflet"
+  import { mapGetters, mapMutations } from 'vuex'
 
   export default {
     name: 'ListMap',
@@ -49,6 +52,9 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'geoLocation'
+      ]),
       center () {
         return this.map.center || [47.413220, -1.219482]
       },
@@ -61,6 +67,17 @@
       icon () {
         return icon({
           iconUrl:       'img/pin/Doctors.png',
+          shadowUrl:     '',
+          iconSize:    [25, 35],
+          shadowSize:  [25, 35],
+          iconAnchor:  [12, 35],
+          popupAnchor: [1, -35],
+          tooltipAnchor: [16, -28],
+        });
+      },
+      iconHome() {
+        return icon({
+          iconUrl:       'img/pin/Home.png',
           shadowUrl:     '',
           iconSize:    [25, 35],
           shadowSize:  [25, 35],
@@ -88,6 +105,8 @@
       }
     },
     mounted() {
+      this.centerUpdated([this.geoLocation.latitude, this.geoLocation.longitude]);
+      this.zoomUpdated(15)
     }
   }
 </script>

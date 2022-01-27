@@ -1,4 +1,3 @@
-
 import Vue from 'vue'
 import App from './App'
 import router from './router'
@@ -38,6 +37,10 @@ Vue.use(VueSkeletonLoading)
 
 Vue.config.productionTip = false
 Vue.prototype.$config = config
+
+Vue.filter('phone', function (phone) {
+  return `${phone}`.replace(/[^0-9]/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+});
 
 new Vue({
   el: '#app',

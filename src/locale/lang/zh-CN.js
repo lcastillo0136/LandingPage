@@ -643,7 +643,8 @@ export default {
     client: 'Clients',
     customer: 'Customers',
     provider: 'Providers',
-    enfermero_a: 'Nurses'
+    enfermero_a: 'Nurses',
+    sucursal: 'Offices'
   },
   sorts: {
     closest: 'Closest', 

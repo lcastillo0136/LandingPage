@@ -1,10 +1,10 @@
 <template>
   <div class="box_profile">
-    <figure>
+    <figure v-if="doctor.img">
       <img :src="doctor.img" alt="" class="img-fluid">
     </figure>
-    <small>{{ doctor.speciality }}</small>
-    <h1>{{ doctor.name }}</h1>
+    <small v-if="doctor.especialidad">{{ doctor.especialidad }}</small>
+    <h1 v-if="doctor.name">{{ doctor.name }}</h1>
     <span class="rating">
       <i :class="{ 'icon_star':1, 'voted': r <= doctor.rating.rate }" v-for="r in rateTotal" :key="r"></i>
       <small>({{ commentsTotal }})</small>
@@ -13,14 +13,16 @@
       </a-tooltip>
     </span>
     <ul class="statistic">
-      <li>{{ doctor.rating.views }} Views</li>
-      <li>{{ doctor.rating.patients }} Patients</li>
+      <li>{{ doctor.rating.views }} Vistas</li>
+      <li>{{ doctor.rating.patients }} Pacientes</li>
     </ul>
     <ul class="contacts">
-      <li><h6>Address</h6>{{ doctor.address }}</li>
-      <li><h6>Phone</h6><a :href="'tel:' + doctor.phone_number ">{{ doctor.phone_number }}</a></li>
+      <li><h6>Direccion</h6>{{ doctor.address }}</li>
+      <li v-if="doctor.phone_number"><h6>Telefono</h6><a :href="'tel:' + doctor.phone_number ">{{ doctor.phone_number | phone }}</a></li>
     </ul>
-    <div class="text-center"><a href="https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x0:0xa6a9af76b1e2d899!2sAssistance+–+Hôpitaux+De+Paris!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361" class="btn_1 outline" target="_blank"><i class="icon_pin"></i> View on map</a></div>
+    <div class="text-center">
+      <a :href="googleMapDir" class="btn_1 outline" target="_blank"><i class="icon_pin"></i> Ver en mapa</a>
+    </div>
   </div>
 </template>
 <script>
@@ -35,7 +37,10 @@
       },
       commentsTotal() {
         return this.doctor.rating ? (this.doctor.rating.comments||[]).length : 0
-      }
+      },
+      googleMapDir() {
+        return `https://www.google.com/maps/search/?api=1&query=${this.doctor.map.latitude},${this.doctor.map.longitude}`
+      },
     },
   }
 </script>

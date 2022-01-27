@@ -13,13 +13,13 @@
           
           <div class="box_general_2 add_bottom_45">
             <div class="main_title_4">
-              <h3><i class="icon_circle-slelected"></i>Select visit - treatment</h3>
+              <h3><i class="icon_circle-slelected"></i>Elije tu consulta</h3>
             </div>
 
             <ServiceChoosen :services="doctor.services" @onSelectService="onSelectService"></ServiceChoosen>
             
             <div class="main_title_4 fadeIn animated" v-if="hasServices">
-              <h3><i class="icon_circle-slelected"></i>Select your date and time</h3>
+              <h3><i class="icon_circle-slelected"></i>Elije tu horario</h3>
             </div>
             
             <BookingCalendar 
@@ -37,7 +37,7 @@
             
             <hr v-if="hasServices && hasDate && hasTime">
             <div class="text-center" v-if="hasServices && hasDate && hasTime">
-              <a href="#" class="btn_1 medium" @click.stop.prevent="proceedBooking">Book Now</a>
+              <a href="#" class="btn_1 medium" @click.stop.prevent="proceedBooking">Agendar ya</a>
             </div>
           </div>
           <!-- /box_general -->
@@ -45,14 +45,14 @@
           <div class="tabs_styled_2">
             <a-tabs>
               <a-tab-pane tab="General Info" key="1">
-                <p class="lead add_bottom_30">Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+                <p class="lead add_bottom_30" v-html="doctor.short_description"></p>
                 <div class="indent_title_in">
                   <i class="pe-7s-user"></i>
-                  <h3>Professional statement</h3>
-                  <p>Mussum ipsum cacilds, vidis litro abertis.</p>
+                  <h3>Biografia</h3>
+                  <p v-if="doctor.quote">{{ doctor.quote }}.</p>
                 </div>
                 <div class="wrapper_indent">
-                  <p>{{ doctor.description }}</p>
+                  <p v-html="doctor.description"></p>
                   <h6>Specializations</h6>
                   <div class="row">
                     <div class="col-lg-6">
@@ -220,13 +220,13 @@
     },
     data () {
       return {
-        breadcrumb: [
-          { route: { name: 'home' }, text: 'Home' }, 
-          { route: { name:'category' }, text: 'Category' }, 
-          { text: 'Page active' }
+        breadcrumb: () => [
+          { route: { name: 'home' }, text: 'Inicio' }, 
+          { route: { name: 'list-page' }, text: 'Listado' }, 
+          { text: this.doctor.name }
         ],
         doctor: {
-          speciality: '',
+          especialidad: '',
           name: '',
           description: '',
           address: '',
@@ -239,7 +239,12 @@
           },
           img: '',
           isVisible: false,
-          services: []
+          services: [],
+          map: {
+            latitude: 0,
+            longitude: 0,
+            address: ``
+          },
         },
         startDate: new Date(),
         disabledDays: [0],
@@ -325,22 +330,26 @@
         return (this.countStars(star) * 100) / this.reviews.length
       },
       getDoctorInfo (id) {
-        return getDoctorInfo({id})
+        return getDoctorInfo({id}).then((response) => response.data)
           .then((response) => {
-            const { doctor } = response.data
+            const doctor = response.data
             if (doctor) {
-              this.doctor.speciality = doctor.speciality
-              this.doctor.name = `${doctor.title} ${doctor.name}`
-              this.doctor.description = doctor.description
-              this.doctor.address = doctor.address
+              this.doctor.especialidad = doctor.especialidad
+              this.doctor.name = `${doctor.title} ${doctor.first_name}`
+              this.doctor.description = doctor.biography
+              this.doctor.address = `${doctor.address.street} ${doctor.address.suburb}, ${doctor.address.city}`
               this.doctor.phone_number = doctor.phone
               this.doctor.rating.rate = doctor.rate
-              this.doctor.rating.comments = doctor.comments
+              this.doctor.rating.comments = doctor.comments || []
               this.doctor.rating.views = doctor.viewed
               this.doctor.rating.patients = doctor.patients
-              this.doctor.img = doctor.img
+              this.doctor.img = doctor.avatar
               this.doctor.isVisible = false
-              this.doctor.services = doctor.treatments.map(t => Object({...t.treatment, selected: false}))
+              this.doctor.services = (doctor.treatments||[]).map(t => Object({...t.treatment, selected: false}))
+
+              this.doctor.map.latitude = doctor.address.latitude
+              this.doctor.map.longitude = doctor.address.longitude
+              this.doctor.map.address = `${doctor.address.street} ${doctor.address.suburb}, ${doctor.address.city}`
 
               return this.doctor
             } else {
@@ -363,6 +372,7 @@
 
       if (this.$route.params.id) {
         this.getDoctorInfo(this.$route.params.id).then((d) => {
+          document.title = `Informacion ${d.name}`;
           this.getDoctorBooking(this.$route.params.id, this.startDate)
         })
       } else {

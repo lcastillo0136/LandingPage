@@ -15,7 +15,7 @@
     name: 'BreadCrumb',
     props: {
       routes: {
-        type: Array,
+        type: [Array, Function],
         default: function () {
           return [{
             route: '/',
@@ -26,7 +26,7 @@
     },
     computed: {
       bread () {
-        return this.routes
+        return typeof this.routes == 'function' ? this.routes() : this.routes
       }
     }
   }
