@@ -12,9 +12,9 @@
     </div>
     <div class="col-lg-5" v-if="hasTimes">
       <ul class="time_select version_2 add_top_20">
-        <li v-for="(time, time_i) in listTimes" :key="time_i" :class="time_clases(time)">
-          <input :type="timeType" :id="'time_' + time_i" name="radio_time" :value="time" @change="selectedTime($event, time)" v-if="enabledTime(time)">
-          <label :for="'time_' + time_i">{{ time }}</label>
+        <li v-for="(slot, time_i) in listTimes" :key="time_i" :class="time_clases(slot)">
+          <input :type="timeType" :id="'time_' + time_i" name="radio_time" :value="slot" @change="selectedTime($event, slot)" v-if="enabledTime(slot)">
+          <label :for="'time_' + time_i">{{ slot.time }}</label>
         </li>
       </ul>
     </div>
@@ -39,7 +39,7 @@
       },
       disabledDates: {
         type: Array,
-        default: function () { return ['2020-04-16','2020-04-21','2020-04-30'] }
+        default: function () { return [] }
       },
       availableTimes: {
         type: Array,
@@ -83,22 +83,22 @@
       }
     },
     methods: {
-      selectedTime ($event, time) {
+      selectedTime ($event, slot) {
         if (this.multiple) {
           this.$emit('onSelectTime', [...$event.srcElement.parentElement.parentElement.querySelectorAll(':checked')].map(r => r.value))
         } else {
-          if (this.enabledTime(time)) {
-            this.$emit('onSelectTime', time)
+          if (this.enabledTime(slot)) {
+            this.$emit('onSelectTime', slot.time)
           }
         }
       },
-      time_clases (time) {
+      time_clases (slot) {
         return {
-          'disabled': !this.enabledTime(time)
+          'disabled': !this.enabledTime(slot)
         }
       },
-      enabledTime (time) {
-        return this.$moment(`${this.selected.date} ${time}`, 'YYYY-MM-DD hh:mm a').isAfter()
+      enabledTime (slot) {
+        return this.$moment(`${this.selected.date} ${slot.time}`, 'YYYY-MM-DD hh:mm a').isAfter() && slot.available
       }
     },
     mounted () {

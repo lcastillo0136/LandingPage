@@ -3,7 +3,7 @@
     <li v-for="(service, service_i) in services" :key="service_i">
       <div class="checkbox">
         <input :type="serviceType" class="css-checkbox" :id="'booking_service_' + service_i" :name="'booking_service'" v-model="service.selected" @change="selectedService(service, $event)">
-        <label :for="'booking_service_' + service_i" class="css-label">{{ service.name }} <strong>${{ service.cost }}</strong></label>
+        <label :for="'booking_service_' + service_i" class="css-label">{{ service.name }} <strong>{{ service.price | currency }}</strong></label>
       </div>
     </li>
   </ul>

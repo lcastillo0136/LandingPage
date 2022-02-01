@@ -42,6 +42,10 @@ Vue.filter('phone', function (phone) {
   return `${phone}`.replace(/[^0-9]/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
 });
 
+Vue.filter('currency', function (value, style) {
+  return (typeof value !== "number") ? value : (new Intl.NumberFormat('en-US', { style: 'currency', currency: style || 'USD' })).format(value);
+});
+
 new Vue({
   el: '#app',
   router,

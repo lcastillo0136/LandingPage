@@ -27,6 +27,7 @@
               :multiple="false"
               :startDate="startDate"
               :disabledDays="disabledDays"
+              :disabledDates="disabledDates"
               :availableDates="bookingDates"
               :availableTimes="availableTimes"
               @onSelectDate="onSelectDate($event)" 
@@ -55,27 +56,24 @@
                   <p v-html="doctor.description"></p>
                   <h6>Specializations</h6>
                   <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6" v-for="(skills_grp, skills_grp_i) in skills" :key="skills_grp_i">
+                      <ul class="bullets">
+                        <li v-for="(skill, skill_i) in skills_grp" :key="skill_i">{{ skill.name }}</li>
+                      </ul>
+                    </div>
+                    <!-- <div class="col-lg-6">
                       <ul class="bullets">
                         <li>Abdominal Radiology</li>
                         <li>Addiction Psychiatry</li>
                         <li>Adolescent Medicine</li>
                         <li>Cardiothoracic Radiology </li>
                       </ul>
-                    </div>
-                    <div class="col-lg-6">
-                      <ul class="bullets">
-                        <li>Abdominal Radiology</li>
-                        <li>Addiction Psychiatry</li>
-                        <li>Adolescent Medicine</li>
-                        <li>Cardiothoracic Radiology </li>
-                      </ul>
-                    </div>
+                    </div> -->
                   </div>
                   <!-- /row-->
                 </div>
                 <!-- /wrapper indent -->
-                
+                <!-- 
                 <hr>
                 
                 <div class="indent_title_in">
@@ -91,50 +89,30 @@
                     <li><strong>Montefiore Medical Center</strong> - Residency in Internal Medicine</li>
                     <li><strong>New York Medical College</strong> - Master Internal Medicine</li>
                   </ul>
-                </div>
+                </div> -->
                 <!--  End wrapper indent -->
                 
                 <hr>
 
                 <div class="indent_title_in">
                   <i class="pe-7s-cash"></i>
-                  <h3>Prices &amp; Payments</h3>
-                  <p>Mussum ipsum cacilds, vidis litro abertis.</p>
+                  <h3>Precios &amp; Servicios</h3>
+                  <p>Servicios disponibles y precios.</p>
                 </div>
                 <div class="wrapper_indent">
-                  <p>Zril causae ancillae sit ea. Dicam veritus mediocritatem sea ex, nec id agam eius. Te pri facete latine salutandi, scripta mediocrem et sed, cum ne mundi vulputate. Ne his sint graeco detraxit, posse exerci volutpat has in.</p>
+                  <p></p>
                   <div class="table-responsive">
                     <table class="table  table-striped">
                       <thead>
                         <tr>
-                          <th>Service - Visit</th>
-                          <th>Price</th>
+                          <th>Servicio</th>
+                          <th>Precio</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>New patient visit</td>
-                          <td>$34</td>
-                        </tr>
-                        <tr>
-                          <td>General consultation</td>
-                          <td>$60</td>
-                        </tr>
-                        <tr>
-                          <td>Back Pain</td>
-                          <td>$40</td>
-                        </tr>
-                        <tr>
-                          <td>Diabetes Consultation</td>
-                          <td>$55</td>
-                        </tr>
-                        <tr>
-                          <td>Eating disorder</td>
-                          <td>$60</td>
-                        </tr>
-                        <tr>
-                          <td>Foot Pain</td>
-                          <td>$35</td>
+                        <tr v-for="(service, service_i) in doctor.services" :key="service_i">
+                          <td>{{ service.name }}</td>
+                          <td>{{ service.price | currency }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -209,6 +187,7 @@
   import ServiceChoosen from './components/service-choosen'
 
   import { getDoctorInfo, getDoctorBooking } from '@/api/data'
+  import _ from 'lodash';
 
   export default {
     name: 'DetailsPage',
@@ -245,16 +224,19 @@
             longitude: 0,
             address: ``
           },
+          skills: []
         },
         startDate: new Date(),
         disabledDays: [0],
         availableDates: [],
         availableTimes: [],
+        disabledDates: [ '2022-02-02' ],
         booking: {
           date: '',
           time: '',
           service: []
-        }
+        },
+        viewDate: ''
       }
     },
     computed: {
@@ -281,7 +263,7 @@
         return typeof this.booking.time == 'string' ? (this.booking.time||"").trim() != "" : (this.booking.time||[]).length > 0
       },
       bookingDates () {
-        return this.availableDates.filter(f => f.times.filter(t => this.$moment(`${f.date} ${t}`, 'YYYY-MM-DD hh:mm a').isAfter()).length > 0).map( d => d.date)
+        return this.availableDates.filter(f => f.times.filter(t => this.$moment(`${f.date} ${t.time}`, 'YYYY-MM-DD hh:mm a').isAfter()).length > 0).map( d => d.date)
       },
       reviews() {
         return this.doctor.rating.comments.map(c => Object({
@@ -291,6 +273,9 @@
           date: c.date,
           comment: c.comment
         }))
+      },
+      skills() {
+        return _.chunk(this.doctor.skills, 2)
       }
     },
     methods: {
@@ -305,10 +290,11 @@
       },
       onSelectService (value) {
         this.booking.service = value
-        this.getDoctorBooking(this.$route.params.id, this.$moment().format('YYYY-MM-DD'))
+        this.getDoctorBooking(this.$route.params.id, this.booking.date || this.viewDate || this.$moment().format('YYYY-MM-DD'))
       },
       onSelectMonth (value) {
-         this.getDoctorBooking(this.$route.params.id, value.start)
+        this.viewDate = value.start
+        this.getDoctorBooking(this.$route.params.id, value.start)
       },
       proceedBooking () {
         if (this.booking.date && this.booking.time) {
@@ -346,11 +332,12 @@
               this.doctor.img = doctor.avatar
               this.doctor.isVisible = false
               this.doctor.services = (doctor.treatments||[]).map(t => Object({...t.treatment, selected: false}))
-
+              this.doctor.quote = doctor.quote
               this.doctor.map.latitude = doctor.address.latitude
               this.doctor.map.longitude = doctor.address.longitude
               this.doctor.map.address = `${doctor.address.street} ${doctor.address.suburb}, ${doctor.address.city}`
-
+              this.doctor.services = doctor.services
+              this.doctor.skills = doctor.skills
               return this.doctor
             } else {
               this.$router.back()
@@ -358,7 +345,8 @@
           })
       },
       getDoctorBooking(id, start) {
-        return getDoctorBooking({id , start })
+        return getDoctorBooking({id , start, tz: Intl.DateTimeFormat().resolvedOptions().timeZone })
+          .then((response) => response.data)
           .then((response) => {
             this.availableDates = response.data.dates
             return response
