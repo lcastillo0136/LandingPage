@@ -56,8 +56,8 @@ export const getDoctorInfo = (data) => {
 export const getDoctorBooking = (data) => {
   return axios.request({
     url: `/doctors/${data.id}/booking`,
-    params: data,
-    method: 'get'
+    data: data,
+    method: 'post'
   })
 }
 

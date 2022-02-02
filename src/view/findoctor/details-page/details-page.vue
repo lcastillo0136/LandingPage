@@ -274,6 +274,9 @@
           comment: c.comment
         }))
       },
+      servicesIDS () {
+        return this.booking.service.map(s => s.id)
+      },
       skills() {
         return _.chunk(this.doctor.skills, 2)
       }
@@ -290,7 +293,11 @@
       },
       onSelectService (value) {
         this.booking.service = value
-        this.getDoctorBooking(this.$route.params.id, this.booking.date || this.viewDate || this.$moment().format('YYYY-MM-DD'))
+        if (this.booking.date) {
+          this.onSelectDate(this.booking.date)
+        } else {
+          this.getDoctorBooking(this.$route.params.id, this.booking.date || this.viewDate || this.$moment().format('YYYY-MM-DD'))
+        }
       },
       onSelectMonth (value) {
         this.viewDate = value.start
@@ -338,7 +345,7 @@
               this.doctor.map.address = `${doctor.address.street} ${doctor.address.suburb}, ${doctor.address.city}`
               this.doctor.services = doctor.services
               this.doctor.skills = doctor.skills
-              this.doctor.multiple_available = doctor.multiple_available 
+              this.doctor.multiple_available = doctor.multiple_services 
 
               return this.doctor
             } else {
@@ -347,8 +354,12 @@
           })
       },
       getDoctorBooking(id, start) {
-        return getDoctorBooking({id , start, tz: Intl.DateTimeFormat().resolvedOptions().timeZone })
-          .then((response) => response.data)
+        return getDoctorBooking({
+          id , 
+          start,
+          services: this.servicesIDS,
+          tz: Intl.DateTimeFormat().resolvedOptions().timeZone
+        }).then((response) => response.data)
           .then((response) => {
             this.availableDates = response.data.dates
             return response
