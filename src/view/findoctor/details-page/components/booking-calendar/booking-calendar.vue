@@ -1,6 +1,6 @@
 <template>
-  <div v-bind="$attrs" class="row">
-    <div :class="{'col-lg-7':hasTimes, 'col-lg-12': !hasTimes}">
+  <div v-bind="$attrs" class="row booking-calendar">
+    <div :class="{'col-lg-7':hasTimes || loading, 'col-lg-12': !hasTimes && !loading }">
       <div class="form-group">
         <div id="calendar"></div>
         <input type="hidden" id="my_hidden_input">
@@ -10,7 +10,7 @@
         </ul>
       </div>
     </div>
-    <div class="col-lg-5" v-if="hasTimes">
+    <div class="col-lg-5" v-if="hasTimes && !loading">
       <ul class="time_select version_2 add_top_20">
         <li v-for="(slot, time_i) in listTimes" :key="time_i" :class="time_clases(slot)">
           <input :type="timeType" :id="'time_' + time_i" name="radio_time" :value="slot" @change="selectedTime($event, slot)" v-if="enabledTime(slot)">
@@ -18,6 +18,15 @@
         </li>
       </ul>
     </div>
+    <skeleton-loading v-else-if="loading">
+      <div class="col-lg-12">
+        <ul class="time_select version_2 add_top_20">
+          <li v-for="(slot, time_i) in 15" :key="time_i">
+            <square-skeleton :count="1" :boxProperties="{ width: '100px', height: '28px', bottom: '4px' }"></square-skeleton>
+          </li>
+        </ul>
+      </div>
+    </skeleton-loading>
   </div>
   <!-- /row -->
 </template>
@@ -35,7 +44,7 @@
       },
       availableDates: {
         type: Array,
-        default: function () { return  ['2020-04-15','2020-04-16','2020-04-17'] }
+        default: function () { return  [] }
       },
       disabledDates: {
         type: Array,
@@ -46,6 +55,10 @@
         default: function () { return  [] }
       },
       multiple: {
+        type: Boolean,
+        default: false
+      },
+      loading: {
         type: Boolean,
         default: false
       }
@@ -129,3 +142,15 @@
     }
   }
 </script>
+<style lang="scss">
+  .booking-calendar {
+    .vue-skeleton-loading {
+      display: flex;
+      flex: 0 0 auto;
+      max-width: 41.666667%;
+      .square {
+        border-radius: 4px;
+      }
+    }
+  }
+</style>

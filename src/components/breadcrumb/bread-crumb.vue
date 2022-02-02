@@ -2,7 +2,7 @@
   <div id="breadcrumb">
     <div class="container">
       <ul>
-        <li v-for="(piece, piece_i) in bread" :key="piece_i">
+        <li v-for="(piece, piece_i) in breadready" :key="piece_i">
           <router-link :to="piece.route" v-if="piece.route">{{ piece.text }}</router-link>
           <template v-if="!piece.route">{{ piece.text }}</template>
         </li>
@@ -27,6 +27,9 @@
     computed: {
       bread () {
         return typeof this.routes == 'function' ? this.routes() : this.routes
+      },
+      breadready() {
+        return this.bread.filter(b => b.text)
       }
     }
   }

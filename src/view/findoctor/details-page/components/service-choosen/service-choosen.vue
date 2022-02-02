@@ -1,5 +1,5 @@
 <template>
-  <ul class="treatments clearfix">
+  <ul class="treatments clearfix" v-if="!loading">
     <li v-for="(service, service_i) in services" :key="service_i">
       <div class="checkbox">
         <input :type="serviceType" class="css-checkbox" :id="'booking_service_' + service_i" :name="'booking_service'" v-model="service.selected" @change="selectedService(service, $event)">
@@ -7,6 +7,20 @@
       </div>
     </li>
   </ul>
+  <skeleton-loading v-else>
+    <ul class="treatments clearfix loading">
+      <li v-for="(service, service_i) in 5" :key="service_i">
+        <div class="checkbox">
+          <label class="css-label">
+            <square-skeleton :count="1" :boxProperties="{ height: '23px' }"></square-skeleton>
+            <span>
+              <square-skeleton :count="1" :boxProperties="{ width: '23px', height: '23px' }"></square-skeleton>
+            </span>
+          </label>
+        </div>
+      </li>
+    </ul>
+  </skeleton-loading>
 </template>
 <script>
   export default {
@@ -15,11 +29,7 @@
       services: {
         type: Array,
         default: function () {
-          return [{
-            name: 'Back Pain visit',
-            cost: '55',
-            selected: false
-          }]
+          return []
         }
       },
       multiple: {
@@ -33,6 +43,9 @@
       },
       serviceType () {
         return this.multiple ? 'checkbox' : 'radio'
+      },
+      loading () {
+        return this.services.length <= 0
       }
     },
     methods: {
@@ -48,3 +61,30 @@
     }
   }
 </script>
+
+<style lang="scss">
+  .loading {
+    &.treatments {
+      .css-label {
+        padding-left: 35px;
+        height: 25px;
+        display: inline-block;
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        vertical-align: middle;
+        cursor: pointer;
+        padding-top: 1px;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        .square-list {
+          flex: 1 1 auto;
+          width: auto;
+          .square {
+            border-radius: 0;
+          }
+        }
+      }
+    }
+  }
+</style>

@@ -641,7 +641,8 @@ export default {
     customer: 'Comensales',
     provider: 'Proveedores',
     enfermero_a: 'Enfermero/a',
-    sucursal: 'Sucursales'
+    sucursal: 'Sucursales',
+    clinicas: 'Clínicas'
   },
   sorts: {
     closest: 'Cercanos', 
@@ -649,5 +650,11 @@ export default {
     oldest: 'Por Edad ↑', 
     youngest: 'Por Edad ↓',
     most_viewed: 'Mas vistos'
+  },
+  details_page: {
+    title: 'Informacion medica'
+  },
+  booking_page: {
+    title: 'Agenda y pago'
   }
 }

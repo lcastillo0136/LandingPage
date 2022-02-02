@@ -644,7 +644,8 @@ export default {
     customer: 'Customers',
     provider: 'Providers',
     enfermero_a: 'Nurses',
-    sucursal: 'Offices'
+    sucursal: 'Offices',
+    clinicas: 'Clinics'
   },
   sorts: {
     closest: 'Closest', 
@@ -652,5 +653,11 @@ export default {
     oldest: 'Oldest', 
     youngest: 'Youngest',
     most_viewed: 'Most Viewed'
+  },
+  details_page: {
+    title: 'Medical Information'
+  },
+  booking_page: {
+    title: 'Schedule appontment & payment'
   }
 }

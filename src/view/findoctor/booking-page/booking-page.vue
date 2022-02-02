@@ -7,13 +7,13 @@
         <div class="col-xl-8 col-lg-8">
           <div class="box_general_3 cart">
             <div class="message">
-              <p>Exisitng Customer? <a href="#0">Click here to login</a></p>
+              <p>¿Cliente existente? <router-link :to="{ name: 'login' }">Haz click aquí para iniciar sesión</router-link></p>
             </div>
 
             <div class="form_title">
-              <h3><strong>1</strong>Your Details</h3>
+              <h3><strong>1</strong>Información personal</h3>
               <p>
-                Mussum ipsum cacilds, vidis litro abertis.
+                
               </p>
             </div>
 
@@ -23,9 +23,9 @@
             <!--End step -->
 
             <div class="form_title" v-if="canAccount">
-              <h3><strong>2</strong>Payment Information</h3>
+              <h3><strong>2</strong>Información de pago</h3>
               <p>
-                Mussum ipsum cacilds, vidis litro abertis.
+                
               </p>
             </div>
 
@@ -35,9 +35,9 @@
             <!--End step -->
 
             <div class="form_title" v-if="canBill">
-              <h3><strong>3</strong>Billing Address</h3>
+              <h3><strong>3</strong>Dirección de facturación</h3>
               <p>
-                Mussum ipsum cacilds, vidis litro abertis.
+                
               </p>
             </div>
             
@@ -46,40 +46,40 @@
             <hr v-if="canPay">
             <!--End step -->
             <div id="policy" v-if="canPay">
-              <h4>Cancellation policy</h4>
+              <h4>Política de cancelación</h4>
               <div class="form-group">
                 <div class="checkbox">
                   <input type="checkbox" class="css-checkbox" id="policy_terms" name="policy_terms" v-model="policyTerms">
-                  <label for="policy_terms" class="css-label">I accept terms and conditions and general policy.</label>
+                  <label for="policy_terms" class="css-label">Acepto la política general y los términos y condiciones.</label>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <!-- /col -->
-        <aside class="col-xl-4 col-lg-4" id="sidebar">
+        <aside class="col-xl-4 col-lg-4" id="sidebar" v-if="canView">
           <div class="box_general_3 booking">
             <form>
               <div class="title">
-                <h3>Your booking</h3>
+                <h3>Datos para agendar</h3>
               </div>
               <div class="summary">
                 <ul>
-                  <li>Date: <strong class="float-right">{{ getDate }}</strong></li>
-                  <li>Time: <strong class="float-right">{{ getTime }}</strong></li>
-                  <li>Dr. Name: <strong class="float-right">{{ getDoctor }}</strong></li>
+                  <li>Fecha: <strong class="float-right">{{ getDate }}</strong></li>
+                  <li>Hora: <strong class="float-right">{{ getTime }}</strong></li>
+                  <li>Nombre Dr.: <strong class="float-right">{{ doctor.name }}</strong></li>
                 </ul>
               </div>
               <ul class="treatments checkout clearfix" v-if="getServices.length > 0">
                 <li v-for="service in getServices">
-                  {{ service.name }} <strong class="float-right">${{ service.cost }}</strong>
+                  {{ service.name }} <strong class="float-right">${{ service.price }}</strong>
                 </li>
                 <li class="total">
                   Total <strong class="float-right">${{ getTotal }}</strong>
                 </li>
               </ul>
               <hr v-if="canPay && policyTerms" class="fadeIn animated">
-              <a href="confirm.html" class="btn_1 full-width fadeIn animated" v-if="canPay && policyTerms" @click.stop.prevent="sendPayment">Confirm and pay</a>
+              <a href="confirm.html" class="btn_1 full-width fadeIn animated" v-if="canPay && policyTerms" @click.stop.prevent="sendPayment">Confirmar y pagar</a>
             </form>
           </div>
           <!-- /box_general -->
@@ -108,7 +108,11 @@
     },
     data () {
       return {
-        breadcrumb: [{route: '/',text: 'Home'}, {route: 'Category',text: 'Category'}, {text: 'Page active'}],
+        breadcrumb: () => [
+          { route: { name: 'home' }, text: 'Inicio' }, 
+          { route: { name: 'list-page' }, text: 'Listado' }, 
+          { route: { name: 'details-page', params: { id: this.doctor?.id } }, text: this.doctor?.name }
+        ],
         client: {
           firstName: '',
           lastName: '',
@@ -158,14 +162,17 @@
       getTime () {
         return this.$route.params.booking.time
       },
-      getDoctor () {
-        return this.$route.params.dr.name
+      doctor () {
+        return this.$route.params.dr
       },
       getServices () {
         return this.$route.params.booking.service
       },
       getTotal () {
-        return this.$route.params.booking.service.map(s => +s.cost).reduce((s, s1) => s + s1, 0)
+        return this.$route.params.booking.service.map(s => +s.price).reduce((s, s1) => s + s1, 0)
+      },
+      canView() {
+        return this.$route.params && this.$route.params.booking && this.$route.params.dr
       }
     },
     methods: {
@@ -179,6 +186,12 @@
       window['$']('#sidebar').theiaStickySidebar({
         additionalMarginTop: 95
       });
+
+      console.log(this.$route.params)
+
+      if (!this.canView) {
+        this.$router.replace({ name: 'home' })
+      }
     }
   }
 </script>

@@ -1,13 +1,13 @@
 <template>
   <div class="step">
     <div class="form-group">
-      <label>Name on card</label>
-      <input type="text" class="form-control" placeholder="Jhon Doe" v-model="account.name">
+      <label>Nombre en la tarjeta</label>
+      <input type="text" class="form-control" placeholder="" v-model="account.name">
     </div>
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label>Card number</label>
+          <label>Número de tarjeta</label>
           <input type="text" class="form-control" placeholder="xxxx - xxxx - xxxx - xxxx" v-model="cardAlt" @keyup="cardFormat" @keypress="preventNumericInput($event)">
         </div>
       </div>
@@ -17,7 +17,7 @@
     </div>
     <div class="row">
       <div class="col-md-6">
-        <label>Expiration date</label>
+        <label>Fecha de vencimiento</label>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -28,7 +28,7 @@
       </div>
       <div class="col-md-6">
         <div class="form-group">
-          <label>Security code</label>
+          <label>Código de seguridad</label>
           <div class="row">
             <div class="col-md-4">
               <div class="form-group">
@@ -36,7 +36,7 @@
               </div>
             </div>
             <div class="col-md-8">
-              <img src="img/icon_ccv.gif" width="50" height="29" alt="ccv"><small>Last 3 digits</small>
+              <img src="img/icon_ccv.gif" width="50" height="29" alt="ccv"><small>Últimos 3 dígitos</small>
             </div>
           </div>
         </div>

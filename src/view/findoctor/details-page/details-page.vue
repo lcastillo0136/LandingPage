@@ -30,6 +30,7 @@
               :disabledDates="disabledDates"
               :availableDates="bookingDates"
               :availableTimes="availableTimes"
+              :loading="loadingBook"
               @onSelectDate="onSelectDate($event)" 
               @onSelectTime="onSelectTime($event)"
               @onSelectMonth="onSelectMonth($event)"
@@ -46,79 +47,146 @@
           <div class="tabs_styled_2">
             <a-tabs>
               <a-tab-pane tab="General Info" key="1">
-                <p class="lead add_bottom_30" v-html="doctor.short_description"></p>
-                <div class="indent_title_in">
-                  <i class="pe-7s-user"></i>
-                  <h3>Biografia</h3>
-                  <p v-if="doctor.quote">{{ doctor.quote }}.</p>
-                </div>
-                <div class="wrapper_indent">
-                  <p v-html="doctor.description"></p>
-                  <h6>Specializations</h6>
-                  <div class="row">
-                    <div class="col-lg-6" v-for="(skills_grp, skills_grp_i) in skills" :key="skills_grp_i">
-                      <ul class="bullets">
-                        <li v-for="(skill, skill_i) in skills_grp" :key="skill_i">{{ skill.name }}</li>
-                      </ul>
+                <template v-if="!loading">
+                  <p class="lead add_bottom_30" v-html="doctor.short_description"></p>
+                  <div class="indent_title_in">
+                    <i class="pe-7s-user"></i>
+                    <h3>Biografia</h3>
+                    <p v-if="doctor.quote">{{ doctor.quote }}.</p>
+                  </div>
+                  <div class="wrapper_indent">
+                    <p v-html="doctor.description"></p>
+                    <h6>Especializaciones</h6>
+                    <div class="row">
+                      <div class="col-lg-6" v-for="(skills_grp, skills_grp_i) in skills" :key="skills_grp_i">
+                        <ul class="bullets">
+                          <li v-for="(skill, skill_i) in skills_grp" :key="skill_i">{{ skill.name }}</li>
+                        </ul>
+                      </div>
+                      <!-- <div class="col-lg-6">
+                        <ul class="bullets">
+                          <li>Abdominal Radiology</li>
+                          <li>Addiction Psychiatry</li>
+                          <li>Adolescent Medicine</li>
+                          <li>Cardiothoracic Radiology </li>
+                        </ul>
+                      </div> -->
                     </div>
-                    <!-- <div class="col-lg-6">
-                      <ul class="bullets">
-                        <li>Abdominal Radiology</li>
-                        <li>Addiction Psychiatry</li>
-                        <li>Adolescent Medicine</li>
-                        <li>Cardiothoracic Radiology </li>
-                      </ul>
-                    </div> -->
+                    <!-- /row-->
                   </div>
-                  <!-- /row-->
-                </div>
-                <!-- /wrapper indent -->
-                <!-- 
-                <hr>
-                
-                <div class="indent_title_in">
-                  <i class="pe-7s-news-paper"></i>
-                  <h3>Education</h3>
-                  <p>Mussum ipsum cacilds, vidis litro abertis.</p>
-                </div>
-                <div class="wrapper_indent">
-                  <p>Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Nullam mollis. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapi.</p>
-                  <h6>Curriculum</h6>
-                  <ul class="list_edu">
-                    <li><strong>New York Medical College</strong> - Doctor of Medicine</li>
-                    <li><strong>Montefiore Medical Center</strong> - Residency in Internal Medicine</li>
-                    <li><strong>New York Medical College</strong> - Master Internal Medicine</li>
-                  </ul>
-                </div> -->
-                <!--  End wrapper indent -->
-                
-                <hr>
+                  <!-- /wrapper indent -->
+                  <!-- 
+                  <hr>
+                  
+                  <div class="indent_title_in">
+                    <i class="pe-7s-news-paper"></i>
+                    <h3>Education</h3>
+                    <p>Mussum ipsum cacilds, vidis litro abertis.</p>
+                  </div>
+                  <div class="wrapper_indent">
+                    <p>Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Nullam mollis. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapi.</p>
+                    <h6>Curriculum</h6>
+                    <ul class="list_edu">
+                      <li><strong>New York Medical College</strong> - Doctor of Medicine</li>
+                      <li><strong>Montefiore Medical Center</strong> - Residency in Internal Medicine</li>
+                      <li><strong>New York Medical College</strong> - Master Internal Medicine</li>
+                    </ul>
+                  </div> -->
+                  <!--  End wrapper indent -->
+                  
+                  <hr>
 
-                <div class="indent_title_in">
-                  <i class="pe-7s-cash"></i>
-                  <h3>Precios &amp; Servicios</h3>
-                  <p>Servicios disponibles y precios.</p>
-                </div>
-                <div class="wrapper_indent">
-                  <p></p>
-                  <div class="table-responsive">
-                    <table class="table  table-striped">
-                      <thead>
-                        <tr>
-                          <th>Servicio</th>
-                          <th>Precio</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(service, service_i) in doctor.services" :key="service_i">
-                          <td>{{ service.name }}</td>
-                          <td>{{ service.price | currency }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                  <div class="indent_title_in">
+                    <i class="pe-7s-cash"></i>
+                    <h3>Precios &amp; Servicios</h3>
+                    <p>Servicios disponibles y precios.</p>
                   </div>
-                </div>
-                <!--  End wrapper_indent -->
+                  <div class="wrapper_indent">
+                    <p></p>
+                    <div class="table-responsive">
+                      <table class="table  table-striped">
+                        <thead>
+                          <tr>
+                            <th>Servicio</th>
+                            <th>Precio</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(service, service_i) in doctor.services" :key="service_i">
+                            <td>{{ service.name }}</td>
+                            <td>{{ service.price | currency }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <!--  End wrapper_indent -->
+                </template>
+                <skeleton-loading v-else class="biography">
+                  <p class="lead add_bottom_30">
+                    <square-skeleton :count="3" :boxProperties="{ height: '23px', bottom: '3px' }"></square-skeleton>
+                  </p>
+                  <div class="indent_title_in">
+                    <i class="pe-7s-user"></i>
+                    <h3>Biografia</h3>
+                    <p><square-skeleton :count="1" :boxProperties="{ height: '16px' }"></square-skeleton></p>
+
+                  </div>
+                  <div class="wrapper_indent">
+                    <p><square-skeleton :count="3" :boxProperties="{ height: '23px', bottom: '3px' }"></square-skeleton></p>
+                    <h6>Especializaciones</h6>
+                    <div class="row">
+                      <div class="col-lg-6" v-for="(skills_grp, skills_grp_i) in 5" :key="skills_grp_i">
+                        <ul class="bullets">
+                          <li v-for="(skill, skill_i) in 1" :key="skill_i">
+                            <square-skeleton :count="1" :boxProperties="{ height: '23px', bottom: '3px' }"></square-skeleton>
+                          </li>
+                        </ul>
+                      </div>
+                      <!-- <div class="col-lg-6">
+                        <ul class="bullets">
+                          <li>Abdominal Radiology</li>
+                          <li>Addiction Psychiatry</li>
+                          <li>Adolescent Medicine</li>
+                          <li>Cardiothoracic Radiology </li>
+                        </ul>
+                      </div> -->
+                    </div>
+                    <!-- /row-->
+                  </div>
+
+                  <hr>
+
+
+                  <div class="indent_title_in">
+                    <i class="pe-7s-cash"></i>
+                    <h3>Precios &amp; Servicios</h3>
+                    <p>Servicios disponibles y precios.</p>
+                  </div>
+                  <div class="wrapper_indent">
+                    <p></p>
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Servicio</th>
+                            <th>Precio</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(service, service_i) in 5" :key="service_i">
+                            <td>
+                              <square-skeleton :count="1" :boxProperties="{ width: '240px', height: '23px', bottom: '3px' }"></square-skeleton>
+                            </td>
+                            <td>
+                              <square-skeleton :count="1" :boxProperties="{ width: '40px', height: '23px', bottom: '3px' }"></square-skeleton>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </skeleton-loading>
               </a-tab-pane>
               <a-tab-pane tab="Reviews" key="2">
                 <div class="reviews-container">
@@ -236,7 +304,9 @@
           time: '',
           service: []
         },
-        viewDate: ''
+        viewDate: '',
+        loading: false,
+        loadingBook: false
       }
     },
     computed: {
@@ -345,8 +415,9 @@
               this.doctor.map.address = `${doctor.address.street} ${doctor.address.suburb}, ${doctor.address.city}`
               this.doctor.services = doctor.services
               this.doctor.skills = doctor.skills
-              this.doctor.multiple_available = doctor.multiple_services 
-
+              this.doctor.multiple_available = !!doctor.multiple_services 
+              this.doctor.id = doctor.id;
+              
               return this.doctor
             } else {
               this.$router.back()
@@ -354,6 +425,7 @@
           })
       },
       getDoctorBooking(id, start) {
+        this.loadingBook = !!this.booking.date
         return getDoctorBooking({
           id , 
           start,
@@ -362,6 +434,7 @@
         }).then((response) => response.data)
           .then((response) => {
             this.availableDates = response.data.dates
+            this.loadingBook = false
             return response
           })
       }
@@ -372,9 +445,11 @@
       });
 
       if (this.$route.params.id) {
+        this.loading = true;
         this.getDoctorInfo(this.$route.params.id).then((d) => {
           document.title = `Informacion ${d.name}`;
-          this.getDoctorBooking(this.$route.params.id, this.startDate)
+          this.loading = false;
+          // this.getDoctorBooking(this.$route.params.id, this.startDate)
         })
       } else {
         this.$router.back()
@@ -420,5 +495,9 @@
   }
   #review_summary strong, #review_summary small {
     display: block;
+  }
+
+  .biography .square {
+    border-radius: 0;
   }
 </style>
