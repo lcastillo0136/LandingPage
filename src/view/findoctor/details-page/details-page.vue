@@ -16,7 +16,7 @@
               <h3><i class="icon_circle-slelected"></i>Elije tu consulta</h3>
             </div>
 
-            <ServiceChoosen :services="doctor.services" @onSelectService="onSelectService"></ServiceChoosen>
+            <ServiceChoosen :multiple="doctor.multiple_available" :services="doctor.services" @onSelectService="onSelectService"></ServiceChoosen>
             
             <div class="main_title_4 fadeIn animated" v-if="hasServices">
               <h3><i class="icon_circle-slelected"></i>Elije tu horario</h3>
@@ -230,7 +230,7 @@
         disabledDays: [0],
         availableDates: [],
         availableTimes: [],
-        disabledDates: [ '2022-02-02' ],
+        disabledDates: [ ],
         booking: {
           date: '',
           time: '',
@@ -338,6 +338,8 @@
               this.doctor.map.address = `${doctor.address.street} ${doctor.address.suburb}, ${doctor.address.city}`
               this.doctor.services = doctor.services
               this.doctor.skills = doctor.skills
+              this.doctor.multiple_available = doctor.multiple_available 
+
               return this.doctor
             } else {
               this.$router.back()
