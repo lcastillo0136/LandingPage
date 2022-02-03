@@ -64,33 +64,11 @@ export default {
         text: this.$t('header.menu.home'),
         url: '/'
       }, {
-        text: this.$t('header.menu.pages'),
-        childrens: [{
-          url: { name: 'list-page' },
-          text: this.$t('header.menu.list_page')
-        // }, {
-        //   url: { name: 'details-page' },
-        //   text: this.$t('header.menu.detail_page')
-        }, {
-          url: { name: 'login' },
-          text: this.$t('header.menu.login')
-        }, {
-          url: { name: 'login-2' },
-          text: this.$t('header.menu.login_2')
-        }, {
-          url: { name: 'register-doctor' },
-          text: this.$t('header.menu.register_doctor')
-        }, {
-          url: { name: 'register' },
-          text: this.$t('header.menu.register')
-        }, {
-          url: { name: 'contacts' },
-          text: this.$t('header.menu.contacts')
-        }]
+        text: 'Buscar',
+        url: { name: 'list-page' },
       }, {
-        url: 'admin_section/index.html',
-        external: true,
-        text: this.$t('header.menu.admin')
+        url: { name: 'login' },
+        text: this.$t('header.menu.login')
       }]
     },
     containerClasses () {

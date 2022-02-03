@@ -2671,7 +2671,7 @@ a.wish_bt:hover:after, a.wish_bt.active:after {
 .sbToggle:after {
     font-family: ElegantIcons;
     font-size: 14px;
-    content: "\43";
+    content: "\43" !important;
     color: #3f4079;
     text-align: center
 }

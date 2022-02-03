@@ -187,8 +187,6 @@
         additionalMarginTop: 95
       });
 
-      console.log(this.$route.params)
-
       if (!this.canView) {
         this.$router.replace({ name: 'home' })
       }

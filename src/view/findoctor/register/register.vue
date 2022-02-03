@@ -7,7 +7,7 @@
       <div class="container margin_60_35">
         <div id="register">
           <h1>{{ $t('register.form.title') }}</h1>
-          <div class="row justify-content-center">
+          <div class="row justify-content-center" style="justify-content: center !important;">
             <div class="col-md-5">
               <form ref="registerForm">
                 <div class="box_form">

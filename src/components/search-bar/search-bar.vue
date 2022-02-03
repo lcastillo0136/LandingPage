@@ -4,18 +4,18 @@
       <div :class="containerClasses">
         <div class="row">
           <div class="col-md-6" v-if="!onlyInput">
-            <h4><strong>Showing {{ showing }}</strong> of {{ total }} results</h4>
+            <h4><strong>Mostrando {{ showing }}</strong> de {{ total }} resultados</h4>
           </div>
           <div class="col-md-6" v-if="!onlyInput">
             <div class="search_bar_list">
-              <input type="text" class="form-control" placeholder="Ex. Specialist, Name, Doctor..." :value="value" v-on:input="updateValue($event.target.value)" v-on:keyup.enter="emitClick">
-              <input type="submit" value="Search" @click.prevent.stop="emitClick" ref="submitSearch">
+              <input type="text" class="form-control" placeholder="Ej. Especialidad, Nombre, Doctor..." :value="value" v-on:input="updateValue($event.target.value)" v-on:keyup.enter="emitClick">
+              <input type="submit" value="Buscar" @click.prevent.stop="emitClick" ref="submitSearch">
             </div>
           </div>
           <div class="col-md-12" v-if="onlyInput">
             <div class="search_bar_list">
-              <input type="text" class="form-control" placeholder="Ex. Specialist, Name, Doctor..." :value="value" v-on:input="updateValue($event.target.value)" v-on:keyup.enter="emitClick">
-              <input type="submit" value="Search" @click.prevent.stop="emitClick" ref="submitSearch">
+              <input type="text" class="form-control" placeholder="Ej. Especialidad, Nombre, Doctor..." :value="value" v-on:input="updateValue($event.target.value)" v-on:keyup.enter="emitClick">
+              <input type="submit" value="Buscar" @click.prevent.stop="emitClick" ref="submitSearch">
             </div>
           </div>
         </div>
@@ -24,7 +24,7 @@
       <!-- /container -->
     </div>
 
-    <div :style="{'margin-top': this.searchSticky + 'px'}" v-if="isSticky && sticky"></div>
+    <div :style="{ 'margin-top': this.searchSticky + 'px' }" v-if="isSticky && sticky"></div>
   </div>
   <!-- /results -->
 </template>

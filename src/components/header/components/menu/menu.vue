@@ -45,7 +45,7 @@
         return ((route && this.$router.matcher.match(route)) || { name: null }).name === null
       },
       isEmpty (route) {
-        return (route||'').trim() === ""
+        return typeof route == 'string' ? (route||'').trim() === "" : false
       },
       isSelected(url) {
         return ((url && this.$router.matcher.match(url)) || { name: null}).name === this.$route.name

@@ -19,7 +19,7 @@ export default {
   baseUrl: {
     dev: 'https://doctors-api.onix-software.com/api/',
     storage: 'http://localhost:8000',
-    pro: 'https://produce.com/'
+    pro: 'https://doctors-api.onix-software.com/api/'
   },
   /**
    * @description 默认打开的首页的路由name值，默认为home

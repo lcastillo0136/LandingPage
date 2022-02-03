@@ -3,7 +3,7 @@
     <div :class="containerClasses">
       <ul class="clearfix">
         <li v-if="types && types.length">
-          <h6>Type</h6>
+          <h6>Filtros</h6>
           <div class="switch-field">
             <template v-for="(t) in types">              
               <input type="radio" :id="'type_' + t.value" :value="t.value" v-model="selected.type" @change="emitFilter">
@@ -12,7 +12,7 @@
           </div>
         </li>
         <li v-if="layoutVisible">
-          <h6>Layout</h6>
+          <h6>Diseño</h6>
           <div class="layout_view">
             <a href="#0" @click.stop.prevent="changeLayout('grid')" :class="layoutClass('grid')"><i class="icon-th"></i></a>
             <a href="#0" @click.stop.prevent="changeLayout('list')" :class="layoutClass('list')"><i class="icon-th-list"></i></a>
@@ -20,7 +20,7 @@
           </div>
         </li>
         <li v-if="sorts && sorts.length">
-          <h6>Sort by</h6>
+          <h6>Ordenar por</h6>
           <select name="orderby" class="selectbox" v-model="selected.sort" @change="emitFilter">
             <option v-for="(s, si) in sorts" :value="s.value" :key="si">{{ s.text }}</option>
           </select>

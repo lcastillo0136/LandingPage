@@ -84,7 +84,7 @@ export default {
       return ((route && this.$router.matcher.match(route)) || { name: null }).name === null
     },
     isEmpty (route) {
-      return (route||'').trim() === ""
+        return typeof route == 'string' ? (route||'').trim() === "" : false
     }
   },
   watch: {
