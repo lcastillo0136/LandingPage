@@ -75,7 +75,7 @@
                   {{ service.name }} <strong class="float-right">${{ service.price }}</strong>
                 </li>
                 <li class="total">
-                  Total <strong class="float-right">${{ getTotal }}</strong>
+                  Total <strong class="float-right">${{ getTotal }} {{ settings.CURRENCY }}</strong>
                 </li>
               </ul>
               <hr v-if="canPay && policyTerms" class="fadeIn animated">
@@ -97,6 +97,7 @@
   import DetailsForm from './components/details-form'
   import DetailsPayment from './components/details-payment'
   import BillDetails from './components/bill-details'
+  import { mapGetters, mapMutations } from 'vuex'
   import * as conekta from '@/libs/conekta'
 
   export default {
@@ -149,6 +150,9 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'settings'
+      ]),
       canPay () {
         return this.canAccount && this.canBill
       },

@@ -1,4 +1,6 @@
 import axios from '@/libs/api.request'
+import config from '@/config'
+const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 
 export const getTypes = () => {
   return axios.request({
@@ -66,5 +68,13 @@ export const registerCustomer = (data) => {
     url: `/register`,
     data: data,
     method: 'post'
+  })
+}
+
+export const getSettings = () => {
+  return axios.request({
+    baseURL: baseUrl.replace('/api/', '/web/'),
+    url: `/settings`,
+    method: 'get'
   })
 }

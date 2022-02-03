@@ -10,6 +10,7 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import Loading from '@/components/loading'
+import * as conekta from '@/libs/conekta'
 
 export default {
   name: 'App',
@@ -19,7 +20,8 @@ export default {
   computed: {
     ...mapGetters([
       'stillLoading',
-      'mobileMenuOpen'
+      'mobileMenuOpen',
+      'settings'
     ])
   },
   methods: {
@@ -29,7 +31,8 @@ export default {
     ...mapActions([
       'getTypes',
       'getSorts',
-      'getLocation'
+      'getLocation',
+      'getSettings'
     ]),
   },
   async mounted () {
@@ -44,7 +47,11 @@ export default {
       }
     })
     await this.getSorts()
-    this.getLocation().then((data) => {})
+    await this.getSettings()
+
+    await this.getLocation().then((data) => {})
+    debugger
+    conekta.initConekta(this.settings.CONEKTA_CLIENT)
 
     this.toggleLoading()    
   }
