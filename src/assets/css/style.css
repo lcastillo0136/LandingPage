@@ -4095,7 +4095,41 @@ ul.treatments.checkout li strong {
 }
 
 .cards {
-    margin-top: 28px
+  margin-top: 28px;
+}
+
+.cards.invalid {
+  opacity: 0.2;
+}
+
+.cards + .brand {
+  background-image: url(/img/payments.png);
+  width: 232px;
+  height: 30px;
+  position: absolute;
+  top: 28px;
+  display: none;
+}
+
+.brand.mastercard {
+  display: block;
+  background-position-x: -94px;
+  width: 48px;
+  left: 109px;
+}
+
+.brand.visa {
+  display: block;
+  background-position-x: -147px;
+  width: 49px;
+  left: 162px;
+}
+
+.brand.amex {
+  display: block;
+  background-position-x: -199px;
+  width: 32px;
+  left: 214px;
 }
 
 .step {
@@ -4105,7 +4139,23 @@ ul.treatments.checkout li strong {
 
 @media (max-width:991px) {
     .cards {
-        display: none
+        display: none;
+    }
+
+    .cards + .brand {
+      display: none;
+    }
+
+    .brand.mastercard {
+      display: none;
+    }
+
+    .brand.visa {
+      display: none;
+    }
+
+    .brand.amex {
+      display: none;
     }
 
     .step {

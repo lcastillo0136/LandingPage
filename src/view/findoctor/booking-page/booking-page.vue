@@ -97,6 +97,7 @@
   import DetailsForm from './components/details-form'
   import DetailsPayment from './components/details-payment'
   import BillDetails from './components/bill-details'
+  import * as conekta from '@/libs/conekta'
 
   export default {
     name: 'BookingPage',
@@ -124,7 +125,8 @@
           name: '',
           card: '',
           expiration:  { month: '00', year: '00'},
-          ccv: ''
+          ccv: '',
+          isValid: false
         },
         bill: {
           country: '',
@@ -148,13 +150,13 @@
     },
     computed: {
       canPay () {
-        return this.canAccount && this.canBill && this.bill.country && this.bill.state && this.bill.city && this.bill.cp && this.bill.street
+        return this.canAccount && this.canBill
       },
       canAccount () {
         return this.client.isValid
       },
       canBill () {
-        return this.canAccount && this.account.name && this.account.card && this.account.expiration && this.account.ccv
+        return this.canAccount && this.account.isValid
       },
       getDate () {
         return this.$moment(this.$route.params.booking.date).format('DD/MM/YYYY')
@@ -177,8 +179,27 @@
     },
     methods: {
       sendPayment () {
-        this.$swal('Thanks for your booking!', 'You\'ll receive a confirmation email at <a href="mailto:[email protected]">[email protected]</a>','success').then(() => {
-          this.$router.back()
+        this.tokenizeCard().then(() => {
+          this.$swal('Thanks for your booking!', 'You\'ll receive a confirmation email at <a href="mailto:[email protected]">[email protected]</a>','success').then(() => {
+            this.$router.back()
+          })
+        }).catch((error) => {
+          this.$swal('Pago no procesado', error.message_to_purchaser, 'error').then(() => {
+
+          })
+        })
+      },
+      tokenizeCard () {
+        return new Promise((resolve, reject) => { 
+          if (this.account.isValid) {
+            conekta.tokenize(this.account.card, this.account.name, this.account.expiration.month, this.account.expiration.year, this.account.ccv).then((token) => {
+              resolve(token)
+            }).catch((error) => {
+              reject(error)
+            })
+          } else {
+            reject('no_card')
+          }
         })
       }
     },

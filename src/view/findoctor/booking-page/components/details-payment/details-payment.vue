@@ -9,10 +9,16 @@
         <div class="form-group">
           <label>Número de tarjeta</label>
           <input type="text" class="form-control" placeholder="xxxx - xxxx - xxxx - xxxx" v-model="cardAlt" @keyup="cardFormat" @keypress="preventNumericInput($event)">
+          <div class="error_message" v-if="!isValidCard && cardAlt">
+            La tarjeta no es valida
+          </div>
         </div>
       </div>
       <div class="col-md-6 col-sm-6">
-        <img src="img/payments.png" alt="Cards" class="cards">
+        <img src="img/payments.png" alt="Cards" class="cards" :class="{ 'invalid': CardBrand }">
+        <template v-if="CardBrand">
+          <div class="brand" v-bind:class="CardBrand"></div>
+        </template>
       </div>
     </div>
     <div class="row">
@@ -22,6 +28,9 @@
           <div class="col-md-6">
             <div class="form-group">
               <input type="text" class="form-control" placeholder="MM / YY" v-model="expirationAlt" @keyup="expirationFormat" @keypress="preventNumericInput($event)">
+            </div>
+            <div class="error_message" v-if="!isValidExpiration && expirationAlt">
+              Fecha de expiracion no valida
             </div>
           </div>
         </div>
@@ -33,6 +42,9 @@
             <div class="col-md-4">
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="CCV" v-model="account.ccv" @keypress="preventNumericInput($event)">
+                <div class="error_message" v-if="!isValidCCV && account.ccv">
+                  El codigo no es valido
+                </div>
               </div>
             </div>
             <div class="col-md-8">
@@ -46,6 +58,8 @@
   </div>
 </template>
 <script>
+  import * as conekta from '@/libs/conekta'
+  
   export default {
     name: 'DetailsPayment',
     model: {
@@ -60,7 +74,8 @@
             name: '',
             card: '',
             expiration: { month: '00', year: '00'},
-            ccv: ''
+            ccv: '',
+            isValid: false
           }
         }
       }
@@ -69,6 +84,28 @@
       return {
         cardAlt: '',
         expirationAlt: ''
+      }
+    },
+    watch: {
+      account: {
+        deep: true,
+        handler () {
+          this.account.isValid = this.isValidCard && this.isValidExpiration && this.isValidCCV && this.account.name != ''
+        }
+      }
+    },
+    computed: {
+      CardBrand () {
+        return this.getCardBrand()
+      },
+      isValidCard () {
+        return this.validateCard()
+      },
+      isValidExpiration () {
+        return this.validExpiration()
+      },
+      isValidCCV () {
+        return this.validCCV()
       }
     },
     methods: {
@@ -126,7 +163,26 @@
       },
       validateEmails () {
         this.client.isValid = this.client.email === this.client.email2
+      },
+      getCardBrand () {
+        return conekta.getCardBrand(this.account.card)
+      },
+      validateCard () {
+        return conekta.validateCardNumber(this.account.card)
+      },
+      validExpiration () {
+        return conekta.validateExpirationDate(this.account.expiration.month, this.account.expiration.year)
+      },
+      validCCV () {
+        return conekta.validateCvc(this.account.ccv)
+      },
+      tokenizeCard () {
+        conekta.tokenize(this.account.card, this.account.name, this.account.expiration.month, this.account.expiration.year, this.account.ccv).then((token) => {
+          console.log(token)
+        })
       }
+    },
+    mounted() {
     }
   }
 </script>

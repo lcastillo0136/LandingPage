@@ -36,13 +36,13 @@
       <div class="col-md-3">
         <div class="form-group">
           <label>Estado</label>
-          <input type="text" class="form-control" placeholder="Florida" v-model="bill.state">
+          <input type="text" class="form-control" placeholder="" v-model="bill.state">
         </div>
       </div>
       <div class="col-md-3">
         <div class="form-group">
           <label>Código postal</label>
-          <input type="text" class="form-control" placeholder="00342" v-model="bill.cp">
+          <input type="text" class="form-control" placeholder="66000" v-model="bill.cp">
         </div>
       </div>
     </div>
