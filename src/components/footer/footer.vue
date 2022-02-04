@@ -62,7 +62,7 @@
           </ul>
         </div>
         <div class="col-md-4">
-          <div id="copy">© {{ year }} My doctor</div>
+          <div id="copy">© {{ year }} {{ appName }}</div>
         </div>
       </div>
     </div>
@@ -70,12 +70,13 @@
 </template>
 <script>
 
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapMutations } from 'vuex'
   export default {
     name: 'Footer',
     computed: {
       ...mapGetters([
-        'container'
+        'container',
+        'settings'
       ]),
       containerClasses () {
         return {
@@ -85,6 +86,9 @@
       },
       year () {
         return this.$moment().format('YYYY')
+      },
+      appName () {
+        return this.settings?.COMPANY_NAME
       }
     },
     methods: {

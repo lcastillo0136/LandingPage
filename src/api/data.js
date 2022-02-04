@@ -78,3 +78,11 @@ export const getSettings = () => {
     method: 'get'
   })
 }
+
+export const getPaymentMethods = () => {
+  return axios.request({
+    baseURL: baseUrl.replace('/api/', '/web/'),
+    url: `/paymentmethods/list`,
+    method: 'get'
+  })
+}

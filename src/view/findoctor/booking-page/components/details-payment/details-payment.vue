@@ -1,63 +1,88 @@
 <template>
   <div class="step">
-    <div class="form-group">
-      <label>Nombre en la tarjeta</label>
-      <input type="text" class="form-control" placeholder="" v-model="account.name">
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Número de tarjeta</label>
-          <input type="text" class="form-control" placeholder="xxxx - xxxx - xxxx - xxxx" v-model="cardAlt" @keyup="cardFormat" @keypress="preventNumericInput($event)">
-          <div class="error_message" v-if="!isValidCard && cardAlt">
-            La tarjeta no es valida
-          </div>
-        </div>
+    <a-radio-group v-model="account.methodSelected" button-style="solid">
+      <a-radio-button v-for="(method, method_i) in methods" :key="method_i" :value="method.id">
+        {{ method.name }}
+      </a-radio-button>
+    </a-radio-group>
+
+    <template v-if="account.methodSelected == 1">
+      <a-divider></a-divider>
+      <div class="form-group">
+        <label>Nombre en la tarjeta</label>
+        <input type="text" class="form-control" placeholder="" v-model="account.name">
       </div>
-      <div class="col-md-6 col-sm-6">
-        <img src="img/payments.png" alt="Cards" class="cards" :class="{ 'invalid': CardBrand }">
-        <template v-if="CardBrand">
-          <div class="brand" v-bind:class="CardBrand"></div>
-        </template>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <label>Fecha de vencimiento</label>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="MM / YY" v-model="expirationAlt" @keyup="expirationFormat" @keypress="preventNumericInput($event)">
-            </div>
-            <div class="error_message" v-if="!isValidExpiration && expirationAlt">
-              Fecha de expiracion no valida
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Número de tarjeta</label>
+            <input type="text" class="form-control" placeholder="xxxx - xxxx - xxxx - xxxx" v-model="cardAlt" @keyup="cardFormat" @keypress="preventNumericInput($event)">
+            <div class="error_message" v-if="!isValidCard && cardAlt">
+              La tarjeta no es valida
             </div>
           </div>
         </div>
+        <div class="col-md-6 col-sm-6">
+          <img src="img/payments.png" alt="Cards" class="cards" :class="{ 'invalid': CardBrand }">
+          <template v-if="CardBrand">
+            <div class="brand" v-bind:class="CardBrand"></div>
+          </template>
+        </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Código de seguridad</label>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Fecha de vencimiento</label>
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="CCV" v-model="account.ccv" @keypress="preventNumericInput($event)">
-                <div class="error_message" v-if="!isValidCCV && account.ccv">
-                  El codigo no es valido
-                </div>
+                <input type="text" class="form-control" placeholder="MM / YY" v-model="expirationAlt" @keyup="expirationFormat" @keypress="preventNumericInput($event)">
+              </div>
+              <div class="error_message" v-if="!isValidExpiration && expirationAlt">
+                Fecha de expiracion no valida
               </div>
             </div>
-            <div class="col-md-8">
-              <img src="img/icon_ccv.gif" width="50" height="29" alt="ccv"><small>Últimos 3 dígitos</small>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Código de seguridad</label>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="CCV" v-model="account.ccv" @keypress="preventNumericInput($event)">
+                  <div class="error_message" v-if="!isValidCCV && account.ccv">
+                    El codigo no es valido
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <img src="img/icon_ccv.gif" width="50" height="29" alt="ccv"><small>Últimos 3 dígitos</small>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </template>
+    <template v-if="account.methodSelected == 2">
+      <p class="add_top_20">
+        <small>Al finalizar el flujo se generara el folio a pagar en alguna sucursal de la cadena OXXO</small>
+      </p>
+    </template>
+    <template v-if="account.methodSelected == 3">
+      <p class="add_top_20">
+        <small>Al finalizar el flujo se generara la orden y cita lista para pagar en las instalaciones</small>
+      </p>
+    </template>
+    <template v-if="account.methodSelected == 4">
+      <!-- <a-divider></a-divider>
+      <div id="paypal-button-container"></div> -->
+    </template>
+
     <!--End row -->
   </div>
 </template>
 <script>
+  import { getPaymentMethods } from '@/api/data'
   import * as conekta from '@/libs/conekta'
   
   export default {
@@ -75,7 +100,8 @@
             card: '',
             expiration: { month: '00', year: '00'},
             ccv: '',
-            isValid: false
+            isValid: false,
+            methodSelected: 1
           }
         }
       }
@@ -83,16 +109,88 @@
     data () {
       return {
         cardAlt: '',
-        expirationAlt: ''
+        expirationAlt: '',
+        methods: []
       }
     },
     watch: {
       account: {
         deep: true,
         handler () {
-          this.account.isValid = this.isValidCard && this.isValidExpiration && this.isValidCCV && this.account.name != ''
+          switch (this.account.methodSelected) {
+            case 1: 
+              this.account.isValid = this.isValidCard && this.isValidExpiration && this.isValidCCV && this.account.name != ''
+              break;
+            case 2:
+            case 3:
+            case 4:
+              this.account.isValid = true
+              break;
+          }
         }
-      }
+      },
+      // methodSelected (value) {
+        // if (value == 4) {
+        //   this.$nextTick(() => {
+        //     window['paypal'].Buttons({
+        //       style: {
+        //         shape: 'rect',
+        //         color: 'blue',
+        //         layout: 'horizontal',
+        //         label: 'paypal',
+        //         tagline: false
+        //       },
+        //       onError: (err) => {
+        //         this.errorMessage('No se pudo realizar el pago con paypal, favor de intentar mas tarde.');
+        //       },
+        //       // Set up the transaction
+        //       // createOrder: (data, actions) => {
+        //       //   return actions.order.create({
+        //       //     purchase_units: [{
+        //       //       amount: {
+        //       //         currency_code: this._settings.getCurrentSettings().currency || "USD",
+        //       //         value: +this.CartTotal.toFixed(2),
+        //       //         breakdown: {
+        //       //           item_total: { 
+        //       //             currency_code: this._settings.getCurrentSettings().currency || 'USD',
+        //       //             value: +this.CartTotal.toFixed(2)
+        //       //           },
+        //       //           discount: {
+        //       //             currency_code: this._settings.getCurrentSettings().currency || "USD",
+        //       //             value: +this.CartDescuento.toFixed(2)
+        //       //           }
+        //       //         }
+        //       //       },
+        //       //       items: this.Cart?.map((p) => Object({
+        //       //         name: p.name,
+        //       //         unit_amount: {
+        //       //           currency_code: this._settings.getCurrentSettings().currency || 'USD',
+        //       //           value: +p.precio_venta.toFixed(2)
+        //       //         },
+        //       //         quantity: p.servicios.length,
+        //       //         description: p.description,
+        //       //         sku: p.sku
+        //       //       }))
+        //       //     }],
+        //       //     application_context: {
+        //       //       brand_name:  this._settings.getCurrentSettings().company_name || 'Zibasoft'
+        //       //     }
+        //       //   });
+        //       // },
+        //       // onApprove: (data, actions) => {
+        //       //   return actions.order.capture().then((details) => {
+        //       //       console.log(data, actions, details);
+        //       //       this.showLoading();
+        //       //       this.processPayment('', details.id);
+        //       //     })
+        //       //     .catch(err => {
+        //       //       this.errorMessage('No se pudo realizar el pago con paypal, favor de intentar mas tarde.');
+        //       //     })
+        //       // }
+        //     }).render('#paypal-button-container');
+        //   })
+        // } 
+      // }
     },
     computed: {
       CardBrand () {
@@ -180,9 +278,19 @@
         conekta.tokenize(this.account.card, this.account.name, this.account.expiration.month, this.account.expiration.year, this.account.ccv).then((token) => {
           console.log(token)
         })
+      },
+      errorMessage (message) {
+        this.$swal(message, '', 'error')
       }
     },
     mounted() {
+      getPaymentMethods().then((response) => {
+        if (response.status == 200) {
+          this.methods = response.data.data
+        }
+      }).catch((error) => {
+        debugger
+      })
     }
   }
 </script>

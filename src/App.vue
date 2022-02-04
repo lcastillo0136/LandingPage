@@ -11,6 +11,7 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import Loading from '@/components/loading'
 import * as conekta from '@/libs/conekta'
+import * as paypal from '@/libs/paypal'
 
 export default {
   name: 'App',
@@ -50,8 +51,9 @@ export default {
     await this.getSettings()
 
     await this.getLocation().then((data) => {})
-    debugger
+    
     conekta.initConekta(this.settings.CONEKTA_CLIENT)
+    paypal.init(this.settings.PAYPAL_CLIENT, this.settings.CURRENCY)
 
     this.toggleLoading()    
   }

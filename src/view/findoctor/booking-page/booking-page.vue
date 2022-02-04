@@ -37,7 +37,7 @@
             <div class="form_title" v-if="canBill">
               <h3><strong>3</strong>Dirección de facturación</h3>
               <p>
-                
+                (Opcional)
               </p>
             </div>
             
@@ -78,8 +78,17 @@
                   Total <strong class="float-right">${{ getTotal }} {{ settings.CURRENCY }}</strong>
                 </li>
               </ul>
-              <hr v-if="canPay && policyTerms" class="fadeIn animated">
-              <a href="confirm.html" class="btn_1 full-width fadeIn animated" v-if="canPay && policyTerms" @click.stop.prevent="sendPayment">Confirmar y pagar</a>
+              <template v-if="canPay && policyTerms">
+                <template v-if="account.methodSelected != 4">
+                  <hr class="fadeIn animated">
+                  <a href="confirm.html" class="btn_1 full-width fadeIn animated" @click.stop.prevent="sendPayment">Confirmar y pagar</a>
+                </template>
+
+                <template v-if="account.methodSelected == 4">
+                  <hr class="fadeIn animated">
+                  <div id="paypal-button-container"></div>
+                </template>
+              </template>
             </form>
           </div>
           <!-- /box_general -->
@@ -127,7 +136,8 @@
           card: '',
           expiration:  { month: '00', year: '00'},
           ccv: '',
-          isValid: false
+          isValid: false,
+          methodSelected: 1
         },
         bill: {
           country: '',
@@ -145,8 +155,18 @@
         if (this.account.name === '' || this.account.name === oldName)
           this.account.name = newName;
       },
-      'account.name' (newName, oldName) {
-        
+      'account': {
+        deep: true,
+        handler () {
+          if (this.account.methodSelected == 4) {
+            this.showPaypalButtons();
+          }
+        }
+      },
+      'policyTerms' () {
+        if (this.account.methodSelected == 4) {
+          this.showPaypalButtons();
+        }
       }
     },
     computed: {
@@ -205,6 +225,68 @@
             reject('no_card')
           }
         })
+      },
+      showPaypalButtons () {
+        if (this.canPay && this.policyTerms) {
+          this.$nextTick(() => {
+            window['paypal'].Buttons({
+              style: {
+                shape: 'rect',
+                color: 'blue',
+                layout: 'horizontal',
+                label: 'paypal',
+                tagline: false
+              },
+              onError: (err) => {
+                this.errorMessage('No se pudo realizar el pago con paypal, favor de intentar mas tarde.');
+              },
+              // Set up the transaction
+              // createOrder: (data, actions) => {
+              //   return actions.order.create({
+              //     purchase_units: [{
+              //       amount: {
+              //         currency_code: this._settings.getCurrentSettings().currency || "USD",
+              //         value: +this.CartTotal.toFixed(2),
+              //         breakdown: {
+              //           item_total: { 
+              //             currency_code: this._settings.getCurrentSettings().currency || 'USD',
+              //             value: +this.CartTotal.toFixed(2)
+              //           },
+              //           discount: {
+              //             currency_code: this._settings.getCurrentSettings().currency || "USD",
+              //             value: +this.CartDescuento.toFixed(2)
+              //           }
+              //         }
+              //       },
+              //       items: this.Cart?.map((p) => Object({
+              //         name: p.name,
+              //         unit_amount: {
+              //           currency_code: this._settings.getCurrentSettings().currency || 'USD',
+              //           value: +p.precio_venta.toFixed(2)
+              //         },
+              //         quantity: p.servicios.length,
+              //         description: p.description,
+              //         sku: p.sku
+              //       }))
+              //     }],
+              //     application_context: {
+              //       brand_name:  this._settings.getCurrentSettings().company_name || 'Zibasoft'
+              //     }
+              //   });
+              // },
+              // onApprove: (data, actions) => {
+              //   return actions.order.capture().then((details) => {
+              //       console.log(data, actions, details);
+              //       this.showLoading();
+              //       this.processPayment('', details.id);
+              //     })
+              //     .catch(err => {
+              //       this.errorMessage('No se pudo realizar el pago con paypal, favor de intentar mas tarde.');
+              //     })
+              // }
+            }).render('#paypal-button-container');
+          })
+        }
       }
     },
     mounted() {
