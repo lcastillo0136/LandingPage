@@ -67,7 +67,7 @@
                 <ul>
                   <li>Fecha: <strong class="float-right">{{ getDate }}</strong></li>
                   <li>Hora: <strong class="float-right">{{ getTime }}</strong></li>
-                  <li>Nombre Dr.: <strong class="float-right">{{ doctor.name }}</strong></li>
+                  <li>Medico: <strong class="float-right">{{ doctor.name }}</strong></li>
                 </ul>
               </div>
               <ul class="treatments checkout clearfix" v-if="getServices.length > 0">
@@ -79,7 +79,15 @@
                 </li>
               </ul>
               <template v-if="canPay && policyTerms">
-                <template v-if="account.methodSelected != 4">
+                <template v-if="account.methodSelected == 1">
+                  <hr class="fadeIn animated">
+                  <a href="confirm.html" class="btn_1 full-width fadeIn animated" @click.stop.prevent="sendPaymentCard">Confirmar y pagar</a>
+                </template>
+                <template v-if="account.methodSelected == 2">
+                  <hr class="fadeIn animated">
+                  <a href="confirm.html" class="btn_1 full-width fadeIn animated" @click.stop.prevent="sendPayment">Confirmar y pagar</a>
+                </template>
+                <template v-if="account.methodSelected == 3">
                   <hr class="fadeIn animated">
                   <a href="confirm.html" class="btn_1 full-width fadeIn animated" @click.stop.prevent="sendPayment">Confirmar y pagar</a>
                 </template>
@@ -107,6 +115,7 @@
   import DetailsPayment from './components/details-payment'
   import BillDetails from './components/bill-details'
   import { mapGetters, mapMutations } from 'vuex'
+  import { postOrder } from '@/api/data'
   import * as conekta from '@/libs/conekta'
 
   export default {
@@ -136,6 +145,8 @@
           card: '',
           expiration:  { month: '00', year: '00'},
           ccv: '',
+          token: false,
+          paypal: false,
           isValid: false,
           methodSelected: 1
         },
@@ -197,16 +208,19 @@
       getTotal () {
         return this.$route.params.booking.service.map(s => +s.price).reduce((s, s1) => s + s1, 0)
       },
+      getDiscount () {
+        return 0
+      },
       canView() {
         return this.$route.params && this.$route.params.booking && this.$route.params.dr
       }
     },
     methods: {
-      sendPayment () {
-        this.tokenizeCard().then(() => {
-          this.$swal('Thanks for your booking!', 'You\'ll receive a confirmation email at <a href="mailto:[email protected]">[email protected]</a>','success').then(() => {
-            this.$router.back()
-          })
+      sendPaymentCard () {
+        this.tokenizeCard().then((tokenize) => {
+          this.account.token = tokenize.id
+
+          this.sendPayment()
         }).catch((error) => {
           this.$swal('Pago no procesado', error.message_to_purchaser, 'error').then(() => {
 
@@ -241,50 +255,110 @@
                 this.errorMessage('No se pudo realizar el pago con paypal, favor de intentar mas tarde.');
               },
               // Set up the transaction
-              // createOrder: (data, actions) => {
-              //   return actions.order.create({
-              //     purchase_units: [{
-              //       amount: {
-              //         currency_code: this._settings.getCurrentSettings().currency || "USD",
-              //         value: +this.CartTotal.toFixed(2),
-              //         breakdown: {
-              //           item_total: { 
-              //             currency_code: this._settings.getCurrentSettings().currency || 'USD',
-              //             value: +this.CartTotal.toFixed(2)
-              //           },
-              //           discount: {
-              //             currency_code: this._settings.getCurrentSettings().currency || "USD",
-              //             value: +this.CartDescuento.toFixed(2)
-              //           }
-              //         }
-              //       },
-              //       items: this.Cart?.map((p) => Object({
-              //         name: p.name,
-              //         unit_amount: {
-              //           currency_code: this._settings.getCurrentSettings().currency || 'USD',
-              //           value: +p.precio_venta.toFixed(2)
-              //         },
-              //         quantity: p.servicios.length,
-              //         description: p.description,
-              //         sku: p.sku
-              //       }))
-              //     }],
-              //     application_context: {
-              //       brand_name:  this._settings.getCurrentSettings().company_name || 'Zibasoft'
-              //     }
-              //   });
-              // },
-              // onApprove: (data, actions) => {
-              //   return actions.order.capture().then((details) => {
-              //       console.log(data, actions, details);
-              //       this.showLoading();
-              //       this.processPayment('', details.id);
-              //     })
-              //     .catch(err => {
-              //       this.errorMessage('No se pudo realizar el pago con paypal, favor de intentar mas tarde.');
-              //     })
-              // }
+              createOrder: (data, actions) => {
+                return actions.order.create({
+                  purchase_units: [{
+                    amount: {
+                      currency_code: this.settings.CURRENCY || "USD",
+                      value: +this.getTotal.toFixed(2),
+                      breakdown: {
+                        item_total: { 
+                          currency_code: this.settings.CURRENCY || 'USD',
+                          value: +this.getTotal.toFixed(2)
+                        },
+                        discount: {
+                          currency_code: this.settings.CURRENCY || "USD",
+                          value: +this.getDiscount.toFixed(2)
+                        }
+                      }
+                    },
+                    items: this.getServices?.map((p) => Object({
+                      name: p.name,
+                      unit_amount: {
+                        currency_code: this.settings.CURRENCY || 'USD',
+                        value: +p.price.toFixed(2)
+                      },
+                      quantity: 1,
+                      description: p.description
+                    }))
+                  }],
+                  application_context: {
+                    brand_name: this.settings.COMPANY_NAME || 'Zibasoft'
+                  }
+                });
+              },
+              onApprove: (data, actions) => {
+                return actions.order.capture().then((details) => {
+                  this.account.paypal = details.id;
+                  this.sendPayment();
+                })
+                .catch(err => {
+                  this.errorMessage('No se pudo realizar el pago con paypal, favor de intentar mas tarde.');
+                })
+              }
             }).render('#paypal-button-container');
+          })
+        }
+      },
+      sendPayment () {
+        let data = {
+          provider_id: this.doctor.id,
+          phone: this.client.phone,
+          email: this.client.email,
+          name: this.client.firstName,
+          last_name: this.client.lastName,
+          payment_method: this.account.methodSelected, // 1: tarjeta, 2: oxxo, 3: cash, 4: paypal
+          Products: this.getServices.map((s) => Object({
+            product_id: s.id,
+            name: s.name,
+            precio_venta: s.price,
+            date: this.$moment(this.getDate, 'DD/MM/YYYY').format('DDMMYYYY'),
+            time: this.getTime,
+            phone: this.client.phone,
+            email: this.client.email
+          })),
+        };
+        let readyToSave = false
+
+        if (this.account.methodSelected == 1 && this.account.token !== false) {
+          data.token = this.account.token; // si es con tarjeta,
+          // data.card_id = 'cad_dsadsdsadsadsa', // si se usa tarjeta registrada,
+          data.card = this.account.card;
+          data.expiration = `${this.account.expiration.month}/${this.account.expiration.year}`;
+          data.titular = this.client.firstName;
+
+          readyToSave = true
+        } else if ([2,3].includes(this.account.methodSelected)) {
+          readyToSave = true
+        } else if (this.account.methodSelected == 4 && this.account.paypal !== false) {
+          data.paypal_id = this.account.paypal
+          readyToSave = true
+        }
+
+        if (this.bill.country && this.bill.state && this.bill.city && this.bill.street) {
+          data.addresses = [{
+            street: this.bill.street,
+            city: this.bill.city, 
+            suburb: '', 
+            postal_code: this.bill.cp, 
+            exterior_number: this.bill.street.replace(/\s+/g, '').match(/\d+/g).join('') || 0, 
+            interior_number: '', 
+            township: this.bill.city, 
+            state: this.bill.state, 
+            country: this.bill.country, 
+            directions: this.bill.street2, 
+            alias: 'direccion'
+          }]
+        }
+
+        if (readyToSave) {
+          postOrder(data).then((response) => {
+            // this.$swal('Thanks for your booking!', 'You\'ll receive a confirmation email at <a href="mailto:[email protected]">[email protected]</a>','success').then(() => {
+            //   this.$router.back()
+            // })
+            debugger;
+          }).catch((error) => {
+            debugger;
           })
         }
       }
