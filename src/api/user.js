@@ -2,11 +2,12 @@ import axios from '@/libs/api.request'
 
 export const login = ({ userName, password }) => {
   const data = {
-    userName,
-    password
+    keep_alive: true,
+    password: password,
+    username: userName
   }
   return axios.request({
-    url: 'login',
+    url: '/auth/login',
     data,
     method: 'post'
   })
@@ -15,10 +16,13 @@ export const login = ({ userName, password }) => {
 export const getUserInfo = (token) => {
   return axios.request({
     url: 'get_info',
-    params: {
+    data: {
       token
     },
-    method: 'get'
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'post'
   })
 }
 

@@ -19,7 +19,9 @@
                 </div>
                 <a href="" @click.stop.prevent="openForgot"><small>{{ $t('login.form.forgot_question') }}</small></a>
                 <div class="form-group text-center add_top_20">
-                  <input class="btn_1 medium" type="submit" :value="$t('login.form.login')" @click.stop.prevent="handleLogin">
+                  <button class="btn_1 medium" :class="{ 'loading_btn': loading }" type="submit" @click.stop.prevent="handleLogin1" :disabled="loading">
+                    {{ $t('login.form.login') }}
+                  </button>
                 </div>
               </template>
               <template  v-if="forgot.open">
@@ -39,6 +41,8 @@
   <!-- /main -->
 </template>
 <script>
+  import { mapActions } from 'vuex'
+
   export default {
     name: 'Login2',
     data () {
@@ -49,7 +53,8 @@
         },
         forgot: {
           open: false
-        }
+        },
+        loading: false
       }
     },
     computed: {
@@ -58,18 +63,34 @@
       }
     },
     methods: {
-      handleLogin () {
-        if (this.form.username !== '' && this.form.password !== '') {
-        this.$swal(this.$t('login.messages.success.welcome', { username: this.form.username }), '', 'success')
-      } else {
-        this.$swal(this.$t('login.messages.error.missing_info'), '', 'error')
+      ...mapActions([
+        'handleLogin'
+      ]),
+      handleLogin1 () {
+        if (this.form.username !== '' && this.form.realPassword !== '') {
+          this.loading = true
+          this.handleLogin({
+            userName: this.form.username, 
+            password: this.form.realPassword, 
+            remember: true
+          }).then(() => {
+            this.$swal(this.$t('login.messages.success.welcome', { username: this.form.username }), '', 'success')
+            this.$router.push({ name: 'home' })
+            this.loading = false
+          }).catch((error) => {
+            this.$swal('No se encontro el usuario', '', 'error')
+            this.loading = false
+          });
+        } else {
+          this.$swal(this.$t('login.messages.error.missing_info'), '', 'error')
+          this.loading = false
         }
       },
       handleRecover () {
         if (this.form.username !== '') {
-        this.$swal(this.$t('login.messages.success.recover_send', { username: this.form.username }), '', 'success')
-      } else {
-        this.$swal(this.$t('login.messages.error.missing_info'), '', 'error')
+          this.$swal(this.$t('login.messages.success.recover_send', { username: this.form.username }), '', 'success')
+        } else {
+          this.$swal(this.$t('login.messages.error.missing_info'), '', 'error')
         }
       },
       openForgot () {
@@ -81,3 +102,22 @@
     }
   }
 </script>
+
+<style>
+  .loading_btn {
+    color: #ffffffa8;
+  }
+
+  .loading_btn:before {
+    font-family: ElegantIcons;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: load8 1.1s infinite linear;
+    animation: load8 1.1s infinite linear;
+    font-size: 1rem;
+    color: #fff;
+    content: "\e02d";
+    vertical-align: middle;
+    display: inline-block;
+  }
+</style>

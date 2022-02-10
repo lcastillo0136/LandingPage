@@ -2,7 +2,7 @@
   <div>
     <u-animate-container v-for="(doctor,doctor_i) in listData" :key="doctor_i">
       <div class="strip_list fadeIn animated">
-        <a-tooltip placement="top" title="Add to wishlist">
+        <a-tooltip placement="top" title="Agregar a favoritos">
           <a href="#" class="wish_bt" :class="{'active tada animated': doctor.fav }" @click.stop.prevent="addToWishlist(doctor)"></a>
         </a-tooltip>
         <figure>
@@ -62,6 +62,8 @@
   </div>
 </template>
 <script>
+  import { mapGetters, mapActions } from 'vuex'
+
   export default {
     props: {
       data: {
@@ -76,6 +78,10 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'hasToken',
+        'favorites'
+      ]),
       rateTotal () {
         return Array(5).fill(true).map((e, i) => i + 1)
       },
@@ -84,9 +90,15 @@
       },
       loadingData () {
         return this.loading ? new Array(6).fill(true) : []
+      },
+      hasToken () {
+        return this.$store.state.user.token
       }
     },
     methods: {
+      ...mapActions([
+        'addFavorite'
+      ]),
       changeAnimationEnd (doctor) {
         doctor.isVisible = true
       },

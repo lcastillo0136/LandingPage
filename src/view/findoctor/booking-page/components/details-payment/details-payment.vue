@@ -289,7 +289,6 @@
           this.methods = response.data.data
         }
       }).catch((error) => {
-        debugger
       })
     }
   }

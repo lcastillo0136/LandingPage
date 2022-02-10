@@ -20,7 +20,9 @@
                   <a href="" class="forgot" @click.stop.prevent="openForgot"><small>{{ $t('login.form.forgot_question') }}</small></a>
                 </div>
                 <div class="form-group">
-                  <input class="btn_1" type="submit" :value="$t('login.form.login')" @click.stop.prevent="handleLogin">
+                  <button class="btn_1" :class="{ 'loading_btn': loading }" type="submit" @click.stop.prevent="handleLogin1" :disabled="loading">
+                    {{ $t('login.form.login') }}
+                  </button>
                 </div>
               </div>
               <div class="box_login last flipInX animated" v-if="forgot.open">
@@ -44,46 +46,105 @@
 </template>
 
 <script>
-export default {
-  props: {
-  },
-  data () {
-    return {
-      form: {
-        username: '',
-        realPassword: ''
+  import { mapActions } from 'vuex'
+
+  export default {
+    props: {
+    },
+    data () {
+      return {
+        form: {
+          username: '',
+          realPassword: ''
+        },
+        forgot: {
+          open: false
+        },
+        loading: false,
+        meta: {},
+        reference: {},
+        returnPage: false
+      }
+    },
+    computed: {
+      password () {
+        return new Array(this.form.realPassword.trim().length).fill('●').join('')
+      }
+    },
+    methods: {
+      ...mapActions([
+        'handleLogin'
+      ]),
+      handleLogin1 () {
+        if (this.form.username !== '' && this.form.realPassword !== '') {
+          this.loading = true
+          this.handleLogin({
+            userName: this.form.username, 
+            password: this.form.realPassword, 
+            remember: true
+          }).then(() => {
+            this.$swal(this.$t('login.messages.success.welcome', { username: this.form.username }), '', 'success')
+            if (this.returnPage) {
+              this.$router.push({
+                name: this.reference, 
+                params: { ...this.meta }
+              })
+            } else {
+              this.$router.push({ name: 'home' })
+            }
+            this.loading = false
+          }).catch((error) => {
+            this.$swal('No se encontro el usuario', '', 'error')
+            this.loading = false
+          });
+        } else {
+          this.$swal(this.$t('login.messages.error.missing_info'), '', 'error')
+          this.loading = false
+        }
       },
-      forgot: {
-        open: false
+      handleRecover () {
+        if (this.form.username !== '') {
+          this.$swal(this.$t('login.messages.success.recover_send', { username: this.form.username }), '', 'success')
+        } else {
+          this.$swal(this.$t('login.messages.error.missing_info'), '', 'error')
+        }
+      },
+      openForgot () {
+        this.forgot.open = true
+      },
+      closeForgot () {
+        this.forgot.open = false
       }
-    }
-  },
-  computed: {
-    password () {
-      return new Array(this.form.realPassword.trim().length).fill('●').join('')
-    }
-  },
-  methods: {
-    handleLogin () {
-      if (this.form.username !== '' && this.form.password !== '') {
-        this.$swal(this.$t('login.messages.success.welcome', { username: this.form.username }), '', 'success')
+    },
+    mounted() {
+      if (this.$route.params.page) {
+        this.meta = this.$route.params.info
+        this.reference = this.$route.params.page
+        this.returnPage = true
       } else {
-        this.$swal(this.$t('login.messages.error.missing_info'), '', 'error')
+        this.meta = {}
+        this.reference = {}
+        this.returnPage = false
       }
-    },
-    handleRecover () {
-      if (this.form.username !== '') {
-        this.$swal(this.$t('login.messages.success.recover_send', { username: this.form.username }), '', 'success')
-      } else {
-        this.$swal(this.$t('login.messages.error.missing_info'), '', 'error')
-      }
-    },
-    openForgot () {
-      this.forgot.open = true
-    },
-    closeForgot () {
-      this.forgot.open = false
     }
   }
-}
 </script>
+
+<style>
+  .loading_btn {
+    color: #ffffffa8;
+  }
+
+  .loading_btn:before {
+    font-family: ElegantIcons;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: load8 1.1s infinite linear;
+    animation: load8 1.1s infinite linear;
+    font-size: 1rem;
+    color: #fff;
+    content: "\e02d";
+    vertical-align: middle;
+    display: inline-block;
+  }
+</style>

@@ -5,6 +5,7 @@ import config from '@/config'
 Vue.use(Vuex)
 
 import app from './module/app'
+import user from './module/user'
 
 export default new Vuex.Store({
   state: {
@@ -67,6 +68,7 @@ export default new Vuex.Store({
     
   },
   modules: {
-    app
+    app,
+    user
   }
 })

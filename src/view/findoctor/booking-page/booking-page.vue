@@ -6,8 +6,8 @@
       <div class="row">
         <div class="col-xl-8 col-lg-8">
           <div class="box_general_3 cart">
-            <div class="message">
-              <p>¿Cliente existente? <router-link :to="{ name: 'login' }">Haz click aquí para iniciar sesión</router-link></p>
+            <div class="message" v-if="!hasToken">
+              <p>¿Cliente existente? <router-link :to="{ name: 'login', params: { page: 'booking-page', info: { ...$route.params } } }">Haz click aquí para iniciar sesión</router-link></p>
             </div>
 
             <div class="form_title">
@@ -114,7 +114,7 @@
   import DetailsForm from './components/details-form'
   import DetailsPayment from './components/details-payment'
   import BillDetails from './components/bill-details'
-  import { mapGetters, mapMutations } from 'vuex'
+  import { mapGetters, mapMutations, mapActions } from 'vuex'
   import { postOrder } from '@/api/data'
   import * as conekta from '@/libs/conekta'
 
@@ -182,7 +182,9 @@
     },
     computed: {
       ...mapGetters([
-        'settings'
+        'settings',
+        'hasToken',
+        'getUser'
       ]),
       canPay () {
         return this.canAccount && this.canBill
@@ -216,6 +218,9 @@
       }
     },
     methods: {
+      ...mapActions([
+        'getUserInfo'
+      ]),
       sendPaymentCard () {
         this.tokenizeCard().then((tokenize) => {
           this.account.token = tokenize.id
@@ -364,12 +369,19 @@
       }
     },
     mounted() {
+      if (!this.canView) {
+        this.$router.replace({ name: 'home' })
+      }
+
       window['$']('#sidebar').theiaStickySidebar({
         additionalMarginTop: 95
       });
 
-      if (!this.canView) {
-        this.$router.replace({ name: 'home' })
+      if (this.hasToken) {
+        this.client.firstName = this.getUser.first_name || ''
+        this.client.lastName = this.getUser.last_name || ''
+        this.client.email = this.client.email2 = this.getUser.email || ''
+        this.client.phone = this.getUser.phone || ''
       }
     }
   }

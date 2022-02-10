@@ -253,6 +253,7 @@
   import AsideProfile from './components/aside'
   import BookingCalendar from './components/booking-calendar'
   import ServiceChoosen from './components/service-choosen'
+  import { mapGetters, mapMutations, mapActions } from 'vuex'
 
   import { getDoctorInfo, getDoctorBooking } from '@/api/data'
   import _ from 'lodash';
@@ -310,6 +311,9 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'hasToken'
+      ]),
       totalRatings () {
         return new Array(5).fill(true).map((e, i) => i + 1)
       },

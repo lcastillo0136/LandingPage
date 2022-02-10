@@ -1,11 +1,11 @@
 <template>
   <nav id="menu" class="main-menu">
     <ul>
-      <li v-for="(option, option_i) in options" :key="option_i">
+      <li v-for="(option, option_i) in menu_options" :key="option_i">
         <span>
           <router-link :to="option.url" v-if="!isExternal(option.url) && !isEmpty(option.url) && !option.external">{{ option.text }}</router-link>
           <a :href="option.url" v-if="(isExternal(option.url) || option.external) && !isEmpty(option.url)">{{ option.text }}</a>
-          <a href="" v-if="isEmpty(option.url)" @click.stop.prevent="">{{ option.text }}</a>
+          <a href="" v-if="isEmpty(option.url)" @click.stop.prevent="option.callback">{{ option.text }}</a>
         </span>
         <ul v-if="option.childrens">
           <li v-for="(child, child_i) in option.childrens" :key="child_i" :class="optionListClass(child.url)">
@@ -36,6 +36,9 @@
       }
     },
     computed: {
+      menu_options () {
+        return this.options.filter(f => (f.url || f.callback || f.external) && f.text)
+      }
     },
     methods: {
       optionListClass (url) {

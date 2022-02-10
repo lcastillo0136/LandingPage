@@ -2,13 +2,19 @@ import Cookies from 'js-cookie'
 import Papa from 'papaparse'
 // cookie保存的天数
 import config from '@/config'
+const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
+
 import { forEach, hasOneOf, objEqual } from '@/libs/tools'
 const { title, cookieExpires, useI18n } = config
 
 export const TOKEN_KEY = 'token'
 
-export const setToken = (token) => {
-  Cookies.set(TOKEN_KEY, token, { expires: cookieExpires || 1 })
+export const setToken = (token, expiration) => {
+  Cookies.set(TOKEN_KEY, token, { expires: expiration || cookieExpires || 1 })
+}
+
+export const removeToken = () => {
+  Cookies.remove(TOKEN_KEY)
 }
 
 export const getToken = () => {
@@ -412,4 +418,8 @@ export const setTitle = (routeItem, vm) => {
   const pageTitle = showTitle(handledRoute, vm)
   const resTitle = pageTitle ? `${title} - ${pageTitle}` : title
   window.document.title = resTitle
+}
+
+export const getServerFile = (path) => {
+  return `${baseUrl.replace('api/', 'storage/')}${path.replace('public/', '')}`
 }

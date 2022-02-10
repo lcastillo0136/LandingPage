@@ -8,10 +8,13 @@
             <Logo></Logo>
           </div>
           <div class="col-lg-9 col-6">
-            <ul id="top_access">
-              <li><User></User></li>
+            <ul id="top_access" v-if="!hasToken">
+              <li>
+                <User></User>
+              </li>
               <li><Register></Register></li>
             </ul>
+            <UserMenu v-else></UserMenu>
             <Menu :options="options"></Menu>
             <!-- /main-menu -->
           </div>
@@ -23,70 +26,87 @@
   </div>
 </template>
 <script>
-import HamburgerButton from './components/hamburger-button'
-import Logo from './components/logo'
-import User from './components/user'
-import Register from './components/register'
-import Menu from './components/menu'
+  import HamburgerButton from './components/hamburger-button'
+  import Logo from './components/logo'
+  import User from './components/user'
+  import Register from './components/register'
+  import Menu from './components/menu'
+  import UserMenu from './components/user-menu'
 
-import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
 
-export default {
-  name: 'Header',
-  props: {
-    sticky: Boolean
-  },
-  components: {
-    HamburgerButton,
-    Logo,
-    User,
-    Register,
-    Menu
-  },
-  data () {
-    return {
-      isSticky: false
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'stillLoading',
-      'container',
-      'headerSticky'
-    ]),
-    headerClasses () {
+  export default {
+    name: 'Header',
+    props: {
+      sticky: Boolean
+    },
+    components: {
+      HamburgerButton,
+      Logo,
+      User,
+      Register,
+      Menu,
+      UserMenu
+    },
+    data () {
       return {
-        'sticky': (this.sticky && this.isSticky) || (this.headerSticky && this.isSticky)
+        isSticky: false
       }
     },
-    options () {
-      return [{
-        text: this.$t('header.menu.home'),
-        url: '/'
-      }, {
-        text: 'Buscar',
-        url: { name: 'list-page' },
-      }, {
-        url: { name: 'login' },
-        text: this.$t('header.menu.login')
-      }]
-    },
-    containerClasses () {
-      return {
-        'container': this.container,
-        'container-fluid': !this.container
+    computed: {
+      ...mapGetters([
+        'stillLoading',
+        'container',
+        'headerSticky',
+        'hasToken'
+      ]),
+      headerClasses () {
+        return {
+          'sticky': (this.sticky && this.isSticky) || (this.headerSticky && this.isSticky)
+        }
+      },
+      options () {
+        return [{
+          text: this.$t('header.menu.home'),
+          url: '/'
+        }, {
+          text: 'Buscar',
+          url: { name: 'list-page' },
+        }, this.hasToken ? {} : {
+          url: { name: 'login' },
+          text: this.$t('header.menu.login')
+        }
+        // , this.hasToken ? {
+        //   url: '',
+        //   callback: () => {
+        //     this.handleLogOut()
+        //   },
+        //   text: 'Cerrar sesion'
+        // } : {
+        //   url: { name: 'login' },
+        //   text: this.$t('header.menu.login')
+        // }
+        ]
+      },
+      containerClasses () {
+        return {
+          'container': this.container,
+          'container-fluid': !this.container
+        }
+      },
+      headerStickyHeight () {
+        return window['$']('.header_sticky').outerHeight() + 1
       }
     },
-    headerStickyHeight () {
-      return window['$']('.header_sticky').outerHeight() + 1
+    methods: {
+      ...mapActions([
+        'handleLogOut'
+      ]),
+    },
+    watch: {
+    },
+    mounted () {
+      window.addEventListener('scroll', () => this.isSticky = window.scrollY > 1)
     }
-  },
-  methods: {
-  },
-  watch: {
-  },
-  mounted () {
-    window.addEventListener('scroll', () => this.isSticky = window.scrollY > 1)
   }
-}
 </script>

@@ -9,7 +9,8 @@ import {
   restoreTrash,
   getUnreadCount
 } from '@/api/user'
-import { setToken, getToken } from '@/libs/util'
+import { setToken, getToken, removeToken, localSave, localRead } from '@/libs/util'
+import _ from 'lodash'
 
 export default {
   state: {
@@ -23,7 +24,9 @@ export default {
     messageUnreadList: [],
     messageReadedList: [],
     messageTrashList: [],
-    messageContentStore: {}
+    messageContentStore: {},
+    favList: [],
+    sessionUser: {}
   },
   mutations: {
     setAvatar (state, avatarPath) {
@@ -35,12 +38,19 @@ export default {
     setUserName (state, name) {
       state.userName = name
     },
+    setUser (state, data) {
+      state.sessionUser = {...data}
+    },
     setAccess (state, access) {
       state.access = access
     },
-    setToken (state, token) {
-      state.token = token
-      setToken(token)
+    setToken (state, session) {
+      state.token = session.token
+      setToken(session.token, session.expiration)
+    },
+    removeToken (state) {
+      state.token = null
+      removeToken()
     },
     setHasGetInfo (state, status) {
       state.hasGetInfo = status
@@ -65,16 +75,24 @@ export default {
       const msgItem = state[from].splice(index, 1)[0]
       msgItem.loading = false
       state[to].unshift(msgItem)
+    },
+    setFav (state, list) {
+      state.favList = list
+
+      localSave('favlist', state.favList)
     }
   },
   getters: {
     messageUnreadCount: state => state.messageUnreadList.length,
     messageReadedCount: state => state.messageReadedList.length,
-    messageTrashCount: state => state.messageTrashList.length
+    messageTrashCount: state => state.messageTrashList.length,
+    hasToken : state => state.token,
+    favorites: state => state.favList,
+    getUser: state => state.sessionUser
   },
   actions: {
     // 登录
-    handleLogin ({ commit }, { userName, password, remember }) {
+    handleLogin ({ commit, dispatch }, { userName, password, remember }) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
         login({
@@ -82,9 +100,17 @@ export default {
           password,
           remember
         }).then(res => {
-          const data = res.data
-          commit('setToken', data.token)
-          resolve()
+          const data = res.data.data
+          const inFifteenMinutes = new Date(new Date().getTime() + (15 * 60 * 1000))
+          
+          if (data.token_key) {
+            commit('setToken', { token: data.token_key, expiration: 360 })
+            dispatch('getUserInfo').then(() => {
+              resolve()
+            })
+          } else {
+            reject('not_found_user')
+          } 
         }).catch(err => {
           reject(err)
         })
@@ -93,13 +119,14 @@ export default {
     // 退出登录
     handleLogOut ({ state, commit }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('setToken', '')
+        // logout(state.token).then(() => {
+          commit('removeToken', '')
+          commit('setUser', {})
           commit('setAccess', [])
           resolve()
-        }).catch(err => {
-          reject(err)
-        })
+        // }).catch(err => {
+        //   reject(err)
+        // })
         // 如果你的退出登录无需请求接口，则可以直接使用下面三行代码而无需使用logout调用接口
         // commit('setToken', '')
         // commit('setAccess', [])
@@ -111,12 +138,8 @@ export default {
       return new Promise((resolve, reject) => {
         try {
           getUserInfo(state.token).then(res => {
-            const data = res.data
-            commit('setAvatar', data.avatar)
-            commit('setUserName', data.name)
-            commit('setUserId', data.user_id)
-            commit('setAccess', data.access)
-            commit('setHasGetInfo', true)
+            const data = res.data.data
+            commit('setUser', data)
             resolve(data)
           }).catch(err => {
             reject(err)
@@ -213,6 +236,17 @@ export default {
           reject(error)
         })
       })
+    },
+    addFavorite ({ state, commit, dispatch }, id) {
+      const _f = _.find(state.favList, (f) => id == f);
+      if (_f) dispatch('removeFavorite', id)
+      else state.favList.push(id)
+      commit('setFav', state.favList)
+    },
+    removeFavorite ({ state, commit }, id) {
+      _.remove(state.favList, (f) => id == f);
+
+      commit('setFav', state.favList)
     }
   }
 }
