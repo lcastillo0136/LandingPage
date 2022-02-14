@@ -1,19 +1,27 @@
 <template>
-  <ul class="user-menu" :class="{ 'open-menu': isOpen }" tabindex="12">
+  <ul class="user-menu" :class="{ 'open-menu': isOpen }" >
     <li>
       <template v-if="!getUser.avatar">
-        <i class="pe-7s-user" @click="isOpen=!isOpen"></i>
+        <i class="pe-7s-user" @click="toggleMenu"></i>
       </template>
       <template v-else>
-        <img :src="avatar" border="0" class="avatar" @click="isOpen=!isOpen">
+        <img :src="avatar" border="0" class="avatar" @click="toggleMenu">
       </template>
       <ul>
-        <li class="welcome-user">Hola, {{ fullName }}</li>
-        <li>Profile</li>
-        <li>Settings</li>
+        <li class="welcome-user">
+          Hola, {{ fullName }}
+          <br>
+          <small>{{ getUser.email }}</small>
+        </li>
+        <li>
+          <router-link :to="{ name: 'profile-details' }" @click.native="toggleMenu">Profile</router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'profile-settings' }" @click.native="toggleMenu">Configuración</router-link>
+        </li>
         <li class="divider"></li>
-        <li @click="handleLogOut">
-          Logout
+        <li >
+          <a @click="dispachLogout">logout</a> 
         </li>
       </ul>
     </li>
@@ -46,6 +54,13 @@
       ...mapActions([
         'handleLogOut'
       ]),
+      dispachLogout () {
+        this.handleLogOut()
+        this.isOpen = false
+      },
+      toggleMenu() {
+        this.isOpen = !this.isOpen
+      }
     },
   }
 </script>
@@ -82,9 +97,11 @@
         display: none;
         margin-top: -5px;
         border: solid 1px #d5d5d5;
+        border-radius: 5px;
+        border-top-right-radius: 0;
         li {
           display: block;
-          padding: 7px 20px;
+          padding: 12px 20px;
           cursor: pointer;
           &.welcome-user {
             font-weight: bold;
@@ -98,11 +115,18 @@
             padding: 0;
             margin: 0;
           }
+          a {
+            display: block;
+            color: #639bbe;
+
+            &.router-link-active {
+              color: var(--teal);
+            }
+          }
         }
       }
     }
-    &:hover,
-    &:focus,
+
     &.open-menu {
       li {
         > i, > .avatar {

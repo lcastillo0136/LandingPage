@@ -20,9 +20,9 @@
                   <a href="" class="forgot" @click.stop.prevent="openForgot"><small>{{ $t('login.form.forgot_question') }}</small></a>
                 </div>
                 <div class="form-group">
-                  <button class="btn_1" :class="{ 'loading_btn': loading }" type="submit" @click.stop.prevent="handleLogin1" :disabled="loading">
+                  <a-button type="primary" shape="round"  class="btn_1" :loading="loading" @click.stop.prevent="handleLogin1">
                     {{ $t('login.form.login') }}
-                  </button>
+                  </a-button>
                 </div>
               </div>
               <div class="box_login last flipInX animated" v-if="forgot.open">
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
     props: {
@@ -67,6 +67,11 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'hasToken',
+        'settings',
+        'getUser'
+      ]),
       password () {
         return new Array(this.form.realPassword.trim().length).fill('●').join('')
       }
@@ -117,6 +122,9 @@
       }
     },
     mounted() {
+      if (this.hasToken) {
+        this.$router.replace({ name: 'profile' })
+      }
       if (this.$route.params.page) {
         this.meta = this.$route.params.info
         this.reference = this.$route.params.page

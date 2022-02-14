@@ -5,7 +5,7 @@
         <div class="col-lg-3 col-md-12">
           <p>
             <router-link :to="{ name: 'home' }" title="My Doctor">
-              <img src="img/logox2.png" data-retina="true" alt="" width="163" height="36" class="img-fluid">
+              <img :src="appImage" data-retina="true" alt="" width="163" height="36" class="img-fluid">
             </router-link>
           </p>
         </div>
@@ -69,7 +69,7 @@
   </footer>
 </template>
 <script>
-
+  import { getServerFile } from '@/libs/util'
   import { mapGetters, mapMutations } from 'vuex'
   export default {
     name: 'Footer',
@@ -89,6 +89,9 @@
       },
       appName () {
         return this.settings?.COMPANY_NAME
+      },
+      appImage () {
+        return getServerFile('public/company/company_logo.png')
       }
     },
     methods: {

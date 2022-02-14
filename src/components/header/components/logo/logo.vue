@@ -6,29 +6,33 @@
   </div>
 </template>
 <script>
-import config from '@/config' 
-const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
-export default {
-  name: 'Logo',
-  components: {
-  },
-  data () {
-    return {
-    }
-  },
-  computed: {
-    appName () {
-      return config.title
+  import { getServerFile } from '@/libs/util'
+  import { mapGetters, mapMutations } from 'vuex'
+
+  export default {
+    name: 'Logo',
+    components: {
     },
-    appImage () {
-      return baseUrl.replace('/api/', '/storage/') + 'company/company_logo.png'
+    data () {
+      return {
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'settings'
+      ]),
+      appName () {
+        return this.settings?.COMPANY_NAME
+      },
+      appImage () {
+        return getServerFile('public/company/company_logo.png')
+      }
+    },
+    methods: {
+    },
+    watch: {
+    },
+    mounted () {
     }
-  },
-  methods: {
-  },
-  watch: {
-  },
-  mounted () {
   }
-}
 </script>

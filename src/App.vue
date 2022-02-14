@@ -52,7 +52,9 @@
       await this.getSorts()
       await this.getSettings()
 
-      await this.getLocation().then((data) => {})
+      await this.getLocation().then((data) => {}).catch((error) => {
+        
+      })
       
       conekta.initConekta(this.settings.CONEKTA_CLIENT)
       paypal.init(this.settings.PAYPAL_CLIENT, this.settings.CURRENCY)

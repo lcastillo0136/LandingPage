@@ -212,6 +212,51 @@ export default [
           icon: 'md-contacts'
         },
         component: () => import('@/view/' + config.theme + '/contacts')
+      }, 
+      {
+        path: '/profile',
+        alias: '/profile.html',
+        name: 'profile',
+        meta: {
+          hideInMenu: true,
+          title: 'profile.title',
+          notCache: true,
+          icon: 'md-contacts'
+        },
+        component: () => import('@/view/' + config.theme + '/profile'),
+        children: [
+          {
+            path: 'details.html',
+            alias: '/',
+            name: 'profile-details',
+            component: () => import('@/view/' + config.theme + '/profile/pages/details')
+          },
+          {
+            path: 'settings.html',
+            name: 'profile-settings',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-settings')
+          },
+          {
+            path: 'files.html',
+            name: 'profile-files',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-files')
+          },
+          {
+            path: 'appointments.html',
+            name: 'profile-appointments',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-appointments')
+          },
+          {
+            path: 'patients.html',
+            name: 'profile-patients',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-patients')
+          },
+          {
+            path: 'orders.html',
+            name: 'profile-orders',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-orders')
+          }
+        ]
       }, {
         path: "*",
         component: () => import('@/view/' + config.theme + '/404')

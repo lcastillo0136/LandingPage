@@ -656,5 +656,8 @@ export default {
   },
   booking_page: {
     title: 'Agenda y pago'
+  },
+  profile: {
+    title: 'Perfil'
   }
 }

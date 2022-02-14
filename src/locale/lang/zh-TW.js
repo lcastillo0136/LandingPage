@@ -656,5 +656,8 @@ export default {
   },
   booking_page: {
     title: 'Schedule appontment & payment'
+  },
+  profile: {
+    title: 'Profile'
   }
 }

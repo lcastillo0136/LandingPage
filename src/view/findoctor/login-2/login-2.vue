@@ -19,9 +19,9 @@
                 </div>
                 <a href="" @click.stop.prevent="openForgot"><small>{{ $t('login.form.forgot_question') }}</small></a>
                 <div class="form-group text-center add_top_20">
-                  <button class="btn_1 medium" :class="{ 'loading_btn': loading }" type="submit" @click.stop.prevent="handleLogin1" :disabled="loading">
+                  <a-button type="primary" shape="round"  class="btn_1" :loading="loading" @click.stop.prevent="handleLogin1">
                     {{ $t('login.form.login') }}
-                  </button>
+                  </a-button>
                 </div>
               </template>
               <template  v-if="forgot.open">
@@ -41,7 +41,7 @@
   <!-- /main -->
 </template>
 <script>
-  import { mapActions } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
     name: 'Login2',
@@ -54,10 +54,18 @@
         forgot: {
           open: false
         },
-        loading: false
+        loading: false,
+        meta: {},
+        reference: {},
+        returnPage: false
       }
     },
     computed: {
+      ...mapGetters([
+        'hasToken',
+        'settings',
+        'getUser'
+      ]),
       password () {
         return new Array(this.form.realPassword.trim().length).fill('●').join('')
       }
@@ -75,7 +83,14 @@
             remember: true
           }).then(() => {
             this.$swal(this.$t('login.messages.success.welcome', { username: this.form.username }), '', 'success')
-            this.$router.push({ name: 'home' })
+            if (this.returnPage) {
+              this.$router.push({
+                name: this.reference, 
+                params: { ...this.meta }
+              })
+            } else {
+              this.$router.push({ name: 'home' })
+            }
             this.loading = false
           }).catch((error) => {
             this.$swal('No se encontro el usuario', '', 'error')
@@ -98,6 +113,20 @@
       },
       closeForgot () {
         this.forgot.open = false
+      }
+    },
+    mounted () {
+      if (this.hasToken) {
+        this.$router.replace({ name: 'profile' })
+      }
+      if (this.$route.params.page) {
+        this.meta = this.$route.params.info
+        this.reference = this.$route.params.page
+        this.returnPage = true
+      } else {
+        this.meta = {}
+        this.reference = {}
+        this.returnPage = false
       }
     }
   }
