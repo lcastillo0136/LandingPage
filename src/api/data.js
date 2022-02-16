@@ -87,6 +87,16 @@ export const getPaymentMethods = () => {
   })
 }
 
+export const getAppoitmentsStatus = (token) => {
+  return axios.request({
+    url: `/appointments/status`,
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+  })
+}
+
 export const postOrder = (data) => {
   // return new Promise((resolve, reject) => {
   //   resolve({

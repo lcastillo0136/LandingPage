@@ -15,7 +15,7 @@
 </template>
 <script>
   import AsideProfile from './components/aside-profile'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
     name: 'Profile',
@@ -104,13 +104,21 @@
         'getUser'
       ])
     },
+    methods: {
+      ...mapActions([
+        'getAppointmentsStatus'
+      ])
+    },
     mounted() {
       window['$']('#sidebar').theiaStickySidebar({
         additionalMarginTop: 30
       });
+
       if (!this.hasToken) {
         this.$router.replace({ name: 'home' })
       }
+
+      this.getAppointmentsStatus().then(() => {}).catch(() => {})
 
       if (this.getUser.bday) {
         this.profile = {

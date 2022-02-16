@@ -4,6 +4,10 @@ import router from './router'
 import store from './store'
 import VueWow from 'vue-wow'
 import Moment from 'vue-moment'
+
+const moment = require('moment')
+require('moment/locale/es')
+
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueSkeletonLoading from 'vue-skeleton-loading';
 import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
@@ -32,7 +36,9 @@ Vue.use(VueSweetalert2);
 Vue.use(Antd)
 
 Vue.use(VueWow)
-Vue.use(Moment)
+Vue.use(Moment, {
+    moment
+})
 Vue.use(VueSkeletonLoading)
 
 Vue.config.productionTip = false
@@ -45,6 +51,19 @@ Vue.filter('phone', function (phone) {
 Vue.filter('currency', function (value, style) {
   return (typeof value !== "number") ? value : (new Intl.NumberFormat('en-US', { style: 'currency', currency: style || 'USD' })).format(value);
 });
+
+Vue.filter('mtoh', function(n) {
+  var num = n;
+  var hours = (num / 60);
+  var rhours = Math.floor(hours);
+  var minutes = (hours - rhours) * 60;
+  var rminutes = Math.round(minutes);
+  return n > 0 ? ((rhours > 0 ? `${rhours} hora` + (rhours > 1 ? 's' : '') : '') + (rminutes > 0 ? (rhours > 0 ? ' y ' : '') + `${rminutes} minuto` + (rminutes > 1 ? 's' : '') : '')) : '';
+})
+
+Vue.filter('oxxo', function(o) {
+  return `${o}`.replace(/^([\d]{4})([\d]{4})([\d]{4})([\d]{2})/g, '$1-$2-$3-$4')
+})
 
 new Vue({
   el: '#app',

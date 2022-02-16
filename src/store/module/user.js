@@ -9,6 +9,7 @@ import {
   restoreTrash,
   getUnreadCount
 } from '@/api/user'
+import { getAppoitmentsStatus } from '@/api/data'
 import { setToken, getToken, removeToken, localSave, localRead } from '@/libs/util'
 import _ from 'lodash'
 
@@ -26,7 +27,8 @@ export default {
     messageTrashList: [],
     messageContentStore: {},
     favList: [],
-    sessionUser: {}
+    sessionUser: {},
+    appointments_status: []
   },
   mutations: {
     setAvatar (state, avatarPath) {
@@ -80,6 +82,9 @@ export default {
       state.favList = list
 
       localSave('favlist', state.favList)
+    },
+    setAppointmentsStatus(state, status) {
+      state.appointments_status = status
     }
   },
   getters: {
@@ -88,7 +93,8 @@ export default {
     messageTrashCount: state => state.messageTrashList.length,
     hasToken : state => state.token,
     favorites: state => state.favList,
-    getUser: state => state.sessionUser
+    getUser: state => state.sessionUser,
+    appointmentsStatus: state => state.appointments_status
   },
   actions: {
     // 登录
@@ -247,6 +253,21 @@ export default {
       _.remove(state.favList, (f) => id == f);
 
       commit('setFav', state.favList)
+    },
+    getAppointmentsStatus({ state, commit }) {
+      return new Promise((resolve, reject) => {
+        try {
+          getAppoitmentsStatus(state.token).then(res => {
+            const data = res.data.data
+            commit('setAppointmentsStatus', data)
+            resolve(data)
+          }).catch(err => {
+            reject(err)
+          })
+        } catch (error) {
+          reject(error)
+        }
+      })
     }
   }
 }

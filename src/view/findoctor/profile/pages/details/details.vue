@@ -1,5 +1,5 @@
 <template>
-  <div v-if="getUser">
+  <div v-if="profile">
     <div class="box_general_2 add_bottom_45">
       <h4>Datos personales</h4>
       <div class="row">
@@ -194,20 +194,11 @@
       }
     },
     watch: {
-      getUser() {
-        this.profile = {
-          ...this.getUser,
-          ...{ 
-            bday: this.$moment(this.getUser.bday, 'YYYY-MM-DD')
-          }
-        }
-      }
     },
     computed: {
       ...mapGetters([
         'hasToken',
         'settings',
-        'getUser'
       ]),
       profile: {
         get() {
@@ -247,7 +238,7 @@
             active: 1,
             description: null,
             name: inputValue,
-            user_id: this.getUser.id,
+            user_id: this.profile.id,
             value: 0
           })
         }
@@ -258,14 +249,6 @@
       },
     },
     mounted() {
-      if (this.getUser.bday) {
-        this.profile = {
-          ...this.getUser,
-          ...{ 
-            bday: this.$moment(this.getUser.bday, 'YYYY-MM-DD')
-          }
-        }
-      }
     }
   }
 </script>

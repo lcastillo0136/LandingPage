@@ -1,25 +1,491 @@
 <template>
-  <main>
-    ProfileAppointments
-  </main>
+    <div class="box_general_2 add_bottom_45">
+      <FullCalendar :options="calendarOptions" ref="fullCalendar"  />
+
+      <a-modal :visible="modal.open" @ok="handleOk" @cancel="handleCancel" :width="900">
+        <div v-if="modal.data" slot="title">Detalles de la cita</div>
+        <div v-if="modal.data">
+          <h5>
+            <small>{{ modal.data.start_date | moment('dddd, D [de] MMMM [de] YYYY') }}</small>
+            <template v-if="modal.data.item">
+              <br>
+              {{ modal.data.item.name}}
+            </template>
+            <template v-if="modal.data.status">
+              <br>
+              <a-tag :color="modal.data.status.color">{{ modal.data.status.name }}</a-tag>
+            </template>
+          </h5>
+          <a-divider />
+          <div class="row">
+            <div :class="{ 'col-md-8': modal.data.client, 'col-md-12': !modal.data.client}">
+              <a-form-model ref="eventForm" :model="modal.data" :rules="rules">
+                <div class="row">
+                  <template v-if="sameDay">
+
+                    <div class="col-md-6 col-sm-6">
+                      <div class="form-group">
+                        <label>Hora Inicio</label>
+                        <a-form-model-item prop="start_date">
+                          <a-time-picker use12-hours v-model="modal.data.start_date" size="large" />
+                        </a-form-model-item>
+                        <small v-if="eventDuration > 0">
+                          Duracion: {{ eventDuration | mtoh }}
+                        </small>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                      <div class="form-group">
+                        <label>Hora Fin</label>
+                        <a-form-model-item prop="end_date">
+                          <a-time-picker use12-hours v-model="modal.data.end_date" size="large" />
+                        </a-form-model-item>
+                      </div>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class="col-md-6 col-sm-6">
+                      <div class="form-group">
+                        <label>Fecha Inicio</label>
+                        <a-form-model-item prop="start_date">
+                          <a-date-picker show-time v-model="modal.data.start_date" size="large" />
+                        </a-form-model-item>
+                        <small v-if="eventDuration > 0">
+                          Duracion: {{ eventDuration | mtoh }}
+                        </small>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                      <div class="form-group">
+                        <label>Fecha Fin</label>
+                        <a-form-model-item prop="end_date">
+                          <a-date-picker show-time v-model="modal.data.end_date" size="large" />
+                        </a-form-model-item>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+                <template v-if="!modal.data.id">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Paciente</label>
+                        <a-select show-search option-filter-prop="children" v-model="modal.data.client_id">
+                          <a-select-option v-for="(client, client_i) in providerClients" :key="client_i" :value="client.id">
+                            {{ client.first_name }} {{ client.last_name }}
+                          </a-select-option>
+                        </a-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Servicios</label>
+                        <a-select show-search option-filter-prop="children" v-model="modal.data.order_product_id">
+                          <a-select-option v-for="(service, service_i) in providerServices" :key="service_i" :value="service.id">
+                            {{ service.name }} {{ service.price | currency }}
+                          </a-select-option>
+                        </a-select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Metodo de pago</label>
+                        <a-form-model-item prop="payment_method" help="*Favor de procesar el pago en ventanilla">
+                          <a-select show-search option-filter-prop="children" v-model="modal.data.payment_method">
+                            <a-select-option value="1">
+                              Tarjeta de Debito / Credito
+                            </a-select-option>
+                            <a-select-option value="3">
+                              En Efectivo
+                            </a-select-option>
+                          </a-select>
+                        </a-form-model-item>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Estatus <span v-if="!modal.data.id">cita</span></label>
+                      <a-select show-search option-filter-prop="children" v-model="modal.data.status_id">
+                        <a-select-option v-for="(status, status_i) in appointmentsStatus" :key="status_i" :value="status.id">
+                          {{ status.name }}
+                        </a-select-option>
+                      </a-select>
+                    </div>
+                  </div>
+                  <div class="col-md-6" v-if="!modal.data.id">
+                    <div class="form-group">
+                      <label>Estatus pago</label>
+                      <a-select show-search option-filter-prop="children" v-model="modal.data.payment_status">
+                        <a-select-option value="1">
+                          Cancelado
+                        </a-select-option>
+                        <a-select-option value="2">
+                          Pagado
+                        </a-select-option>
+                        <a-select-option value="4">
+                          Pago Pendiente
+                        </a-select-option>
+                      </a-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label>Comentarios</label>
+                      <a-textarea v-model="modal.data.notes" :rows="4" />
+                    </div>
+                  </div>
+                </div>
+              </a-form-model>
+            </div>
+            <div class="col-md-4">
+              <template v-if="modal.data.client">
+                <span>Nombre</span>
+                <div>
+                  <strong>{{ modal.data.client.first_name }} {{ modal.data.client.last_name }}</strong>
+                </div>
+                <br>
+                <span>Correo electronico</span>
+                <div>
+                  <strong>{{ modal.data.client.email }}</strong>
+                </div>
+                <br>
+                <span>Telefono</span>
+                <div>
+                  <strong>{{ modal.data.client.phone | phone }}</strong>
+                </div>
+              </template>
+              <template v-if="orderOXXO">
+                <br>
+                <span>Referencia OXXO</span>
+                <div>
+                  <strong>{{ orderOXXO.reference | oxxo }}</strong>
+                  <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
+                  <a-tag color="red" v-if="oxxoExpired && !orderPaid">Expirado</a-tag>
+                  <div v-if="!orderPaid && !oxxoExpired">
+                    <small>Pagar antes de {{ oxxoTime }}</small>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </a-modal>
+
+    </div>
 </template>
 <script>
+  import '@fullcalendar/core/vdom' // solves problem with Vite
+  import FullCalendar from '@fullcalendar/vue'
+  import dayGridPlugin from '@fullcalendar/daygrid'
+  import interactionPlugin from '@fullcalendar/interaction'
+  import timeGridPlugin from '@fullcalendar/timegrid'
+  import { toDuration } from 'moment'
+  import esLocale from '@fullcalendar/core/locales/es'
+  import _ from 'lodash'
+
   import { mapGetters } from 'vuex'
 
+  esLocale.week.dow = 0
+
   export default {
-    name: 'ProfileAppointments',
-    watch: {
+    props: {
+      user: {
+        type: Object,
+        default: function () {
+          return { }
+        }
+      }
     },
     components: {
+      FullCalendar // make the <FullCalendar> tag available
+    },
+    name: 'ProfileAppointments',
+    data() {
+      return {
+        calendarOptions: {
+          locale: esLocale,
+          plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin ],
+          initialView: 'timeGridWeek',
+          dateClick: this.handleDateClick,
+          events: this.events,
+          slotDuration: this.slotDuration || '00:15',
+          nowIndicator: true,
+          slotLabelFormat: {
+            hour: 'numeric',
+            minute: '2-digit',
+            omitZeroMinute: false,
+            meridiem: 'short',
+            hour12: !0,
+          },
+          businessHours: {
+            // days of week. an array of zero-based day of week integers (0=Sunday)
+            daysOfWeek: [ 1, 2, 3, 4, 5, 6 ], // Monday - Thursday
+
+            startTime: this.startTime, // a start time (10am in this example)
+            endTime: this.endTime, // an end time (6pm in this example)
+          },
+          slotMinTime: '06:00:00',
+          slotMaxTime: '22:00:00',
+          scrollTimeReset: false,
+          eventClick: this.editEvent,
+              eventChange: this.eventChange
+        },
+        modal: {
+          open: false,
+          loading: false,
+          text: 'Modal content',
+          date: null,
+          data: false
+        },
+        rules: {
+          start_date: [{ validator: (rule, value, callback) => {
+            if (value === '' || !value) {
+              callback(new Error('Favor de no dejar este campo vacio'));
+            } else {
+              if (this.eventDuration <= 0) {
+                callback(new Error('No se puede crear una cita sin duracion'))
+              } else {
+                callback();
+              }
+            }
+          }, trigger: 'change' }],
+          end_date: [{ validator: (rule, value, callback) => {
+            if (value === '' || !value) {
+              callback(new Error('Favor de no dejar este campo vacio'));
+            } else {
+              if (this.eventDuration <= 0) {
+                callback(new Error('No se puede crear una cita sin duracion'))
+              } else {
+                callback();
+              }
+            }
+          }, trigger: 'change' }],
+          payment_method: [{ validator: (rule, value, callback) => {
+            if ((value === '' || !value) && !this.modal.data.id) {
+              callback(new Error('Favor de no dejar este campo vacio'));
+            } else {
+              callback();
+            }
+          }, trigger: 'change' }],
+        }
+      }
+    },
+    watch: {
+      'getUser' () {
+        this.setCalendarData()
+      },
+      'modal.data.status_id' () {
+        if (this.modal.data) {
+          this.modal.data.status = _.find(this.appointmentsStatus, { id: this.modal.data.status_id })
+        }
+      },
+      'modal.data.client_id' () {
+        if (this.modal.data) {
+          this.modal.data.client = _.find(this.providerClients, { id: this.modal.data.client_id })
+        }
+      },
+      'modal.data.order_product_id' () {
+        if (this.modal.data) {
+          let _service = _.find(this.providerServices, { id: this.modal.data.order_product_id })
+          if (_service) {
+            var event_minutes = (this.getUser.date_slot || '00:05').split(':').reduce((acc,time) => (60 * acc) + +time)
+            var event_minutes2 = (_service.duration || '00:00').split(':').reduce((acc,time) => (60 * acc) + +time)
+            var event_duration = this.$moment.duration({'minutes' : Math.max(event_minutes, event_minutes2)})
+
+            this.modal.data.item = _service
+            this.modal.data.end_date = this.modal.data.start_date.clone().add(event_duration) 
+          }
+        }
+      },
     },
     computed: {
       ...mapGetters([
         'hasToken',
         'settings',
-        'getUser'
-      ])
+        'getUser',
+        'appointmentsStatus'
+      ]),
+      events () {
+        if (this.user && this.user.id > 0) {
+          if (this.user.role.is_provider) {
+            return this.user.appointments_provider.map(a => Object({
+              id: a.id,
+              title: `Cliente: ${a.client.first_name} ${a.client.last_name}\n${a.item && a.item.name}`, 
+              start: a.start_date, 
+              end: a.end_date, 
+              editable: true,
+              backgroundColor: a.status.color,
+              borderColor: a.status.color,
+              extendedProps: { ... a }
+            }))
+          } else {
+            return this.user.appointments.map(a => Object({ 
+              id: a.id,
+              title: `Cliente: ${a.client.first_name} ${a.client.last_name}\n${a.item && a.item.name}`, 
+              start: a.start_date, 
+              end: a.end_date,
+              backgroundColor: a.status.color,
+              borderColor: a.status.color,
+              extendedProps: { ... a }
+            }))
+          }
+        } else {
+          return []
+        }
+      },
+      slotDuration () {
+        if (this.user && this.user.id > 0) {
+          return this.user.date_slot || '00:15:00'
+        } else {
+          return '00:15:00'
+        }
+      },
+      startTime () {
+        if (this.user && this.user.id > 0) {
+          return `${this.user.open_time}:00` || '00:00:00'
+        } else {
+          return '00:00:00'
+        }
+      },
+      endTime () {
+        if (this.user && this.user.id > 0) {
+          return `${this.user.close_time}:00` || '23:59:59'
+        } else {
+          return '23:59:59'
+        }
+      },
+      sameDay () {
+        return this.modal.data.start_date && this.modal.data.start_date.isSame(this.modal.data.end_date, 'day')
+      },
+      eventDuration () {
+        let duration = this.$moment.duration(this.$moment(this.modal.data.end_date) - this.$moment(this.modal.data.start_date))
+        return duration.asMinutes()
+      },
+      providerClients () {
+        return this.getUser.clients || []
+      },
+      providerServices () {
+        return this.getUser.services || []
+      },
+      orderOXXO() {
+        return this.modal.data.order && this.modal.data.order.method && this.modal.data.order.method.id == 2 && this.modal.data.order.payment_orders && this.modal.data.order.payment_orders.metadata_object
+      },
+      orderPaid() {
+        return this.modal.data.order.payment_orders.status == 'paid'
+      },
+      oxxoExpired() {
+        return this.$moment.unix(this.orderOXXO.expires_at).isBefore()
+      },
+      oxxoTime() {
+        return this.$moment.unix(this.orderOXXO.expires_at).fromNow(true)
+      }
+    },
+    methods: {
+      handleDateClick: function(arg) {
+        var event_minutes = this.getUser.date_slot.split(':').reduce((acc,time) => (60 * acc) + +time)
+        var event_duration = this.$moment.duration({'minutes' : event_minutes})
+
+        this.modal.data = {
+          start_date: this.$moment(arg.date),
+          end_date: this.$moment(arg.date).add(event_duration)
+        }
+        this.showModal()
+      },
+      eventChange ({ event, oldEvent }) {
+        if (!this.$moment(event.start).isSame(oldEvent.start) || !this.$moment(event.end).isSame(oldEvent.end)) {
+          event.setExtendedProp('start_date', this.$moment(event.start).format("YYYY-MM-DD HH:mm:ss"))
+          event.setExtendedProp('end_date', this.$moment(event.end).format("YYYY-MM-DD HH:mm:ss"))
+        }
+      },
+      editEvent ({ event }) {
+        this.modal.data = { 
+          ... event.extendedProps,
+          ... {
+            start_date: this.$moment(event.extendedProps.start_date),
+            end_date: this.$moment(event.extendedProps.end_date)
+          }
+        }
+        this.showModal()
+      },
+      showModal() {
+        this.modal.open = true;
+      },
+      handleOk(e) {
+        this.modal.loading = true;
+          this.$refs.eventForm.validate().then(valid => {
+            if (valid) {
+              if (this.modal.data.id) {
+                let _event = this.$refs.fullCalendar.getApi().getEventById(this.modal.data.id)
+                
+                if (!this.modal.data.start_date.isSame(_event.start) || !this.modal.data.end_date.isSame(_event.end)) {
+                  // date changed
+                } else {
+                  // date no changed
+                }
+
+                _event.setDates(this.modal.data.start_date.toDate(), this.modal.data.end_date.toDate())
+                _event.setProp('backgroundColor', this.modal.data.status.color)
+                _event.setProp('borderColor', this.modal.data.status.color)
+                _event.setExtendedProp('notes', this.modal.data.notes)
+                _event.setExtendedProp('status_id', this.modal.data.status_id)
+                _event.setExtendedProp('status', this.modal.data.status)
+
+                
+                this.handleCancel()
+                this.$message.success('This is a normal message');
+              } else {
+                this.user.appointments_provider.push({
+                  
+                })
+              }
+            } else {
+            }
+          }).catch((error) => {
+          });
+        // }, 2000);
+      },
+      handleCancel(e) {
+        this.modal.open = false
+        this.modal.data = false
+      },
+      setCalendarData() {
+        this.calendarOptions.events = this.events
+        this.calendarOptions.slotDuration = this.slotDuration
+        this.calendarOptions.businessHours.startTime = this.startTime
+        this.calendarOptions.businessHours.endTime = this.endTime
+      }
     },
     mounted() {
+      this.setCalendarData()
     }
   }
 </script>
+<style lang="scss">
+  .fc-toolbar-chunk {
+    &:last-child {
+      margin-left: auto;
+    }
+  }
+  .ant-modal-body {
+    padding-top: 10px;
+    .ant-time-picker {
+      width: 100%
+    }
+    .ant-form-item:not(.ant-form-item-with-help) {
+      margin-bottom: 0
+    }
+    .ant-divider {
+      margin-top: 15px;
+    }
+    .ant-form-explain {
+      white-space: nowrap;
+    }
+  }
+</style>
