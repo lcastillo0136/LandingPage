@@ -88,7 +88,7 @@
       <div class="row">
         <div class="col-md-3">
           <div class="form-group">
-            <label>Fecha nacimiento</label>
+            <label>Genero</label>
             <select v-model="profile.gender" class="form-control">
               <option value="">&nbsp;</option>
               <option value="male">

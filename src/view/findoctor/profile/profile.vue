@@ -84,7 +84,7 @@
         this.profile = {
           ...this.getUser,
           ...{ 
-            bday: this.$moment(this.getUser.bday, 'YYYY-MM-DD')
+            bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD')
           }
         }
       },
@@ -119,12 +119,12 @@
       }
 
       this.getAppointmentsStatus().then(() => {}).catch(() => {})
-
-      if (this.getUser.bday) {
+      
+      if (this.getUser.id) {
         this.profile = {
           ...this.getUser,
           ...{ 
-            bday: this.$moment(this.getUser.bday, 'YYYY-MM-DD')
+            bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD')
           }
         }
       }

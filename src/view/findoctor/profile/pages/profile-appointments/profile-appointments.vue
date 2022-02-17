@@ -181,6 +181,7 @@
     </div>
 </template>
 <script>
+  import { updateAppointment } from '@/api/user'
   import '@fullcalendar/core/vdom' // solves problem with Vite
   import FullCalendar from '@fullcalendar/vue'
   import dayGridPlugin from '@fullcalendar/daygrid'
@@ -402,6 +403,17 @@
         if (!this.$moment(event.start).isSame(oldEvent.start) || !this.$moment(event.end).isSame(oldEvent.end)) {
           event.setExtendedProp('start_date', this.$moment(event.start).format("YYYY-MM-DD HH:mm:ss"))
           event.setExtendedProp('end_date', this.$moment(event.end).format("YYYY-MM-DD HH:mm:ss"))
+
+          updateAppointment({ ...event.extendedProps }, this.hasToken).then((response) => {
+            let _appointment_list = this.getUser.role.is_provider ? 'appointments_provider' : 'appointments'
+            let _appointment = _.find(this.getUser[_appointment_list], { id: +event.id })
+            if (_appointment) {
+              _appointment.start_date = event.extendedProps.start_date
+              _appointment.end_date = event.extendedProps.end_date
+            }
+          }).catch((error) => {
+
+          })
         }
       },
       editEvent ({ event }) {
@@ -437,9 +449,13 @@
                 _event.setExtendedProp('status_id', this.modal.data.status_id)
                 _event.setExtendedProp('status', this.modal.data.status)
 
+                updateAppointment({ ..._event.extendedProps }, this.hasToken).then((response) => {
+                  this.$message.success('Datos actualizados');
+                }).catch((error) => {
+
+                })
                 
                 this.handleCancel()
-                this.$message.success('This is a normal message');
               } else {
                 this.user.appointments_provider.push({
                   

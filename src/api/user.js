@@ -86,3 +86,27 @@ export const restoreTrash = msg_id => {
     }
   })
 }
+
+export const updateAppointment = (appointment, token, postFiles = null) => {
+  const formData = new FormData()
+  if (postFiles !== null) {
+    postFiles.forEach(f => {
+      formData.append('postedFiles[]', f, f.name);
+    })
+  }
+
+  if (appointment) {
+    Object.keys(appointment).forEach((p) => {
+      formData.append(p, appointment[p])
+    })
+  }
+
+  return axios.request({
+    url: `appointments/${appointment.id}/update`,
+    data: formData,
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'post'
+  })
+}
