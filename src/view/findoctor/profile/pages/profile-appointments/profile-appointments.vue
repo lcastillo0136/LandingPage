@@ -175,13 +175,13 @@
           </div>
         </div>
         <a-divider></a-divider>
-
-        <a-upload-dragger name="file" :multiple="true" :beforeUpload="handleUpload" :fileList="modal.data.oldPostFiles" :remove="handleRemove" listType="picture">
+        <h6>Archivos relacionados a la cita</h6>
+        <a-upload-dragger name="file" :multiple="true" :beforeUpload="handleUpload" :fileList="modal.data.oldPostFiles" :remove="handleRemove" listType="picture" :showUploadList="{ showDownloadIcon : true, showPreviewIcon: true }" :preview="handlePreview" accept="image/*,application/pdf,application/msword,audio/*,video/*,application/vnd.ms-powerpoint,application/vnd.ms-excel,text/*,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
           <p class="ant-upload-drag-icon">
             <a-icon type="inbox" />
           </p>
           <p class="ant-upload-text">
-            Click o suelta tus archivos en esta área para empezar la carga
+            Haga click aquí o suelta tus archivos en esta área para empezar la carga
           </p>
           <p class="ant-upload-hint">
             Soporte para carga multiple de archivos. estrictamente prohibido subir archivos con derechos de autor
@@ -425,6 +425,7 @@
               _appointment.start_date = event.extendedProps.start_date
               _appointment.end_date = event.extendedProps.end_date
             }
+            this.$message.success('Datos actualizados');
           }).catch((error) => {
 
           })
@@ -442,8 +443,7 @@
               status: 'done',
               url: f.url,
               thumbUrl: f.url,
-              user_id: f.user_id,
-              hash_name: f.hash_name
+              user_id: f.user_id
             })),
             postFiles: []
           }
@@ -472,15 +472,23 @@
               _event.setExtendedProp('notes', this.modal.data.notes)
               _event.setExtendedProp('status_id', this.modal.data.status_id)
               _event.setExtendedProp('status', this.modal.data.status)
-
+              
               updateAppointment({ ..._event.extendedProps }, this.hasToken, this.modal.data.postFiles || []).then((response) => {
                 this.$message.success('Datos actualizados');
                 this.modal.loading = false
+                
+                if ((this.modal.data.postFiles || []).length > 0) {
+                  _event.setExtendedProp('Files', response.data.data.Files)
+
+                  let _appointment = _.find(this.getUser.appointments_provider, { id: +this.modal.data.id })
+                  _appointment.Files = response.data.data.Files
+                }
+
+                this.handleCancel()
               }).catch((error) => {
                 this.modal.loading = false
               })
               
-              this.handleCancel()
             } else {
               // this.user.appointments_provider.push({
                 
@@ -498,6 +506,7 @@
       handleCancel(e) {
         this.modal.open = false
         this.modal.data = false
+        this.modal.loading = false
       },
       setCalendarData() {
         this.calendarOptions.events = this.events
@@ -518,10 +527,13 @@
             okText: 'Aceptar',
             cancelText: 'Cancelar',
             onOk: (close) => {
-              return deleteFile(file.user_id, file.hash_name, this.hasToken).then((response) => {
+              return deleteFile(file.user_id, file.uid, this.hasToken).then((response) => {
                 this.$message.success('Archivo eliminado');
                 
                 _.remove(this.modal.data.oldPostFiles, { uid: file.uid })
+
+                let _appointment = _.find(this.getUser.appointments_provider, { id: +this.modal.data.id })
+                _.remove(_appointment.Files, { hash_name: file.uid })
 
                 this.$forceUpdate()
               })
@@ -535,6 +547,8 @@
           _.remove(this.modal.data.oldPostFiles, { uid: file.uid })
           this.$forceUpdate()
         }
+      },
+      handlePreview(file) {
       }
     },
     mounted() {
