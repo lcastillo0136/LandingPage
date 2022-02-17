@@ -110,3 +110,13 @@ export const updateAppointment = (appointment, token, postFiles = null) => {
     method: 'post'
   })
 }
+
+export const deleteFile = (user, hash, token) => {
+  return axios.request({
+    url: `users/${user}/archivo/${hash}`,
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'delete'
+  })
+}

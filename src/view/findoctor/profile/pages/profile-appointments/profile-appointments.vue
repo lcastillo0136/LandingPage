@@ -1,187 +1,199 @@
 <template>
-    <div class="box_general_2 add_bottom_45">
-      <FullCalendar :options="calendarOptions" ref="fullCalendar"  />
+  <div class="box_general_2 add_bottom_45">
+    <FullCalendar :options="calendarOptions" ref="fullCalendar"  />
+    <a-modal :visible="modal.open" @ok="handleOk" @cancel="handleCancel" :width="900" :confirm-loading="modal.loading">
+      <div v-if="modal.data" slot="title">Detalles de la cita</div>
+      <div v-if="modal.data">
+        <h5>
+          <small>{{ modal.data.start_date | moment('dddd, D [de] MMMM [de] YYYY') }}</small>
+          <template v-if="modal.data.item">
+            <br>
+            {{ modal.data.item.name}}
+          </template>
+          <template v-if="modal.data.status">
+            <br>
+            <a-tag :color="modal.data.status.color">{{ modal.data.status.name }}</a-tag>
+          </template>
+        </h5>
+        <a-divider />
+        <div class="row">
+          <div :class="{ 'col-md-8': modal.data.client, 'col-md-12': !modal.data.client}">
+            <a-form-model ref="eventForm" :model="modal.data" :rules="rules">
+              <div class="row">
+                <template v-if="sameDay">
 
-      <a-modal :visible="modal.open" @ok="handleOk" @cancel="handleCancel" :width="900">
-        <div v-if="modal.data" slot="title">Detalles de la cita</div>
-        <div v-if="modal.data">
-          <h5>
-            <small>{{ modal.data.start_date | moment('dddd, D [de] MMMM [de] YYYY') }}</small>
-            <template v-if="modal.data.item">
-              <br>
-              {{ modal.data.item.name}}
-            </template>
-            <template v-if="modal.data.status">
-              <br>
-              <a-tag :color="modal.data.status.color">{{ modal.data.status.name }}</a-tag>
-            </template>
-          </h5>
-          <a-divider />
-          <div class="row">
-            <div :class="{ 'col-md-8': modal.data.client, 'col-md-12': !modal.data.client}">
-              <a-form-model ref="eventForm" :model="modal.data" :rules="rules">
-                <div class="row">
-                  <template v-if="sameDay">
-
-                    <div class="col-md-6 col-sm-6">
-                      <div class="form-group">
-                        <label>Hora Inicio</label>
-                        <a-form-model-item prop="start_date">
-                          <a-time-picker use12-hours v-model="modal.data.start_date" size="large" />
-                        </a-form-model-item>
-                        <small v-if="eventDuration > 0">
-                          Duracion: {{ eventDuration | mtoh }}
-                        </small>
-                      </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6">
-                      <div class="form-group">
-                        <label>Hora Fin</label>
-                        <a-form-model-item prop="end_date">
-                          <a-time-picker use12-hours v-model="modal.data.end_date" size="large" />
-                        </a-form-model-item>
-                      </div>
-                    </div>
-                  </template>
-                  <template v-else>
-                    <div class="col-md-6 col-sm-6">
-                      <div class="form-group">
-                        <label>Fecha Inicio</label>
-                        <a-form-model-item prop="start_date">
-                          <a-date-picker show-time v-model="modal.data.start_date" size="large" />
-                        </a-form-model-item>
-                        <small v-if="eventDuration > 0">
-                          Duracion: {{ eventDuration | mtoh }}
-                        </small>
-                      </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6">
-                      <div class="form-group">
-                        <label>Fecha Fin</label>
-                        <a-form-model-item prop="end_date">
-                          <a-date-picker show-time v-model="modal.data.end_date" size="large" />
-                        </a-form-model-item>
-                      </div>
-                    </div>
-                  </template>
-                </div>
-                <template v-if="!modal.data.id">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Paciente</label>
-                        <a-select show-search option-filter-prop="children" v-model="modal.data.client_id">
-                          <a-select-option v-for="(client, client_i) in providerClients" :key="client_i" :value="client.id">
-                            {{ client.first_name }} {{ client.last_name }}
-                          </a-select-option>
-                        </a-select>
-                      </div>
+                  <div class="col-md-6 col-sm-6">
+                    <div class="form-group">
+                      <label>Hora Inicio</label>
+                      <a-form-model-item prop="start_date">
+                        <a-time-picker use12-hours v-model="modal.data.start_date" size="large" />
+                      </a-form-model-item>
+                      <small v-if="eventDuration > 0">
+                        Duracion: {{ eventDuration | mtoh }}
+                      </small>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Servicios</label>
-                        <a-select show-search option-filter-prop="children" v-model="modal.data.order_product_id">
-                          <a-select-option v-for="(service, service_i) in providerServices" :key="service_i" :value="service.id">
-                            {{ service.name }} {{ service.price | currency }}
-                          </a-select-option>
-                        </a-select>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Metodo de pago</label>
-                        <a-form-model-item prop="payment_method" help="*Favor de procesar el pago en ventanilla">
-                          <a-select show-search option-filter-prop="children" v-model="modal.data.payment_method">
-                            <a-select-option value="1">
-                              Tarjeta de Debito / Credito
-                            </a-select-option>
-                            <a-select-option value="3">
-                              En Efectivo
-                            </a-select-option>
-                          </a-select>
-                        </a-form-model-item>
-                      </div>
+                  <div class="col-md-6 col-sm-6">
+                    <div class="form-group">
+                      <label>Hora Fin</label>
+                      <a-form-model-item prop="end_date">
+                        <a-time-picker use12-hours v-model="modal.data.end_date" size="large" />
+                      </a-form-model-item>
                     </div>
                   </div>
                 </template>
+                <template v-else>
+                  <div class="col-md-6 col-sm-6">
+                    <div class="form-group">
+                      <label>Fecha Inicio</label>
+                      <a-form-model-item prop="start_date">
+                        <a-date-picker show-time v-model="modal.data.start_date" size="large" />
+                      </a-form-model-item>
+                      <small v-if="eventDuration > 0">
+                        Duracion: {{ eventDuration | mtoh }}
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-6">
+                    <div class="form-group">
+                      <label>Fecha Fin</label>
+                      <a-form-model-item prop="end_date">
+                        <a-date-picker show-time v-model="modal.data.end_date" size="large" />
+                      </a-form-model-item>
+                    </div>
+                  </div>
+                </template>
+              </div>
+              <template v-if="!modal.data.id">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Estatus <span v-if="!modal.data.id">cita</span></label>
-                      <a-select show-search option-filter-prop="children" v-model="modal.data.status_id">
-                        <a-select-option v-for="(status, status_i) in appointmentsStatus" :key="status_i" :value="status.id">
-                          {{ status.name }}
-                        </a-select-option>
-                      </a-select>
-                    </div>
-                  </div>
-                  <div class="col-md-6" v-if="!modal.data.id">
-                    <div class="form-group">
-                      <label>Estatus pago</label>
-                      <a-select show-search option-filter-prop="children" v-model="modal.data.payment_status">
-                        <a-select-option value="1">
-                          Cancelado
-                        </a-select-option>
-                        <a-select-option value="2">
-                          Pagado
-                        </a-select-option>
-                        <a-select-option value="4">
-                          Pago Pendiente
+                      <label>Paciente</label>
+                      <a-select show-search option-filter-prop="children" v-model="modal.data.client_id">
+                        <a-select-option v-for="(client, client_i) in providerClients" :key="client_i" :value="client.id">
+                          {{ client.first_name }} {{ client.last_name }}
                         </a-select-option>
                       </a-select>
                     </div>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-12">
+                  <div class="col-md-6">
                     <div class="form-group">
-                      <label>Comentarios</label>
-                      <a-textarea v-model="modal.data.notes" :rows="4" />
+                      <label>Servicios</label>
+                      <a-select show-search option-filter-prop="children" v-model="modal.data.order_product_id">
+                        <a-select-option v-for="(service, service_i) in providerServices" :key="service_i" :value="service.id">
+                          {{ service.name }} {{ service.price | currency }}
+                        </a-select-option>
+                      </a-select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Metodo de pago</label>
+                      <a-form-model-item prop="payment_method" help="*Favor de procesar el pago en ventanilla">
+                        <a-select show-search option-filter-prop="children" v-model="modal.data.payment_method">
+                          <a-select-option value="1">
+                            Tarjeta de Debito / Credito
+                          </a-select-option>
+                          <a-select-option value="3">
+                            En Efectivo
+                          </a-select-option>
+                        </a-select>
+                      </a-form-model-item>
                     </div>
                   </div>
                 </div>
-              </a-form-model>
-            </div>
-            <div class="col-md-4">
-              <template v-if="modal.data.client">
-                <span>Nombre</span>
-                <div>
-                  <strong>{{ modal.data.client.first_name }} {{ modal.data.client.last_name }}</strong>
-                </div>
-                <br>
-                <span>Correo electronico</span>
-                <div>
-                  <strong>{{ modal.data.client.email }}</strong>
-                </div>
-                <br>
-                <span>Telefono</span>
-                <div>
-                  <strong>{{ modal.data.client.phone | phone }}</strong>
-                </div>
               </template>
-              <template v-if="orderOXXO">
-                <br>
-                <span>Referencia OXXO</span>
-                <div>
-                  <strong>{{ orderOXXO.reference | oxxo }}</strong>
-                  <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
-                  <a-tag color="red" v-if="oxxoExpired && !orderPaid">Expirado</a-tag>
-                  <div v-if="!orderPaid && !oxxoExpired">
-                    <small>Pagar antes de {{ oxxoTime }}</small>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Estatus <span v-if="!modal.data.id">cita</span></label>
+                    <a-select show-search option-filter-prop="children" v-model="modal.data.status_id">
+                      <a-select-option v-for="(status, status_i) in appointmentsStatus" :key="status_i" :value="status.id">
+                        {{ status.name }}
+                      </a-select-option>
+                    </a-select>
                   </div>
                 </div>
-              </template>
-            </div>
+                <div class="col-md-6" v-if="!modal.data.id">
+                  <div class="form-group">
+                    <label>Estatus pago</label>
+                    <a-select show-search option-filter-prop="children" v-model="modal.data.payment_status">
+                      <a-select-option value="1">
+                        Cancelado
+                      </a-select-option>
+                      <a-select-option value="2">
+                        Pagado
+                      </a-select-option>
+                      <a-select-option value="4">
+                        Pago Pendiente
+                      </a-select-option>
+                    </a-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Comentarios</label>
+                    <a-textarea v-model="modal.data.notes" :rows="4" />
+                  </div>
+                </div>
+              </div>
+            </a-form-model>
+          </div>
+          <div class="col-md-4">
+            <template v-if="modal.data.client">
+              <span>Nombre</span>
+              <div>
+                <strong>{{ modal.data.client.first_name }} {{ modal.data.client.last_name }}</strong>
+              </div>
+              <br>
+              <span>Correo electronico</span>
+              <div>
+                <strong>{{ modal.data.client.email }}</strong>
+              </div>
+              <br>
+              <span>Telefono</span>
+              <div>
+                <strong>{{ modal.data.client.phone | phone }}</strong>
+              </div>
+            </template>
+            <template v-if="orderOXXO">
+              <br>
+              <span>Referencia OXXO</span>
+              <div>
+                <strong>{{ orderOXXO.reference | oxxo }}</strong>
+                <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
+                <a-tag color="red" v-if="oxxoExpired && !orderPaid">Expirado</a-tag>
+                <div v-if="!orderPaid && !oxxoExpired">
+                  <small>Pagar antes de {{ oxxoTime }}</small>
+                </div>
+              </div>
+            </template>
           </div>
         </div>
-      </a-modal>
+        <a-divider></a-divider>
 
-    </div>
+        <a-upload-dragger name="file" :multiple="true" :beforeUpload="handleUpload" :fileList="modal.data.oldPostFiles" :remove="handleRemove" listType="picture">
+          <p class="ant-upload-drag-icon">
+            <a-icon type="inbox" />
+          </p>
+          <p class="ant-upload-text">
+            Click o suelta tus archivos en esta área para empezar la carga
+          </p>
+          <p class="ant-upload-hint">
+            Soporte para carga multiple de archivos. estrictamente prohibido subir archivos con derechos de autor
+          </p>
+        </a-upload-dragger>
+      </div>
+    </a-modal>
+  </div>
 </template>
 <script>
-  import { updateAppointment } from '@/api/user'
+  import { updateAppointment, deleteFile } from '@/api/user'
+  import { postOrder } from '@/api/user'
   import '@fullcalendar/core/vdom' // solves problem with Vite
   import FullCalendar from '@fullcalendar/vue'
   import dayGridPlugin from '@fullcalendar/daygrid'
@@ -395,7 +407,9 @@
 
         this.modal.data = {
           start_date: this.$moment(arg.date),
-          end_date: this.$moment(arg.date).add(event_duration)
+          end_date: this.$moment(arg.date).add(event_duration),
+          oldPostFiles: [],
+          postFiles: []
         }
         this.showModal()
       },
@@ -421,7 +435,17 @@
           ... event.extendedProps,
           ... {
             start_date: this.$moment(event.extendedProps.start_date),
-            end_date: this.$moment(event.extendedProps.end_date)
+            end_date: this.$moment(event.extendedProps.end_date),
+            oldPostFiles: (event.extendedProps.Files || []).map(f => Object({
+              uid: f.hash_name,
+              name: f.name,
+              status: 'done',
+              url: f.url,
+              thumbUrl: f.url,
+              user_id: f.user_id,
+              hash_name: f.hash_name
+            })),
+            postFiles: []
           }
         }
         this.showModal()
@@ -431,40 +455,44 @@
       },
       handleOk(e) {
         this.modal.loading = true;
-          this.$refs.eventForm.validate().then(valid => {
-            if (valid) {
-              if (this.modal.data.id) {
-                let _event = this.$refs.fullCalendar.getApi().getEventById(this.modal.data.id)
-                
-                if (!this.modal.data.start_date.isSame(_event.start) || !this.modal.data.end_date.isSame(_event.end)) {
-                  // date changed
-                } else {
-                  // date no changed
-                }
-
-                _event.setDates(this.modal.data.start_date.toDate(), this.modal.data.end_date.toDate())
-                _event.setProp('backgroundColor', this.modal.data.status.color)
-                _event.setProp('borderColor', this.modal.data.status.color)
-                _event.setExtendedProp('notes', this.modal.data.notes)
-                _event.setExtendedProp('status_id', this.modal.data.status_id)
-                _event.setExtendedProp('status', this.modal.data.status)
-
-                updateAppointment({ ..._event.extendedProps }, this.hasToken).then((response) => {
-                  this.$message.success('Datos actualizados');
-                }).catch((error) => {
-
-                })
-                
-                this.handleCancel()
+        this.$refs.eventForm.validate().then(valid => {
+          if (valid) {
+            if (this.modal.data.id) {
+              let _event = this.$refs.fullCalendar.getApi().getEventById(this.modal.data.id)
+              
+              if (!this.modal.data.start_date.isSame(_event.start) || !this.modal.data.end_date.isSame(_event.end)) {
+                // date changed
               } else {
-                this.user.appointments_provider.push({
-                  
-                })
+                // date no changed
               }
+
+              _event.setDates(this.modal.data.start_date.toDate(), this.modal.data.end_date.toDate())
+              _event.setProp('backgroundColor', this.modal.data.status.color)
+              _event.setProp('borderColor', this.modal.data.status.color)
+              _event.setExtendedProp('notes', this.modal.data.notes)
+              _event.setExtendedProp('status_id', this.modal.data.status_id)
+              _event.setExtendedProp('status', this.modal.data.status)
+
+              updateAppointment({ ..._event.extendedProps }, this.hasToken, this.modal.data.postFiles || []).then((response) => {
+                this.$message.success('Datos actualizados');
+                this.modal.loading = false
+              }).catch((error) => {
+                this.modal.loading = false
+              })
+              
+              this.handleCancel()
             } else {
+              // this.user.appointments_provider.push({
+                
+              // })
+              this.modal.loading = false
             }
-          }).catch((error) => {
-          });
+          } else {
+            this.modal.loading = false
+          }
+        }).catch((error) => {
+          this.modal.loading = false
+        });
         // }, 2000);
       },
       handleCancel(e) {
@@ -476,6 +504,37 @@
         this.calendarOptions.slotDuration = this.slotDuration
         this.calendarOptions.businessHours.startTime = this.startTime
         this.calendarOptions.businessHours.endTime = this.endTime
+      },
+      handleUpload(file) {
+        this.modal.data.postFiles = [ ...this.modal.data.postFiles, file ]
+        this.modal.data.oldPostFiles = [ ...this.modal.data.oldPostFiles, file ]
+        return false;
+      },
+      handleRemove(file) {
+        if (file.user_id) {
+          this.$confirm({
+            title: 'Desea borrar el archivo seleccionado?',
+            content: 'Al aceptar esta ventana no se podra recuperar el archivo eliminado',
+            okText: 'Aceptar',
+            cancelText: 'Cancelar',
+            onOk: (close) => {
+              return deleteFile(file.user_id, file.hash_name, this.hasToken).then((response) => {
+                this.$message.success('Archivo eliminado');
+                
+                _.remove(this.modal.data.oldPostFiles, { uid: file.uid })
+
+                this.$forceUpdate()
+              })
+            },
+            onCancel () {
+
+            }
+          });
+        } else {
+          _.remove(this.modal.data.postFiles, { uid: file.uid })
+          _.remove(this.modal.data.oldPostFiles, { uid: file.uid })
+          this.$forceUpdate()
+        }
       }
     },
     mounted() {
