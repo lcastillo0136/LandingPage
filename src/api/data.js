@@ -98,35 +98,6 @@ export const getAppoitmentsStatus = (token) => {
 }
 
 export const postOrder = (data) => {
-  // return new Promise((resolve, reject) => {
-  //   resolve({
-  //     data: {
-  //       message: [],
-  //       success: true,
-  //       data : {
-  //         auth_code: null,
-  //         card: "",
-  //         conekta_id: "ord_2rFijaCcPenCuvnXx",
-  //         created_at: "2022-02-05T06:13:49.000000Z",
-  //         discount: 0,
-  //         email: "mail3@mail.com",
-  //         expiration: "",
-  //         id: 3,
-  //         name: "Luis",
-  //         payment_method: 2,
-  //         phone: 8111533136,
-  //         status: 4,
-  //         subtotal: 130,
-  //         titular: "",
-  //         total: 130,
-  //         updated_at: "2022-02-05T06:13:49.000000Z",
-  //         user_id: 6,
-  //         uuid_key: "8a033907-c360-4980-b861-8bbdaa4860bc",
-  //       }
-  //     },
-  //     status: 200
-  //   })
-  // })
   return axios.request({
     baseURL: baseUrl.replace('/api/', '/web/'),
     url: `/orders`,

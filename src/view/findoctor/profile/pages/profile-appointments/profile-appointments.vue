@@ -653,9 +653,26 @@
                   extendedProps: { ... _order.appointments[0] }
                 }, true)
 
-                this.$message.success('Datos Guardados');
-                this.modal.loading = false
-                this.handleCancel()
+                // this.$message.success('Datos Guardados');
+                // this.modal.loading = false
+                // this.handleCancel()
+
+                updateAppointment(_order.appointments[0], this.hasToken, _.differenceBy(this.modal.data.postFiles, [{ 'status': 'error' }], 'status') || []).then((response_update) => {
+                  this.$message.success('Datos Guardados');
+                  this.modal.loading = false
+                  let _event = this.$refs.fullCalendar.getApi().getEventById(_order.appointments[0].id)
+                  
+                  if ((this.modal.data.postFiles || []).length > 0) {
+                    _event.setExtendedProp('Files', response_update.data.data.Files)
+
+                    let _appointment = _.find(this.getUser.appointments_provider, { id: +_order.appointments[0].id })
+                    _appointment.Files = response_update.data.data.Files
+                  }
+
+                  this.handleCancel()
+                }).catch((error) => {
+                  this.modal.loading = false
+                })
               }).catch((error) => {
                 this.modal.loading = false                
               })
