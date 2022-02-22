@@ -624,7 +624,41 @@
                 this.modal.loading = false
               })
             } else if (this.modal.data.payment_method && this.modal.data.payment_status) {
+              this.saveOrder().then((response) => {
+                let _order = response.data.data
 
+                if (this.getUser.appointments_provider) {
+                  this.getUser.appointments_provider.push(_order.appointments[0])
+                } else {
+                  this.getUser.appointments_provider = [..._order.appointments[0]]
+                }
+                
+                if (this.getUser.clients) {
+                  const _client = _.find(this.getUser.clients, { id: +_order.appointments[0].client.id })
+                  if (!_client) {
+                    this.getUser.clients.push(_order.appointments[0].client)
+                  }
+                } else {
+                  this.getUser.clients = [..._order.appointments[0].client]
+                }
+
+                this.$refs.fullCalendar.getApi().addEvent({
+                  id: _order.appointments[0].id,
+                  title: ((_order.appointments[0].client && `Cliente: ${_order.appointments[0].client.first_name} ${_order.appointments[0].client.last_name}`) || _order.appointments[0].notes || 'Sin informacion') + ((_order.appointments[0].item && _order.appointments[0].item.name) || ''), 
+                  start: _order.appointments[0].start_date, 
+                  end: _order.appointments[0].end_date,
+                  editable: true,
+                  backgroundColor: _order.appointments[0].status.color,
+                  borderColor: _order.appointments[0].status.color,
+                  extendedProps: { ... _order.appointments[0] }
+                }, true)
+
+                this.$message.success('Datos Guardados');
+                this.modal.loading = false
+                this.handleCancel()
+              }).catch((error) => {
+                this.modal.loading = false                
+              })
             } else {
               createAppointment({ ...this.modal.data }, this.hasToken, _.differenceBy(this.modal.data.postFiles, [{ 'status': 'error' }], 'status') || []).then((response) => {
                 let _appointment = response.data.data
@@ -756,6 +790,57 @@
       validEmail: function (email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
+      },
+      saveOrder() {
+        let _service = _.find(this.providerServices, { id: this.modal.data.order_product_id })
+        let data = {
+          provider_id: this.getUser.id,
+          phone: this.modal.data.phone,
+          email: this.modal.data.email,
+          name: this.modal.data.name,
+          last_name: this.modal.data.last_name,
+          payment_method: this.modal.data.payment_method, // 1: tarjeta, 3: cash
+          process_order: false,
+          payment_status: this.modal.data.payment_status,
+          Products: [{
+            product_id: this.modal.data.order_product_id,
+            name: _service.name,
+            precio_venta: _service.price,
+            date: this.modal.data.start_date.format('DDMMYYYY'),
+            time: this.modal.data.start_date.format('HH:mm'),
+            date_end: this.modal.data.end_date.format('DDMMYYYY'),
+            time_end: this.modal.data.end_date.format('HH:mm'),
+            phone: this.modal.data.phone,
+            email: this.modal.data.email,
+            status: this.modal.data.status_id || 5,
+            notes: this.modal.data.notes
+          }],
+        };
+        let readyToSave = true
+
+        if (this.modal.data.client_id > 0 && this.modal.data.client) {
+          data.phone = this.modal.data.client.phone
+          data.email = this.modal.data.client.email
+          data.name = this.modal.data.client.first_name
+          data.last_name = this.modal.data.client.last_name
+          data.user_id = this.modal.data.client.id
+          data.Products = [{
+            product_id: this.modal.data.order_product_id,
+            name: _service.name,
+            precio_venta: _service.price,
+            date: this.modal.data.start_date.format('DDMMYYYY'),
+            time: this.modal.data.start_date.format('HH:mm'),
+            date_end: this.modal.data.end_date.format('DDMMYYYY'),
+            time_end: this.modal.data.end_date.format('HH:mm'),
+            user_id: this.modal.data.client.id,
+            phone: this.modal.data.client.phone,
+            email: this.modal.data.client.email,
+            status: this.modal.data.status_id || 5,
+            notes: this.modal.data.notes
+          }]
+        }
+
+        return postOrder(data)
       }
     },
     mounted() {
