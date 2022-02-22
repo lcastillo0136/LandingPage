@@ -29,7 +29,6 @@
 </template>
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import { getServerFile } from '@/libs/util'
 
   export default {
     name: 'UserMenu',
@@ -47,7 +46,7 @@
         return (this.getUser.title || '') + ' ' + (this.getUser.first_name) + ' ' + (this.getUser.last_name)
       },
       avatar () {
-        return getServerFile(this.getUser.avatar)
+        return this.getUser.avatar
       }
     },
     methods: {

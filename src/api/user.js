@@ -111,9 +111,43 @@ export const updateAppointment = (appointment, token, postFiles = null) => {
   })
 }
 
+export const createAppointment = (appointment, token, postFiles = null) => {
+  const formData = new FormData()
+  if (postFiles !== null) {
+    postFiles.forEach(f => {
+      formData.append('postedFiles[]', f, f.name);
+    })
+  }
+
+  if (appointment) {
+    Object.keys(appointment).forEach((p) => {
+      formData.append(p, appointment[p])
+    })
+  }
+
+  return axios.request({
+    url: `appointments`,
+    data: formData,
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'post'
+  })
+}
+
 export const deleteFile = (user, hash, token) => {
   return axios.request({
     url: `users/${user}/archivo/${hash}`,
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'delete'
+  })
+}
+
+export const deleteAppointment = (appointment, token) => {
+  return axios.request({
+    url: `appointments/${appointment.id}`,
     headers: {
       authorization: `Bearer ${ token }`
     },

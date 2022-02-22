@@ -213,3 +213,25 @@ export const objEqual = (obj1, obj2) => {
   /* eslint-disable-next-line */
   else return !keysArr1.some(key => obj1[key] != obj2[key])
 }
+
+
+export const validFileType = (file) => {
+  const valid_extensions = ['.docx', '.jpg', '.jpng', '.png', '.pdf', '.doc', '.ppt', '.pptx', '.csv', '.xls', '.xlsx', '.png', '.gif', '.tiff', '.bmp', '.mp3', '.acc', '.wma', '.json', '.avi']
+  const extension = file.name.slice((file.name.lastIndexOf(".") - 2 >>> 0) + 2);
+  return file.type.indexOf('application/pdf') != -1 || 
+    file.type.indexOf('application/msword') != -1 ||
+    file.type.indexOf('application/vnd.ms-powerpoint') != -1 ||
+    file.type.indexOf('application/vnd.ms-excel') != -1 ||
+    file.type.indexOf('application/vnd.openxmlformats-officedocument.presentationml.presentation') != -1 ||
+    file.type.indexOf('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') != -1 ||
+    file.type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') != -1 ||
+    file.type.indexOf('image/') != -1 ||
+    file.type.indexOf('audio/') != -1 ||
+    file.type.indexOf('video/') != -1 || 
+    file.type.indexOf('text/') != -1 ||
+    valid_extensions.includes(extension);
+  }
+
+export const validFileSize = (size) => {
+  return size <= 5242880;
+}

@@ -58,7 +58,6 @@
   </div>
 </template>
 <script>
-  import { getServerFile } from '@/libs/util'
   import { mapGetters } from 'vuex'
 
   export default {
@@ -83,7 +82,7 @@
         'getUser'
       ]),
       avatar () {
-        return (this.user && this.user.avatar && getServerFile(this.user.avatar)) || '/img/blank-profile.webp'
+        return (this.user && this.user.avatar) || '/img/blank-profile.webp'
       }
     },
     methods: {
