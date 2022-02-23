@@ -109,6 +109,14 @@
             </select>
           </div>
         </div>
+        <div class="col-md-7" style="padding-top: 23px;">
+
+          <a-form-model-item help="*Hay que guardar para que se reflejen los cambios en el sitio">
+            <a-upload name="file" :multiple="false" accept="image/*" :showUploadList="false" size="large" :beforeUpload="handleUpload">
+              <a-button> <a-icon type="upload" /> Cambiar imagen de perfil </a-button>
+            </a-upload>
+          </a-form-model-item>
+        </div>
       </div>
     </div>
     <div class="box_general_2 add_bottom_45">
@@ -178,6 +186,8 @@
 <script>
   import { updateUser } from '@/api/user'
   import { mapGetters, mapMutations } from 'vuex'
+  import { PinturaEditor } from 'vue-pintura'
+  import { getEditorDefaults } from 'pintura'
 
   export default {
     name: 'ProfileDetails',
@@ -190,11 +200,15 @@
       }
     },
     components: {
+      PinturaEditor,
     },
     data () {
       return {
         inputVisible: false,
         inputValue: '',
+        // Pass the editor default configuration options
+        editorDefaults: getEditorDefaults(),
+        fileList: []
       }
     },
     watch: {
@@ -202,6 +216,7 @@
     computed: {
       ...mapGetters([
         'hasToken',
+        'getUser',
         'settings',
       ]),
       profile: {
@@ -253,8 +268,12 @@
       },
       handleSave () {
         updateUser(this.profile, this.hasToken).then((response) => {
-          debugger
+          this.profile.avatar = this.getUser.avatar = response.data.data.avatar
         })
+      },
+      handleUpload(file) {
+        this.profile.avatar = file
+        return false
       }
     },
     mounted() {
@@ -262,6 +281,12 @@
   }
 </script>
 <style lang="scss">
+  .PinturaRoot.PinturaRootComponent.pintura-editor {
+    background: #f5f8fa;
+    &:after {
+      content: none;
+    }
+  }
   .ant-calendar-picker {
     width: 100%;
     .ant-input {

@@ -1,10 +1,8 @@
 <template>
   <div class="box_profile aside-profile">
     <figure v-if="avatar">
-      <img :src="avatar" alt="" class="img-fluid">
-      <button class="flat">
-        <a-icon type="picture" theme="filled" />
-      </button>
+      <img :src="avatar" alt="" class="img-fluid" v-if="isImage">
+      <img :src="avatarFile" alt="" class="img-fluid" v-else>
     </figure>
     <template v-if="user && user.role && user.role.is_provider">
       <small v-if="user.especialidad">
@@ -72,7 +70,24 @@
     },
     data() {
       return {
-        visible: false
+        visible: false,
+        avatarFile: ''
+      }
+    },
+    watch:{
+      avatar () {
+        if (!this.isImage) {
+          var reader  = new FileReader();
+          reader.onloadend = () => {
+            this.avatarFile = reader.result;
+          }
+
+          if (this.avatar) {
+            reader.readAsDataURL(this.avatar);
+          } else {
+
+          }
+        }
       }
     },
     computed: {
@@ -83,6 +98,15 @@
       ]),
       avatar () {
         return (this.user && this.user.avatar) || '/img/blank-profile.webp'
+      },
+      isImage() {
+        try {
+          if (this.user.avatar && this.user.avatar instanceof File) {
+            return false;
+          }
+        } catch(e) { }
+         
+       return true
       }
     },
     methods: {
