@@ -154,12 +154,12 @@
           @keyup.enter="handleInputConfirm"
         />
         <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
-          <a-icon type="plus" /> New Tag
+          <a-icon type="plus" /> Agregar
         </a-tag>
       </div>
 
     </div>
-    <div class="box_general_2 add_bottom_45">
+    <div class="box_general_2 add_bottom_30">
       <h4>Informacion adicional</h4>
       <div class="form-group">
         <label>Cita</label>
@@ -167,12 +167,16 @@
       </div>
       <div class="form-group">
         <label>Biografia</label>
-        <a-textarea :autoSize="true" class="form-control" placeholder="Biografia" v-model="profile.biography" />
+        <a-textarea :autoSize="true" class="form-control" placeholder="Biografia" v-model="profile.biography" :rows="4"/>
       </div>
+    </div>
+    <div style="text-align: right;">
+      <a-button type="primary" size="large" @click="handleSave">Guardar</a-button>
     </div>
   </div>
 </template>
 <script>
+  import { updateUser } from '@/api/user'
   import { mapGetters, mapMutations } from 'vuex'
 
   export default {
@@ -247,6 +251,11 @@
           inputValue: '',
         })
       },
+      handleSave () {
+        updateUser(this.profile, this.hasToken).then((response) => {
+          debugger
+        })
+      }
     },
     mounted() {
     }
@@ -258,5 +267,8 @@
     .ant-input {
       border-color: #e1e8ed;
     }
+  }
+  .ant-tag {
+    margin-bottom: 5px;
   }
 </style>

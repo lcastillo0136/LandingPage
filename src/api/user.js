@@ -154,3 +154,38 @@ export const deleteAppointment = (appointment, token) => {
     method: 'delete'
   })
 }
+
+export const updateUser = (user, token) => {
+  const formData = new FormData()
+
+  Object.keys(user).forEach((k) => {
+    if (!Array.isArray(user[k]) && user[k] !== '' && user[k] !== null) {
+      formData.append(k, user[k]);
+    } else {
+
+    }
+  });
+
+  try {
+    if (user.avatar && user.avatar instanceof File) {
+      formData.append('avatar', user.avatar, 'avatar');
+    }
+  } catch(e) { }
+  
+  if (user.services?.length > 0) {
+    formData.append('services', JSON.stringify(user.services));
+  }
+
+  if (user.skills?.length > 0) {
+    formData.append('skills_tags', JSON.stringify(user.skills.map(s => s.name)));
+  }
+
+  return axios.request({
+    url: `users/${user.id}?_method=PUT`,
+    data: formData,
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'post'
+  })
+}
