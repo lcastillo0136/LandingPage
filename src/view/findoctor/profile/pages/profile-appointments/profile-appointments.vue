@@ -25,7 +25,7 @@
                       <div class="form-group">
                         <label>Hora Inicio</label>
                         <a-form-model-item prop="start_date">
-                          <a-time-picker use12-hours v-model="modal.data.start_date" size="large" />
+                          <a-time-picker use12-hours v-model="modal.data.start_date" size="large" format="h:mm a"  />
                         </a-form-model-item>
                         <small v-if="eventDuration > 0">
                           Duracion: {{ eventDuration | mtoh }}
@@ -36,7 +36,7 @@
                       <div class="form-group">
                         <label>Hora Fin</label>
                         <a-form-model-item prop="end_date">
-                          <a-time-picker use12-hours v-model="modal.data.end_date" size="large" />
+                          <a-time-picker use12-hours v-model="modal.data.end_date" size="large" format="h:mm a"  />
                         </a-form-model-item>
                       </div>
                     </div>
