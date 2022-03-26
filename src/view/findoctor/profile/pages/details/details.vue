@@ -179,7 +179,7 @@
       </div>
     </div>
     <div style="text-align: right;">
-      <a-button type="primary" size="large" @click="handleSave">Guardar</a-button>
+      <a-button type="primary" size="large" @click="handleSave" :loading="saving">Guardar</a-button>
     </div>
   </div>
 </template>
@@ -208,7 +208,8 @@
         inputValue: '',
         // Pass the editor default configuration options
         editorDefaults: getEditorDefaults(),
-        fileList: []
+        fileList: [],
+        saving: false
       }
     },
     watch: {
@@ -267,8 +268,10 @@
         })
       },
       handleSave () {
+        this.saving = true
         updateUser(this.profile, this.hasToken).then((response) => {
           this.profile.avatar = this.getUser.avatar = response.data.data.avatar
+          this.saving = false
         })
       },
       handleUpload(file) {
