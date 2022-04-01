@@ -292,7 +292,7 @@
           locale: esLocale,
           plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin ],
           initialView: 'timeGridWeek',
-          dateClick: this.handleDateClick,
+          // dateClick: this.handleDateClick,
           events: this.events,
           slotDuration: this.slotDuration || '00:15',
           nowIndicator: true,
@@ -314,7 +314,14 @@
           slotMaxTime: '24:00:00',
           scrollTimeReset: false,
           eventClick: this.editEvent,
-              eventChange: this.eventChange
+          eventChange: this.eventChange,
+          selectable: true,
+          select: (data) => {
+            this.handleDateClick({
+              start: data.start,
+              end: data.end
+            })
+          }
         },
         modal: {
           open: false,
@@ -537,11 +544,20 @@
         var event_minutes = this.getUser.date_slot.split(':').reduce((acc,time) => (60 * acc) + +time)
         var event_duration = this.$moment.duration({'minutes' : event_minutes})
 
-        this.modal.data = {
-          start_date: this.$moment(arg.date),
-          end_date: this.$moment(arg.date).add(event_duration),
-          oldPostFiles: [],
-          postFiles: []
+        if (arg.start && arg.end) {
+          this.modal.data = {
+            start_date: this.$moment(arg.start),
+            end_date: this.$moment(arg.end),
+            oldPostFiles: [],
+            postFiles: []
+          }
+        } else {
+          this.modal.data = {
+            start_date: this.$moment(arg.date),
+            end_date: this.$moment(arg.date).add(event_duration),
+            oldPostFiles: [],
+            postFiles: []
+          }
         }
 
         this.showModal()
