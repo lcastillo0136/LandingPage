@@ -117,7 +117,7 @@
       if (!this.hasToken) {
         this.$router.replace({ name: 'home' })
       }
-
+      
       this.getAppointmentsStatus().then(() => {}).catch(() => {})
       
       if (this.getUser.id) {

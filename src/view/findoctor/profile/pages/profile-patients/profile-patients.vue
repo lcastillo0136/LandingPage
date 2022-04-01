@@ -1,7 +1,7 @@
 <template>
   <div class="box_general_2">
     <h4>Pacientes</h4>
-    <a-table :columns="columns" :data-source="clients" class="components-table-demo-nested">
+    <a-table :columns="columns" :data-source="clients" class="components-table-demo-nested" rowKey="id">
       <a slot="name" slot-scope="record">{{ record.first_name }} {{ record.last_name }}</a>
       <a slot="phone" slot-scope="record">{{ record.phone | phone }}</a>
     </a-table>

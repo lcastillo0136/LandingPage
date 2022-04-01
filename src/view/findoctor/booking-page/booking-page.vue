@@ -199,7 +199,8 @@
         return this.$moment(this.$route.params.booking.date).format('DD/MM/YYYY')
       },
       getTime () {
-        return this.$route.params.booking.time
+        const [_hr, _min] = (this.$route.params.booking.time||'00:00').split(':')
+        return this.$moment().set({ hour: _hr, minute:_min }).format('hh:mm a')
       },
       doctor () {
         return this.$route.params.dr

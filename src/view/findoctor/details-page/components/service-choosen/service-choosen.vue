@@ -1,6 +1,6 @@
 <template>
   <ul class="treatments clearfix" v-if="!loading">
-    <li v-for="(service, service_i) in services" :key="service_i">
+    <li v-for="(service, service_i) in services_filtered" :key="service_i">
       <div class="checkbox">
         <input :type="serviceType" class="css-checkbox" :id="'booking_service_' + service_i" :name="'booking_service'" v-model="service.selected" @change="selectedService(service, $event)">
         <label :for="'booking_service_' + service_i" class="css-label">{{ service.name }} <strong>{{ service.price | currency }}</strong></label>
@@ -46,6 +46,9 @@
       },
       loading () {
         return this.services.length <= 0
+      },
+      services_filtered () {
+        return this.services.filter(s => s.active)
       }
     },
     methods: {

@@ -337,7 +337,7 @@
         return typeof this.booking.time == 'string' ? (this.booking.time||"").trim() != "" : (this.booking.time||[]).length > 0
       },
       bookingDates () {
-        return this.availableDates.filter(f => f.times.filter(t => this.$moment(`${f.date} ${t.time}`, 'YYYY-MM-DD hh:mm a').isAfter()).length > 0).map( d => d.date)
+        return this.availableDates.filter(f => f.times.filter(t => t.available).filter(t => this.$moment(`${f.date} ${t.time}`, 'YYYY-MM-DD hh:mm a').isAfter()).length > 0).map( d => d.date)
       },
       reviews() {
         return this.doctor.rating.comments.map(c => Object({

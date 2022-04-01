@@ -310,8 +310,8 @@
             startTime: this.startTime, // a start time (10am in this example)
             endTime: this.endTime, // an end time (6pm in this example)
           },
-          slotMinTime: '06:00:00',
-          slotMaxTime: '22:00:00',
+          slotMinTime: '03:00:00',
+          slotMaxTime: '24:00:00',
           scrollTimeReset: false,
           eventClick: this.editEvent,
               eventChange: this.eventChange
@@ -686,13 +686,15 @@
                   this.getUser.appointments_provider = [..._appointment]
                 }
                 
-                if (this.getUser.clients) {
-                  const _client = _.find(this.getUser.clients, { id: +_appointment.client.id })
-                  if (!_client) {
-                    this.getUser.clients.push(_appointment.client)
+                if (_appointment.client) {
+                  if (this.getUser.clients) {
+                    const _client = _.find(this.getUser.clients, { id: +_appointment.client.id })
+                    if (!_client) {
+                      this.getUser.clients.push(_appointment.client)
+                    }
+                  } else {
+                    this.getUser.clients = [..._appointment.client]
                   }
-                } else {
-                  this.getUser.clients = [..._appointment.client]
                 }
 
                 this.$refs.fullCalendar.getApi().addEvent({

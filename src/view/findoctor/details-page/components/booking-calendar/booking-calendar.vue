@@ -115,6 +115,8 @@
       }
     },
     mounted () {
+      window['$']().datepicker.defaults.language = 'es'
+      
       window['$']('#calendar', this.$el).datepicker({
         todayHighlight: true,
         daysOfWeekDisabled: this.disabledDays,
@@ -128,7 +130,7 @@
         },
         beforeShowMonth: (date) => {
         },
-        datesDisabled: ["2017/10/20", "2017/11/21","2017/12/21", "2018/01/21","2018/02/21","2018/03/21"],
+        datesDisabled: ["2017/10/20"],
         startDate: this.startDate
       }).on('changeDate', (event) => { 
         this.selected.date = this.$moment(event.date).format('YYYY-MM-DD')
