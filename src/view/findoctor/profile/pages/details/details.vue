@@ -278,7 +278,7 @@
         updateUser({
           ...this.profile,
           ...{
-            bday: this.profile.bday.format('YYYY-MM-DD')
+            bday: this.profile.bday && this.profile.bday.format('YYYY-MM-DD')
           }
         }, this.hasToken).then((response) => {
           this.profile.avatar = this.getUser.avatar = response.data.data.avatar
