@@ -63,14 +63,6 @@
                           <li v-for="(skill, skill_i) in skills_grp" :key="skill_i">{{ skill.name }}</li>
                         </ul>
                       </div>
-                      <!-- <div class="col-lg-6">
-                        <ul class="bullets">
-                          <li>Abdominal Radiology</li>
-                          <li>Addiction Psychiatry</li>
-                          <li>Adolescent Medicine</li>
-                          <li>Cardiothoracic Radiology </li>
-                        </ul>
-                      </div> -->
                     </div>
                     <!-- /row-->
                   </div>
@@ -112,7 +104,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="(service, service_i) in doctor.services" :key="service_i">
+                          <tr v-for="(service, service_i) in serviciosActivos" :key="service_i">
                             <td>{{ service.name }}</td>
                             <td>{{ service.price | currency }}</td>
                           </tr>
@@ -351,6 +343,9 @@
       servicesIDS () {
         return this.booking.service.map(s => s.id)
       },
+      serviciosActivos() {
+        return (this.doctor.services || []).filter( f => f.active)
+      },
       skills() {
         return _.chunk(this.doctor.skills, 2)
       }
@@ -409,7 +404,7 @@
               this.doctor.rating.rate = doctor.rate
               this.doctor.rating.comments = doctor.comments || []
               this.doctor.rating.views = doctor.viewed
-              this.doctor.rating.patients = doctor.patients
+              this.doctor.rating.patients = (doctor.clients||[]).length
               this.doctor.img = doctor.avatar
               this.doctor.isVisible = false
               this.doctor.services = (doctor.treatments||[]).map(t => Object({...t.treatment, selected: false}))

@@ -28,7 +28,7 @@
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li>
-      <li>
+      <li v-if="isProvider">
         <router-link :to="{ name: 'profile-patients' }">
           <span>Pacientes</span>
           <i class="arrow_carrot-right"></i>
@@ -46,7 +46,7 @@
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li> -->
-      <li>
+      <li v-if="isProvider">
         <router-link :to="{ name: 'profile-settings' }">
           <span>Configuraciones</span>
           <i class="arrow_carrot-right"></i>
@@ -107,6 +107,12 @@
         } catch(e) { }
          
        return true
+      },
+      isProvider() {
+        return this.user.role && this.user.role.is_provider
+      },
+      isClient() {
+        return this.user.role && this.user.role.is_client
       }
     },
     methods: {

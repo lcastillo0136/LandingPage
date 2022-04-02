@@ -32,11 +32,9 @@
           close_time: '17:00',
           date_slot: '',
           email: '',
-          
           email_verified: false,
           especialidad: '',
           extend_last_appointment: true,
-          
           gender: 'male',
           id: -1,
           max_days: 7,
@@ -49,25 +47,8 @@
           rate: 0,
           rfc: '',
           services: [
-            // {
-            //   active: 1
-            //   description: ""
-            //   duration: "00:05"
-            //   id: 2
-            //   name: "General consultation"
-            //   price: 35
-            // }
           ],
-          // short_description: null
           skills: [
-            // {
-            //   active: 1
-            //   description: null
-            //   id: 13
-            //   name: "normal consultation"
-            //   user_id: 3
-            //   value: 0
-            // }
           ],
           // active: 1
           // address: {id: 1, user_id: 3, street: "Rio Obi", city: "Guadalupe", suburb: "Dos Rios", postal_code: 67134,…}
@@ -106,7 +87,8 @@
     },
     methods: {
       ...mapActions([
-        'getAppointmentsStatus'
+        'getAppointmentsStatus',
+        'getUserInfo'
       ])
     },
     mounted() {
@@ -116,18 +98,21 @@
 
       if (!this.hasToken) {
         this.$router.replace({ name: 'home' })
+      } else {
+        this.getUserInfo().then(() => {
+          if (this.getUser.id) {
+            this.profile = {
+              ...this.getUser,
+              ...{ 
+                bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD')
+              }
+            }
+          }
+        })
       }
       
       this.getAppointmentsStatus().then(() => {}).catch(() => {})
       
-      if (this.getUser.id) {
-        this.profile = {
-          ...this.getUser,
-          ...{ 
-            bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD')
-          }
-        }
-      }
     }
   }
 </script>

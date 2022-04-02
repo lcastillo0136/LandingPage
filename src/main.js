@@ -65,6 +65,19 @@ Vue.filter('oxxo', function(o) {
   return `${o}`.replace(/^([\d]{4})([\d]{4})([\d]{4})([\d]{2})/g, '$1-$2-$3-$4')
 })
 
+Vue.filter('paymentStatus', function (s) {
+  return {
+    'CANCELED': 'Cancelado',
+    'PAID': 'Pagado',
+    'PENDING': 'Pendiente',
+    'AWAITING': 'Pago pendiente',
+    'COMPLETED': 'Completado',
+    'DECLINED': 'Declinado',
+    'REFUNDED': 'Reembolsado',
+    'DISPUTED': 'En disputa',
+  }[s]
+})
+
 new Vue({
   el: '#app',
   router,

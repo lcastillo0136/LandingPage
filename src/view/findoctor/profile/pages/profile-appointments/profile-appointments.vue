@@ -313,11 +313,11 @@
           slotMinTime: '03:00:00',
           slotMaxTime: '24:00:00',
           scrollTimeReset: false,
-          eventClick: this.editEvent,
-          eventChange: this.eventChange,
+          eventClick: this.isProvider && this.editEvent,
+          eventChange: this.isProvider && this.eventChange,
           selectable: true,
           select: (data) => {
-            this.handleDateClick({
+            this.isProvider && this.handleDateClick({
               start: data.start,
               end: data.end
             })
@@ -449,7 +449,7 @@
           } else {
             return this.user.appointments.map(a => Object({ 
               id: a.id,
-              title: `Cliente: ${a.client.first_name} ${a.client.last_name}\n${a.item && a.item.name}`, 
+              title: ((a.client && `Cliente: ${a.client.first_name} ${a.client.last_name}`) || a.notes || 'Sin informacion') + ((a.item && a.item.name) || ''), 
               start: a.start_date, 
               end: a.end_date,
               backgroundColor: a.status.color,
@@ -506,6 +506,12 @@
       },
       oxxoTime() {
         return this.$moment.unix(this.orderOXXO.expires_at).fromNow(true)
+      },
+      isProvider() {
+        return this.user.role && this.user.role.is_provider
+      },
+      isClient() {
+        return this.user.role && this.user.role.is_client
       }
     },
     methods: {

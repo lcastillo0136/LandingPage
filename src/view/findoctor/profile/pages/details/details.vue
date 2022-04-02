@@ -119,7 +119,7 @@
         </div>
       </div>
     </div>
-    <div class="box_general_2 add_bottom_45">
+    <div class="box_general_2 add_bottom_45" v-if="isProvider">
       <h4>Informacion profesional</h4>
 
       <div class="row">
@@ -167,7 +167,7 @@
       </div>
 
     </div>
-    <div class="box_general_2 add_bottom_30">
+    <div class="box_general_2 add_bottom_30" v-if="isProvider">
       <h4>Informacion adicional</h4>
       <div class="form-group">
         <label>Cita</label>
@@ -227,6 +227,12 @@
         set() {
           
         }
+      },
+      isProvider() {
+        return this.user.role && this.user.role.is_provider
+      },
+      isClient() {
+        return this.user.role && this.user.role.is_client
       }
     },
     methods: {
@@ -269,7 +275,12 @@
       },
       handleSave () {
         this.saving = true
-        updateUser(this.profile, this.hasToken).then((response) => {
+        updateUser({
+          ...this.profile,
+          ...{
+            bday: this.profile.bday.format('YYYY-MM-DD')
+          }
+        }, this.hasToken).then((response) => {
           this.profile.avatar = this.getUser.avatar = response.data.data.avatar
           this.saving = false
         })

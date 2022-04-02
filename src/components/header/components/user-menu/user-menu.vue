@@ -14,14 +14,14 @@
           <small>{{ getUser.email }}</small>
         </li>
         <li>
-          <router-link :to="{ name: 'profile-details' }" @click.native="toggleMenu">Profile</router-link>
+          <router-link :to="{ name: 'profile-details' }" @click.native="toggleMenu">Perfil</router-link>
         </li>
         <li>
           <router-link :to="{ name: 'profile-settings' }" @click.native="toggleMenu">Configuración</router-link>
         </li>
         <li class="divider"></li>
         <li >
-          <a @click="dispachLogout">logout</a> 
+          <a @click="dispachLogout">Cerrar sesion</a> 
         </li>
       </ul>
     </li>

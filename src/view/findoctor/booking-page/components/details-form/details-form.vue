@@ -88,6 +88,8 @@
         deep: true,
         handler () {
           this.validateEmails()
+          this.phoneAlt = this.client.phone
+          this.phoneFormat()
         }
       }
     },
@@ -138,7 +140,6 @@
     },
     mounted() {
       if (this.hasToken) {
-        
       }
     }
   }

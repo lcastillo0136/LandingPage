@@ -66,7 +66,7 @@
               <div class="summary">
                 <ul>
                   <li>Fecha: <strong class="float-right">{{ getDate }}</strong></li>
-                  <li>Hora: <strong class="float-right">{{ getTime }}</strong></li>
+                  <li>Hora: <strong class="float-right">{{ getTimeFormated }}</strong></li>
                   <li>Medico: <strong class="float-right">{{ doctor.name }}</strong></li>
                 </ul>
               </div>
@@ -199,6 +199,9 @@
         return this.$moment(this.$route.params.booking.date).format('DD/MM/YYYY')
       },
       getTime () {
+        return this.$route.params.booking.time
+      },
+      getTimeFormated () {
         const [_hr, _min] = (this.$route.params.booking.time||'00:00').split(':')
         return this.$moment().set({ hour: _hr, minute:_min }).format('hh:mm a')
       },
@@ -377,7 +380,7 @@
       window['$']('#sidebar').theiaStickySidebar({
         additionalMarginTop: 95
       });
-
+      
       if (this.hasToken) {
         this.client.firstName = this.getUser.first_name || ''
         this.client.lastName = this.getUser.last_name || ''
