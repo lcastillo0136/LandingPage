@@ -6,7 +6,7 @@
     <div class="bg_color_2">
       <div class="container margin_60_35">
         <div id="register">
-          <h1>{{ $t('register.form.title') }}</h1>
+          <h1>¡Registrate en {{ appName }}!</h1>
           <div class="row justify-content-center" style="justify-content: center !important;">
             <div class="col-md-5">
               <form ref="registerForm">
@@ -91,6 +91,7 @@
 </template>
 <script>
   import { registerCustomer } from '@/api/data'
+  import { mapGetters, mapActions, mapMutations } from 'vuex'
   import LoadingGeneral from '@/components/loading-general'
 
   export default {
@@ -126,11 +127,21 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'container',
+        'settings'
+      ]),
       matchPassword() {
         return `${this.form.user.confirmpassword}`.match(`^${this.form.user.password}$`);
-      }
+      },
+      appName () {
+        return this.settings?.COMPANY_NAME
+      },
     },
     methods: {
+      ...mapActions([
+        'handleLogin'
+      ]),
       handleRegister () {
         this.showLoading = true
         this.$refs.registerForm.classList.add('was-validated')
@@ -141,13 +152,19 @@
               first_name: this.form.firstname, 
               last_name: this.form.lastname
             }).then((response) => {
+              this.showLoading = false
               if (response.data.success) {
                 this.$swal(this.$t('register.messages.success.registered'), '', 'success').then(() => {
-                  this.$router.push('/')
+                  this.handleLogin({
+                    userName: response.data.data.username, 
+                    password: this.form.user.password, 
+                    remember: true
+                  }).then(() => {
+                    this.$router.push({ name: 'home' })
+                  }).catch((error) => {
+                  });
                 });   
-              } else {
-                this.showLoading = false
-                // this.$swal(this.$t('register.messages.error.missing_info'), '', 'error')    
+              } else {  
               }
             }).catch((reason) => {
               this.showLoading = false
@@ -155,7 +172,6 @@
             })            
         } else {
           this.showLoading = false
-          // this.$swal(this.$t('register.messages.error.missing_info'), '', 'error')
         }
       },
       togglePassword(field) {

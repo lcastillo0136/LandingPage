@@ -65,7 +65,7 @@ export const getDoctorBooking = (data) => {
 
 export const registerCustomer = (data) => {
   return axios.request({
-    url: `/register`,
+    url: `clients/register`,
     data: data,
     method: 'post'
   })

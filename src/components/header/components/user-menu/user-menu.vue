@@ -16,7 +16,7 @@
         <li>
           <router-link :to="{ name: 'profile-details' }" @click.native="toggleMenu">Perfil</router-link>
         </li>
-        <li>
+        <li v-if="isProvider">
           <router-link :to="{ name: 'profile-settings' }" @click.native="toggleMenu">Configuración</router-link>
         </li>
         <li class="divider"></li>
@@ -47,6 +47,12 @@
       },
       avatar () {
         return this.getUser.avatar
+      },
+      isProvider() {
+        return this.getUser.role && this.getUser.role.is_provider
+      },
+      isClient() {
+        return this.getUser.role && this.getUser.role.is_client
       }
     },
     methods: {
