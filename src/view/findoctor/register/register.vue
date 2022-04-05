@@ -160,7 +160,7 @@
                     password: this.form.user.password, 
                     remember: true
                   }).then(() => {
-                    this.$router.push({ name: 'home' })
+                    this.$router.push({ name: 'list-page' })
                   }).catch((error) => {
                   });
                 });   
@@ -169,7 +169,7 @@
             }).catch((reason) => {
               this.showLoading = false
               this.$swal(this.$t('register.messages.error.' + reason.message), '', 'error')  
-            })            
+            })
         } else {
           this.showLoading = false
         }

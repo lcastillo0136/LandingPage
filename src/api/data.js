@@ -71,6 +71,14 @@ export const registerCustomer = (data) => {
   })
 }
 
+export const registerProvider = (data) => {
+  return axios.request({
+    url: `doctors/register`,
+    data: data,
+    method: 'post'
+  })
+}
+
 export const getSettings = () => {
   return axios.request({
     baseURL: baseUrl.replace('/api/', '/web/'),

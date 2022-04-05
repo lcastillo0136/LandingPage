@@ -11,6 +11,7 @@ require('moment/locale/es')
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueSkeletonLoading from 'vue-skeleton-loading';
 import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
+import vSelect from 'vue-select'
 
 import i18n from '@/locale'
 import config from '@/config'
@@ -24,12 +25,14 @@ import 'ant-design-vue/lib/tooltip/style/index.css';
 import '@/assets/css/ant-design-drawer.css'
 import '@/assets/css/ant-design-menu.css'
 import 'leaflet/dist/leaflet.css';
+import 'vue-select/dist/vue-select.css';
 
 Vue.component('l-map', LMap);
 Vue.component('l-tile-layer', LTileLayer);
 Vue.component('l-marker', LMarker);
 Vue.component('l-icon-default', LIconDefault)
 Vue.component('l-popup', LPopup)
+Vue.component('v-select', vSelect)
 
 Vue.use(VueSweetalert2);
 
