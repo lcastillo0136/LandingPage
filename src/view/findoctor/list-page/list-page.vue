@@ -199,7 +199,7 @@
           this.doctors = Object.values(data.data.data.doctors).map(d => Object({
             id: d.id,
             especialidad: d.especialidad,
-            name: `${d.title} ${d.first_name} ${d.last_name}`,
+            name: `${d.title || ''} ${d.first_name} ${d.last_name}`,
             description: d.biography,
             rating: {
               rate: d.rate,
@@ -208,11 +208,11 @@
             img: d.avatar,
             isVisible: false,
             fav: d.fav,
-            map: {
+            map: d.address ? {
               latitude: d.address.latitude,
               longitude: d.address.longitude,
               address: `${d.address.street} ${d.address.suburb}, ${d.address.city}`
-            },
+            } : {},
             phone: d.phone,
             views: d.viewed,
           }))

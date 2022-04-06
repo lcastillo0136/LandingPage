@@ -28,8 +28,7 @@
           <div class="col-lg-5 ml-auto">
             <div class="box_form">
               <form ref="registerForm">
-                <input type="email" name="email" style="position: fixed; top: -300px;height: 1px;width: 1px;" />
-                <input type="password" name="password" style="position: fixed; top: -300px;height: 1px;width: 1px;" />
+
                 <div class="row">
                   <div class="col-md-6 ">
                     <div class="form-group">
@@ -116,7 +115,7 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="form-group">
-                      <input type="email"  name="email" class="form-control" :placeholder="$t('register_doctor.form.email_address')" v-model="form.email" required autocomplete="off">
+                      <input type="text" class="form-control" :placeholder="$t('register_doctor.form.email_address')" v-model="form.email" required autocomplete="off">
                       <div class="invalid-feedback">
                         {{ $t('register.messages.error.empty_name') }}
                       </div>
@@ -133,7 +132,7 @@
                       <label>{{ $t('register.form.password.label') }}</label>
                       
                       <div class="hideShowPassword-wrapper">
-                        <input type="password" class="form-control" name="fake-password1" id="fake-password1" autocomplete="ÑÖcompletes" :placeholder="$t('register.form.password.placeholder')"  v-model="form.user.password" ref="password" required>
+                        <input type="password" class="form-control" autocomplete="off" :placeholder="$t('register.form.password.placeholder')"  v-model="form.user.password" ref="password" required>
                         
                         <button type="button" role="button" aria-label="Mostrar contraseña" title="Mostra contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.password);form.user.passwordVisible=true" v-if="!form.user.passwordVisible">Mostrar</button>
 
@@ -147,7 +146,7 @@
                     <div class="form-group">
                       <label>{{ $t('register.form.confirm_password.label') }}</label>
                       <div class="hideShowPassword-wrapper">
-                        <input type="password" class="form-control" id="password2" :placeholder="$t('register.form.confirm_password.placeholder')"  v-model="form.user.confirmpassword" ref="confirmpassword" required>
+                        <input type="password" class="form-control" :placeholder="$t('register.form.confirm_password.placeholder')"  v-model="form.user.confirmpassword" ref="confirmpassword" required autocomplete="off">
                         
                         <button type="button" role="button" aria-label="Mostrar contraseña" title="Mostra contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.confirmpassword);form.user.password2Visible=true" v-if="!form.user.password2Visible">Mostrar</button>
 
@@ -263,8 +262,8 @@
                 street: this.form.address,
                 country: this.form.country
               }]),
-              phone: this.form.phone.mobile,
-              tel_oficina: this.form.phone.office
+              phone: (this.form.phone.mobile||'').replace(/\D/g, ''),
+              tel_oficina: (this.form.phone.office||'').replace(/\D/g, '')
             }).then((response) => {
               this.showLoading = false
               if (response.data.success) {

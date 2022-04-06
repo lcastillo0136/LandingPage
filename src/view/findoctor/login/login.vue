@@ -3,13 +3,16 @@
     <div class="bg_color_2">
       <div class="container margin_60_35">
         <div id="login-2">
-          <h1>{{ $t('login.form.title') }}</h1>
+          <h1>¡Inicia sesión en {{ appName }}!</h1>
           <form>
             <div class="box_form clearfix">
               <div class="box_login">
-                <a href="#0" class="social_bt facebook">{{ $t('login.social.facebook') }}</a>
-                <a href="#0" class="social_bt google">{{ $t('login.social.google') }}</a>
-                <a href="#0" class="social_bt linkedin">{{ $t('login.social.linkedin') }}</a>
+                <a href="#0" class="social_bt facebook" disabled>{{ $t('login.social.facebook') }}</a>
+                <a href="#0" class="social_bt google" disabled>{{ $t('login.social.google') }}</a>
+                <a href="#0" class="social_bt linkedin" disabled>{{ $t('login.social.linkedin') }}</a>
+                <span>
+                  <small>* el registro y sesion por redes sociales no esta activo por el momento</small>
+                </span>
               </div>
               <div class="box_login last flipInX animated" v-if="!forgot.open">
                 <div class="form-group">
@@ -74,7 +77,10 @@
       ]),
       password () {
         return new Array(this.form.realPassword.trim().length).fill('●').join('')
-      }
+      },
+      appName () {
+        return this.settings?.COMPANY_NAME
+      },
     },
     methods: {
       ...mapActions([

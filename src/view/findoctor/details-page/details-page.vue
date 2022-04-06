@@ -46,17 +46,17 @@
           
           <div class="tabs_styled_2">
             <a-tabs>
-              <a-tab-pane tab="General Info" key="1">
+              <a-tab-pane tab="Informacion General" key="1">
                 <template v-if="!loading">
-                  <p class="lead add_bottom_30" v-html="doctor.short_description"></p>
-                  <div class="indent_title_in">
+                  <p class="lead add_bottom_30" v-if="doctor.short_description" v-html="doctor.short_description"></p>
+                  <div class="indent_title_in" v-if="skills.length > 0 || doctor.description">
                     <i class="pe-7s-user"></i>
                     <h3>Biografia</h3>
                     <p v-if="doctor.quote">{{ doctor.quote }}.</p>
                   </div>
-                  <div class="wrapper_indent">
+                  <div class="wrapper_indent" v-if="skills.length > 0 || doctor.description">
                     <p v-html="doctor.description"></p>
-                    <h6>Especializaciones</h6>
+                    <h6 v-if="skills.length > 0">Especializaciones</h6>
                     <div class="row">
                       <div class="col-lg-6" v-for="(skills_grp, skills_grp_i) in skills" :key="skills_grp_i">
                         <ul class="bullets">
@@ -86,7 +86,7 @@
                   </div> -->
                   <!--  End wrapper indent -->
                   
-                  <hr>
+                  <hr v-if="skills.length > 0 || doctor.description">
 
                   <div class="indent_title_in">
                     <i class="pe-7s-cash"></i>
@@ -180,7 +180,7 @@
                   </div>
                 </skeleton-loading>
               </a-tab-pane>
-              <a-tab-pane tab="Reviews" key="2">
+              <a-tab-pane tab="Reseñas" key="2">
                 <div class="reviews-container">
                   <div class="row">
                     <div class="col-lg-3">

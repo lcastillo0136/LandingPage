@@ -6,6 +6,9 @@ export default {
     }, 
     password: {
       wrong_confirmed_password: 'Las contraseñas no coinciden'
+    },
+    email: {
+      not_available: 'Correo electronico no disponible'
     }
   },
   home: {

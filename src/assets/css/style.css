@@ -3700,19 +3700,25 @@ a.social_bt {
 }
 
 a.social_bt {
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -ms-border-radius: 3px;
-    border-radius: 3px;
-    color: #fff;
-    min-width: 200px;
-    margin-bottom: 15px;
-    display: block;
-    padding: 12px;
-    line-height: 1;
-    position: relative;
-    transition: all .3s ease-in-out;
-    cursor: pointer
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  color: #fff;
+  min-width: 200px;
+  margin-bottom: 15px;
+  display: block;
+  padding: 12px;
+  line-height: 1;
+  position: relative;
+  transition: all .3s ease-in-out;
+  cursor: pointer
+}
+
+a.social_bt[disabled] {
+  opacity: 0.5;
+  color: #fff;
+  cursor: not-allowed;
 }
 
 a.social_bt:hover {

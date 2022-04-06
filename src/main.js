@@ -12,6 +12,7 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import VueSkeletonLoading from 'vue-skeleton-loading';
 import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
 import vSelect from 'vue-select'
+import DisableAutocomplete from 'vue-disable-autocomplete';
 
 import i18n from '@/locale'
 import config from '@/config'
@@ -43,6 +44,7 @@ Vue.use(Moment, {
     moment
 })
 Vue.use(VueSkeletonLoading)
+Vue.use(DisableAutocomplete)
 
 Vue.config.productionTip = false
 Vue.prototype.$config = config

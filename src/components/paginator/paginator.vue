@@ -2,13 +2,13 @@
   <nav aria-label="" class="add_top_20">
     <ul class="pagination pagination-sm">
       <li class="page-item" :class="previousClass">
-        <a class="page-link" href="#" tabindex="-1" @click.stop.prevent="previous">Previous</a>
+        <a class="page-link" href="#" tabindex="-1" @click.stop.prevent="previous">Anterior</a>
       </li>
       <li class="page-item" v-for="p in totalPages" :class="selectedPage(p)">
         <a class="page-link" href="#" @click.stop.prevent="selectPage(p)">{{ p }}</a>
       </li>
       <li class="page-item" :class="nextClass">
-        <a class="page-link" href="#" @click.stop.prevent="next">Next</a>
+        <a class="page-link" href="#" @click.stop.prevent="next">Siguiente</a>
       </li>
     </ul>
   </nav>

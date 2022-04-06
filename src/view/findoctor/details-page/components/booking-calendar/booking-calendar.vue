@@ -5,8 +5,8 @@
         <div id="calendar"></div>
         <input type="hidden" id="my_hidden_input">
         <ul class="legend">
-          <li><strong></strong>Available</li>
-          <li><strong></strong>Not available</li>
+          <li><strong></strong>Disponible</li>
+          <li><strong></strong>No Disponible</li>
         </ul>
       </div>
     </div>

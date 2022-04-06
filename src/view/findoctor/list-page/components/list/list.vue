@@ -8,7 +8,7 @@
         <figure>
           <router-link :to="{ name: 'details-page', params: { id: doctor.id } }"><img :src="doctor.img" alt=""></router-link>
         </figure>
-        <small>{{ doctor.especialidad }}</small>
+        <small>{{ doctor.especialidad || ''}}</small>
         <h3><router-link :to="{ name: 'details-page', params: { id: doctor.id } }">{{ doctor.name }}</router-link></h3>
         <p v-if="doctor.description" v-html="doctor.description.substring(0, 150)"></p>
         <br v-else>

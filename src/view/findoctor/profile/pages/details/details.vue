@@ -123,20 +123,18 @@
     <div class="box_general_2 add_bottom_45">
       <h4>Informacion de cuenta</h4>
       <form ref="registerForm">
-        <input type="email" name="email" style="position: fixed; top: -300px;height: 1px;width: 1px;" />
-        <input type="password" name="password" style="position: fixed; top: -300px;height: 1px;width: 1px;" />
         <div class="row">
           <div class="col-md-4 col-sm-4">
             <div class="form-group">
               <label>Usuario</label>
-              <input type="text" class="form-control" placeholder="Usuario" :value="profile.username" autocomplete="chrome-off" disabled>
+              <input type="text" class="form-control" placeholder="Usuario" :value="profile.username" autocomplete="off" disabled>
             </div>
           </div>
           <div class="col-md-4 col-sm-4">
             <div class="form-group">
               <label>Contraseña</label>
               <div class="hideShowPassword-wrapper">
-                <input type="password" class="form-control" placeholder="Contraseña" v-model="user_pass.password" autocomplete="chrome-off" ref="password">
+                <input type="password" class="form-control" placeholder="Contraseña" v-model="user_pass.password" autocomplete="off" ref="password">
 
                 <button type="button" role="button" aria-label="Mostrar contraseña" title="Mostra contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.password);user_pass.passwordVisible=true" v-if="!user_pass.passwordVisible">Mostrar</button>
 
@@ -148,7 +146,7 @@
             <div class="form-group">
               <label>Confirmar contraseña</label>
               <div class="hideShowPassword-wrapper">
-                <input type="password" class="form-control" placeholder="Confirmar contraseña" v-model="user_pass.confirmpassword" autocomplete="chrome-off" ref="confirmpassword">
+                <input type="password" class="form-control" placeholder="Confirmar contraseña" v-model="user_pass.confirmpassword" autocomplete="off" ref="confirmpassword">
                 <button type="button" role="button" aria-label="Mostrar contraseña" title="Mostra contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.confirmpassword);user_pass.password2Visible=true" v-if="!user_pass.password2Visible">Mostrar</button>
 
                 <button type="button" role="button" aria-label="Ocultar contraseña" title="Ocultar contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.confirmpassword);user_pass.password2Visible=false" v-else>Ocultar</button>
@@ -348,6 +346,7 @@
             ...this.profile,
             ...{
               bday: this.profile.bday && this.profile.bday.format('YYYY-MM-DD'),
+              phone: (this.profile.phone||'').replace(/\D/g, ''),
             }, ...(this.user_pass.password != "" && this.matchPassword ? {
               password: this.user_pass.password,
               password_confirmation: this.user_pass.password,
