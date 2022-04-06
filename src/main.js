@@ -16,6 +16,8 @@ import DisableAutocomplete from 'vue-disable-autocomplete';
 
 import i18n from '@/locale'
 import config from '@/config'
+import * as Fingerprint2 from 'fingerprintjs2'
+Vue.prototype.$fingerprint = Fingerprint2;
 
 import * as Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css';

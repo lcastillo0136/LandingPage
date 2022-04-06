@@ -331,7 +331,8 @@
         viewDate: '',
         loading: false,
         loadingBook: false,
-        refresh: false
+        refresh: false,
+        finger: null
       }
     },
     computed: {
@@ -487,6 +488,11 @@
       } else {
         this.$router.back()
       }
+
+      this.$fingerprint.get((components) => {
+        this.finger = this.$fingerprint.x64hash128(components.map((pair) => { return pair.value }).join(), 31)
+        console.log(this.finger)
+      });
     },
     beforeDestroy () {
     }
