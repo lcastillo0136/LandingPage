@@ -111,8 +111,8 @@ export default {
           
           if (data.token_key) {
             commit('setToken', { token: data.token_key, expiration: 360 })
-            dispatch('getUserInfo').then(() => {
-              resolve()
+            dispatch('getUserInfo').then((response) => {
+              resolve(response)
             })
           } else {
             reject('not_found_user')

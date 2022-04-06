@@ -134,7 +134,11 @@
                       
                       <div class="hideShowPassword-wrapper">
                         <input type="password" class="form-control" name="fake-password1" id="fake-password1" autocomplete="ÑÖcompletes" :placeholder="$t('register.form.password.placeholder')"  v-model="form.user.password" ref="password" required>
-                        <button type="button" role="button" aria-label="Show Password" title="Show Password" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.password)">Show</button>
+                        
+                        <button type="button" role="button" aria-label="Mostrar contraseña" title="Mostra contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.password);form.user.passwordVisible=true" v-if="!form.user.passwordVisible">Mostrar</button>
+
+                        <button type="button" role="button" aria-label="Ocultar contraseña" title="Ocultar contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.password);form.user.passwordVisible=false" v-else>Ocultar</button>
+
                         <div class="invalid-feedback">
                           {{ $t('register.messages.error.empty_password') }}
                         </div>
@@ -144,7 +148,11 @@
                       <label>{{ $t('register.form.confirm_password.label') }}</label>
                       <div class="hideShowPassword-wrapper">
                         <input type="password" class="form-control" id="password2" :placeholder="$t('register.form.confirm_password.placeholder')"  v-model="form.user.confirmpassword" ref="confirmpassword" required>
-                        <button type="button" role="button" aria-label="Show Password" title="Show Password" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.confirmpassword)">Show</button>
+                        
+                        <button type="button" role="button" aria-label="Mostrar contraseña" title="Mostra contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.confirmpassword);form.user.password2Visible=true" v-if="!form.user.password2Visible">Mostrar</button>
+
+                        <button type="button" role="button" aria-label="Ocultar contraseña" title="Ocultar contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.confirmpassword);form.user.password2Visible=false" v-else>Ocultar</button>
+
                         <div class="invalid-feedback" v-if="form.user.confirmpassword">
                           {{ $t('register.messages.error.incorrect_password') }}
                         </div>
@@ -196,7 +204,9 @@
           country: '',
           user: {
             password: '',
-            confirmpassword: ''
+            confirmpassword: '',
+            passwordVisible: false,
+            password2Visible: false
           },
           phone: {
             mobile: '',

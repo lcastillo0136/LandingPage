@@ -119,6 +119,48 @@
         </div>
       </div>
     </div>
+
+    <div class="box_general_2 add_bottom_45">
+      <h4>Informacion de cuenta</h4>
+      <form ref="registerForm">
+        <input type="email" name="email" style="position: fixed; top: -300px;height: 1px;width: 1px;" />
+        <input type="password" name="password" style="position: fixed; top: -300px;height: 1px;width: 1px;" />
+        <div class="row">
+          <div class="col-md-4 col-sm-4">
+            <div class="form-group">
+              <label>Usuario</label>
+              <input type="text" class="form-control" placeholder="Usuario" :value="profile.username" autocomplete="chrome-off" disabled>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4">
+            <div class="form-group">
+              <label>Contraseña</label>
+              <div class="hideShowPassword-wrapper">
+                <input type="password" class="form-control" placeholder="Contraseña" v-model="user_pass.password" autocomplete="chrome-off" ref="password">
+
+                <button type="button" role="button" aria-label="Mostrar contraseña" title="Mostra contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.password);user_pass.passwordVisible=true" v-if="!user_pass.passwordVisible">Mostrar</button>
+
+                <button type="button" role="button" aria-label="Ocultar contraseña" title="Ocultar contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.password);user_pass.passwordVisible=false" v-else>Ocultar</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4">
+            <div class="form-group">
+              <label>Confirmar contraseña</label>
+              <div class="hideShowPassword-wrapper">
+                <input type="password" class="form-control" placeholder="Confirmar contraseña" v-model="user_pass.confirmpassword" autocomplete="chrome-off" ref="confirmpassword">
+                <button type="button" role="button" aria-label="Mostrar contraseña" title="Mostra contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.confirmpassword);user_pass.password2Visible=true" v-if="!user_pass.password2Visible">Mostrar</button>
+
+                <button type="button" role="button" aria-label="Ocultar contraseña" title="Ocultar contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.confirmpassword);user_pass.password2Visible=false" v-else>Ocultar</button>
+                <div class="invalid-feedback">
+                  {{ $t('register.messages.error.incorrect_password') }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
     <div class="box_general_2 add_bottom_45" v-if="isProvider">
       <h4>Informacion profesional</h4>
 
@@ -179,7 +221,12 @@
       </div>
     </div>
     <div style="text-align: right;">
-      <a-button type="primary" size="large" @click="handleSave" :loading="saving">Guardar</a-button>
+      <a-button type="primary" size="large" @click="handleSave" :loading="saving" :disabled="!matchPassword">Guardar</a-button>
+      <div v-for="(e, ei) in errors">
+        <div v-for="ee in e" class="d-block invalid-feedback">
+          {{ $t(`errors.${ei}.${ee}`) }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -209,10 +256,27 @@
         // Pass the editor default configuration options
         editorDefaults: getEditorDefaults(),
         fileList: [],
-        saving: false
+        saving: false,
+        user_pass: {
+          password: '',
+          confirmpassword: '',
+          passwordVisible: false,
+          password2Visible: false
+        },
+        errors: []
       }
     },
     watch: {
+      'user_pass':{
+        deep: true,
+        handler() {
+          if (this.user_pass.password != this.user_pass.confirmpassword) {
+            this.$refs.confirmpassword.setCustomValidity("Invalid field")
+          } else {
+            this.$refs.confirmpassword.setCustomValidity("")
+          }
+        }
+      }
     },
     computed: {
       ...mapGetters([
@@ -220,6 +284,9 @@
         'getUser',
         'settings',
       ]),
+      matchPassword() {
+        return `${this.user_pass.confirmpassword}`.match(`^${this.user_pass.password}$`);
+      },
       profile: {
         get() {
           return this.user
@@ -275,19 +342,37 @@
       },
       handleSave () {
         this.saving = true
-        updateUser({
-          ...this.profile,
-          ...{
-            bday: this.profile.bday && this.profile.bday.format('YYYY-MM-DD')
-          }
-        }, this.hasToken).then((response) => {
-          this.profile.avatar = this.getUser.avatar = response.data.data.avatar
-          this.saving = false
-        })
+        this.$refs.registerForm.classList.add('was-validated')
+        if ((this.user_pass.password != "" && this.matchPassword) || this.user_pass.password == '') {
+          updateUser({
+            ...this.profile,
+            ...{
+              bday: this.profile.bday && this.profile.bday.format('YYYY-MM-DD'),
+            }, ...(this.user_pass.password != "" && this.matchPassword ? {
+              password: this.user_pass.password,
+              password_confirmation: this.user_pass.password,
+            } : {})
+          }, this.hasToken).then((response) => {
+            this.profile.avatar = this.getUser.avatar = response.data.data.avatar
+            this.saving = false
+            this.$refs.registerForm.classList.remove('was-validated')
+            this.user_pass.password = this.user_pass.confirmpassword = ''
+          }).catch((error) => {
+            this.saving = false
+            this.errors = error.data.error
+          })
+        } else {
+          this.saving = false  
+        }
       },
       handleUpload(file) {
         this.profile.avatar = file
         return false
+      },
+      togglePassword(field) {
+        if (field) {
+          field.type = field.type == 'password' ? 'text' : 'password'
+        }
       }
     },
     mounted() {

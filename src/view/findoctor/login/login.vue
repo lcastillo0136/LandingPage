@@ -87,15 +87,15 @@
             userName: this.form.username, 
             password: this.form.realPassword, 
             remember: true
-          }).then(() => {
-            this.$swal(this.$t('login.messages.success.welcome', { username: this.form.username }), '', 'success')
+          }).then((response) => {
+            // this.$swal(this.$t('login.messages.success.welcome', { username: this.form.username }), '', 'success')
             if (this.returnPage) {
               this.$router.push({
                 name: this.reference, 
                 params: { ...this.meta }
               })
             } else {
-              this.$router.push({ name: 'home' })
+              this.$router.push({ name: response.role.is_provider ? 'profile-details' : 'home' })
             }
             this.loading = false
           }).catch((error) => {

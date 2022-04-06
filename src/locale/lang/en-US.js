@@ -1,4 +1,13 @@
 export default {
+  errors: {
+    bday: {
+      invalid_date: 'Invalid birthday date',
+      max_date_limit: 'Invalid birthday date'
+    }, 
+    password: {
+      wrong_confirmed_password: 'Passwords do not match'
+    }
+  },
   home: {
     title: 'Home',
     new_users: 'New Users',
