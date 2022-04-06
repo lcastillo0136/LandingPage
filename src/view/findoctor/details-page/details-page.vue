@@ -189,7 +189,7 @@
                         <div class="rating">
                           <i class="icon_star" :class="{'voted': avgRating >= star}" v-for="(star, star_i) in totalRatings" :key="star_i"></i>
                         </div>
-                        <small>Based on {{ reviews.length }} reviews</small>
+                        <small>Basado en {{ reviews.length }} reseñas</small>
                       </div>
                     </div>
                     <div class="col-lg-9">
@@ -199,7 +199,11 @@
                             <div class="progress-bar" role="progressbar" :style="{ width: percentStart(ratings) + '%'}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
-                        <div class="col-lg-2 col-3"><small><strong>{{ ratings }} stars</strong></small></div>
+                        <div class="col-lg-2 col-3">
+                          <small>
+                            <strong>{{ ratings }} <i class="icon_star" style="color: #FFC107" ></i></strong>
+                          </small>
+                        </div>
                       </div>
                       <!-- /row -->
                     </div>
@@ -207,15 +211,16 @@
                   <!-- /row -->
                   
                   <hr v-if="avgRating > 0">
-                  <div class="review-box clearfix" v-for="(review,review_i) in reviews" :key="review_i">
-                    <figure class="rev-thumb"><img :src="review.img" alt="">
+                  <div class="review-box clearfix" v-for="(review, review_i) in reviews" :key="review_i">
+                    <figure class="rev-thumb">
+                      <img :src="review.img" alt="">
                     </figure>
                     <div class="rev-content">
                       <div class="rating">
                         <i class="icon_star" :class="{'voted': review.rating >= star}" v-for="(star, star_i) in totalRatings"></i>
                       </div>
                       <div class="rev-info">
-                        {{ review.name }} – {{ review.date | moment('MMMM DD, YYYY') }}
+                        {{ review.name }} – {{ review.date | moment('MMMM DD, YYYY h:mm a') }}
                       </div>
                       <div class="rev-text">
                         <p>
@@ -223,6 +228,32 @@
                         </p>
                       </div>
                     </div>
+                    <div v-for="(reply, reply_i) in review.replies" :key="reply_i" class="reply-group" v-if="reply_i < 3 || review.view_more">
+                      <template >
+                        <div class="reply-content">
+                          <div class="reply-text">
+                            <p>{{ reply.message }}</p>
+                          </div>
+                          <div class="reply-info" v-if="reply.from">
+                            {{ reply.from.title || '' }} {{ reply.from.first_name }} {{ reply.from.last_name || '' }} – {{ reply.created_at | moment('MMMM DD, YYYY h:mm a') }}
+                          </div>
+                        </div>
+                        <figure class="reply-thumb" v-if="reply.from">
+                          <img :src="reply.from.avatar" alt="">
+                        </figure>
+                      </template>
+                    </div>
+                    <span style="font-size: 1%;position: absolute;">{{ refresh }}</span>
+                    <template v-if="review.replies.length >= 3 && !review.view_more">
+                      <div class="view-more-replies" v-on:click.prevent.stop="review.view_more = true; refresh = !refresh">
+                        Ver mas <i class="arrow_carrot-down"></i>
+                      </div>
+                    </template>
+                    <template v-if="review.replies.length >= 3 && review.view_more">
+                      <div class="view-more-replies" v-on:click.prevent.stop="review.view_more = false; refresh = !refresh">
+                        Ver menos <i class="arrow_carrot-up"></i>
+                      </div>
+                    </template>
                   </div>
                   <!-- End review-box -->
                 </div>
@@ -299,7 +330,8 @@
         },
         viewDate: '',
         loading: false,
-        loadingBook: false
+        loadingBook: false,
+        refresh: false
       }
     },
     computed: {
@@ -334,10 +366,12 @@
       reviews() {
         return this.doctor.rating.comments.map(c => Object({
           rating: c.rate,
-          img: c.patient.img,
-          name: c.patient.name,
-          date: c.date,
-          comment: c.comment
+          img: c.from.avatar,
+          name: `${c.from.first_name} ${c.from.last_name || ''}`,
+          date: c.created_at,
+          comment: c.message,
+          replies: [...c.replies],
+          view_more: false
         }))
       },
       servicesIDS () {
@@ -458,7 +492,7 @@
     }
   }
 </script>
-<style>
+<style lang="scss">
   .ant-tabs-bar{
     border-bottom: 1px solid #e1e8ed;
     margin:0;
@@ -498,5 +532,57 @@
 
   .biography .square {
     border-radius: 0;
+  }
+  .reply-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+    margin-top: 10px;
+
+    &::after {
+      display: none;
+    }
+    .reply-content {
+      flex: 1 1 auto;
+      position: relative;
+      padding: 16px 16px;
+      border: 1px solid #ededed;
+      border-radius: 5px;
+      font-size: 80%;
+      margin-left: 5%;
+
+      .reply-info {
+        font-style: italic;
+        color: #777;
+      }
+
+      .reply-text {
+        font-weight: 600;
+        p {
+          margin: 0;
+        }
+      }
+    }
+    .reply-thumb {
+      width: 60px;
+      height: 60px;
+      background: #fff;
+      border-radius: 5px;
+      overflow: hidden;
+      img {
+        width: 60px;
+        height: auto;
+      }
+    }
+  }
+
+  .view-more-replies {
+    margin-left: 5%;
+    text-align: center;
+    color: var(--blue);
+    font-size: 90%;
+    cursor: pointer;
   }
 </style>
