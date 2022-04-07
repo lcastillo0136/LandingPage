@@ -671,5 +671,23 @@ export default {
   },
   profile: {
     title: 'Profile'
+  },
+  payment_status : {
+    CANCELED: 'Cancelled',
+    PAID: 'Paid',
+    PENDING: 'Pending',
+    AWAITING: 'Awaiting payment',
+    COMPLETED: 'Completed',
+    DECLINED: 'Declined',
+    REFUNDED: 'Refunded',
+    DISPUTED: 'Disputed',
+  }, 
+  appointment_status: {
+    SCHEDULED: 'Scheduled',
+    NO_SHOW: 'No show',
+    PENDING_APPROVAL: 'pending approval',
+    REQUEST_EXPIRED: 'request expired',
+    NEW_TIME_PROPOSED: 'New time proposed',
+    PENDING_RESCHEDULE: 'Pending reschedule',
   }
 }

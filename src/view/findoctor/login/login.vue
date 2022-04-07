@@ -94,14 +94,19 @@
             password: this.form.realPassword, 
             remember: true
           }).then((response) => {
-            // this.$swal(this.$t('login.messages.success.welcome', { username: this.form.username }), '', 'success')
+            
+            this.$notification.success({
+              message: 'Inicio de sesion', 
+              description: `Buen dia ${response.title} ${response.first_name} ${response.last_name}`
+            })
+
             if (this.returnPage) {
               this.$router.push({
                 name: this.reference, 
                 params: { ...this.meta }
               })
             } else {
-              this.$router.push({ name: response.role.is_provider ? 'profile-details' : 'home' })
+              this.$router.push({ name: response.role.is_provider ? 'profile-details' : 'list-page' })
             }
             this.loading = false
           }).catch((error) => {

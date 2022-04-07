@@ -189,3 +189,22 @@ export const updateUser = (user, token) => {
     method: 'post'
   })
 }
+
+export const postReview = (review, token) => {
+  const formData = new FormData()
+
+  if (review) {
+    Object.keys(review).forEach((p) => {
+      formData.append(p, review[p])
+    })
+  }
+
+  return axios.request({
+    url: `appointments/${review.appointment}/review`,
+    data: formData,
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'post'
+  })
+}
