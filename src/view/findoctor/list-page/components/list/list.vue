@@ -12,9 +12,9 @@
         <h3><router-link :to="{ name: 'details-page', params: { id: doctor.id } }">{{ doctor.name }}</router-link></h3>
         <p v-if="doctor.description" v-html="doctor.description.substring(0, 150)"></p>
         <br v-else>
-        <span class="rating">
+        <span class="rating" v-if="doctor.rating">
           <i :class="{ 'icon_star':1, 'voted': r <= doctor.rating.rate }" v-for="r in rateTotal" :key="r"></i>
-          <small>({{ doctor.views }})</small>
+          <small v-if="doctor.rating.comments">({{ doctor.rating.comments.length }})</small>
         </span>
         <a-tooltip placement="top" title="Badge Level">
           <a href="#" class="badge_list_1" @click.stop.prevent=""><img src="img/badges/badge_1.svg" width="15" height="15" alt=""></a>
