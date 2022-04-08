@@ -378,7 +378,7 @@
               <div class="form-group">
                 <label class="mb-0">Comentario</label>
                 <a-form-model-item prop="comment" :help="!!viewModal.data.review ? '*La reseña ya esta publicada y no se puede editar' : `${(viewModal.review.comment||'').length}/320` ">
-                   <a-textarea v-model="viewModal.review.comment" :rows="4" :disabled="!!viewModal.data.review" maxLength="320"  />
+                   <a-textarea v-model="viewModal.review.comment" :rows="4" :disabled="!!viewModal.data.review" :maxLength="320"  />
                 </a-form-model-item>
               </div>
             </div>
