@@ -9,7 +9,7 @@
           <figure>
             <router-link :to="{ name: 'details-page', params: { id: doctor.id } }">
               <img :src="doctor.img" alt="" class="img-fluid">
-              <div class="preview"><span>Read more</span></div>
+              <div class="preview"><span>Ver perfil</span></div>
             </router-link>
           </figure>
           <div class="wrapper">
@@ -18,15 +18,17 @@
             <p v-if="doctor.description" v-html="doctor.description.substring(0, 150)"></p>
             <span class="rating">
               <i :class="{ 'icon_star':1, 'voted': r <= doctor.rating.rate }" v-for="r in rateTotal" :key="r"></i>
-              <small>({{ doctor.rating.comments }})</small>
+              <small v-if="doctor.rating.comments">({{ doctor.rating.comments.length }})</small>
             </span>
-            <a-tooltip placement="top" title="Badge Level">
+            <a-tooltip placement="top" title="">
               <a href="" class="badge_list_1"><img src="img/badges/badge_1.svg" width="15" height="15" alt=""></a>
             </a-tooltip>
           </div>
           <ul>
-            <li><a href="#" @click.stop.prevent="$emit('onViewMapClick', doctor)" class="btn_listing">Ver en mapa</a></li>
-            <li><a :href="googleMapDir(doctor)" target="_blank">Direcciones</a></li>
+            <li v-if="hasLocation(doctor)"><a href="#" @click.stop.prevent="$emit('onViewMapClick', doctor)" class="btn_listing">Ver en mapa</a></li>
+            <li v-if="hasLocation(doctor)"><a :href="googleMapDir(doctor)" target="_blank">Direcciones</a></li>
+            <li v-if="!hasLocation(doctor)">&nbsp;</li>
+            <li v-if="!hasLocation(doctor)">&nbsp;</li>
             <li><router-link :to="{ name: 'details-page', params: { id: doctor.id } }">Agendar ahora</router-link></li>
           </ul>
         </div>
@@ -36,6 +38,8 @@
   </div>
 </template>
 <script>
+  import { mapGetters, mapActions } from 'vuex'
+
   export default {
     name: 'Grid',
     props: {
@@ -47,11 +51,27 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'hasToken',
+        'favorites'
+      ]),
       rateTotal () {
         return Array(5).fill(true).map((e, i) => i + 1)
+      },
+      listData () {
+        return (!this.loading && this.data) || []
+      },
+      loadingData () {
+        return this.loading ? new Array(6).fill(true) : []
+      },
+      hasToken () {
+        return this.$store.state.user.token
       }
     },
     methods: {
+      ...mapActions([
+        'addFavorite'
+      ]),
       changeAnimationEnd (doctor) {
         doctor.isVisible = true
       },
@@ -65,7 +85,10 @@
         doctor.fav = !doctor.fav
       },
       googleMapDir(doctor) {
-        return `https://www.google.com/maps/dir//${doctor.map.address}/@${doctor.map.latitude},${doctor.map.longitude},14z/`.replace(/\s/ig, '+')
+        return `https://www.google.com/maps/search/?api=1&query=${doctor.map.latitude},${doctor.map.longitude}`
+      },
+      hasLocation(doctor) {
+        return doctor.map.latitude && doctor.map.longitude
       }
     }
   }

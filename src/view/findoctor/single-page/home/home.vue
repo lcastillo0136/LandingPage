@@ -4,7 +4,7 @@
     <Discover></Discover>
     <Carousel></Carousel>
     <FindList></FindList>
-    <AppSection></AppSection>
+    <!-- <AppSection></AppSection> -->
   </main>
   <!-- /main content -->
 </template>

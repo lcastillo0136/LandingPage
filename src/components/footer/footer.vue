@@ -13,8 +13,6 @@
           <h5>{{ $t('footer.about') }}</h5>
           <ul class="links">
             <li><router-link :to="{ name: 'home' }">{{ $t('footer.about_us') }}</router-link></li>
-            <li><router-link :to="{ name: 'home' }">{{ $t('footer.blog') }}</router-link></li>
-            <li><router-link :to="{ name: 'home' }">{{ $t('footer.faq') }}</router-link></li>
             <li><router-link :to="{ nome: 'login' }">{{ $t('footer.login') }}</router-link></li>
             <li><router-link :to="{ name: 'register' }">{{ $t('footer.register') }}</router-link></li>
           </ul>
@@ -22,20 +20,15 @@
         <div class="col-lg-3 col-md-4">
           <h5>{{ $t('footer.useful_links') }}</h5>
           <ul class="links">
-            <li>
-              <router-link :to="{ name: 'list-page-type', params: { type: 'doctor', layout: 'grid' }}" replace>{{ $t('footer.doctors') }}</router-link>
+
+            <li v-for="(type, type_i) in types" :key="type_i">
+              <router-link :to="{ name: 'list-page-type', params: { type: type.value, layout: 'list' }}" replace>{{ type.text }}</router-link>
             </li>
-            <li>
-              <router-link :to="{ name: 'list-page-type', params: { type: 'clinic', layout: 'grid' }}" replace>{{ $t('footer.clinic') }}</router-link>
-            </li>
-            <li>
-              <router-link :to="{ name: 'list-page-type', params: { type: 'doctor', layout: 'list' }}" replace>{{ $t('footer.specialization') }}</router-link>
-            </li>
-            <li><router-link :to="{ name: 'register' }">{{ $t('footer.join_doctor') }}</router-link></li>
-            <li><router-link :to="{ name: 'home' }">{{ $t('footer.download_app') }}</router-link></li>
+
+            <li><router-link :to="{ name: 'register-doctor' }">{{ $t('footer.join_doctor') }}</router-link></li>
           </ul>
         </div>
-        <div class="col-lg-3 col-md-4">
+        <!-- <div class="col-lg-3 col-md-4">
           <h5>{{ $t('footer.contact_us') }}</h5>
           <ul class="contacts">
             <li><a href="tel:61280932400"><i class="icon_mobile"></i> + 61 23 8093 3400</a></li>
@@ -50,7 +43,7 @@
               <li><a href="https://www.instagram.com/"><i class="social_instagram"></i></a></li>
             </ul>
           </div>
-        </div>
+        </div> -->
       </div>
       <!--/row-->
       <hr>
@@ -74,10 +67,11 @@
   export default {
     name: 'Footer',
     computed: {
-      ...mapGetters([
-        'container',
-        'settings'
-      ]),
+      ...mapGetters({
+        container: 'container',
+        settings: 'settings',
+        types: 'filterTypes'
+      }),
       containerClasses () {
         return {
           'container': this.container,

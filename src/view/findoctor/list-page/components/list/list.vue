@@ -16,7 +16,7 @@
           <i :class="{ 'icon_star':1, 'voted': r <= doctor.rating.rate }" v-for="r in rateTotal" :key="r"></i>
           <small v-if="doctor.rating.comments">({{ doctor.rating.comments.length }})</small>
         </span>
-        <a-tooltip placement="top" title="Badge Level">
+        <a-tooltip placement="top" title="">
           <a href="#" class="badge_list_1" @click.stop.prevent=""><img src="img/badges/badge_1.svg" width="15" height="15" alt=""></a>
         </a-tooltip>
         <ul>
@@ -48,7 +48,7 @@
           <i class="icon_star"></i>
           <small>(100)</small>
         </span>
-        <a-tooltip placement="top" title="Badge Level">
+        <a-tooltip placement="top" title="">
           <a href="#" class="badge_list_1" @click.stop.prevent=""><img src="img/badges/badge_0.svg" width="15" height="15" alt=""></a>
         </a-tooltip>
         <ul>
@@ -90,9 +90,6 @@
       },
       loadingData () {
         return this.loading ? new Array(6).fill(true) : []
-      },
-      hasToken () {
-        return this.$store.state.user.token
       }
     },
     methods: {

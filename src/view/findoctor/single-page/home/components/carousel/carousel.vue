@@ -2,8 +2,8 @@
     <div class="bg_color_1" v-if="doctors.length > 1">
       <div class="container margin_120_95">
         <div class="main_title">
-          <h2>Most Viewed doctors</h2>
-          <p>Usu habeo equidem sanctus no. Suas summo id sed, erat erant oporteat cu pri.</p>
+          <h2>Doctores con mas vistas</h2>
+          <p>Revisa nuestros medicos con mas vistas</p>
         </div>
         <carousel id="reccomended" :nav="false" :center="true" :items="2" :loop="true" :margin="10" :responsive="{0: {items: 1},600: {items: 2},1000: {items: 4}}">
           <div class="item" v-for="(doctor, doctor_i) in doctors" :key="doctor_i">

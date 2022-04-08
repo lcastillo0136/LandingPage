@@ -5139,6 +5139,9 @@ ul#cat_nav li:last-child a:hover {
 :not(table):not(tr):not(td):not(th):not(tbody):not(thead):not(tfoot):not(.review_summary):not(.review_summary *)::after {
     content: ' '
 }
+.box_list ul::after, .box_list ul li::after, .box_list::after {
+   display: none;
+}
 
 .rating {
     display: inline-block
