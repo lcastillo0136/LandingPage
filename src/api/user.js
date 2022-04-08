@@ -208,3 +208,22 @@ export const postReview = (review, token) => {
     method: 'post'
   })
 }
+
+export const postReply = (reply, token) => {
+  const formData = new FormData()
+
+  if (reply) {
+    Object.keys(reply).forEach((p) => {
+      formData.append(p, reply[p])
+    })
+  }
+
+  return axios.request({
+    url: `comments/${ reply.reply_id }/reply`,
+    data: formData,
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'post'
+  })
+}

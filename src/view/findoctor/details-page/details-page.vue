@@ -220,7 +220,10 @@
                         <i class="icon_star" :class="{'voted': review.rating >= star}" v-for="(star, star_i) in totalRatings"></i>
                       </div>
                       <div class="rev-info">
-                        {{ review.name }} – {{ review.date | moment('MMMM DD, YYYY h:mm a') }}
+                        <a-tooltip>
+                          <span slot="title">{{ review.date | moment('MMMM DD, YYYY h:mm a') }}</span>
+                          {{ review.name }} – {{ review.date | moment('from', 'now') }}
+                        </a-tooltip>
                       </div>
                       <div class="rev-text">
                         <p>
@@ -235,7 +238,7 @@
                             <p>{{ reply.message }}</p>
                           </div>
                           <div class="reply-info" v-if="reply.from">
-                            {{ reply.from.title || '' }} {{ reply.from.first_name }} {{ reply.from.last_name || '' }} – {{ reply.created_at | moment('MMMM DD, YYYY h:mm a') }}
+                            {{ reply.from.title || '' }} {{ reply.from.first_name }} {{ reply.from.last_name || '' }} – <a-tooltip><span slot="title">{{ reply.created_at | moment('MMMM DD, YYYY h:mm a') }}</span>{{ reply.created_at | moment('from', 'now') }}</a-tooltip>
                           </div>
                         </div>
                         <figure class="reply-thumb" v-if="reply.from">
@@ -581,6 +584,13 @@
         width: 60px;
         height: auto;
       }
+    }
+  }
+
+  .rev-content {
+    .rev-text {
+      overflow-wrap: break-word;
+      white-space: pre-line;
     }
   }
 

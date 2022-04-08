@@ -299,14 +299,14 @@
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6">
+            <div class="row" v-if="viewModal.data.item || viewModal.data.order">
+              <div class="col-md-6" v-if="viewModal.data.item">
                 <div class="form-group">
                   <label class="mb-0">Servicios</label>
                   <div class="font-weight-bold">{{ viewModal.data.item.name }} - {{ viewModal.data.item.precio_venta | currency }}</div>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6" v-if="viewModal.data.order">
                 <div class="form-group">
                   <label class="mb-0">Metodo de pago</label>
                   <div class="font-weight-bold">{{ viewModal.data.order.method.name }}</div>
@@ -320,7 +320,7 @@
                   <div class="font-weight-bold">{{ $t(`appointment_status.${viewModal.data.status.name.toUpperCase()}`.replace(/\s/g, '_')) }}</div>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6" v-if="viewModal.data.order">
                 <div class="form-group">
                   <label class="mb-0">Estatus pago</label>
                   <div class="font-weight-bold">{{ $t('payment_status.'+viewModal.data.order.status.name) }}</div>
@@ -377,8 +377,8 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="mb-0">Comentario</label>
-                <a-form-model-item prop="comment" :help="!!viewModal.data.review ? '*La reseña ya esta publicada y no se puede editar' : ''">
-                   <a-textarea v-model="viewModal.review.comment" :rows="4" :disabled="!!viewModal.data.review"  />
+                <a-form-model-item prop="comment" :help="!!viewModal.data.review ? '*La reseña ya esta publicada y no se puede editar' : `${(viewModal.review.comment||'').length}/320` ">
+                   <a-textarea v-model="viewModal.review.comment" :rows="4" :disabled="!!viewModal.data.review" maxLength="320"  />
                 </a-form-model-item>
               </div>
             </div>
@@ -1191,5 +1191,8 @@
     .ant-input[disabled] {
       background-color: var(--vs-state-disabled-bg);
     }
+  }
+  .ant-modal {
+    max-width: 95%;
   }
 </style>

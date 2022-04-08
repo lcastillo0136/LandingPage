@@ -47,6 +47,12 @@
         </router-link>
       </li> -->
       <li v-if="isProvider">
+        <router-link :to="{ name: 'profile-reviews' }">
+          <span>Reseñas</span>
+          <i class="arrow_carrot-right"></i>
+        </router-link>
+      </li>
+      <li v-if="isProvider">
         <router-link :to="{ name: 'profile-settings' }">
           <span>Configuraciones</span>
           <i class="arrow_carrot-right"></i>

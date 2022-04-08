@@ -110,7 +110,10 @@
             }
             this.loading = false
           }).catch((error) => {
-            this.$swal('No se encontro el usuario', '', 'error')
+            this.$notification.error({
+              message: 'No se encontro el usuario',
+              description: 'Favor de revisar su usuario o contraseña he intentar de nuevo.'
+            })
             this.loading = false
           });
         } else {

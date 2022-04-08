@@ -255,6 +255,11 @@ export default [
             path: 'orders.html',
             name: 'profile-orders',
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-orders')
+          },
+          {
+            path: 'reviews.html',
+            name: 'profile-reviews',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-reviews')
           }
         ]
       }, {
