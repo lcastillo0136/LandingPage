@@ -3,22 +3,22 @@
     <h4>Reseñas</h4>
 
     <a-list item-layout="vertical" size="large" :data-source="reviews" :split="false">
-      <a-list-item slot="renderItem" key="item.id" slot-scope="item, index">
+      <a-list-item slot="renderItem" key="item.id" slot-scope="item, index" :class="{ 'disabled': item.banned }">
         <template slot="actions">
           <a-tooltip title="Responder">
             <a-button size="small" type="primary" style="transform: rotateY(180deg);" @click="openForm(item)">
               <span class="arrow_back"></span>
             </a-button>
           </a-tooltip>
-          <span>
-            <a-tooltip title="Ocultar" v-if="!item.banned" @click="item.banned = true">
+          <span @click="toggleReview(item)">
+            <a-tooltip title="Ocultar" v-if="!item.banned">
               <a-icon type="eye" />
             </a-tooltip>
-            <a-tooltip title="Mostrar" v-else  @click="item.banned = false">
+            <a-tooltip title="Mostrar" v-else>
               <a-icon type="eye-invisible" />
             </a-tooltip>
           </span>
-          <span><a-icon type="message" style="margin-right: 8px" />{{ item.replies.length }}</span>
+          <span @click="openForm(item)"><a-icon type="message" style="margin-right: 8px" />{{ item.replies.length }}</span>
         </template>
         <template slot="extra">
           <a-rate :value="item.rate" disabled></a-rate>
@@ -78,7 +78,7 @@
   </div>
 </template>
 <script>
-  import { postReply } from '@/api/user'
+  import { postReply, updateReview } from '@/api/user'
 
   import { mapGetters } from 'vuex'
 
@@ -167,6 +167,22 @@
         }).catch(() => {
           this.reply.loading = false
         })
+      },
+      toggleReview(review) {
+        updateReview({ 
+          ...review,
+          ...{
+            banned: !review.banned
+          }
+        }, this.hasToken).then(() => {
+          review.banned = !review.banned
+          this.$notification.success({
+            message: 'Datos Actualizados',
+            description: 'La reseña ha sido ' + (review.banned ? 'ocultada' : 'mostrada')
+          })
+        }).catch(() => {
+
+        })
       }
     },
     mounted() {
@@ -183,6 +199,8 @@
       padding: 16px;
       border: 1px solid #e8e8e8 !important;
       border-radius: 5px;
+      position: relative;
+      margin-bottom: 16px;
 
       .ant-list-item-meta-title {
         margin-bottom: 0;
@@ -192,6 +210,10 @@
         position: absolute;
         right: 15px;
         top: 15px;
+      }
+
+      &.disabled {
+        opacity: 0.4;
       }
     }
   }
@@ -214,7 +236,7 @@
         }
 
         .ant-list-item-meta {
-          flex: 0 1 auto;
+          flex: 0 0 auto;
           margin-bottom: 0px;
           margin-left: 6px;
           font-style: normal;

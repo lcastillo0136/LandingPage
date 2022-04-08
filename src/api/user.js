@@ -227,3 +227,14 @@ export const postReply = (reply, token) => {
     method: 'post'
   })
 }
+
+export const updateReview = (review, token) => {
+  return axios.request({
+    url: `comments/${ review.id }`,
+    data: review,
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'put'
+  })
+}
