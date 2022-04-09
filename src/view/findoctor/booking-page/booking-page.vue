@@ -362,13 +362,11 @@
 
         if (readyToSave) {
           postOrder(data).then((response) => {
-            // this.$swal('Thanks for your booking!', 'You\'ll receive a confirmation email at <a href="mailto:[email protected]">[email protected]</a>','success').then(() => {
-            //   this.$router.back()
-            // })
-            debugger;
+            this.$router.replace({ name: 'invoice-page', params: { order: response.data.data.id } })
           }).catch((error) => {
-            debugger;
+            
           })
+          
         }
       }
     },

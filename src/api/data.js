@@ -113,3 +113,11 @@ export const postOrder = (data) => {
     method: 'post'
   })
 }
+
+export const getOrder = (key) => {
+  return axios.request({
+    baseURL: baseUrl.replace('/api/', '/web/'),
+    url: `/orders/${key}`,
+    method: 'get'
+  })
+}

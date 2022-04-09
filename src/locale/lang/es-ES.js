@@ -689,5 +689,8 @@ export default {
     REQUEST_EXPIRED: 'Peticion expirada',
     NEW_TIME_PROPOSED: 'Reagenda propuesta',
     PENDING_RESCHEDULE: 'Reagenda pendiente',
+  },
+  invoice_page: {
+    title: 'Detalles de la orden'
   }
 }

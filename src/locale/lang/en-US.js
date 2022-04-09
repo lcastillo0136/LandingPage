@@ -689,5 +689,8 @@ export default {
     REQUEST_EXPIRED: 'request expired',
     NEW_TIME_PROPOSED: 'New time proposed',
     PENDING_RESCHEDULE: 'Pending reschedule',
+  },
+  invoice_page: {
+    title: 'Order details'
   }
 }

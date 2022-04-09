@@ -125,6 +125,18 @@ export default [
         component: () => import('@/view/' + config.theme + '/booking-page')
       }, 
       {
+        path: '/invoice.html',
+        name: 'invoice-page',
+        meta: {
+          hideInMenu: true,
+          title: 'invoice-page.title',
+          notCache: true,
+          icon: 'md-booking',
+          headerSticky: true
+        },
+        component: () => import('@/view/' + config.theme + '/invoice-page')
+      }, 
+      {
         path: '/review.html',
         name: 'review-page',
         meta: {
