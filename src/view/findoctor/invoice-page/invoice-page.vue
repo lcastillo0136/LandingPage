@@ -256,16 +256,13 @@
       ])
     },
     mounted() {
-      // if (!this.canView) {
-      //   this.$router.replace({ name: 'home' })
-      // }
-
+      if (!this.canView) {
+        this.$router.replace({ name: 'home' })
+      }
       
       if (this.hasToken) {
       }
-
-      this.$route.params.order = '2b38bf77-d19c-4157-bffa-5812503632ec'
-      
+    
       getOrder(this.$route.params.order).then((response) => response.data).then((response) => {
         this.order = { ...response.data }
         this.$nextTick().then(() => {
