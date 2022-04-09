@@ -2,121 +2,140 @@
   <main>
     <BreadCrumb :routes="breadcrumb"></BreadCrumb>
 
-    <div class="container margin_60 invoice-container" v-if="order">
+    <div class="container margin_60" v-if="order">
       <div class="row">
         <div class="col-xl-8 col-lg-8">
-          <div class="box_general_3 cart">
-            <div class="invoice-header">
-              <div class="invoice-media">
-                <div>
-                  <router-link :style="'background-image: url('+ appImage +');'" :to="{ name: 'home' }" :title="appName" class="logo">{{ appName }}</router-link>
-                </div>
-                <div class="invoice-company-mail">
-                  {{ appEmail }}
-                </div>
-              </div>
-              <div class="invoice-company-address">
-                {{ appStreet }}<br>
-                {{ appCity }}, {{ appCP }}<br>
-                {{ appState }}, {{ appCountry }}
-              </div>
-            </div>
+          <vue-html2pdf
+            :show-layout="true"
+            :float-layout="false"
+            :enable-download="true"
+            :preview-modal="false"
+            :paginate-elements-by-height="1400"
+            filename="invoice"
+            :pdf-quality="2"
+            :manual-pagination="false"
+            pdf-format="a4"
+            pdf-orientation="portrait"
+            pdf-content-width="100%"
 
-            <div class="invoice-details">
-              <div>
-                <div>Numero de orden</div>
-                <div><label>{{ order_key }}</label></div>
-                <div><label>Fecha de emision: </label> {{ order.created_at | moment('DD MMM YYYY') }}</div>
-              </div>
-              <div class="text-right">
-                <div>Facturado a</div>
-                <div><label>{{ order.client | fullName }}</label></div>
-                <template v-if="order.client.address">
+            ref="html2Pdf"
+          >
+
+            <section slot="pdf-content">
+              <div class="box_general_3 cart">
+                <div class="invoice-header">
+                  <div class="invoice-media">
+                    <div>
+                      <router-link :style="'background-image: url('+ appImage +');'" :to="{ name: 'home' }" :title="appName" class="logo">{{ appName }}</router-link>
+                    </div>
+                    <div class="invoice-company-mail">
+                      {{ appEmail }}
+                    </div>
+                  </div>
+                  <div class="invoice-company-address">
+                    {{ appStreet }}<br>
+                    {{ appCity }}, {{ appCP }}<br>
+                    {{ appState }}, {{ appCountry }}
+                  </div>
+                </div>
+
+                <div class="invoice-details">
                   <div>
-                    <label>{{ order.client.address.street }}</label>
+                    <div>Numero de orden</div>
+                    <div><label>{{ order_key }}</label></div>
+                    <div><label>Fecha de emision: </label> {{ order.created_at | moment('DD MMM YYYY') }}</div>
                   </div>
-                  <div>
-                    <label>{{ order.client.address.state }}, {{ order.client.address.country }}</label>
+                  <div class="text-right">
+                    <div>Facturado a</div>
+                    <div><label>{{ order.client | fullName }}</label></div>
+                    <template v-if="order.client.address">
+                      <div>
+                        <label>{{ order.client.address.street }}</label>
+                      </div>
+                      <div>
+                        <label>{{ order.client.address.state }}, {{ order.client.address.country }}</label>
+                      </div>
+                    </template>
+                    <div>
+                      <label>{{ order.client.phone }}</label>
+                    </div>
+                    <div>
+                      <label>{{ order.client.email }}</label>
+                    </div>
                   </div>
-                </template>
-                <div>
-                  <label>{{ order.client.phone }}</label>
                 </div>
-                <div>
-                  <label>{{ order.client.email }}</label>
+
+                <div class="invoice-content">
+                  <span>Detalles</span>
+
+                  <a-table :pagination="false" :columns="columns" :data-source="order.products" class="components-table-demo-nested" rowKey="id">
+                    <div slot="name" slot-scope="record" class="data-record">
+                      {{ record.name }}
+                    </div>
+                    <div slot="date" slot-scope="record" class="data-record">
+                      {{ record | toDate('DD/MM/YYYY hh:mm a') }}
+                    </div>
+                    <div slot="total" slot-scope="record" class="text-right data-record">
+                      {{ record.precio_venta | currency }}
+                    </div>
+                  </a-table>
+
+                  <a-divider />
+
+                  <div class="invoice-payment">
+                    <div class="invoice-payment-details">
+                      <div class="invoice-payment-method">
+                        <div>Metodo de pago</div>
+                        <span>{{ order.method.name }}</span>
+                      </div>
+                      <div class="invoice-payment-status">
+                        <div>Estatus pago</div>
+                        <span>
+                          <a>
+                            {{ order.status.name | paymentStatus }}
+                          </a>
+                        </span>
+                      </div>
+                      <template v-if="order.payment_orders.type == 'oxxo'">
+                        <div class="invoice-payment-oxxo">
+                          <div>Referencia</div>
+                          <span>{{ order.payment_orders.metadata_object.reference | oxxo }}</span>
+                        </div>
+                        <div class="invoice-payment-oxxo-expired">
+                          <div>Caducidad</div>
+                          <span>
+                            Pagar antes de {{ oxxoTime }} 
+                          </span>
+                          <a-tag color="red" v-if="oxxoExpired && !orderPaid">Expirado</a-tag>
+                          <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
+                        </div>
+                        <div class="invoice-payment-oxxo-barcode">
+                          <div>Codigo de barras</div>
+                          <span>
+                            <img :src="order.payment_orders.metadata_object.barcode_url" />
+                          </span>
+                        </div>
+                      </template>
+                    </div>
+                    <div class="invoice-totals">
+                      <div class="invoice-totals-subtotal">
+                        <span>Sub Total</span>
+                        <span>{{ order.subtotal | currency }}</span>
+                      </div>
+                      <div class="invoice-totals-discount">
+                        <div>Descuento</div>
+                        <span>{{ order.discount | currency }}</span>
+                      </div>
+                      <div class="invoice-totals-grand">
+                        <div>Cantidad Total</div>
+                        <span>{{ order.total | currency }}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div class="invoice-content">
-              <span>Detalles</span>
-
-              <a-table :pagination="false" :columns="columns" :data-source="order.products" class="components-table-demo-nested" rowKey="id">
-                <div slot="name" slot-scope="record" class="data-record">
-                  {{ record.name }}
-                </div>
-                <div slot="date" slot-scope="record" class="data-record">
-                  {{ record | toDate('DD/MM/YYYY hh:mm a') }}
-                </div>
-                <div slot="total" slot-scope="record" class="text-right data-record">
-                  {{ record.precio_venta | currency }}
-                </div>
-              </a-table>
-
-              <a-divider />
-
-              <div class="invoice-payment">
-                <div class="invoice-payment-details">
-                  <div class="invoice-payment-method">
-                    <div>Metodo de pago</div>
-                    <span>{{ order.method.name }}</span>
-                  </div>
-                  <div class="invoice-payment-status">
-                    <div>Estatus pago</div>
-                    <span>
-                      <a>
-                        {{ order.status.name | paymentStatus }}
-                      </a>
-                    </span>
-                  </div>
-                  <template v-if="order.payment_orders.type == 'oxxo'">
-                    <div class="invoice-payment-oxxo">
-                      <div>Referencia</div>
-                      <span>{{ order.payment_orders.metadata_object.reference | oxxo }}</span>
-                    </div>
-                    <div class="invoice-payment-oxxo-expired">
-                      <div>Caducidad</div>
-                      <span>
-                        Pagar antes de {{ oxxoTime }} 
-                      </span>
-                      <a-tag color="red" v-if="oxxoExpired && !orderPaid">Expirado</a-tag>
-                      <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
-                    </div>
-                    <div class="invoice-payment-oxxo-barcode">
-                      <div>Codigo de barras</div>
-                      <span>
-                        <img :src="order.payment_orders.metadata_object.barcode_url" />
-                      </span>
-                    </div>
-                  </template>
-                </div>
-                <div class="invoice-totals">
-                  <div class="invoice-totals-subtotal">
-                    <span>Sub Total</span>
-                    <span>{{ order.subtotal | currency }}</span>
-                  </div>
-                  <div class="invoice-totals-discount">
-                    <div>Descuento</div>
-                    <span>{{ order.discount | currency }}</span>
-                  </div>
-                  <div class="invoice-totals-grand">
-                    <div>Cantidad Total</div>
-                    <span>{{ order.total | currency }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            </section>
+          </vue-html2pdf>
         </div>
         <!-- /col -->
         <aside class="col-xl-4 col-lg-4" id="sidebar" v-if="canView">
@@ -136,7 +155,7 @@
           </div>
           <div style="gap: 16px;" class="d-flex flex-row justify-content-between">
             <a-button size="large" style="flex: 1 1 auto;">Compartir</a-button>
-            <a-button size="large" style="flex: 1 1 auto;">Descargar</a-button>
+            <a-button size="large" style="flex: 1 1 auto;" @click="generateReport">Descargar</a-button>
           </div>
         </aside>
         <!-- /asdide -->
@@ -148,6 +167,7 @@
   <!-- /main -->
 </template>
 <script>
+  import VueHtml2pdf from 'vue-html2pdf'
   import BreadCrumb from '@/components/breadcrumb'
   import { getOrder } from '@/api/data'
   import { getServerFile } from '@/libs/util'
@@ -157,7 +177,8 @@
   export default {
     name: 'InvoicePage',
     components: {
-      BreadCrumb
+      BreadCrumb,
+      VueHtml2pdf
     },
     data () {
       return {
@@ -253,22 +274,26 @@
     methods: {
       ...mapActions([
         'getUserInfo'
-      ])
+      ]),
+      generateReport () {
+        this.$refs.html2Pdf.generatePdf()
+      }
     },
     mounted() {
       if (!this.canView) {
         this.$router.replace({ name: 'home' })
       }
+
       
       if (this.hasToken) {
       }
-    
+      
       getOrder(this.$route.params.order).then((response) => response.data).then((response) => {
         this.order = { ...response.data }
         this.$nextTick().then(() => {
-          window['$']('#sidebar').theiaStickySidebar({
-            additionalMarginTop: 95
-          });
+          // window['$']('#sidebar').theiaStickySidebar({
+          //   additionalMarginTop: 95
+          // });
         })
       }).catch(() => {
 
@@ -277,11 +302,11 @@
   }
 </script>
 <style lang="scss">
-  .invoice-container {
-    --invoice-primary-color: #96A0B5;
-    --invoice-secondary-color: #0C1740;
-    --invoice-third-color: #96A0B5;
-
+    ::root {
+      --invoice-primary-color: #96A0B5;
+      --invoice-secondary-color: #0C1740;
+      --invoice-third-color: #96A0B5;
+    }
     *::after {
       display: none;
     }
@@ -440,5 +465,5 @@
       justify-content: space-around;
       margin-top: 32px;
     }
-  }
+  
 </style>
