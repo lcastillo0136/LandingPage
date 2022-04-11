@@ -362,7 +362,7 @@
 
         if (readyToSave) {
           postOrder(data).then((response) => {
-            this.$router.replace({ name: 'invoice-page', params: { order: response.data.data.id } })
+            this.$router.replace({ name: 'invoice-page', params: { order: response.data.data.uuid_key } })
           }).catch((error) => {
             
           })

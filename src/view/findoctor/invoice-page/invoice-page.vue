@@ -85,24 +85,24 @@
                   <div class="invoice-payment">
                     <div class="invoice-payment-details">
                       <div class="invoice-payment-method">
-                        <div>Metodo de pago</div>
+                        <div>Metodo de pago </div>
                         <span>{{ order.method.name }}</span>
                       </div>
                       <div class="invoice-payment-status">
-                        <div>Estatus pago</div>
+                        <div>Estatus pago </div>
                         <span>
                           <a>
-                            {{ order.status.name | paymentStatus }}
+                            &nbsp;{{ order.status.name | paymentStatus }}
                           </a>
                         </span>
                       </div>
-                      <template v-if="order.payment_orders.type == 'oxxo'">
+                      <template v-if="order.payment_orders && order.payment_orders.type == 'oxxo'">
                         <div class="invoice-payment-oxxo">
-                          <div>Referencia</div>
+                          <div>Referencia </div>
                           <span>{{ order.payment_orders.metadata_object.reference | oxxo }}</span>
                         </div>
                         <div class="invoice-payment-oxxo-expired">
-                          <div>Caducidad</div>
+                          <div>Caducidad </div>
                           <span>
                             Pagar antes de {{ oxxoTime }} 
                           </span>
@@ -110,7 +110,7 @@
                           <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
                         </div>
                         <div class="invoice-payment-oxxo-barcode">
-                          <div>Codigo de barras</div>
+                          <div>Codigo de barras </div>
                           <span>
                             <img :src="order.payment_orders.metadata_object.barcode_url" />
                           </span>
