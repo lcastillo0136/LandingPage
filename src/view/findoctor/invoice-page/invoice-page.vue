@@ -8,7 +8,7 @@
           <vue-html2pdf
             :show-layout="true"
             :float-layout="false"
-            :enable-download="true"
+            :enable-download="download"
             :preview-modal="false"
             :paginate-elements-by-height="1400"
             filename="invoice"
@@ -18,6 +18,7 @@
             pdf-orientation="portrait"
             pdf-content-width="100%"
 
+            @beforeDownload="beforeDownload($event)"
             ref="html2Pdf"
           >
 
@@ -57,7 +58,7 @@
                       </div>
                     </template>
                     <div>
-                      <label>{{ order.client.phone }}</label>
+                      <label>{{ order.client.phone | phone }}</label>
                     </div>
                     <div>
                       <label>{{ order.client.email }}</label>
@@ -73,7 +74,7 @@
                       {{ record.name }}
                     </div>
                     <div slot="date" slot-scope="record" class="data-record">
-                      {{ record | toDate('DD/MM/YYYY hh:mm a') }}
+                      {{ `${record.date} ${record.time}` | ServerToDate('DD/MM/YYYY hh:mm a') }}
                     </div>
                     <div slot="total" slot-scope="record" class="text-right data-record">
                       {{ record.precio_venta | currency }}
@@ -153,8 +154,8 @@
             <h5 class="mb-4">Monto Total</h5>
             <h2 class="mb-0">{{ order.total | currency }} <small>{{ appCurrency }}</small></h2>
           </div>
-          <div style="gap: 16px;" class="d-flex flex-row justify-content-between">
-            <a-button size="large" style="flex: 1 1 auto;">Compartir</a-button>
+          <div style="gap: 16px;" class="d-flex flex-row justify-content-between d-print-none">
+            <a-button size="large" style="flex: 1 1 auto;" @click="shareReport">Compartir</a-button>
             <a-button size="large" style="flex: 1 1 auto;" @click="generateReport">Descargar</a-button>
           </div>
         </aside>
@@ -170,6 +171,7 @@
   import VueHtml2pdf from 'vue-html2pdf'
   import BreadCrumb from '@/components/breadcrumb'
   import { getOrder } from '@/api/data'
+  import { sendInvoice } from '@/api/user'
   import { getServerFile } from '@/libs/util'
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import moment from 'moment'
@@ -192,7 +194,9 @@
           { title: 'Nombre', key: 'name', scopedSlots: { customRender: 'name' } },
           { title: 'Fecha de cita', key: 'date', scopedSlots: { customRender: 'date' } },
           { title: 'Total', key: 'total', scopedSlots: { customRender: 'total' } }
-        ]
+        ],
+        download: false,
+        loading: false
       }
     },
     filters: {
@@ -276,24 +280,75 @@
         'getUserInfo'
       ]),
       generateReport () {
-        this.$refs.html2Pdf.generatePdf()
+        this.loading = true
+        this.download = true
+        document.documentElement.style.scrollBehavior = 'auto';
+        setTimeout(() => {
+          window.scroll(0,0);
+          setTimeout(() => {
+            this.$refs.html2Pdf.generatePdf()
+            document.documentElement.style.scrollBehavior = 'smooth'
+          }, 100);
+        }, 10)
+      },
+      shareReport() {
+        this.loading = true
+        this.download = false
+        document.documentElement.style.scrollBehavior = 'auto';
+        setTimeout(() => {
+          window.scroll(0,0);
+          setTimeout(() => {
+            this.$refs.html2Pdf.generatePdf()
+            document.documentElement.style.scrollBehavior = 'smooth'
+          }, 100);
+        }, 10)
+      },
+      beforeDownload($event) { 
+        $event.html2pdf().from($event.pdfContent).outputPdf().then((pdf) => {
+          let _file = new File([ new Blob([ pdf ], { type: 'application/pdf' }) ], `receipt-${this.order.uuid_key}.pdf`);
+
+          this.loading = false
+        }).outputImg('dataurlstring').then(async (imgString) => {
+          if (!this.download) {
+
+            this.loading = false
+            
+            const res = await fetch(imgString);
+            const blob = await res.blob();
+            let _file = new File([ blob ], `receipt-${this.order.uuid_key}.png`, { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [ _file ] })) {
+              navigator.share({
+                files: [ _file ],
+                title: `receipt-${this.order.uuid_key}.png`,
+                text: 'Recibo de compra',
+              })
+              .then(() => console.log('Share was successful.'))
+              .catch((error) => console.log('Sharing failed', error));
+            } else {
+              console.log(`Your system doesn't support sharing files.`);
+            }
+          }
+        });
       }
     },
     mounted() {
-      if (!this.canView) {
-        this.$router.replace({ name: 'home' })
-      }
-
-      
-      if (this.hasToken) {
+      if (!this.$route.meta.order) {
+        if (!this.canView) {
+          this.$router.replace({ name: 'home' })
+        }
+        
+        if (this.hasToken) {
+        }
+      } else {
+        this.$route.params.order = this.$route.meta.order
       }
       
       getOrder(this.$route.params.order).then((response) => response.data).then((response) => {
         this.order = { ...response.data }
         this.$nextTick().then(() => {
-          // window['$']('#sidebar').theiaStickySidebar({
-          //   additionalMarginTop: 95
-          // });
+          window['$']('#sidebar').theiaStickySidebar({
+            additionalMarginTop: 95
+          });
         })
       }).catch(() => {
 
@@ -465,5 +520,44 @@
       justify-content: space-around;
       margin-top: 32px;
     }
-  
+  @media print {
+    header, #breadcrumb, footer, #toTop {
+      display: none;
+    }
+    tbody {
+      break-inside: avoid;
+    }
+
+    main .container {
+      margin: 0;
+      max-width: 100%;
+      padding: 20px
+    }
+    main .row {
+      display: flex !important;
+      flex-direction: column-reverse;
+    }
+
+    #sidebar {
+      position: static;
+      min-height: auto !important;
+      width: 100%;
+      max-width: 100%;
+
+      .theiaStickySidebar {
+        position: static !important;
+        transform: none !important;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 20px;
+        &::after {
+          display: none;
+        }
+        .box_general_3 {
+          flex: 1 1 auto;
+        }
+      }
+    }
+  }
 </style>

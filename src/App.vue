@@ -35,7 +35,8 @@
         'getSorts',
         'getLocation',
         'getSettings',
-        'getUserInfo'
+        'getUserInfo',
+        'handleLogOut'
       ]),
     },
     async mounted () {
@@ -60,7 +61,9 @@
       paypal.init(this.settings.PAYPAL_CLIENT, this.settings.CURRENCY)
 
       if (this.hasToken) {
-        await this.getUserInfo().then(() => {})
+        await this.getUserInfo().then(() => {}).catch((error) => {
+          this.handleLogOut()
+        })
       }
 
       this.toggleLoading()    

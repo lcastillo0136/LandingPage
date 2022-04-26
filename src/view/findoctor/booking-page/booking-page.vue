@@ -17,7 +17,7 @@
               </p>
             </div>
 
-            <DetailsForm v-model="client"></DetailsForm>
+            <DetailsForm v-model="client" :loading="loading"></DetailsForm>
 
             <hr v-if="canAccount">
             <!--End step -->
@@ -29,7 +29,7 @@
               </p>
             </div>
 
-            <DetailsPayment v-model="account" v-if="canAccount"></DetailsPayment>
+            <DetailsPayment v-model="account" v-if="canAccount" :loading="loading"></DetailsPayment>
 
             <hr v-if="canBill">
             <!--End step -->
@@ -41,7 +41,7 @@
               </p>
             </div>
             
-            <BillDetails v-model="bill" v-if="canBill"></BillDetails>
+            <BillDetails v-model="bill" v-if="canBill" :loading="loading"></BillDetails>
 
             <hr v-if="canPay">
             <!--End step -->
@@ -49,7 +49,7 @@
               <h4>Política de cancelación</h4>
               <div class="form-group">
                 <div class="checkbox">
-                  <input type="checkbox" class="css-checkbox" id="policy_terms" name="policy_terms" v-model="policyTerms">
+                  <input type="checkbox" class="css-checkbox" id="policy_terms" name="policy_terms" v-model="policyTerms" :disabled="loading">
                   <label for="policy_terms" class="css-label">Acepto la política general y los términos y condiciones.</label>
                 </div>
               </div>
@@ -81,15 +81,21 @@
               <template v-if="canPay && policyTerms">
                 <template v-if="account.methodSelected == 1">
                   <hr class="fadeIn animated">
-                  <a href="confirm.html" class="btn_1 full-width fadeIn animated" @click.stop.prevent="sendPaymentCard">Confirmar y pagar</a>
+                  <a-button class="btn_1 full-width fadeIn animated" @click.stop.prevent="sendPaymentCard" :loading="loading" shape="round" size="large">
+                    Confirmar y pagar
+                  </a-button>
                 </template>
                 <template v-if="account.methodSelected == 2">
                   <hr class="fadeIn animated">
-                  <a href="confirm.html" class="btn_1 full-width fadeIn animated" @click.stop.prevent="sendPayment">Confirmar y pagar</a>
+                  <a-button class="btn_1 full-width fadeIn animated" @click.stop.prevent="sendPayment" :loading="loading" shape="round" size="large">
+                    Confirmar y pagar
+                  </a-button>
                 </template>
                 <template v-if="account.methodSelected == 3">
                   <hr class="fadeIn animated">
-                  <a href="confirm.html" class="btn_1 full-width fadeIn animated" @click.stop.prevent="sendPayment">Confirmar y pagar</a>
+                  <a-button class="btn_1 full-width fadeIn animated" @click.stop.prevent="sendPayment" :loading="loading" shape="round" size="large">
+                    Confirmar y pagar
+                  </a-button>
                 </template>
 
                 <template v-if="account.methodSelected == 4">
@@ -158,7 +164,8 @@
           street: '',
           street2: ''
         },
-        policyTerms: false
+        policyTerms: false,
+        loading: false
       }
     },
     watch: {
@@ -226,13 +233,14 @@
         'getUserInfo'
       ]),
       sendPaymentCard () {
+        this.loading = true
         this.tokenizeCard().then((tokenize) => {
           this.account.token = tokenize.id
 
           this.sendPayment()
         }).catch((error) => {
           this.$swal('Pago no procesado', error.message_to_purchaser, 'error').then(() => {
-
+            this.loading = false
           })
         })
       },
@@ -310,6 +318,7 @@
         }
       },
       sendPayment () {
+        this.loading = true
         let data = {
           provider_id: this.doctor.id,
           phone: this.client.phone,
@@ -362,11 +371,13 @@
 
         if (readyToSave) {
           postOrder(data).then((response) => {
+            this.loading = false
             this.$router.replace({ name: 'invoice-page', params: { order: response.data.data.uuid_key } })
           }).catch((error) => {
-            
+            this.loading = false
           })
-          
+        } else {
+          this.loading = false
         }
       }
     },

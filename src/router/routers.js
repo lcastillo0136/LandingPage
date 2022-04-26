@@ -132,7 +132,8 @@ export default [
           title: 'invoice-page.title',
           notCache: true,
           icon: 'md-booking',
-          headerSticky: true
+          headerSticky: true,
+          // order: 'b2b79525-198e-4c32-a917-82046520d97e'
         },
         component: () => import('@/view/' + config.theme + '/invoice-page')
       }, 

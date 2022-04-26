@@ -1,6 +1,6 @@
 <template>
   <div class="step">
-    <a-radio-group v-model="account.methodSelected" button-style="solid">
+    <a-radio-group v-model="account.methodSelected" button-style="solid" :disabled="loading">
       <a-radio-button v-for="(method, method_i) in methods" :key="method_i" :value="method.id">
         {{ method.name }}
       </a-radio-button>
@@ -10,13 +10,13 @@
       <a-divider></a-divider>
       <div class="form-group">
         <label>Nombre en la tarjeta</label>
-        <input type="text" class="form-control" placeholder="" v-model="account.name">
+        <input type="text" class="form-control" placeholder="" v-model="account.name" :disabled="loading">
       </div>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
             <label>Número de tarjeta</label>
-            <input type="text" class="form-control" placeholder="xxxx - xxxx - xxxx - xxxx" v-model="cardAlt" @keyup="cardFormat" @keypress="preventNumericInput($event)">
+            <input type="text" class="form-control" placeholder="xxxx - xxxx - xxxx - xxxx" v-model="cardAlt" @keyup="cardFormat" @keypress="preventNumericInput($event)" :disabled="loading">
             <div class="error_message" v-if="!isValidCard && cardAlt">
               La tarjeta no es valida
             </div>
@@ -35,7 +35,7 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="MM / YY" v-model="expirationAlt" @keyup="expirationFormat" @keypress="preventNumericInput($event)">
+                <input type="text" class="form-control" placeholder="MM / YY" v-model="expirationAlt" @keyup="expirationFormat" @keypress="preventNumericInput($event)" :disabled="loading">
               </div>
               <div class="error_message" v-if="!isValidExpiration && expirationAlt">
                 Fecha de expiracion no valida
@@ -49,7 +49,7 @@
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="CCV" v-model="account.ccv" @keypress="preventNumericInput($event)">
+                  <input type="text" class="form-control" placeholder="CCV" v-model="account.ccv" @keypress="preventNumericInput($event)" :disabled="loading">
                   <div class="error_message" v-if="!isValidCCV && account.ccv">
                     El codigo no es valido
                   </div>
@@ -104,7 +104,8 @@
             methodSelected: 1
           }
         }
-      }
+      },
+      loading: Boolean
     },
     data () {
       return {

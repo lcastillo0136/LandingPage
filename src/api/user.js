@@ -238,3 +238,21 @@ export const updateReview = (review, token) => {
     method: 'put'
   })
 }
+
+export const sendInvoice = (order, token, postFiles = null) => {
+  const formData = new FormData()
+  if (postFiles !== null) {
+    postFiles.forEach(f => {
+      formData.append('postedFiles[]', f, f.name);
+    })
+  }
+  
+  return axios.request({
+    url: `orders/${order.uuid_key}/invoice/share`,
+    data: formData,
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'post'
+  })
+}

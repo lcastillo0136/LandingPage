@@ -72,6 +72,10 @@ Vue.filter('oxxo', function(o) {
   return `${o}`.replace(/^([\d]{4})([\d]{4})([\d]{4})([\d]{2})/g, '$1-$2-$3-$4')
 })
 
+Vue.filter('ServerToDate', function(d, format) {
+  return moment(d.length < 14 ? `0${d}` : d, 'DDMMYYYY HH:mm').format(format)
+})
+
 Vue.filter('paymentStatus', function (s) {
   return {
     'CANCELED': 'Cancelado',

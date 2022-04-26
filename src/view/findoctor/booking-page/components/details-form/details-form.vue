@@ -5,13 +5,13 @@
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
             <label>Nombre(s)</label>
-            <input type="text" class="form-control" placeholder="Tu nombre" v-model="client.firstName" autocomplete="chrome-off">
+            <input type="text" class="form-control" placeholder="Tu nombre" v-model="client.firstName" autocomplete="chrome-off" :disabled="loading">
           </div>
         </div>
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
             <label>Apellido(s)</label>
-            <input type="text" class="form-control" placeholder="Tu apelido" v-model="client.lastName" autocomplete="chrome-off">
+            <input type="text" class="form-control" placeholder="Tu apelido" v-model="client.lastName" autocomplete="chrome-off" :disabled="loading">
           </div>
         </div>
       </div>
@@ -19,7 +19,7 @@
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
             <label>Correo electrónico</label>
-            <input type="email" class="form-control" placeholder="Tu email" v-model="client.email" autocomplete="chrome-off">
+            <input type="email" class="form-control" placeholder="Tu email" v-model="client.email" autocomplete="chrome-off" :disabled="loading">
             <div class="error_message" v-if="client.email && !validEmail(client.email)">
               Favor de caputurar un email valido
             </div>
@@ -28,7 +28,7 @@
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
             <label>Confirmar correo electrónico</label>
-            <input type="email" class="form-control" placeholder="Tu email" v-model="client.email2" autocomplete="chrome-off">
+            <input type="email" class="form-control" placeholder="Tu email" v-model="client.email2" autocomplete="chrome-off" :disabled="loading">
             <div class="error_message" v-if="client.email && client.email2 && client.email !== client.email2">
               El correo electrónico no es el mismo
             </div>
@@ -39,7 +39,7 @@
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
             <label>Teléfono</label>
-            <input type="text" class="form-control" placeholder="(99) 9999-9999" v-model="phoneAlt" @keyup="phoneFormat" @keypress="preventNumericInput($event)" autocomplete="chrome-off">
+            <input type="text" class="form-control" placeholder="(99) 9999-9999" v-model="phoneAlt" @keyup="phoneFormat" @keypress="preventNumericInput($event)" autocomplete="chrome-off" :disabled="loading">
             <div class="error_message" v-if="client.phone && `${client.phone}`.length < 10">
               Favor de caputurar un teléfono valido
             </div>
@@ -71,7 +71,8 @@
             isValid: true
           }
         }
-      }
+      },
+      loading: Boolean
     },
     data () {
       return {
