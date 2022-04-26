@@ -5,11 +5,14 @@ export default {
       max_date_limit: 'Fecha de cumpleaños invalida'
     }, 
     password: {
-      wrong_confirmed_password: 'Las contraseñas no coinciden'
+      wrong_confirmed_password: 'Las contraseñas no coinciden',
+      max_limit: 'Se alcanzó el límite máximo de caracteres de la contraseña'
     },
     email: {
-      not_available: 'Correo electronico no disponible'
-    }
+      not_available: 'Correo electronico no disponible',
+      not_valid: 'Correo electrónico no valido'
+    },
+    too_many_request: 'Demasiadas solicitudes, por favor espere'
   },
   home: {
     title: 'Inicio',

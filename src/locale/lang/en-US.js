@@ -5,11 +5,14 @@ export default {
       max_date_limit: 'Invalid birthday date'
     }, 
     password: {
-      wrong_confirmed_password: 'Passwords do not match'
+      wrong_confirmed_password: 'Passwords do not match',
+      max_limit: 'Password max character limit reached'
     },
     email: {
-      not_available: 'Email not available'
-    }
+      not_available: 'Email not available',
+      not_valid: 'Email not valid'
+    },
+    too_many_request: 'Too many request, please wait'
   },
   home: {
     title: 'Home',
