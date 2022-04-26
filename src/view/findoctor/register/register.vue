@@ -167,8 +167,21 @@
               } else {  
               }
             }).catch((reason) => {
+              
               this.showLoading = false
-              this.$swal(this.$t('register.messages.error.' + reason.message), '', 'error')  
+              if (reason.data.message) {
+                this.$notification.error({
+                  message: 'No se pudo crear el usuario',
+                  description: this.$t(`errors.${reason.data.message}`)
+                })
+              } else if (reason.data.error) {
+                Object.keys(reason.data.error).forEach((e) => {
+                  this.$notification.error({
+                    message: 'No se pudo crear el usuario',
+                    description: this.$t(`errors.${e}.${reason.data.error[e][0]}`)
+                  })
+                });
+              }
             })
         } else {
           this.showLoading = false
