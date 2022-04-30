@@ -35,7 +35,8 @@ export default [
           title: 'home.title',
           notCache: true,
           icon: 'md-home',
-          headerSticky: true
+          headerSticky: true,
+          requiresAuth: true
         },
         component: () => import('@/view/' + config.theme + '/single-page/home')
       },
