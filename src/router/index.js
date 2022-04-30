@@ -12,7 +12,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     if (!getToken() && (to.name !== 'login' && to.name != 'login-2')) {
-      next({ name: 'login', params: { page: to.name, info: { ...to.params } }  })
+      next({ name: 'login', params: { page: (to.name || 'home'), info: { ...to.params } }  })
     } else {
       next()
     }
