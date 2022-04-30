@@ -14,7 +14,7 @@
               </li>
             </ul>
             <UserMenu v-else></UserMenu>
-            <Menu :options="options"></Menu>
+            <!-- <Menu :options="options"></Menu> -->
             <!-- /main-menu -->
           </div>
         </div>
