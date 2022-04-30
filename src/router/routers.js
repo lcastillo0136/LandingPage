@@ -278,7 +278,8 @@ export default [
         ]
       }, {
         path: "*",
-        component: () => import('@/view/' + config.theme + '/404')
+        redirect: { name: 'home' },
+        component: () => import('@/view/' + config.theme + '/single-page/home')
       }
     ]
   }
