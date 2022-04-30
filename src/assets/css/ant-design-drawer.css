@@ -35,9 +35,21 @@
 }
 
 #page {
-    left: 0;
-    transition: left 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
+  left: 0;
+  transition: left 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
+  height: 100%;
+  width: 100%;
+  display: flex;
 }
+
+#page > div {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+div#page::after,
+div#page > div::after {display: none;}
 
 #page.menu-open {
     position: fixed;

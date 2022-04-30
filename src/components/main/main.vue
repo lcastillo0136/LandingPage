@@ -66,6 +66,9 @@ export default {
   },
   mounted () {
     this.setTitle(this.$route)
+    this.setContainer(false)
+    this.setFooterVisible(false)
+    this.setToTopVisible(false)
   },
   beforeRouteUpdate (to, from, next) {
     this.setTitle(to)

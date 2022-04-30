@@ -12,7 +12,6 @@
               <li>
                 <User></User>
               </li>
-              <li><Register></Register></li>
             </ul>
             <UserMenu v-else></UserMenu>
             <Menu :options="options"></Menu>
@@ -72,21 +71,7 @@
         }, {
           text: 'Buscar',
           url: { name: 'list-page' },
-        }, this.hasToken ? {} : {
-          url: { name: 'login' },
-          text: this.$t('header.menu.login')
-        }
-        // , this.hasToken ? {
-        //   url: '',
-        //   callback: () => {
-        //     this.handleLogOut()
-        //   },
-        //   text: 'Cerrar sesion'
-        // } : {
-        //   url: { name: 'login' },
-        //   text: this.$t('header.menu.login')
-        // }
-        ]
+        }]
       },
       containerClasses () {
         return {

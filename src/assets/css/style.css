@@ -184,8 +184,15 @@ footer ul.links li a:after {
 }
 
 main {
-    background: #f5f8fa;
-    z-index: 1
+  background: #f5f8fa;
+  z-index: 1;
+  flex: 1 1 auto;
+  display: flex !important;
+  flex-direction: column;
+}
+
+main > div {
+  flex: 1 1 auto;
 }
 
 h1,
@@ -481,7 +488,7 @@ a.btn_1.outline:hover {
 
 footer,
 header {
-    background-color: #fff
+    background: #f5f8fa;
 }
 
 header {
