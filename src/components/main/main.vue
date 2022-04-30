@@ -70,7 +70,7 @@ export default {
   watch: {
     hasToken () {
       if (!this.hasToken && this.$route.meta.requiresAuth) {
-        this.$router.replace({ name: 'login' })
+        this.$router.replace({ name: 'login', params: { page: this.$route.name, info: { ...this.$route.params } }  })
       }
     }
   },
