@@ -22,6 +22,9 @@ export default new Vuex.Store({
     },
     footer: {
       visible: true
+    },
+    totop: {
+      visible: true
     }
   },
   mutations: {
@@ -40,8 +43,23 @@ export default new Vuex.Store({
     toggleFooter (state) {
       state.footer.visible = !state.footer.visible
     },
+    toggleToTop (state) {
+      state.totop.visible = !state.totop.visible
+    },
     toggleHeaderSticky (state) {
       state.header.sticky = !state.header.sticky
+    },
+    setHeaderVisible(state, visible = true) {
+      state.header.visible = visible
+    },
+    setFooterVisible(state, visible = true) {
+      state.footer.visible = visible
+    },
+    setToTopVisible(state, visible = true) {
+      state.totop.visible = visible
+    },
+    setContainer(state, fluid = false) {
+      state.page.container = fluid
     }
   },
   getters: {
@@ -59,6 +77,9 @@ export default new Vuex.Store({
     },
     footerVisibility (state) {
       return state.footer.visible
+    },
+    toTopVisibility (state) {
+      return state.totop.visible
     },
     headerSticky (state) {
       return state.header.sticky

@@ -3,7 +3,7 @@
     <Header :sticky="headerSticky" v-if="headerVisibility"></Header>
       <router-view/>
     <Footer v-if="footerVisibility"></Footer>
-    <ToTop></ToTop>
+    <ToTop v-if="toTopVisibility"></ToTop>
     <cookie-law theme="dark-lime" v-if="cookieEnabled && !stillLoading"></cookie-law>
   </div>
 </template>
@@ -38,9 +38,11 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'hasToken',
       'stillLoading',
       'headerVisibility',
-      'footerVisibility'
+      'footerVisibility',
+      'toTopVisibility'
     ]),
     cookieEnabled () {
       return config.cookieExpires === 1
@@ -52,7 +54,10 @@ export default {
   methods: {
     ...mapMutations([
       'toggleHeader',
-      'toggleFooter'
+      'toggleFooter',
+      'setContainer',
+      'setFooterVisible',
+      'setToTopVisible'
     ]),
     setTitle (route) {
       if (route.meta && route.meta.title) {
@@ -63,6 +68,11 @@ export default {
     }
   },
   watch: {
+    hasToken () {
+      if (!this.hasToken && this.$route.meta.requiresAuth) {
+        this.$router.replace({ name: 'login' })
+      }
+    }
   },
   mounted () {
     this.setTitle(this.$route)
