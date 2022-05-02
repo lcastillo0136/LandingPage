@@ -61,7 +61,20 @@ Vue.config.productionTip = false
 Vue.prototype.$config = config
 
 Vue.filter('phone', function (phone) {
-  return `${phone}`.replace(/[^0-9]/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+  let _result = `${phone}`.replace(/[^0-9]/g, '')
+
+  switch (_result.length) {
+    case 10:
+      _result = `${phone}`.replace(/[^0-9]/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+      break
+    case 11:
+    case 12:
+    case 13:
+      _result = `${phone}`.replace(/[^0-9]/g, '').replace(/(\d{1,3})(\d{3})(\d{3})(\d{4})/, '+$1 ($2) $3-$4');
+      break;
+  }
+
+  return _result
 });
 
 Vue.filter('waPhone', function(phone) {

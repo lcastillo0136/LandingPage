@@ -14,7 +14,7 @@
               </li>
             </ul>
             <UserMenu v-else></UserMenu>
-            <!-- <Menu :options="options"></Menu> -->
+            <Menu :options="options"></Menu>
             <!-- /main-menu -->
           </div>
         </div>
@@ -57,8 +57,12 @@
         'stillLoading',
         'container',
         'headerSticky',
-        'hasToken'
+        'hasToken',
+        'settings'
       ]),
+      TwilioPhone() {
+        return this.settings?.TWILIO_PHONE_FROM;
+      },
       headerClasses () {
         return {
           'sticky': (this.sticky && this.isSticky) || (this.headerSticky && this.isSticky)
@@ -66,11 +70,8 @@
       },
       options () {
         return [{
-          text: this.$t('header.menu.home'),
-          url: '/'
-        }, {
-          text: 'Buscar',
-          url: { name: 'list-page' },
+          text: this.$options.filters.phone(this.TwilioPhone),
+          url: 'home',
         }]
       },
       containerClasses () {

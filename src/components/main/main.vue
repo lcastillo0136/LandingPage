@@ -89,5 +89,6 @@ export default {
 <style lang="scss">
   .container-fluid {
     width: 95%;
+    padding-top: 10px;
   }
 </style>

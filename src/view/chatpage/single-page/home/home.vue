@@ -1,7 +1,14 @@
 <template>
   <main class="main-page">
     <ContactsList class="contacts-panel" :contacts="contacts" @onContactClick="selectContact"></ContactsList>
-    <ChatView class="chatview-panel" :contact="selectedContact" :messages="messages" :phone="selectedPhone"></ChatView>
+    <ChatView 
+      class="chatview-panel" 
+      :contact="selectedContact" 
+      :messages="messages" 
+      :phone="selectedPhone" 
+      @onReply="onReply"
+      ref="ChatViewPanel"
+    ></ChatView>
   </main>
   <!-- /main content -->
 </template>
@@ -41,6 +48,16 @@
           this.selectedContact = data.contact
           this.selectedPhone = data.phone
           this.messages = data.messages
+        })
+      },
+      onReply({ message }) {
+        Messages.post(message).then((response) => {
+          let { data } = response.data
+          let _contact = _.find(this.contacts, { phone: data.to_phone })
+          if (_contact) {
+            _contact.last_message = { ...data }
+            this.$refs.ChatViewPanel.push({...data})
+          }
         })
       }
     },

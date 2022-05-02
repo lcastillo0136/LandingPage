@@ -80,7 +80,7 @@
   }
 </script>
 
-<style>
+<style lang="scss">
 .size{
   width: 100%;
   height: 100%;
@@ -94,5 +94,11 @@ html,body{
 #app {
   width: 100%;
   height: 100%;
+}
+
+.ps {
+  .ps__rail-y .ps__rail-x {
+    z-index: 1;
+  }
 }
 </style>
