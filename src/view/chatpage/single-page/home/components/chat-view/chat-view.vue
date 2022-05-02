@@ -9,7 +9,8 @@
                 'me': message.direction != 'inbound-api',
                 'contact': message.direction == 'inbound-api',
                 'first-of-group': isFirstMessageOfGroup(message, i),
-                'last-of-group': isLastMessageOfGroup(message, i)
+                'last-of-group': isLastMessageOfGroup(message, i),
+                'message-w-file': !!message.media_uri && !!message.body
               }" :key="message.id">
                 
                 <img v-if="shouldShowContactAvatar(message, i) && contact" :src="contact.avatar" class="avatar" />
@@ -19,7 +20,7 @@
                   <div class="message-content" :title="message.date_sent" v-html="message.body"></div>
                   <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
                 </div>
-                <div class="bubble file" v-if="message.media_uri">
+                <div class="bubble file" v-if="message.media_uri && message.type != 'other' ">
                   <div class="message-content" :title="message.date_sent">
                     <template v-if="message.type">
                       <template v-if="message.type=='image'">
@@ -33,21 +34,26 @@
                         }]" [displayTitle]="false" [autoPlay]="false" [displayPlaylist]="false" [expanded]="false" [displayVolumeControls]="true" [displayRepeatControls]="false"></ngx-audio-player> -->
                       </template>
                       <template v-if="message.type=='video'">
-                        <video id="singleVideo" preload="auto" controls>
-                          <source :src="message.media_uri">
-                        </video>
-                      </template>
-                      <template v-if="message.type=='other'">
-                        <!-- <mat-icon style="font-size: 16px;width: 16px;height: 16px;min-width: 16px;min-height: 16px;vertical-align: middle;">attachment</mat-icon>{{ 'MESSAGES.CHATS.ITEM.FILE' | translate }} -->
+                        <video-player 
+                          class="video-player-box"
+                          ref="videoPlayer"
+                          :options="playerOptions(message)"
+                          :playsinline="true"
+                          >
+                        </video-player>
                       </template>
                       <template v-if="message.type=='document'">
                         <div class="iframe-placeholder">
-                          <!-- <mat-icon>visibility</mat-icon> -->
+                          <Icon type="ios-eye"></Icon>
                         </div>
                         <iframe :src="message.pdfUrl"></iframe>
                       </template>
                     </template>
                   </div>
+                  <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
+                </div>
+                <div class="bubble" v-if="message.media_uri && message.type=='other'">
+                  <div class="message-content" :title="message.date_sent" v-html="$options.filters.parseURLs(message.media_uri, true, { target: '__blank' })"></div>
                   <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
                 </div>
               </div>
@@ -57,7 +63,7 @@
         <div class="message-form">
           <div class="message-input">
             <Icon type="md-happy" @click="$refs.scroll.$el.scrollTop = 999999"></Icon>
-            <a-textarea :placeholder="TypeAMessage" :auto-size="{ minRows: 1, maxRows: 6 }" v-model="message" ref="inputmessage" />
+            <a-input :placeholder="TypeAMessage" v-model="message" ref="inputmessage" />
             <Icon type="md-attach"></Icon>
           </div>
           <div class="message-action">
@@ -119,7 +125,8 @@
           return { 
             ...c,
             type: c.media_uri && (this.isOtherFile(c) ? 'other' : (this.isImage(c) ? 'image' : (this.isAudio(c) ? 'audio' : (this.isVideo(c) ? 'video' : 'document')))),
-            pdfUrl: c.media_uri && c.media_uri
+            pdfUrl: c.media_uri && c.media_uri,
+            body: this.$options.filters.parseURLs(c.body, true, { target: '__blank' })
           }
         })
       }
@@ -188,6 +195,29 @@
       },
       isOtherFile({ media_uri }) {
         return !this.isImage({ media_uri }) && !this.isAudio({ media_uri }) && !this.isVideo({ media_uri }) && !this.isDocument({ media_uri });
+      },
+      playerOptions(message) {
+        return {
+          muted: true,
+          language: 'en',
+          playbackRates: [0.7, 1.0, 1.5, 2.0],
+          sources: [{
+            type: {
+                '.webm': 'video/webm',
+                '.mkv': 'video/x-matroska',
+                '.flv': 'video/x-flv',
+                '.vob': 'video/mpeg',
+                '.ogg': 'video/ogg',
+                '.avi': 'video/x-msvideo',
+                '.mov': 'video/quicktime',
+                '.rmvb': 'application/vnd.rn-realmedia-vbr',
+                '.mp4': 'video/mp4',
+                '.3gp': 'video/3gpp',
+                '.mpeg': 'video/mpeg'
+              }[message.media_uri.slice((message.media_uri.lastIndexOf(".") - 2 >>> 0) + 2)] || 'video/mp4',
+            src: message.media_uri
+          }]
+        }
       }
     },
     mounted() {
@@ -258,11 +288,36 @@
                       white-space: pre-wrap;
                       line-height: 1.2;
                       overflow: hidden;
-                      video {
-                        max-width: 100%;
+                      .video-player-box, video {
+                        max-width: 600px;
                         height: auto;
                         vertical-align: top;
                         border: none;
+                        position: relative;
+
+                        .video-js {
+                          height: auto;
+                          width: auto;
+                        }
+
+                        .vjs-playing {
+                          video { opacity: 1; }
+                        }
+
+                        .video-js.vjs-fullscreen {
+                          display: flex;
+                          video {
+                            width: 100% !important;
+                            max-width: 100%;
+                          }
+                        }
+
+                        button.vjs-big-play-button {
+                          top: 50%;
+                          left: 50%;
+                          transform: translate(-50%, -50%);
+                        }
+                        &::after { display: none; }
                       }
                       iframe {
                         border: 0;
@@ -286,7 +341,7 @@
                         display: none;
                         cursor: pointer;
 
-                        mat-icon {
+                        .ivu-icon {
                           position: absolute;
                           top: 50%;
                           left: 50%;
@@ -320,7 +375,7 @@
                   &.file {
                     padding: 0px;
                     border: solid 1px #E0E0E0;
-                    border-radius: 10px;
+                    border-radius: 5px;
                     overflow: hidden;
                     max-width: 70%;
                     &:hover {
@@ -373,6 +428,17 @@
                           border-bottom-left-radius: 20px;
                       }
                   }
+
+                  &.message-w-file {
+                      .bubble {
+                          border-bottom-left-radius: 5px;
+
+                          &.file {
+                            border-bottom-left-radius: 20px;
+                            border-top-left-radius: 5px;
+                          }
+                      }
+                  }
               }
 
               &.me {
@@ -423,6 +489,10 @@
 
                       .bubble {
                           border-bottom-right-radius: 20px;
+
+                          &.file {
+                            border-top-right-radius: 5px;
+                          }
                       }
                   }
               }

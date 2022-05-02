@@ -47,6 +47,7 @@
     "vue-select": "^3.18.3",
     "vue-skeleton-loading": "^1.0.2",
     "vue-sweetalert2": "^3.0.3",
+    "vue-video-player": "^5.0.2",
     "vue-wow": "^1.2.0",
     "vue2-leaflet": "^2.5.2",
     "vue2-perfect-scrollbar": "^1.5.5",

@@ -14,6 +14,7 @@ import PerfectScrollbar from 'vue2-perfect-scrollbar'
 import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
 import vSelect from 'vue-select'
 import DisableAutocomplete from 'vue-disable-autocomplete';
+import VueVideoPlayer from 'vue-video-player'
 
 import iView from 'iview';
 import i18n from '@/locale'
@@ -33,6 +34,7 @@ import 'leaflet/dist/leaflet.css';
 import 'vue-select/dist/vue-select.css';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
 import 'iview/dist/styles/iview.css';
+import 'video.js/dist/video-js.css'
 
 Vue.component('l-map', LMap);
 Vue.component('l-tile-layer', LTileLayer);
@@ -53,6 +55,7 @@ Vue.use(Moment, {
 Vue.use(VueSkeletonLoading)
 Vue.use(DisableAutocomplete)
 Vue.use(iView);
+Vue.use(VueVideoPlayer)
 
 Vue.config.productionTip = false
 Vue.prototype.$config = config
@@ -64,6 +67,51 @@ Vue.filter('phone', function (phone) {
 Vue.filter('waPhone', function(phone) {
   return `${phone || ''}`.substring(Math.max(`${phone || ''}`.length - 10, 0));
 });
+
+Vue.filter('parseURLs', function(value, isHTML = false, options = {}) {
+  let linkExp = /((s?ftp|https?):\/\/|(www\.)|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s.;,(){}<>"\u201d\u2019]/i;
+  let mailExp = /^mailto:/i;
+
+  if (typeof value !== 'string') { return null; }
+    if (value === null || value === '') { return value; }
+    let rawText = value;
+    const html = [];
+    const URLS = [];
+    let match;
+    let i;
+    let url;
+    // eslint-disable-next-line no-cond-assign
+    while ((match = rawText.match(linkExp))) {
+      [url] = match;
+      if (!match[2] && !match[4]) {
+        url = (match[3] ? 'http://' : 'mailto:') + url;
+      }
+      i = match.index;
+      if (rawText.substr(0, i)) {
+        html.push(rawText.substr(0, i));
+      }
+      html.push('<a ');
+      if (options) {
+        Object.keys(options).forEach((key) => {
+          html.push(`${key}="${options[key]}" `);
+        });
+      }
+      html.push('href="');
+      URLS.push(url.replace(/"/g, '&quot;'));
+      html.push(url.replace(/"/g, '&quot;'));
+      html.push('">');
+
+      if (match[0].replace(mailExp, '')) {
+        html.push(match[0].replace(mailExp, ''));
+      }
+      html.push('</a>');
+      rawText = rawText.substring(i + match[0].length);
+    }
+    if (rawText) {
+      html.push(rawText);
+    }
+    return isHTML ? html.join('') : URLS;
+})
 
 Vue.filter('currency', function (value, style) {
   return (typeof value !== "number") ? value : (new Intl.NumberFormat('en-US', { style: 'currency', currency: style || 'USD' })).format(value);
