@@ -1,10 +1,7 @@
 <template>
   <div class="chat-view-container">
     <a-card :bordered="false">
-      <template v-if="!contact">
-        <a-empty />
-      </template>
-      <template v-else>
+      <template v-if="messages && messages.length > 0">
         <div class="messages-box">
           <perfect-scrollbar :options="psOptions">
             {{ messages }}
@@ -13,7 +10,7 @@
         <div class="message-form">
           <div class="message-input">
             <Icon type="md-happy"></Icon>
-            <Input v-model="message" placeholder="Type a message" clearable />
+            <Input v-model="message" :placeholder="TypeAMessage" clearable />
             <Icon type="md-attach"></Icon>
           </div>
           <div class="message-action">
@@ -22,6 +19,9 @@
             </a-button>
           </div>
         </div>
+      </template>
+      <template v-else>
+        <a-empty />
       </template>
     </a-card>
   </div>
@@ -34,6 +34,7 @@
     name: 'ChatView',
     props: {
       contact: Object,
+      phone: String,
       messages: Array
     },
     components: {
@@ -46,6 +47,14 @@
           suppressScrollX: true
         },
         message: ''
+      }
+    },
+    computed: {
+      TypeAMessage() {
+        return `Enviar un mensaje a ${ this.contact ? this.contact.full_name : this.PhoneFormated }`
+      },
+      PhoneFormated() {
+        return this.$options.filters.phone(this.$options.filters.waPhone(this.phone))
       }
     },
     methods: {
@@ -88,7 +97,6 @@
         }
 
         .message-form {
-          flex: 1 1 10%;
           min-height: 67px;
           display: flex;
           flex-direction: row;
