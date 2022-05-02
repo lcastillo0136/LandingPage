@@ -3,14 +3,61 @@
     <a-card :bordered="false">
       <template v-if="messages && messages.length > 0">
         <div class="messages-box">
-          <perfect-scrollbar :options="psOptions">
-            {{ messages }}
+          <perfect-scrollbar :options="psOptions" ref="scroll">
+            <template v-for="(message, i) in messages">
+              <div class="message-row" :class="{
+                'me': message.direction != 'inbound-api',
+                'contact': message.direction == 'inbound-api',
+                'first-of-group': isFirstMessageOfGroup(message, i),
+                'last-of-group': isLastMessageOfGroup(message, i)
+              }" :key="message.id">
+                
+                <img v-if="shouldShowContactAvatar(message, i) && contact" :src="contact.avatar" class="avatar" />
+                <img v-if="shouldShowContactAvatar(message, i) && !contact" :src="defaultAvatar" class="avatar" />
+
+                <div class="bubble" v-if="message.body">
+                  <div class="message-content" :title="message.date_sent" v-html="message.body"></div>
+                  <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
+                </div>
+                <div class="bubble file" v-if="message.media_uri">
+                  <div class="message-content" :title="message.date_sent">
+                    <template v-if="message.type">
+                      <template v-if="'image'">
+                        <img class="" :src="message.media_uri">
+                      </template>
+                      <template v-if="'audio'">
+                        <!-- <ngx-audio-player #musicPlayer [playlist]="[{
+                          title: 'Audio file',
+                          link: message.media_uri,
+                          artist: ''
+                        }]" [displayTitle]="false" [autoPlay]="false" [displayPlaylist]="false" [expanded]="false" [displayVolumeControls]="true" [displayRepeatControls]="false"></ngx-audio-player> -->
+                      </template>
+                      <template v-if="'video'">
+                        <video id="singleVideo" preload="auto" controls>
+                          <source :src="message.media_uri" type="video/mp4">
+                        </video>
+                      </template>
+                      <template v-if="'other'">
+                        <!-- <mat-icon style="font-size: 16px;width: 16px;height: 16px;min-width: 16px;min-height: 16px;vertical-align: middle;">attachment</mat-icon>{{ 'MESSAGES.CHATS.ITEM.FILE' | translate }} -->
+                      </template>
+                      <template v-if="'document'">
+                        <div class="iframe-placeholder">
+                          <!-- <mat-icon>visibility</mat-icon> -->
+                        </div>
+                        <iframe :src="message.pdfUrl"></iframe>
+                      </template>
+                    </template>
+                  </div>
+                  <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
+                </div>
+              </div>
+            </template>
           </perfect-scrollbar>
         </div>
         <div class="message-form">
           <div class="message-input">
-            <Icon type="md-happy"></Icon>
-            <Input v-model="message" :placeholder="TypeAMessage" clearable />
+            <Icon type="md-happy" @click="$refs.scroll.$el.scrollTop = 999999"></Icon>
+            <Input v-model="message" :placeholder="TypeAMessage" clearable/>
             <Icon type="md-attach"></Icon>
           </div>
           <div class="message-action">
@@ -29,6 +76,9 @@
 </template>
 <script>
   import config from '@/config'
+  import _ from 'lodash'
+
+  const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 
   export default {
     name: 'ChatView',
@@ -49,7 +99,17 @@
         message: ''
       }
     },
+    watch:{
+      messages() {
+        this.$nextTick(() => {
+          this.$refs.scroll.$el.scrollTop = 9999999;
+        }, 100)
+      }
+    },
     computed: {
+      defaultAvatar() {
+        return `${baseUrl.replace('/api/', '/')}storage/default.png`
+      },
       TypeAMessage() {
         return `Enviar un mensaje a ${ this.contact ? this.contact.full_name : this.PhoneFormated }`
       },
@@ -58,6 +118,19 @@
       }
     },
     methods: {
+      isFirstMessageOfGroup(message, i) {
+        return (i === 0 || this.messages[i - 1] && this.messages[i - 1].from_phone !== (message.from_phone || ''));
+      },
+      isLastMessageOfGroup(message, i) {
+        return (i === this.messages.length - 1 || this.messages[i + 1] && this.messages[i + 1].from_phone !== (message.from_phone || ''));
+      },
+      shouldShowContactAvatar(message, i) {
+        return (
+          message.direction == 'inbound-api' &&
+          ((this.messages[i + 1] && this.messages[i + 1].from_phone !== (message.from_phone || '')) || !this.messages[i + 1]) &&
+          message.from_phone !== null
+        );
+      }
     },
     mounted() {
       
@@ -78,6 +151,7 @@
         flex-direction: column;
         .ps {
           max-height: 100%;
+          padding-bottom: 42px;
         }
         .ant-empty {
           max-height: 100%;
@@ -94,6 +168,231 @@
           flex: 1 1 auto;
           max-height: 100%;
           overflow: hidden;
+
+          .message-row {
+              position: relative;
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              justify-content: flex-end;
+              padding: 0 16px 4px 16px;
+              padding-top: 0px;
+              margin-top: 0px;
+              margin-left: 40px;
+
+              .avatar {
+                position: absolute;
+                margin: 0;
+                left: -32px;
+                border-radius: 50%;
+                height: 40px;
+                width: 40px;
+              }
+
+              .bubble {
+                  position: relative;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 12px;
+                  max-width: 100%;
+
+                  .message-content {
+                      white-space: pre-wrap;
+                      line-height: 1.2;
+                      overflow: hidden;
+                      video {
+                        max-width: 100%;
+                        height: auto;
+                        vertical-align: top;
+                        border: none;
+                      }
+                      iframe {
+                        border: 0;
+                        max-width: 100%;
+                        width: 700px;
+                        min-height: 300px;
+                      }
+                      img {
+                        cursor: pointer;
+                      }
+
+                      .iframe-placeholder {
+                        position: absolute;
+                        background: #000;
+                        opacity: 0.5;
+                        width: 100%;
+                        height: 100%;
+                        display: none;
+                        cursor: pointer;
+
+                        mat-icon {
+                          position: absolute;
+                          top: 50%;
+                          left: 50%;
+                          color: #e0e0e0;
+                          font-size: 5em;
+                          transform: translate(-50%, -50%);
+                          width: auto;
+                          height: auto;
+                        }
+                      }
+
+                      &:hover .iframe-placeholder {
+                        display: block;
+                      }
+
+                      &::after { display: none; }
+                  }
+
+                  .time {
+                    position: absolute;
+                    display: none;
+                    width: 100%;
+                    font-size: 11px;
+                    margin-top: 8px;
+                    top: 100%;
+                    left: 0;
+                    white-space: nowrap;
+                    color: #0000008a;
+                  }
+
+                  &.file {
+                    padding: 0px;
+                    border: solid 1px #E0E0E0;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    max-width: 70%;
+                    &:hover {
+                      box-shadow: 0px 0px 11px 3px #bdbdbd;
+                    }
+                  }
+
+                  &::after {
+                    display: none;
+                  }
+              }
+
+              &.contact {
+
+                  .bubble {
+                      border-top-left-radius: 5px;
+                      border-bottom-left-radius: 5px;
+
+                      border-top-right-radius: 20px;
+                      border-bottom-right-radius: 20px;
+                      background-color: #3C4252;
+                      color: #fff;
+
+                      .time {
+                          margin-left: 12px;
+                      }
+
+                      &.file {
+                        padding: 0px;
+                        border: solid 1px #E0E0E0;
+                        border-radius: 10px;
+                        overflow: hidden;
+                        max-width: 70%;
+                        &:hover {
+                          box-shadow: 0px 0px 11px 3px #bdbdbd;
+                        }
+                      }
+                  }
+
+                  &.first-of-group {
+
+                      .bubble {
+                          border-top-left-radius: 20px;
+                      }
+                  }
+
+                  &.last-of-group {
+
+                      .bubble {
+                          border-bottom-left-radius: 20px;
+                      }
+                  }
+              }
+
+              &.me {
+                  padding-left: 40px;
+
+                  .avatar {
+                      order: 2;
+                      margin: 0 0 0 16px;
+                  }
+
+                  .bubble {
+                      margin-left: auto;
+
+                      border-top-left-radius: 20px;
+                      border-bottom-left-radius: 20px;
+
+                      border-top-right-radius: 5px;
+                      border-bottom-right-radius: 5px;
+                      color: #000000de;
+                      background-color: #E0E0E0;
+
+                      .time {
+                          justify-content: flex-end;
+                          right: 0;
+                          margin-right: 12px;
+                      }
+
+                      &.file {
+                        padding: 0px;
+                        border: solid 1px #E0E0E0;
+                        border-radius: 10px;
+                        overflow: hidden;
+                        max-width: 70%;
+                        &:hover {
+                          box-shadow: 0px 0px 11px 3px #bdbdbd;
+                        }
+                      }
+                  }
+
+                  &.first-of-group {
+
+                      .bubble {
+                          border-top-right-radius: 20px;
+                      }
+                  }
+
+                  &.last-of-group {
+
+                      .bubble {
+                          border-bottom-right-radius: 20px;
+                      }
+                  }
+              }
+
+              &.contact + .me,
+              &.me + .contact {
+                  padding-top: 20px;
+                  margin-top: 20px;
+              }
+
+              &.first-of-group {
+
+                  .bubble {
+                      border-top-left-radius: 20px;
+                      padding-top: 13px;
+                  }
+              }
+
+              &.last-of-group {
+
+                  .bubble {
+                      border-bottom-left-radius: 20px;
+                      padding-bottom: 13px;
+
+                      .time {
+                          display: flex;
+                      }
+                  }
+              }
+          }
         }
 
         .message-form {
@@ -118,7 +417,6 @@
             display: flex;
             flex: 0 1 auto;
             flex-direction: row;
-            place-self: center;
             width: 85px;
             text-align: center;
             justify-content: center;
