@@ -2,7 +2,7 @@ export default {
   /**
    * @description 配置显示在浏览器标签的title
    */
-  title: 'Doctory',
+  title: 'Zibassinger',
   /**
    * @description token在Cookie中存储的天数，默认1天
    */
@@ -36,5 +36,5 @@ export default {
   },
   theme: 'chatpage',
   defaultLang: 'zh-CN',
-  container: true
+  container: false
 }

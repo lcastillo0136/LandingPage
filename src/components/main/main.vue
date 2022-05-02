@@ -86,3 +86,8 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .container-fluid {
+    width: 95%;
+  }
+</style>
