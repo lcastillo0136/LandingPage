@@ -4,7 +4,7 @@
       <template v-if="messages && messages.length > 0">
         <div class="messages-box">
           <perfect-scrollbar :options="psOptions" ref="scroll">
-            <template v-for="(message, i) in messages">
+            <template v-for="(message, i) in MessagesFormated">
               <div class="message-row" :class="{
                 'me': message.direction != 'inbound-api',
                 'contact': message.direction == 'inbound-api',
@@ -22,25 +22,25 @@
                 <div class="bubble file" v-if="message.media_uri">
                   <div class="message-content" :title="message.date_sent">
                     <template v-if="message.type">
-                      <template v-if="'image'">
+                      <template v-if="message.type=='image'">
                         <img class="" :src="message.media_uri">
                       </template>
-                      <template v-if="'audio'">
+                      <template v-if="message.type=='audio'">
                         <!-- <ngx-audio-player #musicPlayer [playlist]="[{
                           title: 'Audio file',
                           link: message.media_uri,
                           artist: ''
                         }]" [displayTitle]="false" [autoPlay]="false" [displayPlaylist]="false" [expanded]="false" [displayVolumeControls]="true" [displayRepeatControls]="false"></ngx-audio-player> -->
                       </template>
-                      <template v-if="'video'">
+                      <template v-if="message.type=='video'">
                         <video id="singleVideo" preload="auto" controls>
-                          <source :src="message.media_uri" type="video/mp4">
+                          <source :src="message.media_uri">
                         </video>
                       </template>
-                      <template v-if="'other'">
+                      <template v-if="message.type=='other'">
                         <!-- <mat-icon style="font-size: 16px;width: 16px;height: 16px;min-width: 16px;min-height: 16px;vertical-align: middle;">attachment</mat-icon>{{ 'MESSAGES.CHATS.ITEM.FILE' | translate }} -->
                       </template>
-                      <template v-if="'document'">
+                      <template v-if="message.type=='document'">
                         <div class="iframe-placeholder">
                           <!-- <mat-icon>visibility</mat-icon> -->
                         </div>
@@ -57,7 +57,7 @@
         <div class="message-form">
           <div class="message-input">
             <Icon type="md-happy" @click="$refs.scroll.$el.scrollTop = 999999"></Icon>
-            <Input v-model="message" :placeholder="TypeAMessage" clearable/>
+            <a-textarea :placeholder="TypeAMessage" :auto-size="{ minRows: 1, maxRows: 6 }" v-model="message" ref="inputmessage" />
             <Icon type="md-attach"></Icon>
           </div>
           <div class="message-action">
@@ -101,9 +101,7 @@
     },
     watch:{
       messages() {
-        this.$nextTick(() => {
-          this.$refs.scroll.$el.scrollTop = 9999999;
-        }, 100)
+        this.readyToReply()
       }
     },
     computed: {
@@ -115,6 +113,15 @@
       },
       PhoneFormated() {
         return this.$options.filters.phone(this.$options.filters.waPhone(this.phone))
+      },
+      MessagesFormated() {
+        return _.map(this.messages, (c) => {
+          return { 
+            ...c,
+            type: c.media_uri && (this.isOtherFile(c) ? 'other' : (this.isImage(c) ? 'image' : (this.isAudio(c) ? 'audio' : (this.isVideo(c) ? 'video' : 'document')))),
+            pdfUrl: c.media_uri && c.media_uri
+          }
+        })
       }
     },
     methods: {
@@ -130,6 +137,57 @@
           ((this.messages[i + 1] && this.messages[i + 1].from_phone !== (message.from_phone || '')) || !this.messages[i + 1]) &&
           message.from_phone !== null
         );
+      },
+      readyToReply() {
+        setTimeout(() => {
+          this.$nextTick(() => {
+            this.$refs.scroll.$el.scrollTop = 9999999
+            this.$refs.inputmessage.focus()
+          })
+        },1000)
+      },  
+      isImage({ media_uri }) {
+        return {
+          '.png': true,
+          '.jpg': true,
+          '.jpeg': true,
+          '.bmp': true,
+          '.gif': true,
+          '.tiff': true
+        }[media_uri.slice((media_uri.lastIndexOf(".") - 2 >>> 0) + 2)] || false;
+      },
+      isAudio({ media_uri }) {
+        return {
+          '.mp3': true,
+          '.aac': true,
+          '.wav': true,
+          '.flac': true,
+          '.wma': true,
+          '.m4a': true
+        }[media_uri.slice((media_uri.lastIndexOf(".") - 2 >>> 0) + 2)] || false;
+      },
+      isVideo({ media_uri }) {
+        return {
+          '.webm': true,
+          '.mkv': true,
+          '.flv': true,
+          '.vob': true,
+          '.ogg': true,
+          '.avi': true,
+          '.mov': true,
+          '.rmvb': true,
+          '.mp4': true,
+          '.3gp': true,
+          '.mpeg': true
+        }[media_uri.slice((media_uri.lastIndexOf(".") - 2 >>> 0) + 2)] || false;
+      },
+      isDocument({ media_uri }) {
+        return {
+          '.pdf': true
+        }[media_uri.slice((media_uri.lastIndexOf(".") - 2 >>> 0) + 2)] || false;
+      },
+      isOtherFile({ media_uri }) {
+        return !this.isImage({ media_uri }) && !this.isAudio({ media_uri }) && !this.isVideo({ media_uri }) && !this.isDocument({ media_uri });
       }
     },
     mounted() {
@@ -166,7 +224,6 @@
         
         .messages-box {
           flex: 1 1 auto;
-          max-height: 100%;
           overflow: hidden;
 
           .message-row {
@@ -190,12 +247,12 @@
               }
 
               .bubble {
-                  position: relative;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  padding: 12px;
-                  max-width: 100%;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 12px;
+                max-width: 100%;
 
                   .message-content {
                       white-space: pre-wrap;
@@ -215,6 +272,9 @@
                       }
                       img {
                         cursor: pointer;
+                        max-width: 100%;
+                        height: auto;
+                        vertical-align: top;
                       }
 
                       .iframe-placeholder {
@@ -396,7 +456,6 @@
         }
 
         .message-form {
-          min-height: 67px;
           display: flex;
           flex-direction: row;
           align-content: center;
@@ -408,9 +467,11 @@
             background: #f5f8fa;
             border-radius: 50px;
             padding: 14px 22px;
-            input {
+            .ant-input {
               border: none;
               font-size: 16px;
+              background: #0000;
+              box-shadow: none;
             }
           }
           .message-action {
