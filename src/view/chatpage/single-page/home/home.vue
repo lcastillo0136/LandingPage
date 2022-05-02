@@ -1,7 +1,7 @@
 <template>
   <main class="main-page">
-    <ContactsList class="contacts-panel" :contacts="contacts"></ContactsList>
-    <ChatView class="chatview-panel"></ChatView>
+    <ContactsList class="contacts-panel" :contacts="contacts" @onContactClick="selectContact"></ContactsList>
+    <ChatView class="chatview-panel" :contact="selectedContact" :messages="messages"></ChatView>
   </main>
   <!-- /main content -->
 </template>
@@ -22,7 +22,9 @@
     },
     data () {
       return {
-        contacts: []
+        contacts: [],
+        selectedContact: null,
+        messages: []
       }
     },
     methods: {
@@ -32,6 +34,13 @@
       ...mapActions([
         'handleLogOut'
       ]),
+      selectContact({ contact, index }) {
+        Messages.get(contact.last_message.id).then((response) => {
+          let { data } = response.data
+          this.selectedContact = data.contact
+          this.messages = data.messages
+        })
+      }
     },
     mounted () {
       Messages.list().then((response) => {

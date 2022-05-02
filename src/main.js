@@ -9,7 +9,8 @@ const moment = require('moment')
 require('moment/locale/es')
 
 import VueSweetalert2 from 'vue-sweetalert2'
-import VueSkeletonLoading from 'vue-skeleton-loading';
+import VueSkeletonLoading from 'vue-skeleton-loading'
+import PerfectScrollbar from 'vue2-perfect-scrollbar'
 import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
 import vSelect from 'vue-select'
 import DisableAutocomplete from 'vue-disable-autocomplete';
@@ -29,6 +30,7 @@ import '@/assets/css/ant-design-drawer.css'
 import '@/assets/css/ant-design-menu.css'
 import 'leaflet/dist/leaflet.css';
 import 'vue-select/dist/vue-select.css';
+import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
 
 Vue.component('l-map', LMap);
 Vue.component('l-tile-layer', LTileLayer);
@@ -38,6 +40,7 @@ Vue.component('l-popup', LPopup)
 Vue.component('v-select', vSelect)
 
 Vue.use(VueSweetalert2);
+Vue.use(PerfectScrollbar)
 
 Vue.use(Antd)
 
