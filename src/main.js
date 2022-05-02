@@ -15,6 +15,7 @@ import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
 import vSelect from 'vue-select'
 import DisableAutocomplete from 'vue-disable-autocomplete';
 
+import iView from 'iview';
 import i18n from '@/locale'
 import config from '@/config'
 import * as Fingerprint2 from 'fingerprintjs2'
@@ -31,6 +32,7 @@ import '@/assets/css/ant-design-menu.css'
 import 'leaflet/dist/leaflet.css';
 import 'vue-select/dist/vue-select.css';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
+import 'iview/dist/styles/iview.css';
 
 Vue.component('l-map', LMap);
 Vue.component('l-tile-layer', LTileLayer);
@@ -50,6 +52,7 @@ Vue.use(Moment, {
 })
 Vue.use(VueSkeletonLoading)
 Vue.use(DisableAutocomplete)
+Vue.use(iView);
 
 Vue.config.productionTip = false
 Vue.prototype.$config = config

@@ -62,7 +62,7 @@
     overflow: hidden;
     
     .contacts-panel {
-      flex: 0 1 30%;
+      flex: 0 0 28%;
     }
 
     .chatview-panel {
