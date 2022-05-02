@@ -50,7 +50,16 @@
           });
         }
       })
-      await this.getSorts()
+      await this.getSorts().catch((err) => {
+        if (err.data.message) {
+          this.$notification.error({
+            message: `Error: ${err.config.url}`,
+            description: err.data.message, 
+            placement: 'bottomLeft',
+            duration: 5
+          });
+        }
+      })
       await this.getSettings()
 
       await this.getLocation().then((data) => {}).catch((error) => {

@@ -60,6 +60,9 @@ export default new Vuex.Store({
     },
     setContainer(state, fluid = false) {
       state.page.container = fluid
+    },
+    setLoading(state, value = true) {
+      state.fullLoaded = value
     }
   },
   getters: {
