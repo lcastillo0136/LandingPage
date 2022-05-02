@@ -146,6 +146,8 @@
       },
       push(message) {
         this.$refs.messageListPanel.push(message)
+        this.$refs.inputmessage.$el.value = ''
+        this.sending = false
       }
     },
     mounted() {
