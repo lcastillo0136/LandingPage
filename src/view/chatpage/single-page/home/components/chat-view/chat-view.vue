@@ -7,7 +7,16 @@
         </div>
         <div class="message-form">
           <div class="message-input">
-            <Icon type="md-happy"></Icon>
+            <twemoji-picker
+              :emojiData="emojiDataAll"
+              :emojiGroups="emojiGroups"
+              :skinsSelection="false"
+              :searchEmojisFeat="true"
+              searchEmojiPlaceholder="Busca aqui."
+              searchEmojiNotFound="No se encontraron emojis."
+              isLoadingLabel="Buscando..."
+              @emojiUnicodeAdded="emojiSelected"
+            ></twemoji-picker>
             <a-input :placeholder="TypeAMessage" ref="inputmessage" v-model="message" @pressEnter="reply" />
             <Icon type="md-attach"></Icon>
           </div>
@@ -26,6 +35,11 @@
   <!-- /white_bg -->
 </template>
 <script>
+  import { TwemojiPicker } from '@kevinfaguiar/vue-twemoji-picker';
+  import EmojiAllData from '@kevinfaguiar/vue-twemoji-picker/emoji-data/es-mx/emoji-all-groups.json';
+  import EmojiDataAnimalsNature from '@kevinfaguiar/vue-twemoji-picker/emoji-data/es-mx/emoji-group-animals-nature.json';
+  import EmojiDataFoodDrink from '@kevinfaguiar/vue-twemoji-picker/emoji-data/es-mx/emoji-group-food-drink.json';
+  import EmojiGroups from '@kevinfaguiar/vue-twemoji-picker/emoji-data/emoji-groups.json';
   import { mapGetters } from 'vuex'
   import config from '@/config'
   import _ from 'lodash'
@@ -42,7 +56,8 @@
       messages: Array
     },
     components: {
-      MessagesList
+      MessagesList,
+      'twemoji-picker': TwemojiPicker
     },
     data () {
       return {
@@ -67,6 +82,12 @@
       },
       TwilioPhone() {
         return this.settings?.TWILIO_PHONE_FROM;
+      },
+      emojiDataAll() {
+        return EmojiAllData;
+      },
+      emojiGroups() {
+        return EmojiGroups;
       }
     },
     methods: {
@@ -114,6 +135,15 @@
         this.$refs.messageListPanel.push(message)
         this.message = ''
         this.sending = false
+      },
+      emojiSelected(emoji) {
+        if (this.$refs.inputmessage.$el.selectionStart || this.$refs.inputmessage.$el.selectionStart == '0') {
+          var startPos = this.$refs.inputmessage.$el.selectionStart;
+          var endPos = this.$refs.inputmessage.$el.selectionEnd;
+          this.message = this.message.substring(0, startPos) + emoji + this.message.substring(endPos, this.message.length);
+        } else {
+          this.message += emoji;
+        }
       }
     },
     mounted() {
@@ -171,6 +201,11 @@
               font-size: 16px;
               background: #0000;
               box-shadow: none;
+            }
+            button#btn-emoji-default {
+              margin: 0;
+              height: auto;
+              width: auto;
             }
           }
           .message-action {
