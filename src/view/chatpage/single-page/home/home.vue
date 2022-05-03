@@ -1,14 +1,23 @@
 <template>
   <main class="main-page">
-    <ContactsList class="contacts-panel" :contacts="contacts" @onContactClick="selectContact"></ContactsList>
-    <ChatView 
-      class="chatview-panel" 
-      :contact="selectedContact" 
-      :messages="messages" 
-      :phone="selectedPhone" 
-      @onReply="onReply"
-      ref="ChatViewPanel"
-    ></ChatView>
+    <template v-if="TwilioPhone">
+      <ContactsList class="contacts-panel" :contacts="contacts" @onContactClick="selectContact"></ContactsList>
+      <ChatView 
+        class="chatview-panel" 
+        :contact="selectedContact" 
+        :messages="messages" 
+        :phone="selectedPhone" 
+        @onReply="onReply"
+        ref="ChatViewPanel"
+      ></ChatView>
+    </template>
+    <template v-else>
+      <a-result title="Su cuenta de whatsapp no ha sido activada">
+        <template #extra>
+          
+        </template>
+      </a-result>
+    </template>
   </main>
   <!-- /main content -->
 </template>
@@ -38,8 +47,12 @@
     },
     computed: {
       ...mapGetters([
-        'firebase'  
-      ])
+        'firebase',
+        'settings'
+      ]),
+      TwilioPhone() {
+        return this.settings?.TWILIO_PHONE_FROM;
+      },
     },
     methods: {
       ...mapMutations([
@@ -58,13 +71,13 @@
         })
         contact.unread = 0
       },
-      onReply({ message }) {
-        Messages.post(message).then((response) => {
+      onReply({ message, file }) {
+        Messages.post(message, file).then((response) => {
           let { data } = response.data
           let _contact = _.find(this.contacts, { phone: data.to_phone })
-          if (_contact) {
-            // _contact.last_message = { ...data }
-            // this.$refs.ChatViewPanel.push({...data})
+          if (_contact && file) {
+            _contact.last_message = { ...data }
+            this.$refs.ChatViewPanel.push({...data})
           }
         })
       }
@@ -180,6 +193,18 @@
 
     .chatview-panel {
       flex: 1 1 auto;
+    }
+    > .ant-result {
+      padding: 48px 32px;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      outline: dashed 5px #ededed;
+      background: #fff;
+      border-radius: 15px;
+      outline-offset: -16px;
     }
   }
 </style>

@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Poppins:300,400,400i,500,500i,600,600i,700,700i,800);
 @import url('../../../node_modules/pintura/pintura.css');
+@import url('../../../node_modules/photoswipe/dist/photoswipe.css');
 
 html {
     scroll-behavior: smooth;
@@ -5460,4 +5461,25 @@ input[type=file].invalid::-webkit-file-upload-button,input[type=file].valid::-we
   100% {
     background-color: #9e9e9e;
   }
+}
+
+.pswp__content {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.pswp img {
+  
+}
+
+.pswp iframe {
+  width: 90%;
+  height: 90%;
+  border: solid 1px #929292;
 }

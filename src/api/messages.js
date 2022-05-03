@@ -23,7 +23,7 @@ export const Messages = {
   post(text, file= null) {
     const formData = new FormData()
     if (file !== null) {
-      formData.append('files[]', file, file.name);
+      formData.append('file', file, file.name);
     }
 
     if (text) {

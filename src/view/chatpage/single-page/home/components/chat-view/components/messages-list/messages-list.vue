@@ -1,7 +1,7 @@
 <template>
   <perfect-scrollbar :options="psOptions" ref="scroll">
     <template v-for="(message, i) in messages">
-      <MessageListItem :message="message" :contact="contact" :phone="phone" :key="i"></MessageListItem>
+      <MessageListItem :message="message" :contact="contact" :phone="phone" :key="i" @fileClick="onFileClick"></MessageListItem>
     </template>
     <MessageListItem :sending="sending" :message="{ body: '', direction: 'outbound-api' }" :contact="contact" :phone="phone" v-if="sending"></MessageListItem>
   </perfect-scrollbar>
@@ -45,9 +45,9 @@
             })
             setTimeout(() => {
               this.$refs.scroll.$el.scrollTo({
-              top: 9999999,
-              left: 0
-            })
+                top: 9999999,
+                left: 0
+              })
             }, 200)
           }, 1000)
         })
@@ -66,17 +66,17 @@
         _messageRow.classList.add('message-row')
         _messageRow.id = `message_${message.id}`
 
-        if (_previousMessage.classList.contains('last-of-group') && message.direction == 'outbound-api' && _previousMessage.classList.contains('me')) {
+        if (_previousMessage.classList?.contains('last-of-group') && message.direction == 'outbound-api' && _previousMessage.classList?.contains('me')) {
           _previousMessage.classList.remove('last-of-group')
           _messageRow.classList.add('last-of-group')
-        } else if (_previousMessage.classList.contains('last-of-group') && message.direction == 'outbound-api') {
+        } else if (_previousMessage.classList?.contains('last-of-group') && message.direction == 'outbound-api') {
           _messageRow.classList.add('first-of-group')
           _messageRow.classList.add('last-of-group')
-        } else if (_previousMessage.classList.contains('last-of-group') && message.direction == 'inbound-api' && _previousMessage.classList.contains('contact')) {
+        } else if (_previousMessage.classList?.contains('last-of-group') && message.direction == 'inbound-api' && _previousMessage.classList?.contains('contact')) {
           _previousMessage.removeChild(_previousMessage.querySelector('img.avatar'))
           _previousMessage.classList.remove('last-of-group')
           _messageRow.classList.add('last-of-group')
-        } else if (_previousMessage.classList.contains('last-of-group') && message.direction == 'inbound-api') {
+        } else if (_previousMessage.classList?.contains('last-of-group') && message.direction == 'inbound-api') {
           _messageRow.classList.add('first-of-group')
           _messageRow.classList.add('last-of-group')
         } else {
@@ -123,64 +123,96 @@
           _messageRow.append(_body)
         }
 
-        // <div class="message-row">
-                
-        //         <div class="bubble" v-if="message.body">
-        //           <div class="message-content" :title="message.date_sent" v-html="message.body"></div>
-        //           <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
-        //         </div>
-        //         <div class="bubble file" v-if="message.media_uri && message.type != 'other' ">
-        //           <div class="message-content" :title="message.date_sent">
-        //             <template v-if="message.type">
-        //               <template v-if="message.type=='image'">
-        //                 <img class="" :src="message.media_uri">
-        //               </template>
-        //               <template v-if="message.type=='audio'">
-        //                 <!-- <ngx-audio-player #musicPlayer [playlist]="[{
-        //                   title: 'Audio file',
-        //                   link: message.media_uri,
-        //                   artist: ''
-        //                 }]" [displayTitle]="false" [autoPlay]="false" [displayPlaylist]="false" [expanded]="false" [displayVolumeControls]="true" [displayRepeatControls]="false"></ngx-audio-player> -->
-        //               </template>
-        //               <template v-if="message.type=='video'">
-        //                 <video-player 
-        //                   class="video-player-box"
-        //                   ref="videoPlayer"
-        //                   :options="playerOptions(message)"
-        //                   :playsinline="true"
-        //                   >
-        //                 </video-player>
-        //               </template>
-        //               <template v-if="message.type=='document'">
-        //                 <div class="iframe-placeholder">
-        //                   <Icon type="ios-eye"></Icon>
-        //                 </div>
-        //                 <iframe :src="message.pdfUrl"></iframe>
-        //               </template>
-        //             </template>
-        //           </div>
-        //           <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
-        //         </div>
-        //         <div class="bubble" v-if="message.media_uri && message.type=='other'">
-        //           <div class="message-content" :title="message.date_sent" v-html="$options.filters.parseURLs(message.media_uri, true, { target: '__blank' })"></div>
-        //           <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
-        //         </div>
-        //       </div>
+        if (message.media_uri) {
+          let _body = document.createElement('div')
+          _body.classList.add('bubble')
+
+          let _messageContent = document.createElement('div')
+          _messageContent.classList.add('message-content')
+          _messageContent.title = this.$moment(message.date_sent).format('DD/MM/YY, hh:mm a')
+
+          if (this.isImage(message)) {
+            _body.classList.add('file')
+            let _img = document.createElement('img')
+            _img.src = message.media_uri
+
+            _messageContent.append(_img)
+
+          } else {
+            _messageContent.innerHTML = this.$options.filters.parseURLs(message.media_uri, true, { target: '__blank' })
+
+          }
+          let _messageTime = document.createElement('div')
+          _messageTime.classList.add('time')
+          _messageTime.classList.add('secondary-text')
+          _messageTime.innerHTML = this.$moment(message.date_sent).format('DD/MM/YY, hh:mm a')
+
+          _body.append(_messageContent)
+          _body.append(_messageTime)
+
+          _messageRow.append(_body)
+        }
 
         this.$refs.scroll.$el.insertBefore(_messageRow, this.$refs.scroll.$el.querySelector('.ps__rail-x'))
         this.$refs.scroll.$el.scrollTo({
-              top: 9999999,
-              left: 0
-            })
+          top: 9999999,
+          left: 0
+        })
+      },
+      isImage({ media_uri }) {
+        return {
+          '.png': true,
+          '.jpg': true,
+          '.jpeg': true,
+          '.bmp': true,
+          '.gif': true,
+          '.tiff': true
+        }[media_uri.slice((media_uri.lastIndexOf(".") - 2 >>> 0) + 2)] || false;
+      },
+      isAudio({ media_uri }) {
+        return {
+          '.mp3': true,
+          '.aac': true,
+          '.wav': true,
+          '.flac': true,
+          '.wma': true,
+          '.m4a': true
+        }[media_uri.slice((media_uri.lastIndexOf(".") - 2 >>> 0) + 2)] || false;
+      },
+      isVideo({ media_uri }) {
+        return {
+          '.webm': true,
+          '.mkv': true,
+          '.flv': true,
+          '.vob': true,
+          '.ogg': true,
+          '.avi': true,
+          '.mov': true,
+          '.rmvb': true,
+          '.mp4': true,
+          '.3gp': true,
+          '.mpeg': true
+        }[media_uri.slice((media_uri.lastIndexOf(".") - 2 >>> 0) + 2)] || false;
+      },
+      isDocument({ media_uri }) {
+        return {
+          '.pdf': true
+        }[media_uri.slice((media_uri.lastIndexOf(".") - 2 >>> 0) + 2)] || false;
+      },
+      isOtherFile({ media_uri }) {
+        return !this.isImage({ media_uri }) && !this.isAudio({ media_uri }) && !this.isVideo({ media_uri }) && !this.isDocument({ media_uri });
+      },
+      onFileClick({message, type}) {
+        this.$emit('fileClick', { message, type })
       }
     },
     mounted() {
       this.$nextTick(() => {
         setTimeout(() => {
           this.$refs.scroll.$el.scrollTo({
-              top: 9999999,
-              left: 0
-            })
+            top: 9999999,
+            left: 0
+          })
           setTimeout(() => {
             this.$refs.scroll.$el.scrollTo({
               top: 9999999,

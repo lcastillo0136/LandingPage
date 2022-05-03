@@ -17,7 +17,7 @@
     <div class="bubble file" v-if="message.media_uri && !isOtherFile(message)">
       <div class="message-content" :title="message.date_sent">
         <template v-if="isImage(message)">
-          <img class="" :src="message.media_uri">
+          <img class="" :src="message.media_uri" @click.stop.prevent="$emit('fileClick', { message, type: 'image' })">
         </template>
         <template v-else-if="isAudio(message)">
           <!-- <ngx-audio-player #musicPlayer [playlist]="[{
@@ -36,7 +36,7 @@
           </video-player>
         </template>
         <template v-else>
-          <div class="iframe-placeholder">
+          <div class="iframe-placeholder" @click.stop.prevent="$emit('fileClick', { message, type: 'pdf' })">
             <Icon type="ios-eye"></Icon>
           </div>
           <iframe :src="message.media_uri"></iframe>
@@ -97,7 +97,7 @@
       isFirstMessageOfGroup(message) {
         let _prev = document.querySelector(`#message_${message.id}`)?.previousSibling
     
-        return (!_prev || (_prev.classList.contains('me') && message.direction != 'outbound-api') || (_prev.classList.contains('contact') && message.direction != 'inbound-api'));
+        return (!_prev || (_prev.classList?.contains('me') && message.direction != 'outbound-api') || (_prev.classList?.contains('contact') && message.direction != 'inbound-api'));
       },
       isLastMessageOfGroup(message) {
         let _next = document.querySelector(`#message_${message.id}`)?.nextSibling
@@ -106,7 +106,7 @@
       shouldShowContactAvatar(message) {
         let _next = document.querySelector(`#message_${message.id}`)?.nextSibling
         return (
-          message.direction == 'inbound-api' && (!_next || _next.classList.contains('me'))
+          message.direction == 'inbound-api' && (!_next || _next.classList?.contains('me'))
         );
       },
       isImage({ media_uri }) {
@@ -196,12 +196,11 @@
             this.$refs.messageRow.classList.add('message-w-file')
           }
 
-          if (!this.shouldShowContactAvatar(this.message) && this.message.direction == 'inbound-api') {
+          if (!this.shouldShowContactAvatar(this.message) && this.message.direction == 'inbound-api' && this.$refs.messageRow.querySelector('img.avatar')) {
             this.$refs.messageRow.removeChild(this.$refs.messageRow.querySelector('img.avatar'))
           }
         }, 100)
       })
-      
     },
     updated() {
       
