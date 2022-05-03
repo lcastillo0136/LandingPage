@@ -3,12 +3,12 @@
     <a-card :bordered="false">
       <template v-if="messages && messages.length > 0">
         <div class="messages-box">
-          <MessagesList :messages="messages" :contact="contact" :phone="phone" ref="messageListPanel" v-cloak></MessagesList>
+          <MessagesList :messages="messages" :contact="contact" :phone="phone" :sending="sending" ref="messageListPanel" v-cloak></MessagesList>
         </div>
         <div class="message-form">
           <div class="message-input">
             <Icon type="md-happy"></Icon>
-            <a-input :placeholder="TypeAMessage" ref="inputmessage" @pressEnter="reply" />
+            <a-input :placeholder="TypeAMessage" ref="inputmessage" v-model="message" @pressEnter="reply" />
             <Icon type="md-attach"></Icon>
           </div>
           <div class="message-action">
@@ -75,14 +75,14 @@
           this.$nextTick(() => {
             //this.$refs.scroll.$el.scrollTop = 9999999
             this.$refs.inputmessage.focus()
-            this.$refs.inputmessage.$el.value = ''
+            this.message = ''
           })
         },1000)
       },
       reply() {
         this.sending = true;
 
-        if (!this.$refs.inputmessage.$el.value) {
+        if (!this.message) {
           this.sending = false;
           this.$notification.error({
             message: `Error: Empty message`,
@@ -94,7 +94,7 @@
         }
 
         let _message = {
-          body: this.$refs.inputmessage.$el.value,
+          body: this.message,
           user_id: this.contact ? (+this.contact.id) : null,
           date_sent: this.$moment().utc().format('YYYY-MM-DD HH:mm:ss'),
           direction: 'outbound-api',
@@ -103,50 +103,16 @@
           to_phone: this.contact ? `whtasapp:+52${this.contact.phone}` : this.phone
         };
 
-        // Messages.post(_message).then((response) => {
-        //   response.data.date_sent = moment.utc(response.data.date_sent).local().format('YYYY-MM-DD HH:mm:ss');
-
-        //   this.$refs.inputmessage.value = ''
-        //   this.readyToReply()
-        //   this.sending = false
-        // }, (error) => {
-        //   this.sending = false
-        // });
-
         this.$emit('onReply', { message: _message })
 
-        // this.$nextTick(() => {
-        //   this.readyToReply()
-        //   this.$refs.inputmessage.$el.value = ''
-        //   this.sending = false
-        // })
-
-        // this.$refs.messageListPanel.push({
-        //   body: "vue",
-        //   created_at: "2022-05-02T19:30:54.000000Z",
-        //   date_sent: "2022-05-02 19:30:54",
-        //   direction: "outbound-api",
-        //   error_code: null,
-        //   error_message: null,
-        //   from_phone: "whatsapp:+5218181175165",
-        //   id: 43,
-        //   media_uri: "",
-        //   message_id: "SMdc5f08c329e14678a9813d384132a82a",
-        //   num_media: 0,
-        //   num_segments: 1,
-        //   order_id: null,
-        //   price: null,
-        //   price_unit: null,
-        //   reference: "/2010-04-01/Accounts/AC32abd2a385c8b68e529f7024893413e4/Messages/SMdc5f08c329e14678a9813d384132a82a.json",
-        //   status: "queued",
-        //   to_phone: "whatsapp:+5218111533136",
-        //   updated_at: "2022-05-02T19:30:54.000000Z",
-        //   user_id: 2,
-        // })
+        this.$nextTick(() => {
+          this.readyToReply()
+          this.message = ''
+        })
       },
       push(message) {
         this.$refs.messageListPanel.push(message)
-        this.$refs.inputmessage.$el.value = ''
+        this.message = ''
         this.sending = false
       }
     },

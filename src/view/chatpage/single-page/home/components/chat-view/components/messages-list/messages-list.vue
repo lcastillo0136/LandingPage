@@ -3,6 +3,7 @@
     <template v-for="(message, i) in messages">
       <MessageListItem :message="message" :contact="contact" :phone="phone" :key="i"></MessageListItem>
     </template>
+    <MessageListItem :sending="sending" :message="{ body: '', direction: 'outbound-api' }" :contact="contact" :phone="phone" v-if="sending"></MessageListItem>
   </perfect-scrollbar>
 </template>
 <script>
@@ -19,7 +20,8 @@
     props: {
       contact: Object,
       phone: String,
-      messages: Array
+      messages: Array,
+      sending: Boolean
     },
     components: {
       MessageListItem

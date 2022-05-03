@@ -2,7 +2,7 @@
   <div class="message-row" :class="{
     'me': message.direction != 'inbound-api',
     'contact': message.direction == 'inbound-api',
-    'first-of-group': isFirstMessageOfGroup(message),
+    'first-of-group': isFirstMessageOfGroup(message) || sending,
     'last-of-group': isLastMessageOfGroup(message),
     'message-w-file': !!message.media_uri && !!message.body
   }" v-once v-cloak :id="'message_' + message.id" v-if="message" ref="messageRow">
@@ -48,6 +48,11 @@
       <div class="message-content" :title="message.date_sent" v-html="$options.filters.parseURLs(message.media_uri, true, { target: '__blank' })"></div>
       <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
     </div>
+    <div class="bubble sending" v-if="sending">
+      <div class="message-content">
+        <div class="dot-flashing"></div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -62,7 +67,8 @@
     props: {
       contact: Object,
       phone: String,
-      message: Object
+      message: Object,
+      sending: Boolean
     },
     components: {
       
@@ -95,7 +101,7 @@
       },
       isLastMessageOfGroup(message) {
         let _next = document.querySelector(`#message_${message.id}`)?.nextSibling
-        return (!_next || (_next.classList.contains('me') && message.direction == 'inbound-api') || (_next.classList.contains('contact') && message.direction == 'outbound-api'));
+        return (!_next || (_next && _next.classList?.contains('me') && message.direction == 'inbound-api') || (_next && _next.classList?.contains('contact') && message.direction == 'outbound-api'));
       },
       shouldShowContactAvatar(message) {
         let _next = document.querySelector(`#message_${message.id}`)?.nextSibling
@@ -332,6 +338,18 @@
 
           &::after {
             display: none;
+          }
+
+          &.sending {
+            .message-content {
+              width: 42px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              position: relative;
+              margin: 0 -5%;
+              overflow: hidden;
+            }
           }
       }
 
