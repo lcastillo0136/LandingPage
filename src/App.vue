@@ -2,12 +2,17 @@
   <div id="app">
     <loading :loading="stillLoading"></loading>
     <div id="page" :class="{'menu-open': mobileMenuOpen}">
-      <router-view/>
+      <router-view v-if="!stillLoading"/>
     </div>
   </div>
 </template>
 
 <script>
+  import { initializeApp } from 'firebase/app';
+  import { getDatabase } from "firebase/database";
+  import "firebase/database";
+
+
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import Loading from '@/components/loading'
   import * as conekta from '@/libs/conekta'
@@ -28,7 +33,8 @@
     },
     methods: {
       ...mapMutations([
-        'toggleLoading'
+        'toggleLoading',
+        'setFirebase'
       ]),
       ...mapActions([
         'getTypes',
@@ -50,16 +56,7 @@
           });
         }
       })
-      await this.getSorts().catch((err) => {
-        if (err.data.message) {
-          this.$notification.error({
-            message: `Error: ${err.config.url}`,
-            description: err.data.message, 
-            placement: 'bottomLeft',
-            duration: 5
-          });
-        }
-      })
+      
       await this.getSettings()
 
       await this.getLocation().then((data) => {}).catch((error) => {
@@ -73,6 +70,11 @@
         await this.getUserInfo().then(() => {}).catch((error) => {
           this.handleLogOut()
         })
+      }
+
+      if (this.settings.GOOGLE_FIREBASE) {
+        let app = initializeApp({ databaseURL: this.settings.GOOGLE_FIREBASE })
+        this.setFirebase(getDatabase(app))
       }
 
       this.toggleLoading()    

@@ -23,6 +23,7 @@
     "dayjs": "^1.7.7",
     "echarts": "^4.0.4",
     "fingerprintjs2": "^2.1.4",
+    "firebase": "^9.7.0",
     "html2canvas": "^1.0.0-alpha.12",
     "iview": "^3.2.2",
     "iview-area": "^1.5.17",
@@ -52,7 +53,9 @@
     "vue2-leaflet": "^2.5.2",
     "vue2-perfect-scrollbar": "^1.5.5",
     "vuedraggable": "^2.16.0",
+    "vuefire": "^2.2.5",
     "vuex": "^3.0.1",
+    "vuexfire": "^3.2.5",
     "wangeditor": "^3.1.1",
     "xlsx": "^0.13.3"
   },

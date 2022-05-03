@@ -34,6 +34,9 @@
                 <a-avatar slot="avatar" :src="defaultAvatar" />
               </template>
             </a-list-item-meta>
+            <template v-if="item.unread > 0">
+              <span class="message-badge">{{ item.unread }}</span>
+            </template>
           </a-list-item>
         </a-list>
       </perfect-scrollbar>
@@ -110,8 +113,27 @@
         .ant-list-item {
           padding: 12px 12px;
           cursor: pointer;
+          position: relative;
           &:hover {
             background: #f5f5f5;
+          }
+
+          .message-badge {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: #efa985;
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
           }
         }
       }

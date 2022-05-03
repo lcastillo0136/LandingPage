@@ -37,13 +37,15 @@
       messages() {
         this.$nextTick(() => {
           setTimeout(() => {
-            let _elem = this.$refs.scroll.$el.lastChild.previousSibling.previousSibling
-            
-            _elem.scrollIntoView(false)
+            this.$refs.scroll.$el.scrollTo({
+              top: 9999999,
+              left: 0
+            })
             setTimeout(() => {
-              let _elem = this.$refs.scroll.$el.lastChild.previousSibling.previousSibling
-              
-              _elem.scrollIntoView(false)
+              this.$refs.scroll.$el.scrollTo({
+              top: 9999999,
+              left: 0
+            })
             }, 200)
           }, 1000)
         })
@@ -164,19 +166,24 @@
         //       </div>
 
         this.$refs.scroll.$el.insertBefore(_messageRow, this.$refs.scroll.$el.querySelector('.ps__rail-x'))
-        _messageRow.scrollIntoView(false)
+        this.$refs.scroll.$el.scrollTo({
+              top: 9999999,
+              left: 0
+            })
       }
     },
     mounted() {
       this.$nextTick(() => {
         setTimeout(() => {
-          let _elem = this.$refs.scroll.$el.lastChild.previousSibling.previousSibling
-          
-          _elem.scrollIntoView(false)
+          this.$refs.scroll.$el.scrollTo({
+              top: 9999999,
+              left: 0
+            })
           setTimeout(() => {
-            let _elem = this.$refs.scroll.$el.lastChild.previousSibling.previousSibling
-            
-            _elem.scrollIntoView(false)
+            this.$refs.scroll.$el.scrollTo({
+              top: 9999999,
+              left: 0
+            })
           }, 1000)
         }, 1000)
       })

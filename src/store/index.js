@@ -25,7 +25,8 @@ export default new Vuex.Store({
     },
     totop: {
       visible: true
-    }
+    },
+    firebase: null
   },
   mutations: {
     toggleLoading (state) {
@@ -63,6 +64,9 @@ export default new Vuex.Store({
     },
     setLoading(state, value = true) {
       state.fullLoaded = value
+    },
+    setFirebase(state, db) {
+      state.firebase = db
     }
   },
   getters: {
@@ -86,6 +90,9 @@ export default new Vuex.Store({
     },
     headerSticky (state) {
       return state.header.sticky
+    },
+    firebase (state) {
+      return state.firebase
     }
   },
   actions: {

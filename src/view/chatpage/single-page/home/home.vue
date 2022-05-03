@@ -14,6 +14,7 @@
 </template>
 
 <script>
+  import { getDatabase, ref, onValue, set } from "firebase/database";
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import { Messages } from '@/api/messages'
 
@@ -35,6 +36,11 @@
         messages: []
       }
     },
+    computed: {
+      ...mapGetters([
+        'firebase'  
+      ])
+    },
     methods: {
       ...mapMutations([
         'setLoading'
@@ -48,22 +54,110 @@
           this.selectedContact = data.contact
           this.selectedPhone = data.phone
           this.messages = data.messages
+
         })
+        contact.unread = 0
       },
       onReply({ message }) {
         Messages.post(message).then((response) => {
           let { data } = response.data
           let _contact = _.find(this.contacts, { phone: data.to_phone })
           if (_contact) {
-            _contact.last_message = { ...data }
-            this.$refs.ChatViewPanel.push({...data})
+            // _contact.last_message = { ...data }
+            // this.$refs.ChatViewPanel.push({...data})
           }
         })
       }
     },
     mounted () {
       Messages.list().then((response) => {
-        this.contacts = response.data.data
+        this.contacts = _.map(response.data.data, (m) => {
+          return {
+            ...m,
+            unread: 0
+          }
+        })
+
+        if (this.firebase) {
+          const db = getDatabase();
+          _.forEach(this.contacts, (c) => {
+            let _basePhone = this.$options.filters.phone(this.$options.filters.waPhone(c.user ? `${c.user.phone}` : c.user_full_name));
+
+            let childChat = ref(db, `chats/${c.user ? c.user.id : _basePhone}`)
+            onValue(childChat, (snapshot) => {
+              const _message = snapshot.val();
+              if (_message) {
+                if (!c.last_message || _message.id != c.last_message.id) {
+                  _message.date_sent = this.$moment.utc(_message.date_sent).local().format('YYYY-MM-DD HH:mm:ss');
+                  c.last_message = { ..._message };
+                  c.unread = +(c.unread || 0) + 1;
+
+                  if (this.selectedContact && this.selectedContact.full_name == c.user_full_name) {
+                    c.unread = 0;
+                    this.$refs.ChatViewPanel.push({..._message})
+                  }
+
+                  c.last_message.created_at = this.$moment().utc().format('YYYY-MM-DD[T]HH:mm:ss[.000000Z]');
+                }
+              }
+            });
+          })
+
+          let parentChats = ref(db, `chats`)
+          onValue(parentChats, (snapshot) => {
+            let _message = snapshot.val();
+            let _found = _.filter(_message, (c) => {
+              let _tmpPhone = c.direction == 'outbound-api' ? c.to_phone : c.from_phone;
+              return !_.find(this.contacts, { phone: _tmpPhone });
+            })
+
+            if (_found && _found.length > 0) {
+              _.each(_found, (f) => {
+                let _newChat = {
+                  user: null,
+                  user_full_name: '',
+                  user_id: null
+                };
+                let _tmpPhone = f.direction == 'outbound-api' ? f.to_phone : f.from_phone;
+                f.date_sent = this.$moment.utc(f.date_sent).local().format('YYYY-MM-DD HH:mm:ss');
+                
+                _newChat.last_message = { ...f };
+                _newChat.last_message.created_at = f.created_at;
+                _newChat.phone = _tmpPhone;
+                _newChat.user_full_name = _tmpPhone;
+                _newChat.unread = 1;
+
+                if (this.selectedContact && this.selectedContact.full_name == _tmpPhone) {
+                  _newChat.unread = 0;
+                }
+
+                this.contacts.push({ ..._newChat });
+
+                let _basePhone = this.$options.filters.phone(this.$options.filters.waPhone(_tmpPhone));
+                let _var = _basePhone;
+
+                let _tmpVar = ref(db, `chats/${_basePhone}`)
+                onValue(_tmpVar, (snapshot2) => {
+                  let _message2 = snapshot2.val();
+                  let _chat = _.find(this.contacts, { phone: _newChat.phone });
+                  if (_message2) {
+                    if (!_chat.last_message || _message2.id != _chat.last_message.id) {
+                      _message2.date_sent = this.$moment.utc(_message2.date_sent).local().format('YYYY-MM-DD HH:mm:ss');
+                      _chat.last_message = { ..._message2 };
+                      _chat.unread = +(_chat.unread || 0) + 1;
+                      
+                      if (this.selectedContact && this.selectedContact.full_name == _chat.user_full_name) {
+                        _chat.unread = 0;
+                      }
+
+                      _chat.last_message.created_at = this.$moment().utc().format('YYYY-MM-DD[T]HH:mm:ss[.000000Z]');
+                    }
+                  }
+                });
+              });
+            }
+          });
+        }
       }).catch((error) => {
         this.handleLogOut()
         this.setLoading(false)
