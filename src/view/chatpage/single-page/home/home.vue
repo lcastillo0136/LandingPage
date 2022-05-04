@@ -57,7 +57,7 @@
         return this.settings?.TWILIO_PHONE_FROM;
       },
       hasPermission() {
-        return _.find(this.getUser?.permisos, { action: 'view', controller: 'messages' }) || false
+        return _.find(this.getUser?.permisos, { action: 'view', controller: 'messages', access: 1 }) || false
       }
     },
     methods: {
@@ -99,6 +99,15 @@
             unread: 0
           }
         })
+
+        if (this.$route.params) {
+          if (this.$route.params.phone) {
+            let _tmpContact = _.find(this.contacts, (c) => { return `${c.phone}`.indexOf(this.$route.params.phone) > -1 })
+            
+              this.selectContact({ contact: _tmpContact })
+            
+          }
+        }
 
         if (this.firebase) {
           const db = getDatabase();

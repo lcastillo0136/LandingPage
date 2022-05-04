@@ -60,8 +60,8 @@
         'hasToken',
         'settings'
       ]),
-      TwilioPhone() {
-        return this.settings?.TWILIO_PHONE_FROM;
+      COMPANY_PHONE() {
+        return this.settings?.COMPANY_PHONE;
       },
       headerClasses () {
         return {
@@ -70,7 +70,7 @@
       },
       options () {
         return [{
-          text: this.$options.filters.phone(this.TwilioPhone),
+          text: this.$options.filters.phone(this.COMPANY_PHONE),
           url: 'home',
         }]
       },

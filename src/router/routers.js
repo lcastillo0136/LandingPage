@@ -41,6 +41,19 @@ export default [
         component: () => import('@/view/' + config.theme + '/single-page/home')
       },
       {
+        path: '/:phone',
+        name: 'home-w-phone',
+        meta: {
+          hideInMenu: true,
+          title: 'home.title',
+          notCache: true,
+          icon: 'md-home',
+          headerSticky: true,
+          requiresAuth: true
+        },
+        component: () => import('@/view/' + config.theme + '/single-page/home')
+      },
+      {
         path: '/home-2.html',
         name: 'home-2',
         meta: {
