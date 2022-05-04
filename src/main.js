@@ -15,6 +15,7 @@ import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
 import vSelect from 'vue-select'
 import DisableAutocomplete from 'vue-disable-autocomplete';
 import VueVideoPlayer from 'vue-video-player'
+import VueNativeNotification from './plugins/VueNativeNotification'
 
 import iView from 'iview';
 import i18n from '@/locale'
@@ -50,12 +51,15 @@ Vue.use(Antd)
 
 Vue.use(VueWow)
 Vue.use(Moment, {
-    moment
+  moment
 })
 Vue.use(VueSkeletonLoading)
 Vue.use(DisableAutocomplete)
 Vue.use(iView);
 Vue.use(VueVideoPlayer)
+Vue.use(VueNativeNotification, {
+  requestOnNotify: true
+})
 
 Vue.config.productionTip = false
 Vue.prototype.$config = config
