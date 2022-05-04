@@ -45,7 +45,6 @@
               </div>
             </div>
           </a-form-model>
-          <p class="text-center link_bright">{{ $t('login.register.invitation') }} <router-link :to="{ name: 'register-doctor' }"><strong>{{ $t('login.register.now') }}</strong></router-link></p>
         </div>
         <!-- /login -->
       </div>
@@ -55,7 +54,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapGetters, mapMutations, mapActions } from 'vuex'
 
   export default {
     props: {
@@ -105,6 +104,9 @@
       },
     },
     methods: {
+      ...mapMutations([
+        'setLoading'
+      ]),
       ...mapActions([
         'handleLogin'
       ]),
@@ -130,7 +132,7 @@
                     params: { ...this.meta }
                   })
                 } else {
-                  this.$router.push({ name: response.role.is_provider ? 'profile-details' : 'list-page' })
+                  this.$router.push({ name: response.role.is_provider ? 'profile-details' : 'home' })
                 }
                 this.loading = false
               }).catch((error) => {

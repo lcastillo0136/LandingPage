@@ -34,6 +34,7 @@
     methods: {
       ...mapMutations([
         'toggleLoading',
+        'setLoading',
         'setFirebase'
       ]),
       ...mapActions([
@@ -68,7 +69,9 @@
 
       if (this.hasToken) {
         await this.getUserInfo().then(() => {}).catch((error) => {
-          this.handleLogOut()
+          this.handleLogOut().then(() => {
+            this.$router.push({ name: 'login' })
+          })
         })
       }
 

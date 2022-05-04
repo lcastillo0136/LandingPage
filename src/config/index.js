@@ -35,6 +35,6 @@ export default {
     }
   },
   theme: 'chatpage',
-  defaultLang: 'zh-CN',
+  defaultLang: 'es',
   container: false
 }

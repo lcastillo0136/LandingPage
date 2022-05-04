@@ -209,12 +209,12 @@
     mounted() {
       this.$nextTick(() => {
         setTimeout(() => {
-          this.$refs.scroll.$el.scrollTo({
+          this.$refs.scroll?.$el.scrollTo({
             top: 9999999,
             left: 0
           })
           setTimeout(() => {
-            this.$refs.scroll.$el.scrollTo({
+            this.$refs.scroll?.$el.scrollTo({
               top: 9999999,
               left: 0
             })

@@ -39,7 +39,6 @@
               </template>
             </a-form-model>
           </div>
-          <p class="text-center link_bright">{{ $t('login.register.invitation') }} <router-link :to="{ name: 'register-doctor' }"><strong>{{ $t('login.register.now') }}</strong></router-link></p>
         </div>
         <!-- /login -->
       </div>

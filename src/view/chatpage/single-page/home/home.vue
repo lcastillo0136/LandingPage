@@ -1,6 +1,6 @@
 <template>
   <main class="main-page">
-    <template v-if="TwilioPhone">
+    <template v-if="TwilioPhone && hasPermission">
       <ContactsList class="contacts-panel" :contacts="contacts" @onContactClick="selectContact"></ContactsList>
       <ChatView 
         class="chatview-panel" 
@@ -29,6 +29,8 @@
 
   import ContactsList from './components/contacts-list'
   import ChatView from './components/chat-view'
+  
+  import _ from 'lodash'
 
   export default {
     props: {
@@ -48,11 +50,15 @@
     computed: {
       ...mapGetters([
         'firebase',
-        'settings'
+        'settings',
+        'getUser'
       ]),
       TwilioPhone() {
         return this.settings?.TWILIO_PHONE_FROM;
       },
+      hasPermission() {
+        return _.find(this.getUser?.permisos, { action: 'view', controller: 'messages' }) || false
+      }
     },
     methods: {
       ...mapMutations([
@@ -62,12 +68,15 @@
         'handleLogOut'
       ]),
       selectContact({ contact, index }) {
+        this.messages = []
+        this.selectedContact = null
+        this.selectedPhone = ''
+        
         Messages.get(contact.last_message.id).then((response) => {
           let { data } = response.data
           this.selectedContact = data.contact
           this.selectedPhone = data.phone
           this.messages = data.messages
-
         })
         contact.unread = 0
       },
@@ -173,7 +182,6 @@
         }
       }).catch((error) => {
         this.handleLogOut()
-        this.setLoading(false)
       })
     },
   }
