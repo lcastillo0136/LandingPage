@@ -104,8 +104,7 @@
           if (this.$route.params.phone) {
             let _tmpContact = _.find(this.contacts, (c) => { return `${c.phone}`.indexOf(this.$route.params.phone) > -1 })
             
-              this.selectContact({ contact: _tmpContact })
-            
+            this.selectContact({ contact: _tmpContact })
           }
         }
 
@@ -117,6 +116,7 @@
             let childChat = ref(db, `chats/${c.user ? c.user.id : _basePhone}`)
             onValue(childChat, (snapshot) => {
               const _message = snapshot.val();
+              
               if (_message) {
                 if (!c.last_message || _message.id != c.last_message.id) {
                   _message.date_sent = this.$moment.utc(_message.date_sent).local().format('YYYY-MM-DD HH:mm:ss');
@@ -129,6 +129,32 @@
                   }
 
                   c.last_message.created_at = this.$moment().utc().format('YYYY-MM-DD[T]HH:mm:ss[.000000Z]');
+
+                  if (document.hidden) {
+                    this.$nativenotification.show('Nuevo mensaje de' + c.user_full_name, {
+                      body: c.last_message.body || c.last_message.media_uri,
+                      data: {
+                        phone: _basePhone
+                      }
+                    }, {
+                      onerror: function () {
+                      },
+                      onclick: (event) => {
+                        let _phone = event.target.data.phone.replace(/[^0-9]/g, '')
+
+                        this.$router.push('/'+_phone)
+
+                        let _tmpContact = _.find(this.contacts, (c) => { return `${c.phone}`.indexOf(_phone) > -1 })
+                        
+                        this.selectContact({ contact: _tmpContact })
+
+                      },
+                      onclose: function () {
+                      },
+                      onshow: function () {
+                      }
+                    })
+                  }
                 }
               }
             });
