@@ -8,6 +8,10 @@
 </template>
 
 <script>
+  import { initializeApp } from 'firebase/app';
+  import { getDatabase } from "firebase/database";
+  import "firebase/database";
+
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import Loading from '@/components/loading'
   import * as conekta from '@/libs/conekta'
@@ -28,7 +32,8 @@
     },
     methods: {
       ...mapMutations([
-        'toggleLoading'
+        'toggleLoading',
+        'setFirebase'
       ]),
       ...mapActions([
         'getTypes',
@@ -75,12 +80,18 @@
         })
       }
 
+      if (this.settings.GOOGLE_FIREBASE) {
+        let app = initializeApp({ databaseURL: this.settings.GOOGLE_FIREBASE })
+        this.setFirebase(getDatabase(app))
+      }
+
+
       this.toggleLoading()    
     }
   }
 </script>
 
-<style>
+<style lang="scss">
 .size{
   width: 100%;
   height: 100%;
@@ -94,5 +105,11 @@ html,body{
 #app {
   width: 100%;
   height: 100%;
+}
+
+.ps {
+  .ps__rail-y .ps__rail-x {
+    z-index: 1;
+  }
 }
 </style>

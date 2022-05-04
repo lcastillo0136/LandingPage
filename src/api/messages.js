@@ -26,6 +26,12 @@ export const Messages = {
       formData.append('files[]', file, file.name);
     }
 
+    if (text) {
+      Object.keys(text).forEach((p) => {
+        formData.append(p, text[p]);
+      });
+    }
+
     return axios.request({
       url: `clients/messages`,
       data: formData,
