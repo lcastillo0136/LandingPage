@@ -16,6 +16,7 @@ import vSelect from 'vue-select'
 import DisableAutocomplete from 'vue-disable-autocomplete';
 import VueVideoPlayer from 'vue-video-player'
 import VueNativeNotification from './plugins/VueNativeNotification'
+import AudioPlayer from '@liripeng/vue-audio-player'
 
 import iView from 'iview';
 import i18n from '@/locale'
@@ -57,6 +58,8 @@ Vue.use(VueSkeletonLoading)
 Vue.use(DisableAutocomplete)
 Vue.use(iView);
 Vue.use(VueVideoPlayer)
+Vue.use(AudioPlayer)
+
 Vue.use(VueNativeNotification, {
   requestOnNotify: true
 })

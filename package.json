@@ -14,6 +14,7 @@
     "@fullcalendar/timegrid": "^5.10.1",
     "@fullcalendar/vue": "^5.10.1",
     "@kevinfaguiar/vue-twemoji-picker": "^5.7.4",
+    "@liripeng/vue-audio-player": "^1.5.0",
     "ant-design-vue": "^1.5.1",
     "axios": "^0.18.0",
     "clipboard": "^2.0.0",
