@@ -24,6 +24,8 @@ import "@/assets/css/icon_fonts/css/all_icons_min.css"
 import "@/assets/css/date_picker.css"
 import "@/assets/css/custom.css"
 
+const baseAPI = process.env.VUE_APP_API_ENDPOINT
+
 export default {
   name: 'Main',
   components: {
@@ -34,6 +36,7 @@ export default {
   },
   data () {
     return {
+      baseAPI
     }
   },
   computed: {

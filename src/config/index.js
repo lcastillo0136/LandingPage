@@ -1,3 +1,6 @@
+const baseAPI = process.env.VUE_APP_API_ENDPOINT || 'https://doctors-api.onix-software.com/api/'
+const baseAPIProd = process.env.VUE_APP_API_ENDPOINT_PROD || baseAPI
+
 export default {
   /**
    * @description 配置显示在浏览器标签的title
@@ -17,9 +20,9 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    dev: 'https://doctors-api.onix-software.com/api/',
+    dev: baseAPI,
     storage: 'http://localhost:8000',
-    pro: 'https://doctors-api.onix-software.com/api/'
+    pro: baseAPIProd
   },
   /**
    * @description 默认打开的首页的路由name值，默认为home
