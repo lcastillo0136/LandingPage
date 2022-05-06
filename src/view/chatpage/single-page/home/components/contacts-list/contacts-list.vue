@@ -41,6 +41,33 @@
         </a-list>
       </perfect-scrollbar>
     </a-card>
+    <a-badge :count="totalCount">
+      <a-select
+        show-search
+        size="large"
+        placeholder="Select a person"
+        option-filter-prop="children"
+        :defaultActiveFirstOption="false"
+        class="mobile-contact"
+        :filter-option="filterOption"
+        @select="handleChange"
+      >
+        <a-select-option v-for="(contact, i) in reverseList" :key="i" :value="i">
+          <a-row>
+            <a-col :span="20">
+              {{ contact.user_full_name }}
+            </a-col>
+            <a-col>
+              <a-badge :count="contact.unread"  v-if="contact.unread > 0"/>
+            </a-col>
+          </a-row>
+          <a-row v-if="contact.user_id">
+            <a-col :span="24">{{ contact.phone }}
+            </a-col>
+          </a-row>        
+        </a-select-option>
+      </a-select>
+    </a-badge>
   </div>
   <!-- /white_bg -->
 </template>
@@ -60,7 +87,8 @@
     },
     data () {
       return {
-        
+        filterText: '',
+        contact_index: 0
       }
     },
     computed: {
@@ -69,6 +97,9 @@
       },
       reverseList() {
         return _.orderBy(this.contacts, (c) => { return c.last_message.created_at }, [ 'desc' ])
+      },
+      totalCount() {
+        return _.sumBy(this.contacts, 'unread') || 0
       }
     },
     methods: {
@@ -77,7 +108,18 @@
           contact, 
           index
         });
-      }
+      },
+      handleChange(contact_index) {
+        
+        this.$emit('onContactClick', {
+          contact: this.reverseList[contact_index]
+        });
+      },
+      filterOption(input, option) {
+        return (
+          option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        );
+      },
     },
     mounted() {
       
@@ -87,6 +129,7 @@
 
 <style lang="scss">
   .contacts-list-container {
+    .mobile-contact { display: none; }
     .ant-card {
       border-radius: 20px;
       max-height: 100%;
@@ -165,6 +208,16 @@
       font-size: 80%;
       color: #9e9e9e;
       font-weight: 400;
+    }
+  }
+
+  @media only screen and (max-width: 450px) {
+    .contacts-list-container {
+      .mobile-contact { display: block; }
+      .ant-card { display: none; }
+      > .ant-badge {
+        display: block;
+      }
     }
   }
 </style>

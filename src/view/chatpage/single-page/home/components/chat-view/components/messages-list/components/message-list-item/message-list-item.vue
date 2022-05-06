@@ -309,6 +309,16 @@
                 display: block;
               }
 
+
+              @media only screen and (max-width: 450px) {
+                .iframe-placeholder {
+                  display: block;
+                }
+                iframe {
+                  min-height: 100px;
+                }
+              }
+
               &::after { display: none; }
           }
 

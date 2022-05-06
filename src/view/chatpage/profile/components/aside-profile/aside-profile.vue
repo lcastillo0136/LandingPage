@@ -22,7 +22,7 @@
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li>
-      <li>
+      <!-- <li>
         <router-link :to="{ name: 'profile-appointments' }">
           <span>Citas</span>
           <i class="arrow_carrot-right"></i>
@@ -39,14 +39,14 @@
           <span>Ordenes</span>
           <i class="arrow_carrot-right"></i>
         </router-link>
-      </li>
+      </li> -->
       <!-- <li>
         <router-link :to="{ name: 'profile-files' }">
           <span>Archivos</span>
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li> -->
-      <li v-if="isProvider">
+      <!-- <li v-if="isProvider">
         <router-link :to="{ name: 'profile-reviews' }">
           <span>Reseñas</span>
           <i class="arrow_carrot-right"></i>
@@ -57,7 +57,7 @@
           <span>Configuraciones</span>
           <i class="arrow_carrot-right"></i>
         </router-link>
-      </li>
+      </li> -->
     </ul>
   </div>
 </template>

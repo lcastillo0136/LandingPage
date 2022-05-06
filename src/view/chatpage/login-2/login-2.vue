@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="bg_color_2">
+    <div class="bg_messages">
       <div class="container margin_60_35">
         <div id="login">
           <h1>¡Inicia sesión en {{ appName }}!</h1>
@@ -193,7 +193,7 @@
   }
 </script>
 
-<style>
+<style lang="scss">
   .loading_btn {
     color: #ffffffa8;
   }
@@ -209,5 +209,12 @@
     content: "\e02d";
     vertical-align: middle;
     display: inline-block;
+  }
+  
+  .form-control {
+    .ant-input {
+      border: none;
+      min-height: 40px;
+    }
   }
 </style>

@@ -1,7 +1,9 @@
 <template>
   <div>
-    <header class="header_sticky" :class="headerClasses">  
-      <HamburgerButton :options="options"></HamburgerButton>
+    <header class="header_sticky" :class="headerClasses">
+      <template v-if="TwilioPhone && hasPermission">
+        <HamburgerButton :options="options"></HamburgerButton>
+      </template>
       <div :class="containerClasses">
         <div class="row">
           <div class="col-lg-3 col-6">
@@ -58,8 +60,15 @@
         'container',
         'headerSticky',
         'hasToken',
-        'settings'
+        'settings',
+        'getUser'
       ]),
+      TwilioPhone() {
+        return this.settings?.TWILIO_PHONE_FROM;
+      },
+      hasPermission() {
+        return _.find(this.getUser?.permisos, { action: 'view', controller: 'messages', access: 1 }) || false
+      },
       COMPANY_PHONE() {
         return this.settings?.COMPANY_PHONE;
       },
@@ -96,3 +105,18 @@
     }
   }
 </script>
+<style lang="scss">
+  @media only screen and (max-width: 450px) {
+    .header_sticky {
+      display: flex;
+      flex-direction: row;
+      align-content: center;
+      align-items: center;
+      gap: 5px;
+      padding: 0 20px;
+      > * {
+        flex: 1 1 auto;
+      }
+    }
+  }
+</style>

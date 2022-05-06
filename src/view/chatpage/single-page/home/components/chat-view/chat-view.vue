@@ -136,7 +136,7 @@
         setTimeout(() => {
           this.$nextTick(() => {
             //this.$refs.scroll.$el.scrollTop = 9999999
-            this.$refs.inputmessage.focus()
+            this.$refs.inputmessage?.focus()
             this.message = ''
           })
         },1000)
@@ -494,6 +494,32 @@
     &.file-open {
       .ivu-upload {
         display: block;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 450px) {
+    .chat-view-container {
+      .ant-card {
+        .ant-card-body {
+          .message-form {
+            .message-input {
+              padding: 6px 15px;
+              #popper-button {
+                display: none;
+              }
+            }
+
+            .message-action {
+              width: auto;
+              margin-left: 6px;
+              align-self: center;
+              button {
+                padding: 4px 4px 4px 7px;
+              }
+            }
+          }
+        }
       }
     }
   }

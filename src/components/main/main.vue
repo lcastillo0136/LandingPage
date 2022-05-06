@@ -90,5 +90,6 @@ export default {
   .container-fluid {
     width: 95%;
     padding-top: 10px;
+    max-width: 1500px;
   }
 </style>

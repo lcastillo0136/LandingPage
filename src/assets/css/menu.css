@@ -125,12 +125,7 @@
 
 @media only screen and (max-width:991px) {
     .btn_mobile {
-        position: absolute;
-        left: 15px;
-        top: 15px;
-        width: 30px;
-        display: block;
-        z-index: 9999
+        
     }
 
     .hamburger-inner,

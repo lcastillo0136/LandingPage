@@ -615,7 +615,7 @@ ul#top_access li#user figure img {
     height: 36px;
     display: block;
     background: url(/img/logox2.png) no-repeat;
-    background-size: 163px 36px;
+    background-size: contain;
     text-indent: -9999px
 }
 
@@ -625,7 +625,7 @@ only screen and (-webkit-min-device-pixel-ratio:2),
 only screen and (min-device-pixel-ratio:2) {
     #logo_home h1 a {
         background-image: url(/img/logox2.png);
-        background-size: 163px 36px
+        background-size: contain;
     }
 }
 
@@ -647,8 +647,7 @@ only screen and (min-device-pixel-ratio:2) {
 
     #logo,
     #logo_home {
-        position: relative;
-        left: 45px
+      
     }
 }
 
@@ -4309,6 +4308,10 @@ ul.treatments.checkout li.total {
 
 .bg_color_2 {
     background: url(/img/hero_bg_1.svg) fixed #3f4079
+}
+
+.bg_messages {
+  background: url(/img/message-pattern.webp) fixed #3f4079
 }
 
 .form-control {

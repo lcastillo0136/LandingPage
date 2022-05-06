@@ -41,7 +41,7 @@ export default [
         component: () => import('@/view/' + config.theme + '/single-page/home')
       },
       {
-        path: '/:phone',
+        path: '/:phone(\\d+)',
         name: 'home-w-phone',
         meta: {
           hideInMenu: true,

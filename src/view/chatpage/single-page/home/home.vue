@@ -250,4 +250,25 @@
       outline-offset: -16px;
     }
   }
+
+  @media only screen and (max-width: 450px) {
+    main.main-page {
+      flex-direction: column;
+      padding: 10px;
+      .contacts-panel {
+        flex: 0 1 auto;
+      }
+      .chatview-panel {
+        overflow: hidden;
+      }
+    }
+  }
+
+  @media only screen and (min-width: 1450px) {
+    main.main-page {
+      max-width: 1500px;
+      margin: 0 auto;
+      width: 100%;
+    }
+  }
 </style>

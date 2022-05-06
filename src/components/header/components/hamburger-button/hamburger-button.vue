@@ -97,4 +97,13 @@ export default {
   .ant-menu-item-group-title {
     display: none;
   }
+
+  .btn_mobile {
+    display: none;
+  }
+  @media only screen and (max-width: 450px) {
+    .btn_mobile {
+      display: block;
+    }
+  }
 </style>

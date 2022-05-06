@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="bg_color_2">
+    <div class="bg_messages">
       <div class="container margin_60_35">
         <div id="login-2">
           <h1>¡Inicia sesión en {{ appName }}!</h1>
@@ -22,7 +22,13 @@
                 </div>
                 <div class="form-group">
                   <a-form-model-item prop="realPassword">
-                    <a-input type="password" class="form-control" :placeholder="$t('login.form.password')" v-model="form.realPassword" />
+                    <a-input-password 
+                      allow-clear 
+                      class="form-control" 
+                      v-model="form.realPassword" 
+                      :placeholder="$t('login.form.password')" 
+                      @pressEnter="handleLogin1"
+                    />
                     <a slot="help" href="" class="forgot" @click.stop.prevent="openForgot"><small>{{ $t('login.form.forgot_question') }}</small></a>
                   </a-form-model-item>
                 </div>
@@ -125,7 +131,7 @@
                   message: 'Inicio de sesion', 
                   description: `${_current_time} ${response.title || ''} ${response.first_name || ''} ${response.last_name || ''}`
                 })
-
+                
                 if (this.returnPage) {
                   this.$router.push({
                     name: this.reference, 
@@ -204,7 +210,7 @@
   }
 </script>
 
-<style>
+<style lang="scss">
   .loading_btn {
     color: #ffffffa8;
   }
@@ -220,5 +226,12 @@
     content: "\e02d";
     vertical-align: middle;
     display: inline-block;
+  }
+
+  .form-control {
+    .ant-input {
+      border: none;
+      min-height: 40px;
+    }
   }
 </style>
