@@ -236,6 +236,7 @@
 
     .chatview-panel {
       flex: 1 1 auto;
+      overflow: hidden;
     }
     > .ant-result {
       padding: 48px 32px;
@@ -259,7 +260,6 @@
         flex: 0 1 auto;
       }
       .chatview-panel {
-        overflow: hidden;
       }
     }
   }

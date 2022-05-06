@@ -15,7 +15,7 @@
           type="drag">
           <Icon type="ios-close" size="50" class="close-file-upload" @click.stop.prevent="fileUploadOpen=false" />
 
-          <div style="padding: 20px 0" v-if="!sendingFile">
+          <div style="padding: 20px 35px" v-if="!sendingFile">
             <a-icon type="download" style="color: #3399ff; font-size: 53px;"/>
             <p>Elija un archivo o arrástrelo y sueltelo aquí.</p>
           </div>

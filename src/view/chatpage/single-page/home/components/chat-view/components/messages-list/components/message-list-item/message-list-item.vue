@@ -20,11 +20,12 @@
           <img class="" :src="message.media_uri" @click.stop.prevent="$emit('fileClick', { message, type: 'image' })">
         </template>
         <template v-else-if="isAudio(message)">
-          <!-- <ngx-audio-player #musicPlayer [playlist]="[{
-            title: 'Audio file',
-            link: message.media_uri,
-            artist: ''
-          }]" [displayTitle]="false" [autoPlay]="false" [displayPlaylist]="false" [expanded]="false" [displayVolumeControls]="true" [displayRepeatControls]="false"></ngx-audio-player> -->
+          <audio-player
+            :audio-list="[ message.media_uri ]"
+            :show-prev-button="false"
+            :show-next-button="false"
+            :isLoop="false"
+          />
         </template>
         <template v-else-if="isVideo(message)">
           <video-player 
@@ -44,7 +45,7 @@
       </div>
       <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
     </div>
-    <div class="bubble" v-if="message.media_uri && message.type=='other'">
+    <div class="bubble" v-if="message.media_uri && isOtherFile(message)">
       <div class="message-content" :title="message.date_sent" v-html="$options.filters.parseURLs(message.media_uri, true, { target: '__blank' })"></div>
       <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
     </div>
@@ -235,7 +236,9 @@
         justify-content: center;
         padding: 12px;
         max-width: 100%;
-
+          *::after {
+            display: none;
+          }
           .message-content {
               white-space: pre-wrap;
               line-height: 1.2;
@@ -309,6 +312,34 @@
                 display: block;
               }
 
+              .audio-player {
+                background: #fff;
+                padding: 11px 20px;
+
+                .audio__btn-wrap {
+                  align-items: flex-end;
+                  .audio__play-rate {
+                    font-size: 13px;
+                  }
+                  .audio__play-volume-icon-wrap {
+                    width: 16px;
+                    height: 16px;
+                    .audio__play-volume-wrap {
+                      width: 10px;
+                      left: 3px;
+                      height: 28px;
+                    }
+                  }
+                }
+
+                .audio__progress-wrap {
+                  margin-top: 3px;
+                }
+
+                .audio__time-wrap {
+                  margin-top: 3px;
+                }
+              }
 
               @media only screen and (max-width: 450px) {
                 .iframe-placeholder {
@@ -433,7 +464,11 @@
               border-bottom-right-radius: 5px;
               color: #000000de;
               background-color: #E0E0E0;
+              
+              .message-content {
 
+              }
+              
               .time {
                   justify-content: flex-end;
                   right: 0;
