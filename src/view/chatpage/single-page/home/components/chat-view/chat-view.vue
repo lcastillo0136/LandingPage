@@ -49,6 +49,30 @@
             <Icon type="md-attach" @click.stop.prevent="fileUploadOpen=!fileUploadOpen"></Icon>
           </div>
           <div class="message-action">
+            <a-popover v-model="scheduleModal" title="" trigger="click" placement="topRight">
+              <a-form-model ref="scheduleForm" :rules="rulesSchedule" :model="formSchedule" slot="content" class="scheduleForm">
+                <div class="row">
+                  <div class="col-md-8 col-sm-8">
+                    <div class="form-group">
+                      <label>Enviar en esta fecha y hora</label>
+                      <a-form-model-item prop="scheduleDate">
+                        <a-date-picker use12-hours show-time v-model="formSchedule.scheduleDate" size="large" :showTime="{ use12Hours: true }" format="DD/MM/YYYY hh:mm:ss a" />
+                      </a-form-model-item>
+                    </div>
+                  </div>
+                  <div class="col-md-4 d-flex align-items-center justify-content-center">
+                    <a-button type="primary" @click.stop.prevent="sendSchedule">
+                      Enviar
+                    </a-button>
+                  </div>
+                </div>
+              </a-form-model>
+              <a-button type="primary" shape="circle" style="padding: 13px;">
+                <Icon type="md-calendar"></Icon>
+              </a-button>
+            </a-popover>
+          </div>
+          <div class="message-action">
             <a-button type="primary" shape="circle" @click.stop.prevent="reply">
               <Icon type="md-send"></Icon>
             </a-button>
@@ -103,7 +127,24 @@
         loadingFiles: false,
         photoSwipeOptions: {
           dataSource: []
-        }
+        },
+        scheduleModal: false,
+        rulesSchedule: {
+          scheduleDate: [{ validator: (rule, value, callback) => {
+            if (value === '' || !value) {
+              callback(new Error('Favor de no dejar este campo vacio'));
+            } else {
+              if (this.$moment().add({ seconds: 3610 }).isAfter(value)) {
+                callback(new Error('La agenda minima es de 60 minutos'))
+              } else {
+                callback();
+              }
+            }
+          }, trigger: 'change' }],
+        },
+        formSchedule: {
+          scheduleDate: this.$moment().add({ seconds: 3610 })
+        },
       }
     },
     watch:{
@@ -166,17 +207,60 @@
         };
 
         this.$emit('onReply', { message: _message })
-        
 
         this.$nextTick(() => {
           this.readyToReply()
           this.message = ''
         })
       },
+      sendSchedule() {
+        this.$refs.scheduleForm.validate().then(valid => {
+          if (valid) {
+            this.sending = true;
+
+            if (!this.message) {
+              this.sending = false;
+              this.$notification.error({
+                message: `Error: Empty message`,
+                description: 'No se pueden enviar mensajes vacios', 
+                placement: 'bottomRight',
+                duration: 5
+              });
+              return;
+            }
+            
+            let _message = {
+              body: this.message,
+              user_id: this.contact ? (+this.contact.id) : null,
+              date_sent: this.$moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+              direction: 'outbound-api',
+              from_phone: `whatsapp:+${this.TwilioPhone}`,
+              status: 'queued',
+              to_phone: this.contact ? `whtasapp:+52${this.contact.phone}` : this.phone,
+              schedule: this.formSchedule.scheduleDate.utc().format('DD/MM/YYYY HH:mm:59')
+            };
+
+            this.$emit('onReply', { message: _message })
+
+            this.$nextTick(() => {
+              this.readyToReply()
+              this.message = ''
+              this.formSchedule.scheduleDate = this.$moment().add({ seconds: 3610 })
+              this.scheduleModal = false
+            })
+          }
+        }).catch((error) => {
+
+        })
+      },
       push(message) {
         // this.$refs.messageListPanel.push(message)
         this.messages.push(message)
         this.message = ''
+        this.sending = false
+      },
+      handleError({ message }) {
+        this.message = message
         this.sending = false
       },
       emojiSelected(emoji) {
@@ -432,7 +516,7 @@
             display: flex;
             flex: 0 1 auto;
             flex-direction: row;
-            width: 85px;
+            width: 70px;
             text-align: center;
             justify-content: center;
             align-items: center;
@@ -539,6 +623,17 @@
     }
     100% {
       color: #ff9b85;
+    }
+  }
+
+  .scheduleForm {
+    max-width: 100%;
+    .ant-calendar-picker {
+      width: 260px;
+    }
+
+    *::after {
+      display: none;
     }
   }
 </style>

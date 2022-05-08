@@ -88,6 +88,14 @@
             _contact.last_message = { ...data }
             this.$refs.ChatViewPanel.push({...data})
           }
+        }).catch((error) => {
+          this.$notification.error({
+            message: 'No se pudo enviar el mensaje',
+            description: 'El tiempo minimo para agendar es de 60 minutos.'
+          })
+          this.$refs.ChatViewPanel.handleError({
+            message: message.body
+          })
         })
       }
     },

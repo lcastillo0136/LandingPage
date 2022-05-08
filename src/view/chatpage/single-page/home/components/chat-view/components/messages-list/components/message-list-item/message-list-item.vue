@@ -12,7 +12,11 @@
 
     <div class="bubble" v-if="message.body">
       <div class="message-content" :title="message.date_sent" v-html="$options.filters.parseURLs(message.body, true, { target: '__blank' })"></div>
+      
       <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
+    </div>
+    <div class="send-at-content" v-if="message.send_at">
+      {{ message.send_at | sendAt }}
     </div>
     <div class="bubble file" v-if="message.media_uri && !isOtherFile(message)">
       <div class="message-content" :title="message.date_sent">
@@ -61,6 +65,8 @@
   import config from '@/config'
   import _ from 'lodash'
 
+  const moment = require('moment')
+
   const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 
   export default {
@@ -77,6 +83,11 @@
     data () {
       return {
         dataMessage: {}
+      }
+    },
+    filters: {
+      sendAt(value) {
+        return (moment.utc(value, 'YYYY-MM-DD HH:mm:ss').local().isBefore(moment()) ? 'El mensaje se envió ' : 'El mensaje se enviara ') + moment.utc(value, 'YYYY-MM-DD HH:mm:ss').local().format('DD/MM/YYYY hh:mm a')
       }
     },
     watch:{
@@ -229,6 +240,12 @@
         width: 40px;
       }
 
+      .send-at-content {
+        font-size: 80%;
+        font-style: italic;
+        color: #808080;
+      }
+
       .bubble {
         position: relative;
         display: flex;
@@ -285,6 +302,7 @@
                 max-width: 100%;
                 height: auto;
                 vertical-align: top;
+                max-height: 300px;
               }
 
               .iframe-placeholder {
@@ -352,6 +370,7 @@
 
               &::after { display: none; }
           }
+
 
           .time {
             position: absolute;
@@ -447,6 +466,10 @@
       }
 
       &.me {
+
+        .send-at-content {
+          margin-left: auto;
+        }
           padding-left: 40px;
 
           .avatar {
