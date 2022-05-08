@@ -1,7 +1,7 @@
 <template>
 	<div>
     <Header :sticky="headerSticky" v-if="headerVisibility"></Header>
-      <router-view/>
+    <router-view/>
     <Footer v-if="footerVisibility"></Footer>
     <ToTop v-if="toTopVisibility"></ToTop>
     <cookie-law theme="dark-lime" v-if="cookieEnabled && !stillLoading"></cookie-law>
@@ -80,7 +80,7 @@ export default {
   mounted () {
     this.setTitle(this.$route)
     this.setContainer(false)
-    this.setFooterVisible(false)
+    this.setFooterVisible(true)
     this.setToTopVisible(false)
   },
   beforeRouteUpdate (to, from, next) {

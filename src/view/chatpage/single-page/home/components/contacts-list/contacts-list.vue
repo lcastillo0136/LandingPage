@@ -41,7 +41,7 @@
         </a-list>
       </perfect-scrollbar>
     </a-card>
-    <a-badge :count="totalCount">
+    <a-badge :count="totalCount" class="mobileBadge">
       <a-select
         show-search
         size="large"
@@ -129,7 +129,7 @@
 
 <style lang="scss">
   .contacts-list-container {
-    .mobile-contact { display: none; }
+    .mobile-contact, .mobileBadge  { display: none; }
     .ant-card {
       border-radius: 20px;
       max-height: 100%;
@@ -213,7 +213,7 @@
 
   @media only screen and (max-width: 450px) {
     .contacts-list-container {
-      .mobile-contact { display: block; }
+      .mobile-contact, .mobileBadge  { display: block; }
       .ant-card { display: none; }
       > .ant-badge {
         display: block;
