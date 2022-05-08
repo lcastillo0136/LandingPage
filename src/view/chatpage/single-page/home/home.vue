@@ -1,5 +1,5 @@
 <template>
-  <main class="main-page">
+  <main class="main-page pb-0">
     <template v-if="TwilioPhone && hasPermission">
       <ContactsList class="contacts-panel" :contacts="contacts" @onContactClick="selectContact"></ContactsList>
       <ChatView 
@@ -258,6 +258,10 @@
       border-radius: 15px;
       outline-offset: -16px;
     }
+  }
+
+  footer {
+    font-size: 90%;
   }
 
   @media only screen and (max-width: 450px) {

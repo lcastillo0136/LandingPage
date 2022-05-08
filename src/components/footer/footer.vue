@@ -1,6 +1,8 @@
 <template>
-  <footer class="container-fluid pb-2 d-flex justify-content-end">
-    Powered with <a-icon type="heart" theme="filled" :style="{ color: 'hotpink', margin: '2px 5px' }"/><span> by <b>zibasoft</b></span>
+  <footer class="text-secondary py-2 px-3 d-flex justify-content-end">
+    Powered with 
+    <a-icon type="heart" theme="filled" :style="{ color: 'hotpink', margin: '2px 5px' }"/>
+    <span> by <b><a href="https://www.zibasoft.com" target="_blank" style="color: inherit;">zibasoft</a></b></span>
   </footer>
 </template>
 <script>
