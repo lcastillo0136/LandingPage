@@ -16,8 +16,6 @@ import Header from '@/components/header'
 import Footer from '@/components/footer'
 import ToTop from '@/components/totop'
 
-import "@/assets/css/bootstrap.min.css"
-import "@/assets/css/style.css"
 import "@/assets/css/menu.css"
 import "@/assets/css/vendors.css"
 import "@/assets/css/icon_fonts/css/all_icons_min.css"
