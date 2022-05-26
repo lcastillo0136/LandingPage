@@ -1,9 +1,7 @@
 <template>
-  <div id="app">
-    <loading :loading="stillLoading"></loading>
-    <div id="page" :class="{'menu-open': mobileMenuOpen}">
-      <router-view/>
-    </div>
+  <div>
+    <loading :loading="stillLoading"></loading>  
+    <router-view/>
   </div>
 </template>
 

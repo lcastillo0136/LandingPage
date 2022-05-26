@@ -1,9 +1,8 @@
 <template>
 	<div>
     <Header :sticky="headerSticky" v-if="headerVisibility"></Header>
-      <router-view/>
+    <router-view/>
     <Footer v-if="footerVisibility"></Footer>
-    <ToTop v-if="toTopVisibility"></ToTop>
     <cookie-law theme="dark-lime" v-if="cookieEnabled && !stillLoading"></cookie-law>
   </div>
 </template>
@@ -18,7 +17,6 @@ import ToTop from '@/components/totop'
 
 import "@/assets/css/menu.css"
 import "@/assets/css/vendors.css"
-import "@/assets/css/icon_fonts/css/all_icons_min.css"
 import "@/assets/css/date_picker.css"
 import "@/assets/css/custom.css"
 

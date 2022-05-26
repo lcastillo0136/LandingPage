@@ -37,7 +37,7 @@ export default {
       developmentOff: true // 设为true后在开发环境不会收集错误信息，方便开发中排查错误
     }
   },
-  theme: 'findoctor',
+  theme: 'wedding',
   defaultLang: 'zh-CN',
   container: true
 }

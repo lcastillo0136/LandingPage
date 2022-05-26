@@ -1,65 +1,107 @@
 <template>
-  <footer>
-    <div class=" margin_60_35" :class="containerClasses">
-      <div class="row">
-        <div class="col-lg-3 col-md-12">
-          <p>
-            <router-link :to="{ name: 'home' }" title="My Doctor">
-              <img :src="appImage" data-retina="true" alt="" width="163" height="36" class="img-fluid">
-            </router-link>
-          </p>
-        </div>
-        <div class="col-lg-3 col-md-4">
-          <h5>{{ $t('footer.about') }}</h5>
-          <ul class="links">
-            <li><router-link :to="{ name: 'home' }">{{ $t('footer.about_us') }}</router-link></li>
-            <li><router-link :to="{ nome: 'login' }">{{ $t('footer.login') }}</router-link></li>
-            <li><router-link :to="{ name: 'register' }">{{ $t('footer.register') }}</router-link></li>
-          </ul>
-        </div>
-        <div class="col-lg-3 col-md-4">
-          <h5>{{ $t('footer.useful_links') }}</h5>
-          <ul class="links">
+  <!-- start of wpo-site-footer-section -->
+  <footer class="wpo-site-footer">
+      <div class="wpo-upper-footer">
+          <div class="container-fluid">
+              <div class="row">
+                  <div class="col col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                      <div class="widget about-widget">
+                          <div class="logo widget-title">
+                              <img src="assets/images/logo.png" alt="blog">
+                          </div>
+                          <p>Welcome and open yourself to your truest love this year with us! With the Release
+                              Process</p>
+                          <ul>
+                              <li>
+                                  <a href="#">
+                                      <i class="ti-facebook"></i>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="#">
+                                      <i class="ti-twitter-alt"></i>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="#">
+                                      <i class="ti-instagram"></i>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="#">
+                                      <i class="ti-google"></i>
+                                  </a>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="col col-xl-3  col-lg-4 col-md-6 col-sm-12 col-12">
+                      <div class="widget link-widget">
+                          <div class="widget-title">
+                              <h3>Information</h3>
+                          </div>
+                          <ul>
+                              <li><a href="about.html">About Us</a></li>
+                              <li><a href="portfolio.html">Portfolio</a></li>
+                              <li><a href="blog.html">Latest News</a></li>
+                              <li><a href="contact.html">Contact us</a></li>
+                              <li><a href="service.html">Our Services</a></li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="col col-xl-3  col-lg-4 col-md-6 col-sm-12 col-12">
+                      <div class="widget wpo-service-link-widget">
+                          <div class="widget-title">
+                              <h3>Contact </h3>
+                          </div>
+                          <div class="contact-ft">
+                              <p>Would you have any enquiries.Please feel free to contuct us</p>
+                              <ul>
+                                  <li><i class="fi flaticon-email"></i>loveme@gmail.com</li>
+                                  <li><i class="fi flaticon-phone-call"></i>+888 (123) 869523</li>
+                                  <li><i class="fi flaticon-maps-and-flags"></i>New York – 1075 Firs Avenue
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
 
-            <li v-for="(type, type_i) in types" :key="type_i">
-              <router-link :to="{ name: 'list-page-type', params: { type: type.value, layout: 'list' }}" replace>{{ type.text }}</router-link>
-            </li>
-
-            <li><router-link :to="{ name: 'register-doctor' }">{{ $t('footer.join_doctor') }}</router-link></li>
-          </ul>
-        </div>
-        <!-- <div class="col-lg-3 col-md-4">
-          <h5>{{ $t('footer.contact_us') }}</h5>
-          <ul class="contacts">
-            <li><a href="tel:61280932400"><i class="icon_mobile"></i> + 61 23 8093 3400</a></li>
-            <li><a href="mail:mail@mail.com"><i class="icon_mail_alt"></i> <span class="__cf_email__">mail@mail.com</span></a></li>
-          </ul>
-          <div class="follow_us">
-            <h5>{{ $t('footer.follow_us') }}</h5>
-            <ul>
-              <li><a href="https://www.facebook.com/"><i class="social_facebook"></i></a></li>
-              <li><a href="https://www.twitter.com/"><i class="social_twitter"></i></a></li>
-              <li><a href="https://www.linkedin.com/"><i class="social_linkedin"></i></a></li>
-              <li><a href="https://www.instagram.com/"><i class="social_instagram"></i></a></li>
-            </ul>
+                  <div class="col col-xl-3  col-lg-4 col-md-6 col-sm-12 col-12">
+                      <div class="widget instagram">
+                          <div class="widget-title">
+                              <h3>Instagram</h3>
+                          </div>
+                          <ul class="d-flex">
+                              <li><a href="portfolio-single.html"><img src="assets/images/instragram/1.jpg"
+                                          alt=""></a></li>
+                              <li><a href="portfolio-single.html"><img src="assets/images/instragram/2.jpg"
+                                          alt=""></a></li>
+                              <li><a href="portfolio-single.html"><img src="assets/images/instragram/3.jpg"
+                                          alt=""></a></li>
+                              <li><a href="portfolio-single.html"><img src="assets/images/instragram/4.jpg"
+                                          alt=""></a></li>
+                              <li><a href="portfolio-single.html"><img src="assets/images/instragram/5.jpg"
+                                          alt=""></a></li>
+                              <li><a href="portfolio-single.html"><img src="assets/images/instragram/6.jpg"
+                                          alt=""></a></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </div> <!-- end container -->
+      </div>
+      <div class="wpo-lower-footer">
+          <div class="container">
+              <div class="row">
+                  <div class="col col-xs-12">
+                      <p class="copyright"> &copy; 2021 Loveme Template. Design By <a
+                              href="index.html">wpOceans</a>. All Rights Reserved.</p>
+                  </div>
+              </div>
           </div>
-        </div> -->
       </div>
-      <!--/row-->
-      <hr>
-      <div class="row">
-        <div class="col-md-8">
-          <ul id="additional_links">
-            <li><router-link :to="{ name: 'terms-conditions' }">{{ $t('footer.terms_conditions') }}</router-link></li>
-            <li><router-link :to="{ name: 'privacy' }">{{ $t('footer.privacy') }}</router-link></li>
-          </ul>
-        </div>
-        <div class="col-md-4">
-          <div id="copy">© {{ year }} {{ appName }}</div>
-        </div>
-      </div>
-    </div>
   </footer>
+  <!-- end of wpo-site-footer-section -->
 </template>
 <script>
   import { getServerFile } from '@/libs/util'

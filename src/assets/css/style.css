@@ -486,10 +486,7 @@ header {
 }
 
 header {
-    min-height: 55px;
-    padding: 10px 0;
-    border-bottom: 1px solid transparent;
-    overflow: hidden;
+  
 }
 
 header:hover {
@@ -658,7 +655,7 @@ footer h5 {
 }
 
 footer ul li {
-    margin-bottom: 10px
+    
 }
 
 footer ul li a {
