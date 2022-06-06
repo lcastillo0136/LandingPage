@@ -1,5 +1,5 @@
 import { localSave, localRead, getToken } from '@/libs/util'
-import { saveErrorLogger, getTypes, getSorts, getDoctorsByFilter, getSettings } from '@/api/data'
+import { saveErrorLogger, getTypes, getSorts, getDoctorsByFilter, getSettings, getEvent } from '@/api/data'
 
 import i18n from '@/locale'
 import config from '@/config'
@@ -19,14 +19,16 @@ export default {
       longitude: 0,
       latitude: 0
     },
-    settings: null
+    settings: null,
+    event: null
   },
   getters: {
     errorCount: state => state.errorList.length,
     filterTypes: state => state.filter.types,
     filterSorts: state => state.filter.sorts,
     geoLocation: state => state.location,
-    settings: state => state.settings
+    settings: state => state.settings,
+    event: state => state.event
   },
   mutations: {
     setLocal (state, lang) {
@@ -55,6 +57,9 @@ export default {
     },
     setSettings (state, settings) {
       state.settings = settings
+    },
+    setEvent (state, event) {
+      state.event = event
     }
   },
   actions: {
@@ -129,6 +134,22 @@ export default {
               data[v.name] = v.value
             })
             commit('setSettings', data)
+            resolve(data)
+          }).catch(err => {
+            reject(err)
+          })
+        } catch (error) {
+          reject(error)
+        }
+      })
+    },
+    getEvent ({ state, commit }) {
+      return new Promise((resolve, reject) => {
+        try {
+          getEvent().then(res => {
+            const { data } = res.data
+            
+            commit('setEvent', data)
             resolve(data)
           }).catch(err => {
             reject(err)

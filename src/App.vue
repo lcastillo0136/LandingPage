@@ -25,6 +25,7 @@
         'stillLoading',
         'mobileMenuOpen',
         'settings',
+        'event',
         'hasToken'
       ])
     },
@@ -39,6 +40,7 @@
         'getLocation',
         'getSettings',
         'getUserInfo',
+        'getEvent',
         'handleLogOut'
       ]),
     },
@@ -69,8 +71,8 @@
         
       })
       
-      conekta.initConekta(this.settings.CONEKTA_CLIENT)
-      paypal.init(this.settings.PAYPAL_CLIENT, this.settings.CURRENCY)
+      this.settings.CONEKTA_CLIENT && conekta.initConekta(this.settings.CONEKTA_CLIENT)
+      this.settings.PAYPAL_CLIENT && paypal.init(this.settings.PAYPAL_CLIENT, this.settings.CURRENCY)
 
       if (this.hasToken) {
         await this.getUserInfo().then(() => {}).catch((error) => {
@@ -83,8 +85,10 @@
         this.setFirebase(getDatabase(app))
       }
 
-
-      this.toggleLoading()    
+      this.getEvent().then((event) => {
+        this.toggleLoading() 
+      })
+   
     }
   }
 </script>

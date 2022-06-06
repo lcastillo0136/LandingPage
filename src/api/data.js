@@ -121,3 +121,11 @@ export const getOrder = (key) => {
     method: 'get'
   })
 }
+
+export const getEvent = () => {
+  return axios.request({
+    baseURL: baseUrl.replace('/api/', '/web/'),
+    url: `/event/1`,
+    method: 'get'
+  })
+}

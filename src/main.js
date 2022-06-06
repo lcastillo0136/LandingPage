@@ -37,7 +37,7 @@ import 'vue-select/dist/vue-select.css';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
 import 'iview/dist/styles/iview.css';
 import 'video.js/dist/video-js.css'
-
+import '@mdi/font/css/materialdesignicons.min.css'
 import "@/assets/css/style.css"
 
 Vue.component('l-map', LMap);

@@ -1,96 +1,52 @@
 <template>
-  <main>
+  <main v-if="event">
     <!-- start of hero -->
     <section class="wpo-hero-slider wpo-hero-slider-s2">
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="slide-inner slide-bg-image" data-background="assets/images/slider/slide-4.jpg">
-                        <!-- <div class="gradient-overlay"></div> -->
-                        <div class="container-fluid">
-                            <div class="slide-content">
-                                <div data-swiper-parallax="300" class="slide-title">
-                                    <h2>Sarah & Daniel</h2>
-                                </div>
-                                <div data-swiper-parallax="400" class="slide-text">
-                                    <p>We Are Getting Married Nov 22,2021</p>
-                                </div>
-                                <div class="border-1"></div>
-                                <div class="border-2"></div>
-                                <div class="border-3"></div>
-                                <div class="border-4"></div>
-                                <div class="s-img-1"><img src="assets/images/slider/shape3.png" alt=""></div>
-                                <div class="s-img-2"><img src="assets/images/slider/shape4.png" alt=""></div>
-                            </div>
-                        </div>
-                    </div> <!-- end slide-inner -->
-                </div> <!-- end swiper-slide -->
-
-                <div class="swiper-slide">
-                    <div class="slide-inner slide-bg-image" data-background="assets/images/slider/slide-5.jpg">
-                        <!-- <div class="gradient-overlay"></div> -->
-                        <div class="container-fluid">
-                            <div class="slide-content">
-                                <div data-swiper-parallax="300" class="slide-title">
-                                    <h2>Sarah & Daniel</h2>
-                                </div>
-                                <div data-swiper-parallax="400" class="slide-text">
-                                    <p>We Are Getting Married Nov 22,2021</p>
-                                </div>
-                                <div class="border-1"></div>
-                                <div class="border-2"></div>
-                                <div class="border-3"></div>
-                                <div class="border-4"></div>
-                                <div class="s-img-1"><img src="assets/images/slider/shape3.png" alt=""></div>
-                                <div class="s-img-2"><img src="assets/images/slider/shape4.png" alt=""></div>
-                            </div>
-                        </div>
-                    </div> <!-- end slide-inner -->
-                </div> <!-- end swiper-slide -->
-
-                <div class="swiper-slide">
-                    <div class="slide-inner slide-bg-image" data-background="assets/images/slider/slide-6.jpg">
-                        <!-- <div class="gradient-overlay"></div> -->
-                        <div class="container-fluid">
-                            <div class="slide-content">
-                                <div data-swiper-parallax="300" class="slide-title">
-                                    <h2>Sarah & Daniel</h2>
-                                </div>
-                                <div data-swiper-parallax="400" class="slide-text">
-                                    <p>We Are Getting Married Nov 22,2021</p>
-                                </div>
-                                <div class="border-1"></div>
-                                <div class="border-2"></div>
-                                <div class="border-3"></div>
-                                <div class="border-4"></div>
-                                <div class="s-img-1"><img src="assets/images/slider/shape3.png" alt=""></div>
-                                <div class="s-img-2"><img src="assets/images/slider/shape4.png" alt=""></div>
-                            </div>
-                        </div>
-                    </div> <!-- end slide-inner -->
-                </div> <!-- end swiper-slide -->
-            </div>
-            <!-- end swiper-wrapper -->
-
-            <!-- swipper controls -->
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide" v-for="slide in event.banners">
+            <div class="slide-inner slide-bg-image" :data-background="slide.image">
+              <!-- <div class="gradient-overlay"></div> -->
+              <div class="container-fluid">
+                <div class="slide-content">
+                  <div data-swiper-parallax="300" class="slide-title">
+                    <h2>{{ event.bride.first_name }} & {{ event.groom.first_name }}</h2>
+                  </div>
+                  <div data-swiper-parallax="400" class="slide-text">
+                    <p>Nos casamos {{ event.event_date | moment('MMM DD,YYYY') }}</p>
+                  </div>
+                  <div class="border-1"></div>
+                  <div class="border-2"></div>
+                  <div class="border-3"></div>
+                  <div class="border-4"></div>
+                  <div class="s-img-1"><img src="assets/images/slider/shape3.png" alt=""></div>
+                  <div class="s-img-2"><img src="assets/images/slider/shape4.png" alt=""></div>
+                </div>
+              </div>
+            </div> <!-- end slide-inner -->
+          </div> <!-- end swiper-slide -->
         </div>
+        <!-- end swiper-wrapper -->
+
+        <!-- swipper controls -->
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+      </div>
     </section>
     <!-- end of wpo-hero-slide-section-->
     <!-- start wpo-wedding-date -->
     <section class="wpo-wedding-date section-padding">
-        <h2 class="hidden">some</h2>
-        <div class="container">
-            <div class="row">
-                <div class="col col-xs-12">
-                    <div class="clock-grids">
-                        <div id="clock"></div>
-                    </div>
-                </div>
+      <h2 class="hidden">some</h2>
+      <div class="container">
+        <div class="row">
+          <div class="col col-xs-12">
+            <div class="clock-grids">
+              <div id="clock"></div>
             </div>
-        </div> <!-- end container -->
+          </div>
+        </div>
+      </div> <!-- end container -->
     </section>
     <!-- end wpo-wedding-date -->
     <!-- start couple-section -->
@@ -100,36 +56,38 @@
                 <div class="col col-xs-12">
                     <div class="couple-area clearfix">
                         <div class="text-grid bride">
-                            <div class="couple-img">
-                                <img src="assets/images/couple/2.jpg" alt="">
-                            </div>
-                            <h3>Daniel Oliver</h3>
-                            <p>Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis give you com of system. </p>
-                            <div class="social">
-                                <ul>
-                                    <li><a href="#"><i class="ti-facebook"></i></a></li>
-                                    <li><a href="#"><i class="ti-twitter-alt"></i></a></li>
-                                    <li><a href="#"><i class="ti-instagram"></i></a></li>
-                                </ul>
-                            </div>
+                          <div class="couple-img">
+                            <img :src="event.bride.avatar" alt="">
+                          </div>
+                          <h3>{{ event.bride.full_name }}</h3>
+                          <p>{{ event.bride.biography }}</p>
+                          <div class="social">
+                            <ul>
+                              <li v-if="event.bride_facebook"><a :href="event.bride_facebook" target="_blank"><i class="ti-facebook"></i></a></li>
+                              <li v-if="event.bride_twitter"><a :href="event.bride_twitter" target="_blank"><i class="ti-twitter-alt"></i></a></li>
+                              <li v-if="event.bride_instagram"><a :href="event.bride_instagram" target="_blank"><i class="ti-instagram"></i></a></li>
+                              <li v-if="event.bride_whatsapp"><a :href="event.bride_whatsapp" target="_blank"><i class="fa fa-whatsapp"></i></a></li>
+                            </ul>
+                          </div>
                         </div>
                         <div class="middle-couple-pic">
-                            <img src="assets/images/couple/1.jpg" alt="">
-                            <div class="frame-img"><img src="assets/images/couple/shape.png" alt=""></div>
+                          <img :src="event.couple_image" alt="">
+                          <div class="frame-img"><img src="assets/images/couple/shape.png" alt=""></div>
                         </div>
                         <div class="text-grid groom">
-                            <div class="couple-img">
-                                <img src="assets/images/couple/3.jpg" alt="">
-                            </div>
-                            <h3>Sarah Margrate</h3>
-                            <p>Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis give you com of system. </p>
-                            <div class="social">
-                                <ul>
-                                    <li><a href="#"><i class="ti-facebook"></i></a></li>
-                                    <li><a href="#"><i class="ti-twitter-alt"></i></a></li>
-                                    <li><a href="#"><i class="ti-instagram"></i></a></li>
-                                </ul>
-                            </div>
+                          <div class="couple-img">
+                            <img :src="event.groom.avatar" alt="">
+                          </div>
+                          <h3>{{ event.groom.full_name }}</h3>
+                          <p>{{ event.groom.biography }}</p>
+                          <div class="social">
+                            <ul>
+                              <li v-if="event.groom_facebook"><a :href="event.groom_facebook" target="_blank"><i class="ti-facebook"></i></a></li>
+                              <li v-if="event.groom_twitter"><a :href="event.groom_twitter" target="_blank"><i class="ti-twitter-alt"></i></a></li>
+                              <li v-if="event.groom_instagram"><a :href="event.groom_instagram" target="_blank"><i class="ti-instagram"></i></a></li>
+                              <li v-if="event.groom_whatsapp"><a :href="event.groom_whatsapp" target="_blank"><i class="fa fa-whatsapp"></i></a></li>
+                            </ul>
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -137,56 +95,73 @@
         </div> <!-- end container -->
     </section>
     <!-- end couple-section -->
-    <!-- start wpo-video-section -->
-    <section class="wpo-video-section-s2">
-        <h2 class="hidden">some</h2>
-        <div class="wpo-video-item">
-            <div class="wpo-video-img">
-                <img src="assets/images/cta2.jpg" alt="">
-                <a href="https://www.youtube.com/embed/teLhLLlhfzc" class="video-btn" data-type="iframe"><i
-                        class="fi flaticon-play"></i></a>
-            </div>
-        </div>
-    </section>
-    <!-- end wpo-video-section-->
 
     <!-- start story-section -->
     <section class="story-section section-padding" id="story">
-        <div class="container">
-            <div class="row">
-                <div class="wpo-section-title-s2">
-                    <div class="section-title-simg">
-                        <img src="assets/images/section-title2.png" alt="">
-                    </div>
-                    <h2>Our Love Story</h2>
-                    <div class="section-title-img">
-                        <div class="round-ball"></div>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="row">
+          <div class="wpo-section-title-s2">
+            <div class="section-title-simg">
+              <img src="assets/images/section-title2.png" alt="">
             </div>
+            <h2>Our Love Story</h2>
+            <div class="section-title-img">
+              <div class="round-ball"></div>
+            </div>
+          </div>
+        </div>
 
-            <div class="row">
-                <div class="col col-xs-12">
-                    <div class="story-timeline">
-                        <div class="round-shape"></div>
-                        <div class="row">
-                            <div class="col col-lg-6 col-12">
-                                <div class="story-text right-align-text">
-                                    <h3>First time we meet</h3>
-                                    <span class="date">Nov 12,2021</span>
-                                    <p>I must explain to you how all this mistaken idea of denouing pleasure and praising pain was born and I will give you com acount of system,the actual teach</p>
-                                </div>
-                            </div>
-                            <div class="col col-lg-6 col-12">
-                                <div class="img-holder">
-                                    <img src="assets/images/story/1.jpg" alt class="img img-responsive">
-                                    <div class="story-shape-img">
-                                        <img src="assets/images/story/shape.png" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
+        <div class="row">
+          <div class="col col-xs-12">
+            <div class="story-timeline">
+              <div class="round-shape"></div>
+              <div class="row" v-for="(history, history_i) in event.history" :key="history_i">
+                <template v-if="(history_i % 2) == 0">
+                  <div class="col col-lg-6 col-12" :class="{ 'text-holder right-heart': history_i > 0 }">
+                    <span class="heart">
+                      <i class="md-icon">{{ history.icon }}</i>
+                    </span>
+                    <div class="story-text right-align-text">
+                      <h3>{{ history.title }}</h3>
+                      <span class="date">{{ history.date_time | moment('MMM DD,YYYY') }}</span>
+                      <p v-if="history.description">{{ history.description }}</p>
+                    </div>
+                  </div>
+                  <div class="col col-lg-6 col-12">
+                    <div class="img-holder">
+                      <div class="img-holder-container">
+                        <img :src="history.image" alt class="img img-responsive" />
+                      </div>
+                      <div class="story-shape-img">
+                        <img src="assets/images/story/shape.png" alt="">
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="col col-lg-6 col-12">
+                    <div class="img-holder right-align-text left-site">
+                      <div class="img-holder-container">
+                        <img :src="history.image" alt class="img img-responsive">
+                      </div>
+                      <div class="story-shape-img">
+                        <img src="assets/images/story/shape.png" alt="">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col col-lg-6 col-12 text-holder">
+                    <span class="heart">
+                      <i class="md-icon">{{ history.icon }}</i>
+                    </span>
+                    <div class="story-text">
+                      <h3>{{ history.title }}</h3>
+                      <span class="date">{{ history.date_time | moment('MMM DD,YYYY') }}</span>
+                      <p v-if="history.description">{{ history.description }}</p>
+                    </div>
+                  </div>
+                </template>
+              </div>
+                        <!-- <div class="row">
                             <div class="col col-lg-6 col-12">
                                 <div class="img-holder right-align-text left-site">
                                     <img src="assets/images/story/2.jpg" alt class="img img-responsive">
@@ -245,18 +220,19 @@
                                     <p>I must explain to you how all this mistaken idea of denouing pleasure and praising pain was born and I will give you com acount of system,the actual teach</p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col offset-lg-6 col-lg-6 col-12 text-holder">
-                                <span class="heart">
-                                    <i class="fi flaticon-wedding-rings"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                        </div> -->
+
+              <div class="row">
+                <div class="col offset-lg-6 col-lg-6 col-12 text-holder">
+                  <span class="heart">
+                    <i class="fi flaticon-wedding-rings"></i>
+                  </span>
                 </div>
-            </div> <!-- end row -->
-        </div> <!-- end container -->
+              </div>
+            </div>
+          </div>
+        </div> <!-- end row -->
+      </div> <!-- end container -->
     </section>
     <!-- end story-section -->
 
@@ -631,83 +607,120 @@
 </template>
 
 <script>
-import FindForm from './components/find-form'
-import Discover from './components/discover'
-import Carousel from './components/carousel'
-import FindList from './components/find-list'
-import AppSection from './components/app-section'
+  import FindForm from './components/find-form'
+  import Discover from './components/discover'
+  import Carousel from './components/carousel'
+  import FindList from './components/find-list'
+  import AppSection from './components/app-section'
 
-export default {
-  props: {
-  },
-  components: { 
-    FindForm,
-    Discover,
-    Carousel,
-    FindList,
-    AppSection
-  },
-  mounted() {
-    var interleaveOffset = 0.5;
-    
-    var swiperOptions = {
-        loop: true,
-        speed: 1000,
-        parallax: true,
-        autoplay: {
-            delay: 6500,
-            disableOnInteraction: false,
-        },
-        watchSlidesProgress: true,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
+  import { mapGetters, mapMutations, mapActions } from 'vuex'
 
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-
-        on: {
-            progress: function() {
-                var swiper = this;
-                for (var i = 0; i < swiper.slides.length; i++) {
-                    var slideProgress = swiper.slides[i].progress;
-                    var innerOffset = swiper.width * interleaveOffset;
-                    var innerTranslate = slideProgress * innerOffset;
-                    swiper.slides[i].querySelector(".slide-inner").style.transform =
-                    "translate3d(" + innerTranslate + "px, 0, 0)";
-                }      
+  export default {
+    props: {
+    },
+    watch: {
+      'stillLoading'(val) {
+        if (val == false) {
+          this.ready()
+        }
+      }
+    },
+    components: { 
+      FindForm,
+      Discover,
+      Carousel,
+      FindList,
+      AppSection
+    },
+    computed: {
+      ...mapGetters([
+        'stillLoading',
+        'settings',
+        'event'
+      ])
+    },
+    methods: {
+      ready() {
+        var interleaveOffset = 0.5;
+      
+        var swiperOptions = {
+            loop: true,
+            speed: 1000,
+            parallax: true,
+            autoplay: {
+                delay: 6500,
+                disableOnInteraction: false,
+            },
+            watchSlidesProgress: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
             },
 
-            touchStart: function() {
-              var swiper = this;
-              for (var i = 0; i < swiper.slides.length; i++) {
-                swiper.slides[i].style.transition = "";
-              }
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
             },
 
-            setTransition: function(speed) {
-                var swiper = this;
-                for (var i = 0; i < swiper.slides.length; i++) {
-                    swiper.slides[i].style.transition = speed + "ms";
-                    swiper.slides[i].querySelector(".slide-inner").style.transition =
-                    speed + "ms";
+            on: {
+                progress: function() {
+                    var swiper = this;
+                    for (var i = 0; i < swiper.slides.length; i++) {
+                        var slideProgress = swiper.slides[i].progress;
+                        var innerOffset = swiper.width * interleaveOffset;
+                        var innerTranslate = slideProgress * innerOffset;
+                        swiper.slides[i].querySelector(".slide-inner").style.transform =
+                        "translate3d(" + innerTranslate + "px, 0, 0)";
+                    }      
+                },
+
+                touchStart: function() {
+                  var swiper = this;
+                  for (var i = 0; i < swiper.slides.length; i++) {
+                    swiper.slides[i].style.transition = "";
+                  }
+                },
+
+                setTransition: function(speed) {
+                    var swiper = this;
+                    for (var i = 0; i < swiper.slides.length; i++) {
+                        swiper.slides[i].style.transition = speed + "ms";
+                        swiper.slides[i].querySelector(".slide-inner").style.transition =
+                        speed + "ms";
+                    }
                 }
             }
-        }
-    };
+        };
 
-    var swiper = new Swiper(".swiper-container", swiperOptions);
+        var swiper = new Swiper(".swiper-container", swiperOptions);
 
-    // DATA BACKGROUND IMAGE
-    var sliderBgSetting = $(".slide-bg-image");
-    sliderBgSetting.each(function(indx){
-        if ($(this).attr("data-background")){
+        // DATA BACKGROUND IMAGE
+        var sliderBgSetting = $(".slide-bg-image");
+        sliderBgSetting.each(function(indx) {
+          if ($(this).attr("data-background")) {
             $(this).css("background-image", "url(" + $(this).data("background") + ")");
+          }
+        });
+
+        if (jQuery("#clock").length) {
+          jQuery('#clock').countdown(this.$moment(this.event.event_date).toDate(), function(event) {
+            var $this = jQuery(this).html(event.strftime(''
+            + '<div class="box"><div><div class="time">%m</div> <span>Meses</span> </div></div>'
+            + '<div class="box"><div><div class="time">%D</div> <span>Dias</span> </div></div>'
+            + '<div class="box"><div><div class="time">%H</div> <span>Horas</span> </div></div>'
+            + '<div class="box"><div><div class="time">%M</div> <span>Minutos</span> </div></div>'
+            + '<div class="box"><div><div class="time">%S</div> <span>Segundos</span> </div></div>'));
+          });
         }
-    });
+      }
+    },
+    mounted() {
+      this.ready()
+    }
   }
-}
 </script>
+<style lang="scss">
+  .slide-text {
+    text-transform: capitalize;
+  }
+</style>
