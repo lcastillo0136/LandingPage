@@ -5106,8 +5106,7 @@ static-hero-s4
 .wpo-portfolio-section-s2 .portfolio-grids .grid,
 .wpo-portfolio-section-s3 .portfolio-grids .grid,
 .wpo-portfolio-section-s4 .portfolio-grids .grid {
-  width: 25%;
-  float: left;
+  
   padding: 0 7.5px 15px;
 }
 @media (max-width: 1500px) {
@@ -5130,7 +5129,7 @@ static-hero-s4
 .wpo-portfolio-section-s2 .portfolio-grids .grid:last-child,
 .wpo-portfolio-section-s3 .portfolio-grids .grid:last-child,
 .wpo-portfolio-section-s4 .portfolio-grids .grid:last-child {
-  width: 50%;
+  
 }
 @media (max-width: 1199px) {
   .wpo-portfolio-section .portfolio-grids .grid:last-child,
@@ -5145,7 +5144,7 @@ static-hero-s4
 .wpo-portfolio-section-s2 .portfolio-grids .grid,
 .wpo-portfolio-section-s3 .portfolio-grids .grid,
 .wpo-portfolio-section-s4 .portfolio-grids .grid {
-    width: 50%;
+    
   }
 }
 @media (max-width: 600px) {
@@ -6843,7 +6842,7 @@ static-hero-s4
 }
 .wpo-portfolio-section-s2 .portfolio-grids .grid:first-child,
 .wpo-portfolio-section-s4 .portfolio-grids .grid:first-child {
-  width: 50%;
+  
 }
 @media (max-width: 1200px) {
   .wpo-portfolio-section-s2 .portfolio-grids .grid:first-child,
@@ -6853,7 +6852,7 @@ static-hero-s4
 }
 .wpo-portfolio-section-s2 .portfolio-grids .grid:last-child,
 .wpo-portfolio-section-s4 .portfolio-grids .grid:last-child {
-  width: 50%;
+  
 }
 @media (max-width: 1200px) {
   .wpo-portfolio-section-s2 .portfolio-grids .grid:last-child,
@@ -6884,7 +6883,7 @@ static-hero-s4
   max-height: 460px;
 }
 .wpo-portfolio-section-s4 .portfolio-grids .grid:nth-child(6) {
-  width: 50%;
+  
 }
 @media (max-width: 1200px) {
   .wpo-portfolio-section-s4 .portfolio-grids .grid:nth-child(6) {
@@ -6892,7 +6891,7 @@ static-hero-s4
   }
 }
 .wpo-portfolio-section-s4 .portfolio-grids .grid:nth-child(7) {
-  width: 50%;
+  
 }
 @media (max-width: 1200px) {
   .wpo-portfolio-section-s4 .portfolio-grids .grid:nth-child(7) {
@@ -6900,11 +6899,11 @@ static-hero-s4
   }
 }
 .wpo-portfolio-section-s4 .portfolio-grids .grid:last-child {
-  width: 25%;
+  
 }
 @media (max-width: 1199px) {
   .wpo-portfolio-section-s4 .portfolio-grids .grid:last-child {
-    width: 50%;
+    
   }
 }
 @media (max-width: 600px) {
@@ -7047,11 +7046,11 @@ static-hero-s4
   padding-bottom: 0;
 }
 .wpo-portfolio-section-s3 .portfolio-grids .grid {
-  width: 33.33%;
+  
 }
 @media (max-width: 991px) {
   .wpo-portfolio-section-s3 .portfolio-grids .grid {
-    width: 50%;
+    
   }
 }
 @media (max-width: 575px) {
@@ -7060,11 +7059,11 @@ static-hero-s4
   }
 }
 .wpo-portfolio-section-s3 .portfolio-grids .grid:last-child {
-  width: 33.33%;
+  
 }
 @media (max-width: 991px) {
   .wpo-portfolio-section-s3 .portfolio-grids .grid:last-child {
-    width: 50%;
+    
   }
 }
 @media (max-width: 575px) {

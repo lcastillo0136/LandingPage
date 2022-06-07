@@ -104,7 +104,7 @@
             <div class="section-title-simg">
               <img src="assets/images/section-title2.png" alt="">
             </div>
-            <h2>Our Love Story</h2>
+            <h2>Nuestra historia de amor</h2>
             <div class="section-title-img">
               <div class="round-ball"></div>
             </div>
@@ -118,7 +118,7 @@
               <div class="row" v-for="(history, history_i) in event.history" :key="history_i">
                 <template v-if="(history_i % 2) == 0">
                   <div class="col col-lg-6 col-12" :class="{ 'text-holder right-heart': history_i > 0 }">
-                    <span class="heart">
+                    <span class="heart" v-if="history_i > 0 ">
                       <i class="md-icon">{{ history.icon }}</i>
                     </span>
                     <div class="story-text right-align-text">
@@ -161,67 +161,6 @@
                   </div>
                 </template>
               </div>
-                        <!-- <div class="row">
-                            <div class="col col-lg-6 col-12">
-                                <div class="img-holder right-align-text left-site">
-                                    <img src="assets/images/story/2.jpg" alt class="img img-responsive">
-                                    <div class="story-shape-img">
-                                        <img src="assets/images/story/shape.png" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col col-lg-6 col-12 text-holder">
-                                <span class="heart">
-                                    <i class="fi flaticon-heart"></i>
-                                </span>
-                                <div class="story-text">
-                                    <h3>First Date</h3>
-                                    <span class="date">Dec 25,2021</span>
-                                    <p>I must explain to you how all this mistaken idea of denouing pleasure and praising pain was born and I will give you com acount of system,the actual teach</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col col-lg-6 col-12 text-holder right-heart">
-                                <span class="heart">
-                                    <i class="fi flaticon-calendar"></i>
-                                </span>
-                                <div class="story-text right-align-text">
-                                    <h3>Marriage Proposal</h3>
-                                    <span class="date">Nov 12,2021</span>
-                                    <p>I must explain to you how all this mistaken idea of denouing pleasure and praising pain was born and I will give you com acount of system,the actual teach</p>
-                                </div>
-                            </div>
-                            <div class="col col-lg-6 col-12">
-                                <div class="img-holder right-align-text">
-                                    <img src="assets/images/story/3.jpg" alt class="img img-responsive">
-                                    <div class="story-shape-img">
-                                        <img src="assets/images/story/shape.png" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col col-lg-6 col-12">
-                                <div class="img-holder video-holder left-site">
-                                    <img src="assets/images/story/4.jpg" alt class="img img-responsive">
-                                    <div class="story-shape-img">
-                                        <img src="assets/images/story/shape.png" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col col-lg-6 col-12 text-holder">
-                                <span class="heart">
-                                    <i class="fi flaticon-dove"></i>
-                                </span>
-                                <div class="story-text">
-                                    <h3>Our Engagement</h3>
-                                    <span class="date">Dec 25,2021</span>
-                                    <p>I must explain to you how all this mistaken idea of denouing pleasure and praising pain was born and I will give you com acount of system,the actual teach</p>
-                                </div>
-                            </div>
-                        </div> -->
-
               <div class="row">
                 <div class="col offset-lg-6 col-lg-6 col-12 text-holder">
                   <span class="heart">
@@ -238,88 +177,51 @@
 
     <!-- start wpo-portfolio-section -->
     <section class="wpo-portfolio-section-s2 section-padding" id="gallery">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="wpo-section-title-s2">
-                    <div class="section-title-simg">
-                        <img src="assets/images/section-title2.png" alt="">
-                    </div>
-                    <h2>Sweet Moments</h2>
-                    <div class="section-title-img">
-                        <div class="round-ball"></div>
-                    </div>
-                </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="wpo-section-title-s2">
+            <div class="section-title-simg">
+              <img src="assets/images/section-title2.png" alt="">
             </div>
-            <div class="sortable-gallery">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="portfolio-grids gallery-container clearfix">
-                            <div class="grid">
-                                <div class="img-holder">
-                                    <a href="assets/images/portfolio/7.jpg" class="fancybox" data-fancybox-group="gall-1">
-                                        <img src="assets/images/portfolio/7.jpg" alt class="img img-responsive">
-                                        <div class="hover-content">
-                                            <i class="ti-plus"></i>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="grid">
-                                <div class="img-holder">
-                                    <a href="assets/images/portfolio/8.jpg" class="fancybox" data-fancybox-group="gall-1">
-                                        <img src="assets/images/portfolio/8.jpg" alt class="img img-responsive">
-                                        <div class="hover-content">
-                                            <i class="ti-plus"></i>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="grid">
-                                <div class="img-holder">
-                                    <a href="assets/images/portfolio/9.jpg" class="fancybox" data-fancybox-group="gall-1">
-                                        <img src="assets/images/portfolio/9.jpg" alt class="img img-responsive">
-                                        <div class="hover-content">
-                                            <i class="ti-plus"></i>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="grid">
-                                <div class="img-holder">
-                                    <a href="assets/images/portfolio/10.jpg" class="fancybox" data-fancybox-group="gall-1">
-                                        <img src="assets/images/portfolio/10.jpg" alt class="img img-responsive">
-                                        <div class="hover-content">
-                                            <i class="ti-plus"></i>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="grid">
-                                <div class="img-holder">
-                                    <a href="assets/images/portfolio/11.jpg" class="fancybox" data-fancybox-group="gall-1">
-                                        <img src="assets/images/portfolio/11.jpg" alt class="img img-responsive">
-                                        <div class="hover-content">
-                                            <i class="ti-plus"></i>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="grid">
-                                <div class="img-holder">
-                                    <a href="assets/images/portfolio/12.jpg" class="fancybox" data-fancybox-group="gall-1">
-                                        <img src="assets/images/portfolio/12.jpg" alt class="img img-responsive">
-                                        <div class="hover-content">
-                                            <i class="ti-plus"></i>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <h2>Momentos increibles</h2>
+            <div class="section-title-img">
+              <div class="round-ball"></div>
             </div>
-
-        </div> <!-- end container -->
+          </div>
+        </div>
+        <div class="sortable-gallery">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="portfolio-grids gallery-container clearfix">
+                <!-- <div class="grid" v-for="picture in event.album">
+                  <div class="img-holder">
+                    <a :href="picture.image" class="fancybox" data-fancybox-group="gall-1">
+                      <img v-lazy="picture.image" alt class="img img-responsive" >
+                      <div class="hover-content">
+                        <i class="ti-plus"></i>
+                      </div>
+                    </a>
+                  </div>
+                </div> -->
+                <masonry-wall :items="galleryItems" :padding="16">
+                  <template #default="{ item, index }">
+                    <div class="grid">
+                      <div class="img-holder">
+                        <a :href="item.image" class="fancybox" data-fancybox-group="gall-1">
+                          <img v-lazy="item.image" alt class="img img-responsive" >
+                          <div class="hover-content">
+                            <i class="ti-plus"></i>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </template>
+                </masonry-wall>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end container -->
     </section>
     <!-- end wpo-portfolio-section -->
 
@@ -615,12 +517,19 @@
 
   import { mapGetters, mapMutations, mapActions } from 'vuex'
 
+  import * as _ from 'lodash'
+
   export default {
+    data() {
+      return {
+        gallery: []
+      }
+    },
     props: {
     },
     watch: {
       'stillLoading'(val) {
-        if (val == false) {
+        if (val === false) {
           this.ready()
         }
       }
@@ -637,10 +546,31 @@
         'stillLoading',
         'settings',
         'event'
-      ])
+      ]),
+      galleryItems() {
+        return _.first(_.chunk(_.values(this.event.album), 10))
+      }
     },
     methods: {
       ready() {
+        this.gallery = [];
+
+        // this.event && _.each(this.event.album, ((g, g1) => {
+        //   setTimeout(() => {
+        //     this.gallery.push({ ...g });
+        //   }, g1 * 60 * 2 * 4)
+        // }))
+
+        this.$nextTick().then(() => {
+          setTimeout(() => {
+            jQuery(".fancybox").fancybox({
+              openEffect  : "elastic",
+              closeEffect : "elastic",
+              wrapCSS     : "project-fancybox-title-style"
+            });
+          }, 2000)
+        })
+
         var interleaveOffset = 0.5;
       
         var swiperOptions = {
@@ -712,6 +642,8 @@
             + '<div class="box"><div><div class="time">%S</div> <span>Segundos</span> </div></div>'));
           });
         }
+
+        loadjQueryPlugins(jQuery)
       }
     },
     mounted() {

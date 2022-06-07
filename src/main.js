@@ -17,6 +17,9 @@ import DisableAutocomplete from 'vue-disable-autocomplete';
 import VueVideoPlayer from 'vue-video-player'
 import VueNativeNotification from './plugins/VueNativeNotification'
 import AudioPlayer from '@liripeng/vue-audio-player'
+import VueLazyload from 'vue-lazyload'
+import MasonryWall from '@yeger/vue2-masonry-wall'
+
 
 import iView from 'iview';
 import i18n from '@/locale'
@@ -51,6 +54,7 @@ Vue.use(VueSweetalert2);
 Vue.use(PerfectScrollbar)
 
 Vue.use(Antd)
+Vue.use(VueLazyload)
 
 Vue.use(VueWow)
 Vue.use(Moment, {
@@ -61,6 +65,7 @@ Vue.use(DisableAutocomplete)
 Vue.use(iView);
 Vue.use(VueVideoPlayer)
 Vue.use(AudioPlayer)
+Vue.use(MasonryWall)
 
 Vue.use(VueNativeNotification, {
   requestOnNotify: true
