@@ -13,7 +13,7 @@
                     <h2>{{ event.bride.first_name }} & {{ event.groom.first_name }}</h2>
                   </div>
                   <div data-swiper-parallax="400" class="slide-text">
-                    <p>Nos casamos {{ event.event_date | moment('MMM DD,YYYY') }}</p>
+                    <p>Nos casamos el <span>{{ event.event_date | moment('MMM DD,YYYY') }}</span></p>
                   </div>
                   <div class="border-1"></div>
                   <div class="border-2"></div>
@@ -241,18 +241,18 @@
               </div>
               <div>
                 <select name="service" class="form-control">
-                  <option disabled="disabled" selected>Services</option>
-                  <option>Photography</option>
-                  <option>The Rehearsal Dinner</option>
-                  <option>The Afterparty</option>
-                  <option>Videographers</option>
-                  <option>Perfect Cake</option>
-                  <option>All Of The Above</option>
+                  <option disabled="disabled" selected>Servicios</option>
+                  <option>Fotografia</option>
+                  <option>La cena de ensayo</option>
+                  <option>El Afterparty</option>
+                  <option>Videógrafos</option>
+                  <option>pastel perfecto</option>
+                  <option>Todas las anteriores</option>
                 </select>
               </div>
               <div>
                 <select name="guest" class="form-control">
-                  <option disabled="disabled" selected>Number Of Guests</option>
+                  <option disabled="disabled" selected>Numero de invitados</option>
                   <option>01</option>
                   <option>02</option>
                   <option>03</option>
@@ -262,22 +262,22 @@
               </div>
               <div>
                 <select name="meal" class="form-control last">
-                  <option disabled="disabled" selected>Meal Preferences</option>
-                  <option>Chicken Soup</option>
-                  <option>Motton Kabab</option>
-                  <option>Chicken BBQ</option>
-                  <option>Mix Salad</option>
-                  <option>Beef Ribs </option>
+                  <option disabled="disabled" selected>Preferencias de comidas</option>
+                  <option>Sopa de pollo</option>
+                  <option>Mutton Kabab</option>
+                  <option>barbacoa de pollo</option>
+                  <option>Ensalada Mixta</option>
+                  <option>Costillas De Ternera </option>
                 </select>
               </div>
               <div class="submit-area">
-                <button type="submit" class="theme-btn-s3">Send An Inquiry</button>
+                <button type="submit" class="theme-btn-s3">Enviar</button>
                 <div id="c-loader">
                   <i class="ti-reload"></i>
                 </div>
               </div>
               <div class="clearfix error-handling-messages">
-                <div id="success">Thank you</div>
+                <div id="success">Gracias</div>
                 <div id="error"> Error occurred while sending email. Please try again later.
                 </div>
               </div>
@@ -294,21 +294,6 @@
       </div>
     </section>
     <!-- end of wpo-contact-section -->
-
-
-    <!-- start wpo-cta-section -->
-
-    <div class="wpo-cta-section-s3">
-      <div class="conatiner-fluid">
-        <div class="wpo-cta-item">
-          <h2>Adventure Begins</h2>
-          <p>Nov 22,2021, Wedding Unity Center, road 525 USA</p>
-          <a class="theme-btn-s2" href="contact.html">View Details</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- end wpo-cta-section -->
 
     <!-- start wpo-event-section -->
     <section class="wpo-event-section section-padding" id="event">
@@ -503,6 +488,8 @@
 </script>
 <style lang="scss">
   .slide-text {
-    text-transform: capitalize;
+    span {
+      text-transform: capitalize;
+    }
   }
 </style>

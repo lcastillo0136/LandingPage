@@ -351,7 +351,7 @@ img {
 
 /** for popup image ***/
 .mfp-wrap {
-  background-color: rgba(0, 0, 0, 0.6);
+  
   z-index: 99999;
 }
 
@@ -377,7 +377,7 @@ img {
 
 /*** for fancybox video ***/
 .fancybox-overlay {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 9999 !important;
 }
 
@@ -6366,8 +6366,8 @@ static-hero-s4
 }
 .couple-section .middle-couple-pic .frame-img {
   position: absolute;
-  left: -54px;
-  top: -54px;
+  left: -53px;
+  top: -35px;
   width: 130%;
   height: 130%;
 }

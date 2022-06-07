@@ -245,6 +245,16 @@ function loadjQueryPlugins($) {
     /*------------------------------------------
         = STICKY HEADER
     -------------------------------------------*/
+// Function for clone an element for sticky menu
+    function cloneNavForSticyMenu($ele, $newElmClass) {
+        $ele.addClass('original').clone().insertAfter($ele).addClass($newElmClass).removeClass('original');
+    }
+
+    // clone home style 1 navigation for sticky menu
+    if ($('.wpo-site-header .navigation').length && !$('.wpo-site-header .navigation.sticky-header').length) {
+      cloneNavForSticyMenu($('.wpo-site-header .navigation'), "sticky-header");
+      console.log("entro de nuevo");
+    }
 
     var lastScrollTop = '';
 
@@ -744,6 +754,35 @@ function loadjQueryPlugins($) {
 
         });
     }
+
+    /*==========================================================================
+        WHEN WINDOW SCROLL
+    ==========================================================================*/
+    $(window).on("scroll", function() {
+
+      if ($(".wpo-site-header").length) {
+        stickyMenu( $('.wpo-site-header .navigation'), "sticky-on" );
+      }
+
+      toggleBackToTopBtn();
+
+      // activeMenuItem($(".navigation-holder"));
+
+    });
+
+
+    /*==========================================================================
+        WHEN WINDOW RESIZE
+    ==========================================================================*/
+    $(window).on("resize", function() {
+        toggleClassForSmallNav();
+        //smallNavFunctionality();
+
+        clearTimeout($.data(this, 'resizeTimer'));
+        $.data(this, 'resizeTimer', setTimeout(function() {
+            smallNavFunctionality();
+        }, 200));
+    });
 
      // color-variation
 
