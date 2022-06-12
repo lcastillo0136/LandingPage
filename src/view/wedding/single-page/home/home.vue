@@ -51,48 +51,48 @@
     <!-- end wpo-wedding-date -->
     <!-- start couple-section -->
     <section class="couple-section section-padding" id="couple">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col col-xs-12">
-                    <div class="couple-area clearfix">
-                        <div class="text-grid bride">
-                          <div class="couple-img">
-                            <img :src="event.bride.avatar" alt="">
-                          </div>
-                          <h3>{{ event.bride.full_name }}</h3>
-                          <p>{{ event.bride.biography }}</p>
-                          <div class="social">
-                            <ul>
-                              <li v-if="event.bride_facebook"><a :href="event.bride_facebook" target="_blank"><i class="ti-facebook"></i></a></li>
-                              <li v-if="event.bride_twitter"><a :href="event.bride_twitter" target="_blank"><i class="ti-twitter-alt"></i></a></li>
-                              <li v-if="event.bride_instagram"><a :href="event.bride_instagram" target="_blank"><i class="ti-instagram"></i></a></li>
-                              <li v-if="event.bride_whatsapp"><a :href="event.bride_whatsapp" target="_blank"><i class="fa fa-whatsapp"></i></a></li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div class="middle-couple-pic">
-                          <img :src="event.couple_image" alt="">
-                          <div class="frame-img"><img src="assets/images/couple/shape.png" alt=""></div>
-                        </div>
-                        <div class="text-grid groom">
-                          <div class="couple-img">
-                            <img :src="event.groom.avatar" alt="">
-                          </div>
-                          <h3>{{ event.groom.full_name }}</h3>
-                          <p>{{ event.groom.biography }}</p>
-                          <div class="social">
-                            <ul>
-                              <li v-if="event.groom_facebook"><a :href="event.groom_facebook" target="_blank"><i class="ti-facebook"></i></a></li>
-                              <li v-if="event.groom_twitter"><a :href="event.groom_twitter" target="_blank"><i class="ti-twitter-alt"></i></a></li>
-                              <li v-if="event.groom_instagram"><a :href="event.groom_instagram" target="_blank"><i class="ti-instagram"></i></a></li>
-                              <li v-if="event.groom_whatsapp"><a :href="event.groom_whatsapp" target="_blank"><i class="fa fa-whatsapp"></i></a></li>
-                            </ul>
-                          </div>
-                        </div>
-                    </div>
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col col-xs-12">
+            <div class="couple-area clearfix">
+              <div class="text-grid bride">
+                <div class="couple-img">
+                  <img :src="event.bride.avatar" alt="">
                 </div>
+                <h3>{{ event.bride.full_name }}</h3>
+                <p>{{ event.bride.biography }}</p>
+                <div class="social">
+                  <ul>
+                    <li v-if="event.bride_facebook"><a :href="event.bride_facebook" target="_blank"><i class="ti-facebook"></i></a></li>
+                    <li v-if="event.bride_twitter"><a :href="event.bride_twitter" target="_blank"><i class="ti-twitter-alt"></i></a></li>
+                    <li v-if="event.bride_instagram"><a :href="event.bride_instagram" target="_blank"><i class="ti-instagram"></i></a></li>
+                    <li v-if="event.bride_whatsapp"><a :href="event.bride_whatsapp" target="_blank"><i class="fa fa-whatsapp"></i></a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="middle-couple-pic">
+                <img :src="event.couple_image" alt="">
+                <div class="frame-img"><img src="assets/images/couple/shape.png" alt=""></div>
+              </div>
+              <div class="text-grid groom">
+                <div class="couple-img">
+                  <img :src="event.groom.avatar" alt="">
+                </div>
+                <h3>{{ event.groom.full_name }}</h3>
+                <p>{{ event.groom.biography }}</p>
+                <div class="social">
+                  <ul>
+                    <li v-if="event.groom_facebook"><a :href="event.groom_facebook" target="_blank"><i class="ti-facebook"></i></a></li>
+                    <li v-if="event.groom_twitter"><a :href="event.groom_twitter" target="_blank"><i class="ti-twitter-alt"></i></a></li>
+                    <li v-if="event.groom_instagram"><a :href="event.groom_instagram" target="_blank"><i class="ti-instagram"></i></a></li>
+                    <li v-if="event.groom_whatsapp"><a :href="event.groom_whatsapp" target="_blank"><i class="fa fa-whatsapp"></i></a></li>
+                  </ul>
+                </div>
+              </div>
             </div>
-        </div> <!-- end container -->
+          </div>
+        </div>
+      </div> <!-- end container -->
     </section>
     <!-- end couple-section -->
 
@@ -178,7 +178,7 @@
     <!-- start wpo-portfolio-section -->
     <section class="wpo-portfolio-section-s2 section-padding" id="gallery">
       <div class="container-fluid">
-        <div class="row">
+        <!-- <div class="row">
           <div class="wpo-section-title-s2">
             <div class="section-title-simg">
               <img src="assets/images/section-title2.png" alt="">
@@ -210,14 +210,14 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div> <!-- end container -->
     </section>
     <!-- end wpo-portfolio-section -->
 
     <!-- start of wpo-contact-section -->
     <section class="wpo-contact-section section-padding" id="RSVP">
-      <div class="container">
+      <!-- <div class="container">
         <div class="wpo-contact-section-wrapper">
           <div class="wpo-contact-form-area">
             <div class="wpo-section-title-s2">
@@ -291,7 +291,7 @@
             <img src="assets/images/contact/2.png" alt="">
           </div>
         </div>
-      </div>
+      </div> -->
     </section>
     <!-- end of wpo-contact-section -->
 
@@ -389,12 +389,6 @@
     methods: {
       ready() {
         this.gallery = [];
-
-        // this.event && _.each(this.event.album, ((g, g1) => {
-        //   setTimeout(() => {
-        //     this.gallery.push({ ...g });
-        //   }, g1 * 60 * 2 * 4)
-        // }))
 
         this.$nextTick().then(() => {
           setTimeout(() => {

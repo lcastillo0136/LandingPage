@@ -226,6 +226,17 @@ export default [
           icon: 'md-contacts'
         },
         component: () => import('@/view/' + config.theme + '/contacts')
+      },
+      {
+        path: '/invitacion/:uuid',
+        name: 'invitacion',
+        meta: {
+          hideInMenu: true,
+          title: 'invitacion.title',
+          notCache: true,
+          icon: 'md-contacts'
+        },
+        component: () => import('@/view/' + config.theme + '/invitacion')
       }, 
       {
         path: '/profile',
