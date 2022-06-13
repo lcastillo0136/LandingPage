@@ -16,7 +16,7 @@
             </div>
             <div class="col-lg-2 col-md-6 col-6">
               <div class="navbar-header">
-                <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png" alt=""></a>
+                <a class="navbar-brand" href="index.html"><img src="/assets/images/logo.png" alt=""></a>
               </div>
             </div>
             <div class="col-lg-8 col-md-1 col-1">
@@ -28,9 +28,6 @@
                   </li>
                   <li class="menu-item-has-children">
                     <a href="/gallery">Galeria</a>
-                  </li>
-                  <li class="menu-item-has-children">
-                    <a href="/contact">Contacto</a>
                   </li>
                 </ul>
               </div><!-- end of nav-collapse -->

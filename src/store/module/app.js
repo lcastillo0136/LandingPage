@@ -1,5 +1,5 @@
 import { localSave, localRead, getToken } from '@/libs/util'
-import { saveErrorLogger, getTypes, getSorts, getDoctorsByFilter, getSettings, getEvent } from '@/api/data'
+import { saveErrorLogger, getTypes, getSorts, getDoctorsByFilter, getSettings, getEvent, getInvite, updateInvite } from '@/api/data'
 
 import i18n from '@/locale'
 import config from '@/config'
@@ -150,6 +150,34 @@ export default {
             const { data } = res.data
             
             commit('setEvent', data)
+            resolve(data)
+          }).catch(err => {
+            reject(err)
+          })
+        } catch (error) {
+          reject(error)
+        }
+      })
+    },
+    getInvite ({ commit }, uuid) {
+      return new Promise((resolve, reject) => {
+        try {
+          getInvite(uuid).then(res => {
+            const { data } = res.data
+            resolve(data)
+          }).catch(err => {
+            reject(err)
+          })
+        } catch (error) {
+          reject(error)
+        }
+      })
+    },
+    updateInvite ({ commit }, { uuid, id }) {
+      return new Promise((resolve, reject) => {
+        try {
+          updateInvite(uuid, id).then(res => {
+            const { data } = res.data
             resolve(data)
           }).catch(err => {
             reject(err)

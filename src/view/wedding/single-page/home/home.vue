@@ -115,7 +115,7 @@
           <div class="col col-xs-12">
             <div class="story-timeline">
               <div class="round-shape"></div>
-              <div class="row" v-for="(history, history_i) in event.history" :key="history_i">
+              <div class="row flex-sm-row" v-for="(history, history_i) in event.history" :key="history_i" :class="{ 'flex-column-reverse': (history_i % 2) == 0 }">
                 <template v-if="(history_i % 2) == 0">
                   <div class="col col-lg-6 col-12" :class="{ 'text-holder right-heart': history_i > 0 }">
                     <span class="heart" v-if="history_i > 0 ">
@@ -178,7 +178,7 @@
     <!-- start wpo-portfolio-section -->
     <section class="wpo-portfolio-section-s2 section-padding" id="gallery">
       <div class="container-fluid">
-        <!-- <div class="row">
+        <div class="row">
           <div class="wpo-section-title-s2">
             <div class="section-title-simg">
               <img src="assets/images/section-title2.png" alt="">
@@ -210,7 +210,7 @@
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
       </div> <!-- end container -->
     </section>
     <!-- end wpo-portfolio-section -->

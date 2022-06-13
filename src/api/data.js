@@ -129,3 +129,27 @@ export const getEvent = () => {
     method: 'get'
   })
 }
+
+export const getInvite = (uuid) => {
+  return axios.request({
+    baseURL: baseUrl.replace('/api/', '/web/'),
+    url: `/invite/${uuid}`,
+    method: 'get'
+  })
+}
+
+export const updateInvite = (uuid, id) => {
+  if (id) {
+    return axios.request({
+      baseURL: baseUrl.replace('/api/', '/web/'),
+      url: `/invite/${uuid}/${id}`,
+      method: 'put'
+    })
+  } else {
+    return axios.request({
+      baseURL: baseUrl.replace('/api/', '/web/'),
+      url: `/invite/${uuid}`,
+      method: 'put'
+    })
+  }
+}
