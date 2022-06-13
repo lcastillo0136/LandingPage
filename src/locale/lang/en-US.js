@@ -695,5 +695,8 @@ export default {
   },
   invoice_page: {
     title: 'Order details'
+  },
+  gallery: {
+    title: 'Gallery'
   }
 }

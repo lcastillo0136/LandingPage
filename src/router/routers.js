@@ -228,6 +228,17 @@ export default [
         component: () => import('@/view/' + config.theme + '/contacts')
       },
       {
+        path: '/gallery',
+        name: 'gallery',
+        meta: {
+          hideInMenu: true,
+          title: 'gallery.title',
+          notCache: true,
+          icon: 'md-picture'
+        },
+        component: () => import('@/view/' + config.theme + '/gallery')
+      },
+      {
         path: '/invitacion/:uuid',
         name: 'invitacion',
         meta: {
