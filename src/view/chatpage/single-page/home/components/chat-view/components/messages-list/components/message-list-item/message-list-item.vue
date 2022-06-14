@@ -138,7 +138,8 @@
           '.wav': true,
           '.flac': true,
           '.wma': true,
-          '.m4a': true
+          '.m4a': true,
+          '.oga': true
         }[media_uri.slice((media_uri.lastIndexOf(".") - 2 >>> 0) + 2)] || false;
       },
       isVideo({ media_uri }) {
