@@ -25,7 +25,7 @@
         return this.settings?.COMPANY_NAME
       },
       appImage () {
-        return getServerFile('public/company/company_logo.png')
+        return ('img/logo.png')
       }
     },
     methods: {

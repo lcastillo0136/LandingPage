@@ -50,13 +50,6 @@
           ],
           skills: [
           ],
-          // active: 1
-          // address: {id: 1, user_id: 3, street: "Rio Obi", city: "Guadalupe", suburb: "Dos Rios", postal_code: 67134,…}
-          // addresses: [{id: 1, user_id: 3, street: "Rio Obi", city: "Guadalupe", suburb: "Dos Rios", postal_code: 67134,…}]
-          // ip_address: null
-          // last_login: "2022-02-11 21:15:38"
-          // messages: [{id: 1, order_id: 4, user_id: 3,…}, {id: 2, order_id: 4, user_id: 3,…}]
-          // no_licencia: null
         },
       }
     },
@@ -87,7 +80,6 @@
     },
     methods: {
       ...mapActions([
-        'getAppointmentsStatus',
         'getUserInfo'
       ])
     },
@@ -110,9 +102,6 @@
           }
         })
       }
-      
-      this.getAppointmentsStatus().then(() => {}).catch(() => {})
-      
     }
   }
 </script>

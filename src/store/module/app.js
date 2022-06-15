@@ -1,5 +1,5 @@
 import { localSave, localRead, getToken } from '@/libs/util'
-import { saveErrorLogger, getTypes, getSorts, getDoctorsByFilter, getSettings } from '@/api/data'
+import { saveErrorLogger, getSettings } from '@/api/data'
 
 import i18n from '@/locale'
 import config from '@/config'
@@ -11,21 +11,10 @@ export default {
     errorList: [],
     hasReadErrorPage: false,
     token: getToken(),
-    filter: {
-      types: [],
-      sorts: []
-    },
-    location: {
-      longitude: 0,
-      latitude: 0
-    },
     settings: null
   },
   getters: {
     errorCount: state => state.errorList.length,
-    filterTypes: state => state.filter.types,
-    filterSorts: state => state.filter.sorts,
-    geoLocation: state => state.location,
     settings: state => state.settings
   },
   mutations: {
@@ -38,20 +27,6 @@ export default {
     },
     setHasReadErrorLoggerStatus (state, status = true) {
       state.hasReadErrorPage = status
-    },
-    setTypes (state, types) {
-      state.filter.types = types.filter(f=>f.available_online).map(t => {
-        return { text: i18n.t('types.' + (t.name || '').trim().toLowerCase().replace(/[\/\(\)\[\]]/ig, '_')), value: t.name }
-      })
-    },
-    setSorts (state, sorts) {
-      state.filter.sorts = sorts.map(s => {
-        return { text: i18n.t('sorts.' + s), value: s }
-      })
-    },
-    setLocation (state, location) {
-      state.location.longitude = location.longitude
-      state.location.latitude = location.latitude
     },
     setSettings (state, settings) {
       state.settings = settings
@@ -70,54 +45,6 @@ export default {
       }
       saveErrorLogger(info).then(() => {
         commit('addError', data)
-      })
-    },
-    getTypes ({ state, commit }) {
-      return new Promise((resolve, reject) => {
-        try {
-          getTypes(state.token).then(res => {
-            const response = res.data
-            commit('setTypes', [{ name: 'all', available_online: true }].concat(response.data))
-            resolve(response)
-          }).catch(err => {
-            reject(err)
-          })
-        } catch (error) {
-          reject(error)
-        }
-      })
-    },
-    getSorts ({ state, commit }) {
-      return new Promise((resolve, reject) => {
-        try {
-          getSorts(state.token).then(res => {
-            const data = res.data.data
-            commit('setSorts', [].concat(data.sorts))
-            resolve(data)
-          }).catch(err => {
-            reject(err)
-          })
-        } catch (error) {
-          reject(error)
-        }
-      })
-    },
-    getLocation ({ state, commit }) {
-      return new Promise((resolve, reject) => {
-        try {
-          if(!("geolocation" in navigator)) {
-            reject(new Error('Geolocation is not available.'));
-          }
-
-          navigator.geolocation.getCurrentPosition(pos => {
-            commit('setLocation', pos.coords)
-            resolve(pos);
-          }, err => {
-            reject(err);
-          });
-        } catch (error) {
-          reject(error)
-        }
       })
     },
     getSettings ({ state, commit }) {

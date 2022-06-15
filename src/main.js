@@ -11,7 +11,6 @@ require('moment/locale/es')
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueSkeletonLoading from 'vue-skeleton-loading'
 import PerfectScrollbar from 'vue2-perfect-scrollbar'
-import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
 import vSelect from 'vue-select'
 import DisableAutocomplete from 'vue-disable-autocomplete';
 import VueVideoPlayer from 'vue-video-player'
@@ -32,7 +31,6 @@ import 'ant-design-vue/lib/tabs/style/index.css';
 import 'ant-design-vue/lib/tooltip/style/index.css';
 import '@/assets/css/ant-design-drawer.css'
 import '@/assets/css/ant-design-menu.css'
-import 'leaflet/dist/leaflet.css';
 import 'vue-select/dist/vue-select.css';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
 import 'iview/dist/styles/iview.css';
@@ -41,11 +39,6 @@ import 'video.js/dist/video-js.css'
 import "@/assets/css/bootstrap.min.css"
 import "@/assets/css/style.css"
 
-Vue.component('l-map', LMap);
-Vue.component('l-tile-layer', LTileLayer);
-Vue.component('l-marker', LMarker);
-Vue.component('l-icon-default', LIconDefault)
-Vue.component('l-popup', LPopup)
 Vue.component('v-select', vSelect)
 
 Vue.use(VueSweetalert2);
@@ -149,25 +142,8 @@ Vue.filter('mtoh', function(n) {
   return n > 0 ? ((rhours > 0 ? `${rhours} hora` + (rhours > 1 ? 's' : '') : '') + (rminutes > 0 ? (rhours > 0 ? ' y ' : '') + `${rminutes} minuto` + (rminutes > 1 ? 's' : '') : '')) : '';
 })
 
-Vue.filter('oxxo', function(o) {
-  return `${o}`.replace(/^([\d]{4})([\d]{4})([\d]{4})([\d]{2})/g, '$1-$2-$3-$4')
-})
-
 Vue.filter('ServerToDate', function(d, format) {
   return moment(d.length < 14 ? `0${d}` : d, 'DDMMYYYY HH:mm').format(format)
-})
-
-Vue.filter('paymentStatus', function (s) {
-  return {
-    'CANCELED': 'Cancelado',
-    'PAID': 'Pagado',
-    'PENDING': 'Pendiente',
-    'AWAITING': 'Pago pendiente',
-    'COMPLETED': 'Completado',
-    'DECLINED': 'Declinado',
-    'REFUNDED': 'Reembolsado',
-    'DISPUTED': 'En disputa',
-  }[s]
 })
 
 new Vue({

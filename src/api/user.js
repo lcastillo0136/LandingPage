@@ -87,74 +87,6 @@ export const restoreTrash = msg_id => {
   })
 }
 
-export const updateAppointment = (appointment, token, postFiles = null) => {
-  const formData = new FormData()
-  if (postFiles !== null) {
-    postFiles.forEach(f => {
-      formData.append('postedFiles[]', f, f.name);
-    })
-  }
-
-  if (appointment) {
-    Object.keys(appointment).forEach((p) => {
-      formData.append(p, appointment[p])
-    })
-  }
-
-  return axios.request({
-    url: `appointments/${appointment.id}/update`,
-    data: formData,
-    headers: {
-      authorization: `Bearer ${ token }`
-    },
-    method: 'post'
-  })
-}
-
-export const createAppointment = (appointment, token, postFiles = null) => {
-  const formData = new FormData()
-  if (postFiles !== null) {
-    postFiles.forEach(f => {
-      formData.append('postedFiles[]', f, f.name);
-    })
-  }
-
-  if (appointment) {
-    Object.keys(appointment).forEach((p) => {
-      formData.append(p, appointment[p])
-    })
-  }
-
-  return axios.request({
-    url: `appointments`,
-    data: formData,
-    headers: {
-      authorization: `Bearer ${ token }`
-    },
-    method: 'post'
-  })
-}
-
-export const deleteFile = (user, hash, token) => {
-  return axios.request({
-    url: `users/${user}/archivo/${hash}`,
-    headers: {
-      authorization: `Bearer ${ token }`
-    },
-    method: 'delete'
-  })
-}
-
-export const deleteAppointment = (appointment, token) => {
-  return axios.request({
-    url: `appointments/${appointment.id}`,
-    headers: {
-      authorization: `Bearer ${ token }`
-    },
-    method: 'delete'
-  })
-}
-
 export const updateUser = (user, token) => {
   const formData = new FormData()
 
@@ -171,84 +103,9 @@ export const updateUser = (user, token) => {
       formData.append('avatar', user.avatar, 'avatar');
     }
   } catch(e) { }
-  
-  if (user.services?.length > 0) {
-    formData.append('services', JSON.stringify(user.services));
-  }
-
-  if (user.skills?.length > 0) {
-    formData.append('skills_tags', JSON.stringify(user.skills.map(s => s.name)));
-  }
 
   return axios.request({
     url: `users/${user.id}?_method=PUT`,
-    data: formData,
-    headers: {
-      authorization: `Bearer ${ token }`
-    },
-    method: 'post'
-  })
-}
-
-export const postReview = (review, token) => {
-  const formData = new FormData()
-
-  if (review) {
-    Object.keys(review).forEach((p) => {
-      formData.append(p, review[p])
-    })
-  }
-
-  return axios.request({
-    url: `appointments/${review.appointment}/review`,
-    data: formData,
-    headers: {
-      authorization: `Bearer ${ token }`
-    },
-    method: 'post'
-  })
-}
-
-export const postReply = (reply, token) => {
-  const formData = new FormData()
-
-  if (reply) {
-    Object.keys(reply).forEach((p) => {
-      formData.append(p, reply[p])
-    })
-  }
-
-  return axios.request({
-    url: `comments/${ reply.reply_id }/reply`,
-    data: formData,
-    headers: {
-      authorization: `Bearer ${ token }`
-    },
-    method: 'post'
-  })
-}
-
-export const updateReview = (review, token) => {
-  return axios.request({
-    url: `comments/${ review.id }`,
-    data: review,
-    headers: {
-      authorization: `Bearer ${ token }`
-    },
-    method: 'put'
-  })
-}
-
-export const sendInvoice = (order, token, postFiles = null) => {
-  const formData = new FormData()
-  if (postFiles !== null) {
-    postFiles.forEach(f => {
-      formData.append('postedFiles[]', f, f.name);
-    })
-  }
-  
-  return axios.request({
-    url: `orders/${order.uuid_key}/invoice/share`,
     data: formData,
     headers: {
       authorization: `Bearer ${ token }`

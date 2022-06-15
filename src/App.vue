@@ -12,11 +12,8 @@
   import { getDatabase } from "firebase/database";
   import "firebase/database";
 
-
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import Loading from '@/components/loading'
-  import * as conekta from '@/libs/conekta'
-  import * as paypal from '@/libs/paypal'
 
   export default {
     name: 'App',
@@ -38,35 +35,14 @@
         'setFirebase'
       ]),
       ...mapActions([
-        'getTypes',
-        'getSorts',
-        'getLocation',
         'getSettings',
         'getUserInfo',
         'handleLogOut'
       ]),
     },
     async mounted () {
-      await this.getTypes().catch((err) => {
-        if (err.data.message) {
-          this.$notification.error({
-            message: `Error: ${err.config.url}`,
-            description: err.data.message, 
-            placement: 'bottomLeft',
-            duration: 5
-          });
-        }
-      })
-      
       await this.getSettings()
-
-      await this.getLocation().then((data) => {}).catch((error) => {
-        
-      })
       
-      conekta.initConekta(this.settings.CONEKTA_CLIENT)
-      paypal.init(this.settings.PAYPAL_CLIENT, this.settings.CURRENCY)
-
       if (this.hasToken) {
         await this.getUserInfo().then(() => {}).catch((error) => {
           this.handleLogOut().then(() => {

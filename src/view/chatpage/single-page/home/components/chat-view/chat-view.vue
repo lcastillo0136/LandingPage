@@ -80,7 +80,13 @@
         </div>
       </template>
       <template v-else>
-        <a-empty />
+        <a-empty image="img/smila-chat.png">
+          <template #description>
+            <b>Centro de mensajes</b>
+            <br>
+            ¡Seleccione un contacto para abrir un chat!
+          </template>
+        </a-empty>
       </template>
     </a-card>
   </div>
