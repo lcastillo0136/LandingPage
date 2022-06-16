@@ -18,18 +18,18 @@
     <div class="send-at-content" v-if="message.send_at">
       {{ message.send_at | sendAt }}
     </div>
-    <div class="bubble file" v-if="message.media_uri && !isOtherFile(message)">
+    <div class="bubble file" v-if="message.media_uri && !isOtherFile(message)" :class="{ 'audio-file': isAudio(message) }">
       <div class="message-content" :title="message.date_sent">
         <template v-if="isImage(message)">
           <img class="" :src="message.media_uri" @click.stop.prevent="$emit('fileClick', { message, type: 'image' })">
         </template>
         <template v-else-if="isAudio(message)">
-          <audio-player
-            :audio-list="[ message.media_uri ]"
-            :show-prev-button="false"
-            :show-next-button="false"
-            :isLoop="false"
-          />
+          <av-waveform
+            :playtime-slider="false"
+            :cors-anonym="true"
+            :playtimeSliderColor="'transparent'"
+            :audio-src="message.media_uri">
+          </av-waveform>
         </template>
         <template v-else-if="isVideo(message)">
           <video-player 
@@ -437,6 +437,23 @@
                 &:hover {
                   box-shadow: 0px 0px 11px 3px #bdbdbd;
                 }
+                &.audio-file {
+                  background: #fff;
+                  border: none;
+                  box-shadow: none;
+                  border-radius: 0;
+                  canvas {
+                    border: solid 1px #E0E0E0;
+                    border-radius: 10px;
+                    width: 100%;
+                    height: 80px;
+                  }
+                  audio {
+                    height: 30px;
+                    width: 100%;
+                  }
+
+                }
               }
           }
 
@@ -507,6 +524,24 @@
                 max-width: 70%;
                 &:hover {
                   box-shadow: 0px 0px 11px 3px #bdbdbd;
+                }
+
+                &.audio-file {
+                  background: #fff;
+                  border: none;
+                  box-shadow: none;
+                  border-radius: 0;
+                  canvas {
+                    border: solid 1px #E0E0E0;
+                    border-radius: 10px;
+                    width: 100%;
+                    height: 80px;
+                  }
+                  audio {
+                    height: 30px;
+                    width: 100%;
+                  }
+
                 }
               }
           }

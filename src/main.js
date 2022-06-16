@@ -16,6 +16,7 @@ import DisableAutocomplete from 'vue-disable-autocomplete';
 import VueVideoPlayer from 'vue-video-player'
 import VueNativeNotification from './plugins/VueNativeNotification'
 import AudioPlayer from '@liripeng/vue-audio-player'
+import AudioVisual from 'vue-audio-visual'
 
 import iView from 'iview';
 import i18n from '@/locale'
@@ -55,6 +56,7 @@ Vue.use(DisableAutocomplete)
 Vue.use(iView);
 Vue.use(VueVideoPlayer)
 Vue.use(AudioPlayer)
+Vue.use(AudioVisual)
 
 Vue.use(VueNativeNotification, {
   requestOnNotify: true
