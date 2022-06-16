@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import { getDatabase, ref, onValue, set } from "firebase/database";
+  import { getDatabase, ref, onValue, set, remove } from "firebase/database";
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import { Messages } from '@/api/messages'
 
@@ -77,6 +77,14 @@
           this.selectedContact = data.contact
           this.selectedPhone = data.phone
           this.messages = data.messages
+
+          const db = getDatabase()
+          let _basePhone = this.$options.filters.phone(this.$options.filters.waPhone(data.contact ? `${data.contact.phone}` : data.phone))
+
+          let childChat = ref(db, `chats/${data.contact ? data.contact.id : _basePhone}`)
+          if (childChat) {
+            remove(childChat)
+          }
         })
         contact.unread = 0
       },

@@ -110,7 +110,6 @@
         });
       },
       handleChange(contact_index) {
-        
         this.$emit('onContactClick', {
           contact: this.reverseList[contact_index]
         });
