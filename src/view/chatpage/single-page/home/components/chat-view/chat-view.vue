@@ -62,18 +62,21 @@
                   </div>
                   <div class="col-md-4 d-flex align-items-center justify-content-center">
                     <a-button type="primary" @click.stop.prevent="sendSchedule">
-                      Enviar
+                      Enviar <Icon style="margin-left: 5px;" type="md-send"></Icon>
                     </a-button>
                   </div>
                 </div>
               </a-form-model>
-              <a-button type="primary" shape="circle" style="padding: 13px;">
+              <a-button type="primary" shape="circle" class="schedule-button">
                 <Icon type="md-calendar"></Icon>
               </a-button>
             </a-popover>
           </div>
           <div class="message-action">
-            <a-button type="primary" shape="circle" @click.stop.prevent="reply">
+            <a-button type="primary" v-if="!scheduleModal" shape="circle" @click.stop.prevent="reply">
+              <Icon type="md-send"></Icon>
+            </a-button>
+            <a-button type="dashed" v-else shape="circle" ghost disabled >
               <Icon type="md-send"></Icon>
             </a-button>
           </div>
@@ -149,7 +152,7 @@
           }, trigger: 'change' }],
         },
         formSchedule: {
-          scheduleDate: this.$moment().add({ seconds: 3610 })
+          scheduleDate: this.$moment().add({ seconds: 3710 })
         },
       }
     },
@@ -531,7 +534,11 @@
               border-color: #3ba58b;
               padding: 13px 10px 13px 16px;
               height: auto;
+              &.schedule-button {
+                padding: 13px;
+              }
             }
+
           }
           .ivu-icon {
             font-size: 30px;
@@ -588,6 +595,7 @@
     }
   }
 
+  /* Mobile view */
   @media only screen and (max-width: 450px) {
     .chat-view-container {
       .ant-card {
@@ -606,9 +614,31 @@
               align-self: center;
               button {
                 padding: 4px 4px 4px 7px;
+                &.schedule-button {
+                  padding: 4px 4px 4px 7px;
+                }
               }
             }
           }
+        }
+      }
+    }
+    .ant-popover  {
+      left: 10px !important;
+      right: 10px;
+      .ant-popover-arrow {
+        display: none;
+      }
+      .ant-popover-inner {
+        box-shadow: none;
+        border: dashed 1px #e0e0e0;
+      }
+      .scheduleForm {
+        .ant-calendar-picker {
+          width: 100%;
+        }
+        .ant-btn {
+          width: 100%;
         }
       }
     }

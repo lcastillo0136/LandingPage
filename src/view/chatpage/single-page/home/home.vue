@@ -12,7 +12,12 @@
       ></ChatView>
     </template>
     <template v-else>
-      <a-result title="Su cuenta de whatsapp no ha sido activada">
+      <a-result title="Su cuenta de whatsapp no ha sido activada" v-if="!TwilioPhone">
+        <template #extra>
+          
+        </template>
+      </a-result>
+      <a-result title="Su cuenta no tiene permisos para ver esta pantalla" v-else>
         <template #extra>
           
         </template>

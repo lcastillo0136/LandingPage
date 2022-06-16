@@ -2,7 +2,7 @@
   <div>
     <header class="header_sticky" :class="headerClasses">
       <template v-if="TwilioPhone && hasPermission">
-        <HamburgerButton :options="options"></HamburgerButton>
+        <!-- <HamburgerButton :options="options"></HamburgerButton> -->
       </template>
       <div :class="containerClasses">
         <div class="row">

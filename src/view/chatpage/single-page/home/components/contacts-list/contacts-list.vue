@@ -45,7 +45,7 @@
       <a-select
         show-search
         size="large"
-        placeholder="Select a person"
+        placeholder="Seleccione un contacto"
         option-filter-prop="children"
         :defaultActiveFirstOption="false"
         class="mobile-contact"
