@@ -90,45 +90,46 @@ Vue.filter('parseURLs', function(value, isHTML = false, options = {}) {
   let linkExp = /((s?ftp|https?):\/\/|(www\.)|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s.;,(){}<>"\u201d\u2019]/i;
   let mailExp = /^mailto:/i;
 
-  if (typeof value !== 'string') { return null; }
-    if (value === null || value === '') { return value; }
-    let rawText = value;
-    const html = [];
-    const URLS = [];
-    let match;
-    let i;
-    let url;
-    // eslint-disable-next-line no-cond-assign
-    while ((match = rawText.match(linkExp))) {
-      [url] = match;
-      if (!match[2] && !match[4]) {
-        url = (match[3] ? 'http://' : 'mailto:') + url;
-      }
-      i = match.index;
-      if (rawText.substr(0, i)) {
-        html.push(rawText.substr(0, i));
-      }
-      html.push('<a ');
-      if (options) {
-        Object.keys(options).forEach((key) => {
-          html.push(`${key}="${options[key]}" `);
-        });
-      }
-      html.push('href="');
-      URLS.push(url.replace(/"/g, '&quot;'));
-      html.push(url.replace(/"/g, '&quot;'));
-      html.push('">');
+  if (typeof value !== 'string') { return value; }
+  if (value === null || value === '') { return value; }
 
-      if (match[0].replace(mailExp, '')) {
-        html.push(match[0].replace(mailExp, ''));
-      }
-      html.push('</a>');
-      rawText = rawText.substring(i + match[0].length);
+  let rawText = value;
+  const html = [];
+  const URLS = [];
+  let match;
+  let i;
+  let url;
+  // eslint-disable-next-line no-cond-assign
+  while ((match = rawText.match(linkExp))) {
+    [url] = match;
+    if (!match[2] && !match[4]) {
+      url = (match[3] ? 'http://' : 'mailto:') + url;
     }
-    if (rawText) {
-      html.push(rawText);
+    i = match.index;
+    if (rawText.substr(0, i)) {
+      html.push(rawText.substr(0, i));
     }
-    return isHTML ? html.join('') : URLS;
+    html.push('<a ');
+    if (options) {
+      Object.keys(options).forEach((key) => {
+        html.push(`${key}="${options[key]}" `);
+      });
+    }
+    html.push('href="');
+    URLS.push(url.replace(/"/g, '&quot;'));
+    html.push(url.replace(/"/g, '&quot;'));
+    html.push('">');
+
+    if (match[0].replace(mailExp, '')) {
+      html.push(match[0].replace(mailExp, ''));
+    }
+    html.push('</a>');
+    rawText = rawText.substring(i + match[0].length);
+  }
+  if (rawText) {
+    html.push(rawText);
+  }
+  return isHTML ? html.join('') : URLS;
 })
 
 Vue.filter('currency', function (value, style) {

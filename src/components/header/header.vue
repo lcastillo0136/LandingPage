@@ -79,7 +79,7 @@
       },
       options () {
         return [{
-          text: this.$options.filters.phone(this.COMPANY_PHONE),
+          text: this.$options.filters.phone(this.TwilioPhone),
           url: 'home',
         }]
       },
@@ -113,9 +113,13 @@
       align-content: center;
       align-items: center;
       gap: 5px;
-      padding: 0 20px;
+      padding: 12px 0 5px;
+      min-height: auto;
       > * {
         flex: 1 1 auto;
+      }
+      &::after {
+         display: none;
       }
     }
   }

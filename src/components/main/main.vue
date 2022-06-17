@@ -88,9 +88,19 @@ export default {
 }
 </script>
 <style lang="scss">
-  .container-fluid {
-    width: 95%;
-    padding-top: 10px;
-    max-width: 1500px;
+  .header_sticky {
+    .container-fluid {  
+      padding-right: 29px;
+      padding-left: 29px;
+      max-width: 1500px;
+
+      /* Mobile view */
+      @media only screen and (max-width: 450px) {
+        padding-right: 15px;
+        padding-left: 15px;
+      }
+
+      &::after { display: none; }
+    }
   }
 </style>

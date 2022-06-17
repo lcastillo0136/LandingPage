@@ -1,5 +1,5 @@
 <template>
-  <main class="main-page pb-0">
+  <main class="main-page py-0">
     <template v-if="TwilioPhone && hasPermission">
       <ContactsList class="contacts-panel" :contacts="contacts" @onContactClick="selectContact"></ContactsList>
       <ChatView 
@@ -62,7 +62,7 @@
         return this.settings?.TWILIO_PHONE_FROM;
       },
       hasPermission() {
-        return _.find(this.getUser?.permisos, { action: 'view', controller: 'messages', access: 1 }) || false
+        return _.find(this.getUser?.permisos, { action: 'view', controller: 'messages', access: 1 }) || this.getUser?.role.full || false
       }
     },
     methods: {
@@ -250,7 +250,9 @@
     gap: 20px;
     padding: 30px;
     overflow: hidden;
-    
+    &::after {
+      display: none; 
+    }
     .contacts-panel {
       flex: 0 0 28%;
     }

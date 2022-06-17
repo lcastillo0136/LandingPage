@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <loading :loading="stillLoading"></loading>
-    <div id="page" :class="{'menu-open': mobileMenuOpen}">
+    <div id="page" :class="{ 'menu-open': mobileMenuOpen }">
       <router-view v-if="!stillLoading"/>
     </div>
   </div>
@@ -81,5 +81,9 @@ html,body{
   .ps__rail-y .ps__rail-x {
     z-index: 1;
   }
+}
+
+span.form-control {
+  padding: 0;
 }
 </style>
