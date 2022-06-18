@@ -492,8 +492,19 @@
       text-transform: capitalize;
     }
   }
-
-  .popup-gmaps-mobile { display: none; }
+  .wpo-event-section {
+    .wpo-event-wrap {
+      .wpo-event-item {
+        .wpo-event-text {
+          ul {
+            li {
+              .popup-gmaps-mobile { display: none; }
+            }
+          }
+        }
+      }
+    }
+  }
 
   @media only screen and (max-width: 450px) {
     .wpo-event-section {
