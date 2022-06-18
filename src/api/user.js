@@ -1,4 +1,6 @@
 import axios from '@/libs/api.request'
+import config from '@/config'
+const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 
 export const login = ({ userName, password }) => {
   const data = {
@@ -254,5 +256,13 @@ export const sendInvoice = (order, token, postFiles = null) => {
       authorization: `Bearer ${ token }`
     },
     method: 'post'
+  })
+}
+
+export const getCard = (uuid) => {
+  return axios.request({
+    baseURL: baseUrl.replace('/api/', '/web/'),
+    url: `/profile/${uuid}`,
+    method: 'get'
   })
 }

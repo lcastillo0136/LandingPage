@@ -5,7 +5,7 @@ export default {
   /**
    * @description 配置显示在浏览器标签的title
    */
-  title: 'Doctory',
+  title: 'Card.Me',
   /**
    * @description token在Cookie中存储的天数，默认1天
    */
@@ -37,7 +37,7 @@ export default {
       developmentOff: true // 设为true后在开发环境不会收集错误信息，方便开发中排查错误
     }
   },
-  theme: 'findoctor',
-  defaultLang: 'zh-CN',
+  theme: 'card.me',
+  defaultLang: 'en',
   container: true
 }
