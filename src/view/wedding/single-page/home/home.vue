@@ -42,7 +42,13 @@
         <div class="row">
           <div class="col col-xs-12">
             <div class="clock-grids">
-              <div id="clock"></div>
+              <div id="clock">
+                <div class="box"><div><div class="time">{{ remainingTime.months }}</div> <span>Meses</span> </div></div>
+                <div class="box"><div><div class="time">{{ remainingTime.days }}</div> <span>Dias</span> </div></div>
+                <div class="box"><div><div class="time">{{ remainingTime.hours }}</div> <span>Horas</span> </div></div>
+                <div class="box"><div><div class="time">{{ remainingTime.minutes }}</div> <span>Minutos</span> </div></div>
+                <div class="box"><div><div class="time">{{ remainingTime.seconds }}</div> <span>Segundos</span> </div></div>
+              </div>
             </div>
           </div>
         </div>
@@ -353,11 +359,13 @@
   import { mapGetters, mapMutations, mapActions } from 'vuex'
 
   import * as _ from 'lodash'
+  import * as countdown from 'countdown'
 
   export default {
     data() {
       return {
-        gallery: []
+        gallery: [],
+        remainingTime: {}
       }
     },
     props: {
@@ -423,14 +431,14 @@
 
             on: {
                 progress: function() {
-                    var swiper = this;
-                    for (var i = 0; i < swiper.slides.length; i++) {
-                        var slideProgress = swiper.slides[i].progress;
-                        var innerOffset = swiper.width * interleaveOffset;
-                        var innerTranslate = slideProgress * innerOffset;
-                        swiper.slides[i].querySelector(".slide-inner").style.transform =
-                        "translate3d(" + innerTranslate + "px, 0, 0)";
-                    }      
+                  var swiper = this;
+                  for (var i = 0; i < swiper.slides.length; i++) {
+                    var slideProgress = swiper.slides[i].progress;
+                    var innerOffset = swiper.width * interleaveOffset;
+                    var innerTranslate = slideProgress * innerOffset;
+                    swiper.slides[i].querySelector(".slide-inner").style.transform =
+                    "translate3d(" + innerTranslate + "px, 0, 0)";
+                  }      
                 },
 
                 touchStart: function() {
@@ -462,14 +470,9 @@
         });
 
         if (jQuery("#clock").length) {
-          jQuery('#clock').countdown(this.$moment(this.event.event_date).toDate(), function(event) {
-            var $this = jQuery(this).html(event.strftime(''
-            + '<div class="box"><div><div class="time">%m</div> <span>Meses</span> </div></div>'
-            + '<div class="box"><div><div class="time">%D</div> <span>Dias</span> </div></div>'
-            + '<div class="box"><div><div class="time">%H</div> <span>Horas</span> </div></div>'
-            + '<div class="box"><div><div class="time">%M</div> <span>Minutos</span> </div></div>'
-            + '<div class="box"><div><div class="time">%S</div> <span>Segundos</span> </div></div>'));
-          });
+          setInterval(() => {
+            this.remainingTime = countdown(this.$moment(this.event.event_date).toDate())
+          }, 1000)
         }
 
         loadjQueryPlugins(jQuery)

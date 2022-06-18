@@ -22,6 +22,7 @@
     "clipboard": "^2.0.0",
     "codemirror": "^5.38.0",
     "core-js": "^3.6.4",
+    "countdown": "^2.6.0",
     "countup": "^1.8.2",
     "cropperjs": "^1.2.2",
     "dayjs": "^1.7.7",
