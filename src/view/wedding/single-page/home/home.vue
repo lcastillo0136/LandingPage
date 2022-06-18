@@ -323,13 +323,16 @@
                   <h2>{{ location.name }}</h2>
                   <ul>
                     <li v-if="location.date_time">
-                      {{ location.date_time | moment('dddd, DD MMM, YYYY hh:mm') }}
-                      <span>{{ location.date_time | moment('a') }}</span>
+                      {{ location.date_time | moment('dddd, DD MMM, YYYY') }}
+                      <br>
+                      <span>{{ location.date_time | moment('hh:mm a') }}</span>
                     </li>
                     <li v-if="location.location_address">{{ location.location_address }}</li>
                     <li v-if="location.phone">Tel: {{ location.phone | phone }}</li>
-
-                    <li v-if="location.location_latitude && location.location_longitude"><a class="popup-gmaps" :href="'https://maps.google.com/maps?t=&z=13&ie=UTF8&iwloc=&output=embed&q=' + location.location_latitude + ',' + location.location_longitude">Ver ubicacion</a></li>
+                    <li v-if="location.location_latitude && location.location_longitude">
+                      <a class="popup-gmaps" :href="'https://maps.google.com/maps?t=&z=13&ie=UTF8&iwloc=&output=embed&q=' + location.location_latitude + ',' + location.location_longitude">Ver ubicacion</a>
+                      <a class="popup-gmaps-mobile" target="_blank" :href="'https://maps.google.com/maps?t=&z=10&ie=UTF8&iwloc=&q=' + location.location_latitude + ',' + location.location_longitude">Ver ubicacion</a>
+                    </li>
                   </ul>
                 </div>
                 <div class="event-shape-1">
@@ -487,6 +490,27 @@
   .slide-text {
     span {
       text-transform: capitalize;
+    }
+  }
+
+  .popup-gmaps-mobile { display: none; }
+
+  @media only screen and (max-width: 450px) {
+    .wpo-event-section {
+      .wpo-event-wrap {
+        .wpo-event-item {
+          .wpo-event-text {
+            ul {
+              li {
+                .popup-gmaps {
+                  display: none;
+                }
+                .popup-gmaps-mobile { display: inline-block; }
+              }
+            }
+          }
+        }
+      }
     }
   }
 </style>
