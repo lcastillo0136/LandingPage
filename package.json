@@ -35,6 +35,7 @@
     "iview": "^3.2.2",
     "iview-area": "^1.5.17",
     "js-cookie": "^2.2.0",
+    "jspdf": "^1.5.3",
     "leaflet": "^1.6.0",
     "lodash": "^4.17.21",
     "papaparse": "^5.1.1",

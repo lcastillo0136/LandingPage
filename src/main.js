@@ -14,9 +14,7 @@ import PerfectScrollbar from 'vue2-perfect-scrollbar'
 import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
 import vSelect from 'vue-select'
 import DisableAutocomplete from 'vue-disable-autocomplete';
-import VueVideoPlayer from 'vue-video-player'
 import VueNativeNotification from './plugins/VueNativeNotification'
-import AudioPlayer from '@liripeng/vue-audio-player'
 import VueLazyload from 'vue-lazyload'
 import MasonryWall from '@yeger/vue2-masonry-wall'
 
@@ -39,7 +37,6 @@ import 'leaflet/dist/leaflet.css';
 import 'vue-select/dist/vue-select.css';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
 import 'iview/dist/styles/iview.css';
-import 'video.js/dist/video-js.css'
 import '@mdi/font/css/materialdesignicons.min.css'
 import "@/assets/css/style.css"
 
@@ -63,8 +60,6 @@ Vue.use(Moment, {
 Vue.use(VueSkeletonLoading)
 Vue.use(DisableAutocomplete)
 Vue.use(iView);
-Vue.use(VueVideoPlayer)
-Vue.use(AudioPlayer)
 Vue.use(MasonryWall)
 
 Vue.use(VueNativeNotification, {

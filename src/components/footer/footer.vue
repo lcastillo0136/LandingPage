@@ -94,9 +94,11 @@
       <div class="container">
         <div class="row">
           <div class="col col-xs-12">
-            <p class="copyright"> &copy; {{ new Date() | moment('Y') }}.  Powered with 
-    <a-icon type="heart" theme="filled" :style="{ color: 'hotpink', margin: '2px 5px' }"/>
-    <span> by <b><a href="https://www.zibasoft.com" target="_blank" style="color: inherit;">zibasoft</a></b></span></p>
+            <p class="copyright"> 
+              &copy; {{ new Date() | moment('Y') }}.  Powered with 
+              <span class="material-icons" :style="{ color: 'hotpink', verticalAlign: 'text-bottom', fontSize: '15px' }">favorite</span>
+              <span> by <b><a href="https://www.zibasoft.com" target="_blank" style="color: inherit;">zibasoft</a></b></span>
+            </p>
           </div>
         </div>
       </div>
@@ -107,6 +109,7 @@
 <script>
   import { getServerFile } from '@/libs/util'
   import { mapGetters, mapMutations } from 'vuex'
+
   export default {
     name: 'Footer',
     computed: {
