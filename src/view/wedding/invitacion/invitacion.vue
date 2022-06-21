@@ -4,14 +4,22 @@
     
       <div class="invitation shadow flex-fill" id="invitation">
         <div class="invite-content">
-          <span class="merrieweather">Estas invitado a la </span>
-          <span class="greatvibes gv48">Boda</span>
-          <span class="merrieweather">en donde unen sus vidas</span>
-          <span class="greatvibes">{{ event.bride.first_name }}</span>
-          <span class="merrieweather" style="font-size: 23px;">&</span>
-          <span class="greatvibes">{{ event.groom.first_name }}</span>
           <span class="merrieweather">
-            <span class="text-capitalize">{{ event.event_date | moment('dddd') }}, {{ event.event_date | moment('MMM DD') }}</span>
+            "El amor nunca acaba"
+            <br><small>- corintios 13:8</small></span>
+          <span class="greatvibes">
+            {{ event.bride.first_name }} <span class="merrieweather" style="font-size: 23px;">&</span> {{ event.groom.first_name }}
+          </span>
+          <span class="merrieweather">Tenemos el gusto de invitarlos a celebrar</span>
+          <span class="greatvibes gv48">Nuestra Boda</span>
+          <span class="merrieweather">
+            <span class="text-capitalize">
+              {{ event.event_date | moment('dddd') }}
+              <br>
+              {{ event.event_date | moment('DD') }}
+              <br>
+              {{ event.event_date | moment('MMMM YYYY') }}
+            </span>
           </span>
           <span class="merrieweather d-flex flex-column w-50 gap-4">
             <div v-for="_location in event.locations" :key="_location.id" class="d-flex flex-column gap-1">
@@ -19,7 +27,7 @@
               <a :href="'https://www.google.com/maps/search/?api=1&query='+_location.location_latitude+','+_location.location_longitude" target="_blank">
                 {{ _location.location_address }}
               </a>
-              {{ _location.phone | phone }}
+              {{ _location.date_time | moment('hh:mm a') }}
             </div>
           </span>
         </div>
@@ -53,6 +61,8 @@
   import download from 'downloadjs'
   import { GreatVibes, PDFBackgroundImage, MerriWeatherBoldItalic } from '@/libs/util'
 
+  import * as _ from 'lodash'
+
   (function(API){
     API.alignText = function(text = '', options = {}, x = 0, y = 0) {
       if ( options.align == "center" ) {
@@ -69,7 +79,6 @@
       }
 
       // Draw text at x,y
-      text = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       if (options.link) {
         this.textWithLink(text, x, y, { url: options.link });
       } else {
@@ -147,21 +156,22 @@
 
         doc.addImage(PDFBackgroundImage, 'PNG', 0, _currentTop, 210, 297);
 
-        doc.merrieweather('Estas invitado a la', { align: 'center', type: 'bold', style: 'italic' }, 0, _currentTop+=30)
-        doc.greatvibes('Boda', { align: 'center', size: 48 }, 10, _currentTop+=30)
-        doc.merrieweather('en donde unen sus vidas', { align: 'center', type: 'bold', style: 'italic' }, 0, _currentTop+=20)
-        doc.greatvibes(this.event.bride.first_name, { align: 'center' }, 10, _currentTop+=25)
-        doc.merrieweather('&', { align: 'center', type: 'bold', style: 'italic', size: 23 }, 0, _currentTop+=20)
-        doc.greatvibes(this.event.groom.first_name, { align: 'center' }, 10, _currentTop+=24)
+        doc.merrieweather('"El amor nunca acaba"', { align: 'center', type: 'bold', style: 'italic' }, 0, _currentTop+=30)
+        doc.merrieweather('- corintios 13:8', { align: 'center', type: 'bold', style: 'italic', size: 12 }, 0, _currentTop+=5)
+        doc.greatvibes(this.event.bride.first_name +' y ' + this.event.groom.first_name, { align: 'center' }, 10, _currentTop+=25)
+        doc.merrieweather('Tenemos el gusto de invitarlos a celebrar', { align: 'center', type: 'bold', style: 'italic' }, 0, _currentTop+=20)
+        doc.greatvibes('Nuestra Boda', { align: 'center', size: 48 }, 10, _currentTop+=30)
+        
+        doc.merrieweather(_.capitalize(this.$moment(this.event.event_date).format('dddd')), { align: 'center', type: 'bold', style: 'italic' }, 0, _currentTop+=20)
+        doc.merrieweather(this.$moment(this.event.event_date).format('DD'), { align: 'center', type: 'bold', style: 'italic' }, 0, _currentTop+=7)
+        doc.merrieweather(_.capitalize(this.$moment(this.event.event_date).format('MMMM YYYY')), { align: 'center', type: 'bold', style: 'italic' }, 0, _currentTop+=7)
 
-        doc.merrieweather(this.$moment(this.event.event_date).format('dddd, MMM DD'), { align: 'center', type: 'bold', style: 'italic' }, 0, _currentTop+=20)
-
-        _currentTop += 10;
+        _currentTop += 5;
 
         (this.event.locations||[]).forEach((e, i) => {
-          doc.merrieweather(e.name, { align: 'center', type: 'bold', style: 'italic' }, 0, _currentTop+=10)
-          doc.merrieweather(e.location_address, { align: 'center', type: 'bold', style: 'italic', color: '#e74e84', link: 'https://www.google.com/maps/search/?api=1&query='+e.location_latitude+','+e.location_longitude }, 0, _currentTop+=10)
-          doc.merrieweather(`${e.phone}`, { align: 'center', type: 'bold', style: 'italic', link: `tel:${e.phone}` }, 0, _currentTop+=10)
+          doc.merrieweather(e.name, { align: 'center', type: 'bold', style: 'italic' }, 0, _currentTop+=15)
+          doc.merrieweather(e.location_address, { align: 'center', type: 'bold', style: 'italic', color: '#e74e84', link: 'https://www.google.com/maps/search/?api=1&query='+e.location_latitude+','+e.location_longitude }, 0, _currentTop+=7)
+          doc.merrieweather(this.$moment(e.date_time).format('hh:mm a'), { align: 'center', type: 'bold', style: 'italic' }, 0, _currentTop+=7)
 
           if ((_currentTop + 30) > 290) {
             doc.addPage({
@@ -174,6 +184,7 @@
         });
 
         doc.save('invitacion-'+this.$moment(this.event.event_date).format('DD-MM-YY')+'.pdf')
+        // window.open(doc.output('bloburl'))
       },
       beforeDownload($event) { 
         $event.html2pdf().from($event.pdfContent).outputPdf().then((pdf) => {
@@ -248,7 +259,9 @@
       color: #000;
       font-size: 34px;
       line-height: 47.6px;
-
+      &::after {
+        display: none;
+      }
       &.gv48 {
         font-size: 48px;
         line-height: 67.2px;
