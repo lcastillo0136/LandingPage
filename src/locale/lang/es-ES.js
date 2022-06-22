@@ -695,5 +695,8 @@ export default {
   },
   invoice_page: {
     title: 'Detalles de la orden'
+  },
+  card: {
+    title: 'Business card'
   }
 }

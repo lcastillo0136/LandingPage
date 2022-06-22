@@ -698,5 +698,8 @@ export default {
   },
   invoice_page: {
     title: 'Order details'
+  },
+  card: {
+    title: 'Business card'
   }
 }

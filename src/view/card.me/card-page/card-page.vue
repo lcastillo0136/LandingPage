@@ -49,11 +49,11 @@
       </div>
     </div>
     
-      <perfect-scrollbar class="skills">
+      <div class="skills">
         <div class="skill " v-for="(skill) in card.skills">
-          <b-badge pill variant="light">{{ skill.name }}</b-badge>
+          <b-badge pill variant="light">#{{ skill.name }}</b-badge>
         </div>
-      </perfect-scrollbar>
+      </div>
     
     <div class="quote">{{ card.quote }}</div>
 
@@ -159,6 +159,7 @@
         gap: 5px;
         overflow-x: auto;
         padding: 5px 0 10px;
+        flex-wrap: wrap;
 
         &::-webkit-scrollbar-track {
           -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
