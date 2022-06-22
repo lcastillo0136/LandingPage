@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import VueWow from 'vue-wow'
 import Moment from 'vue-moment'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 const moment = require('moment')
 require('moment/locale/es')
@@ -11,47 +12,26 @@ require('moment/locale/es')
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueSkeletonLoading from 'vue-skeleton-loading'
 import PerfectScrollbar from 'vue2-perfect-scrollbar'
-import { LMap, LTileLayer, LMarker, LIconDefault, LPopup } from 'vue2-leaflet';
-import vSelect from 'vue-select'
 import DisableAutocomplete from 'vue-disable-autocomplete';
 import VueVideoPlayer from 'vue-video-player'
 import VueNativeNotification from './plugins/VueNativeNotification'
 import AudioPlayer from '@liripeng/vue-audio-player'
 
-import iView from 'iview';
 import i18n from '@/locale'
 import config from '@/config'
 import * as Fingerprint2 from 'fingerprintjs2'
 Vue.prototype.$fingerprint = Fingerprint2;
 
-import * as Antd from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.css';
-import 'ant-design-vue/lib/drawer/style/index.css';
-import 'ant-design-vue/lib/menu/style/index.css';
-import 'ant-design-vue/lib/tabs/style/index.css';
-import 'ant-design-vue/lib/tooltip/style/index.css';
-import '@/assets/css/ant-design-drawer.css'
-import '@/assets/css/ant-design-menu.css'
-import 'leaflet/dist/leaflet.css';
-import 'vue-select/dist/vue-select.css';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
-import 'iview/dist/styles/iview.css';
-import 'video.js/dist/video-js.css'
 
-import "@/assets/css/bootstrap.min.css"
-import "@/assets/css/style.css"
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 
-Vue.component('l-map', LMap);
-Vue.component('l-tile-layer', LTileLayer);
-Vue.component('l-marker', LMarker);
-Vue.component('l-icon-default', LIconDefault)
-Vue.component('l-popup', LPopup)
-Vue.component('v-select', vSelect)
+import '@/assets/scss/main.scss'
 
 Vue.use(VueSweetalert2);
 Vue.use(PerfectScrollbar)
-
-Vue.use(Antd)
 
 Vue.use(VueWow)
 Vue.use(Moment, {
@@ -59,14 +39,12 @@ Vue.use(Moment, {
 })
 Vue.use(VueSkeletonLoading)
 Vue.use(DisableAutocomplete)
-Vue.use(iView);
-Vue.use(VueVideoPlayer)
-Vue.use(AudioPlayer)
 
 Vue.use(VueNativeNotification, {
   requestOnNotify: true
 })
-
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
 Vue.config.productionTip = false
 Vue.prototype.$config = config
 

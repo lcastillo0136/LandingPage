@@ -1,9 +1,6 @@
 <template>
 	<div>
-    <Header :sticky="headerSticky" v-if="headerVisibility"></Header>
-      <router-view/>
-    <Footer v-if="footerVisibility"></Footer>
-    <ToTop v-if="toTopVisibility"></ToTop>
+    <router-view/>
     <cookie-law theme="dark-lime" v-if="cookieEnabled && !stillLoading"></cookie-law>
   </div>
 </template>
@@ -12,24 +9,11 @@ import { mapGetters, mapMutations } from 'vuex'
 import CookieLaw from 'vue-cookie-law'
 import config from '@/config'
 
-import Header from '@/components/header'
-import Footer from '@/components/footer'
-import ToTop from '@/components/totop'
-
-import "@/assets/css/menu.css"
-import "@/assets/css/vendors.css"
-import "@/assets/css/icon_fonts/css/all_icons_min.css"
-import "@/assets/css/date_picker.css"
-import "@/assets/css/custom.css"
-
 const baseAPI = process.env.VUE_APP_API_ENDPOINT
 
 export default {
   name: 'Main',
   components: {
-    Header,
-    Footer,
-    ToTop,
     CookieLaw
   },
   data () {
@@ -41,9 +25,6 @@ export default {
     ...mapGetters([
       'hasToken',
       'stillLoading',
-      'headerVisibility',
-      'footerVisibility',
-      'toTopVisibility'
     ]),
     cookieEnabled () {
       return config.cookieExpires === 1
@@ -54,11 +35,6 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'toggleHeader',
-      'toggleFooter',
-      'setContainer',
-      'setFooterVisible',
-      'setToTopVisible'
     ]),
     setTitle (route) {
       if (route.meta && route.meta.title) {
