@@ -26,7 +26,7 @@ import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 import '@/assets/scss/main.scss'
 
