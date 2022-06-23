@@ -5,6 +5,7 @@ import store from './store'
 import VueWow from 'vue-wow'
 import Moment from 'vue-moment'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import * as Antd from 'ant-design-vue'
 
 const moment = require('moment')
 require('moment/locale/es')
@@ -23,16 +24,15 @@ import * as Fingerprint2 from 'fingerprintjs2'
 Vue.prototype.$fingerprint = Fingerprint2;
 
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
-
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import 'bootstrap-icons/font/bootstrap-icons.css'
-
 import '@/assets/scss/main.scss'
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import 'ant-design-vue/lib/notification/style/index.css';
+import 'ant-design-vue/lib/button/style/index.css';
 
 Vue.use(VueSweetalert2);
 Vue.use(PerfectScrollbar)
 
+Vue.use(Antd)
 Vue.use(VueWow)
 Vue.use(Moment, {
   moment
