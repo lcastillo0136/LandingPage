@@ -10,59 +10,19 @@
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
             <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
-              <b-nav-item v-b-modal.modal-1>Entrar</b-nav-item>
-              <b-button class="rounded-lg text-white" variant="primary">Registrarte</b-button>
+              <b-nav-item @click="$bvModal.show('login-1')">Entrar</b-nav-item>
+              <b-button @click="$bvModal.show('register-1')" class="rounded-lg text-white" variant="primary">Registrarte</b-button>
             </div>
             <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
-              <b-nav-item>Hola, @{{ User.username }}</b-nav-item>
+              <b-nav-item to="/profile">Hola, @{{ User.username }}</b-nav-item>
               <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
             </div>
           </b-navbar-nav>
         </b-collapse>
       </b-container>
     </b-navbar>
-    <b-modal id="modal-1" ref="loginModal">
-      <template #modal-title>
-        Iniciar sesion
-      </template>
-      <a-form-model ref="loginForm" :rules="rules" :model="form">
-        <div class="box_form clearfix">
-          <div class="box_login last flipInX animated" v-if="!forgot.open">
-            <div class="form-group">
-              <a-form-model-item prop="username">
-                <a-input type="email" class="form-control" :placeholder="$t('login.form.username')" v-model="form.username" />
-              </a-form-model-item>
-            </div>
-            <div class="form-group">
-              <a-form-model-item prop="realPassword">
-                <a-input type="password" class="form-control" :placeholder="$t('login.form.password')" v-model="form.realPassword" />
-                <a slot="help" href="" class="forgot" @click.stop.prevent="openForgot"><small>{{ $t('login.form.forgot_question') }}</small></a>
-              </a-form-model-item>
-            </div>
-          </div>
-          <div class="box_login last flipInX animated" v-if="forgot.open">
-            <div class="form-group">
-              <a-form-model-item prop="username">
-                <a-input type="email" class="form-control" :placeholder="$t('login.form.username')" v-model="form.username" />
-                <a slot="help" href="" class="forgot" @click.stop.prevent="closeForgot"><small>{{ $t('login.form.login_form') }}</small></a>
-              </a-form-model-item>
-            </div>
-            <div class="form-group">
-              <input class="btn_1" type="submit" :loading="loading" :value="$t('login.form.recover')" @click.stop.prevent="handleRecover">
-            </div>
-          </div>
-        </div>
-      </a-form-model>
-      <template #modal-footer="{ ok, cancel, hide }">
-        <a-button type="secondary" shape="round" class="btn_1" @click.stop.prevent="cancel">
-          Cancelar
-        </a-button>
-        <a-button type="primary" shape="round" class="btn_1" :loading="loading" @click.stop.prevent="handleLogin1">
-          Entrar
-        </a-button>
-      </template>
-    </b-modal>
-
+    <Login></Login>
+    <RegisterForm></RegisterForm>
     <section class="pb-5 bg-hero">
       <b-container class="pt-5">
         <b-row>
@@ -942,7 +902,7 @@
                 </div>
                 <div class="clearfix">
                   <span class="float-right">o
-                    <b-link href="#" class="text-white"  v-b-modal.modal-1>Inicia sesion</b-link>
+                    <b-link href="#" class="text-white" @click="$bvModal.show('login-1')">Inicia sesion</b-link>
                   </span>
                 </div>
               </div>
@@ -991,6 +951,9 @@
         </b-row>
       </b-container>
     </section>
+    <a-back-top id="toTop">
+      <b-icon-chevron-up></b-icon-chevron-up>
+    </a-back-top>
   </main>
   <!-- /main content -->
 </template>
@@ -998,12 +961,9 @@
 <script>
   import { getServerFile } from '@/libs/util'
   import { mapGetters, mapActions } from 'vuex'
-  import {
-    BIconPlayFill,
-    BIconArrowRight,
-    BIconGithub,
-    BIconGlobe,
-  } from 'bootstrap-vue'
+  import { BIconPlayFill, BIconArrowRight, BIconGithub, BIconGlobe } from 'bootstrap-vue'
+  import RegisterForm from './components/register'
+  import Login from './components/login'
 
   export default {
     props: {
@@ -1013,36 +973,11 @@
       BIconArrowRight,
       BIconGithub,
       BIconGlobe,
+      RegisterForm,
+      Login
     },
     data () {
       return {
-        form: {
-          username: '',
-          realPassword: ''
-        },
-        forgot: {
-          open: false
-        },
-        loading: false,
-        meta: {},
-        reference: {},
-        returnPage: false,
-        rules: {
-          username: [{ validator: (rule, value, callback) => {
-            if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
-            } else {
-              callback();
-            }
-          }, trigger: 'change' }],
-          realPassword: [{ validator: (rule, value, callback) => {
-            if ((value === '' || !value) && !this.forgot.open) {
-              callback(new Error('Favor de no dejar este campo vacio'));
-            } else {
-              callback();
-            }
-          }, trigger: 'change' }],
-        },
       }
     },
     computed: {
@@ -1063,66 +998,11 @@
     },
     methods: {
       ...mapActions([
-        'handleLogin',
         'handleLogOut'
       ]),
       dispachLogout () {
         this.handleLogOut()
-      },
-      handleLogin1 () {
-        this.loading = true
-        this.$refs.loginForm.validate().then(valid => {
-          if (valid) {
-            if (this.form.username !== '' && this.form.realPassword !== '') {
-              this.handleLogin({
-                userName: this.form.username, 
-                password: this.form.realPassword, 
-                remember: true
-              }).then((response) => {
-                let _current_time = this.$moment().isBetween(this.$moment().set({ hour: 6, minute: 0 }), this.$moment().set({ hour: 12, minute: 0 })) ? 'Buen dia' : (this.$moment().isBetween(this.$moment().set({ hour: 12, minute: 1 }), this.$moment().set({ hour: 18, minute: 30 })) ? 'Buenas tardes' : 'Buenas noches')
-                this.$notification.success({
-                  message: 'Inicio de sesion', 
-                  description: `${_current_time} ${response.title || ''} ${response.first_name || ''} ${response.last_name || ''}`
-                })
-
-                if (this.returnPage) {
-                  this.$router.push({
-                    name: this.reference, 
-                    params: { ...this.meta }
-                  })
-                } else {
-                  // this.$router.push({ name: response.role.is_provider ? 'profile-details' : 'list-page' })
-                  this.$refs.loginModal.hide()
-                }
-                this.loading = false
-              }).catch((error) => {
-                switch(error.data.message) {
-                  case 'user_inactive':
-                    this.$notification.error({
-                      message: 'El usuario no se encuentra activo',
-                      description: 'Favor de informar al administrador del sistema.'
-                    })
-                    break;
-                  default:
-                    this.$notification.error({
-                      message: 'No se encontro el usuario',
-                      description: 'Favor de revisar su usuario o contraseña he intentar de nuevo.'
-                    })
-                    break;
-                }
-                this.loading = false
-              });
-            } else {
-              this.$swal(this.$t('login.messages.error.missing_info'), '', 'error')
-              this.loading = false
-            }
-          } else {
-            this.loading = false
-          }
-        }).catch((error) => {
-          this.loading = false
-        });
-      },
+      }
     }
   }
 </script>
@@ -1131,6 +1011,20 @@
   .home-page {
     .navbar {
       min-height: 100px;
+    }
+    #toTop {
+      background-color: #000;
+      background-color: rgba(0, 0, 0, .6);
+      padding: 10px;
+      line-height: 20px;
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      cursor: pointer;
+      color: #fff;
+      font-size: 20px;
+      border-radius: 3px;
+      z-index: 99
     }
   }
 </style>

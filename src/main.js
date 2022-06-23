@@ -26,7 +26,10 @@ Vue.prototype.$fingerprint = Fingerprint2;
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
 import '@/assets/scss/main.scss'
 import 'bootstrap-icons/font/bootstrap-icons.css'
+import 'ant-design-vue/lib/back-top/style/index.css';
+import 'ant-design-vue/lib/form/style/index.css';
 import 'ant-design-vue/lib/notification/style/index.css';
+import 'ant-design-vue/lib/input/style/index.css';
 import 'ant-design-vue/lib/button/style/index.css';
 
 Vue.use(VueSweetalert2);
@@ -38,7 +41,7 @@ Vue.use(Moment, {
   moment
 })
 Vue.use(VueSkeletonLoading)
-Vue.use(DisableAutocomplete)
+// Vue.use(DisableAutocomplete)
 
 Vue.use(VueNativeNotification, {
   requestOnNotify: true

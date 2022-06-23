@@ -131,7 +131,9 @@ $theme-colors: (
     rgba(219, 240, 235, 1) 81%
   );
 }
-
+div.ant-notification {
+  z-index: 1080;
+}
 
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'bootstrap-vue/src/index.scss';
