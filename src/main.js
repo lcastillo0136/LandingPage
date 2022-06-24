@@ -58,7 +58,7 @@ Vue.use(Moment, {
   moment
 })
 Vue.use(VueSkeletonLoading)
-Vue.use(DisableAutocomplete)
+// Vue.use(DisableAutocomplete)
 Vue.use(iView);
 Vue.use(VueVideoPlayer)
 Vue.use(AudioPlayer)
