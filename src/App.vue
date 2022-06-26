@@ -3,6 +3,7 @@
     <loading :loading="stillLoading"></loading>
     <div id="page" :class="{'menu-open': mobileMenuOpen}">
       <router-view/>
+      <cookie-law theme="dark-lime" v-if="cookieEnabled && !stillLoading"></cookie-law>
     </div>
   </div>
 </template>
@@ -11,16 +12,19 @@
   import { initializeApp } from 'firebase/app';
   import { getDatabase } from "firebase/database";
   import "firebase/database";
+  import config from '@/config'
 
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import Loading from '@/components/loading'
+  import CookieLaw from 'vue-cookie-law'
   import * as conekta from '@/libs/conekta'
   import * as paypal from '@/libs/paypal'
 
   export default {
     name: 'App',
     components: {
-      Loading
+      Loading,
+      CookieLaw
     },
     computed: {
       ...mapGetters([
@@ -28,7 +32,10 @@
         'mobileMenuOpen',
         'settings',
         'hasToken'
-      ])
+      ]),
+      cookieEnabled () {
+        return config.cookieExpires === 1
+      },
     },
     methods: {
       ...mapMutations([

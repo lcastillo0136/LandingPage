@@ -134,7 +134,7 @@ $theme-colors: (
 div.ant-notification {
   z-index: 1080;
 }
-
+@import '../css/util.css';
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'bootstrap-vue/src/index.scss';
 // @import '../../node_modules/bootstrap/scss/bootstrap.scss';

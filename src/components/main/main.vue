@@ -1,20 +1,14 @@
 <template>
-	<div>
-    <router-view/>
-    <cookie-law theme="dark-lime" v-if="cookieEnabled && !stillLoading"></cookie-law>
-  </div>
+  <router-view/>
 </template>
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import CookieLaw from 'vue-cookie-law'
-import config from '@/config'
 
 const baseAPI = process.env.VUE_APP_API_ENDPOINT
 
 export default {
   name: 'Main',
   components: {
-    CookieLaw
   },
   data () {
     return {
@@ -26,9 +20,6 @@ export default {
       'hasToken',
       'stillLoading',
     ]),
-    cookieEnabled () {
-      return config.cookieExpires === 1
-    },
     headerSticky () {
       return this.$route.meta && this.$route.meta.headerSticky
     }
