@@ -82,7 +82,7 @@
           <b-col cols="12" lg="6" md="6" sm="12" class="mt-sm-5">
             <div class="d-flex flex-column">
               <div class="d-flex flex-row">
-                <div class="d-fle align-items-start">
+                <div class="d-flex align-items-start">
                   <svg
                     width="78"
                     height="78"
@@ -160,7 +160,7 @@
                 </div>
               </div>
               <div class="d-flex flex-row my-lg-5">
-                <div class="d-fle align-items-start">
+                <div class="d-flex align-items-start">
                   <svg
                     width="78"
                     height="78"
@@ -235,7 +235,7 @@
                 </div>
               </div>
               <div class="d-flex flex-row">
-                <div class="d-fle align-items-start">
+                <div class="d-flex align-items-start">
                   <svg
                     width="78"
                     height="78"
@@ -400,7 +400,7 @@
                 obtendras?
               </h2>
               <div class="d-flex flex-column mt-5">
-                <div class="my-1 d-flex flex-row">
+                <div class="my-1 d-flex flex-row align-items-center">
                   <svg
                     width="32"
                     height="32"
@@ -415,9 +415,9 @@
                       fill="#54BD95"
                     />
                   </svg>
-                  <p class="ml-2">Enlaces a tus redes sociales</p>
+                  <p class="ml-2 mb-0">Enlaces a tus redes sociales</p>
                 </div>
-                <div class="my-1 d-flex flex-row">
+                <div class="my-1 d-flex flex-row align-items-center">
                   <svg
                     width="32"
                     height="32"
@@ -432,9 +432,9 @@
                       fill="#54BD95"
                     />
                   </svg>
-                  <p class="ml-2">Chat directo con tu Whatsapp</p>
+                  <p class="ml-2 mb-0">Chat directo con tu Whatsapp</p>
                 </div>
-                <div class="my-1 d-flex flex-row">
+                <div class="my-1 d-flex flex-row align-items-center">
                   <svg
                     width="32"
                     height="32"
@@ -449,9 +449,9 @@
                       fill="#54BD95"
                     />
                   </svg>
-                  <p class="ml-2">Ubicación de tu negocio</p>
+                  <p class="ml-2 mb-0">Ubicación de tu negocio</p>
                 </div>
-                <div class="my-1 d-flex flex-row">
+                <div class="my-1 d-flex flex-row align-items-center">
                   <svg
                     width="32"
                     height="32"
@@ -466,9 +466,9 @@
                       fill="#54BD95"
                     />
                   </svg>
-                  <p class="ml-2">1 año de servicio</p>
+                  <p class="ml-2 mb-0">1 año de servicio</p>
                 </div>
-                <div class="my-1 d-flex flex-row">
+                <div class="my-1 d-flex flex-row align-items-center">
                   <svg
                     width="32"
                     height="32"
@@ -483,7 +483,7 @@
                       fill="#54BD95"
                     />
                   </svg>
-                  <p class="ml-2">Incluye código Qr</p>
+                  <p class="ml-2 mb-0">Incluye código Qr</p>
                 </div>
               </div>
             </b-col>
@@ -922,7 +922,7 @@
             </div>
           </b-col>
           <b-col cols="12" lg="6" md="6">
-            <b-row style="justify-content: end;">
+            <b-row style="justify-content: end !important; text-align: right;">
               <b-col lg="4" md="4" sm="12" cols="12" class="d-flex flex-column mt-3" >
                 <h6 class="mt-2 mb-4">Product</h6>
                 <b-link href="#" class="text-white">Update</b-link>
@@ -1011,20 +1011,6 @@
   .home-page {
     .navbar {
       min-height: 100px;
-    }
-    #toTop {
-      background-color: #000;
-      background-color: rgba(0, 0, 0, .6);
-      padding: 10px;
-      line-height: 20px;
-      position: fixed;
-      bottom: 15px;
-      right: 15px;
-      cursor: pointer;
-      color: #fff;
-      font-size: 20px;
-      border-radius: 3px;
-      z-index: 99
     }
   }
 </style>

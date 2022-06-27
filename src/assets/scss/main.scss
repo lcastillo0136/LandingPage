@@ -1624,6 +1624,12 @@ html {
   transition: height 0.15s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.15s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
 }
 
+.ant-tag {
+  .anticon {
+    vertical-align: middle;
+  }
+}
+
 @import '../css/util.css';
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'bootstrap-vue/src/index.scss';

@@ -1,5 +1,5 @@
 <template>
-  <div class="step">
+  <div class="">
 
     <div class="flex-m w-full payment-methods">
       <template v-for="(method, method_i) in methods">

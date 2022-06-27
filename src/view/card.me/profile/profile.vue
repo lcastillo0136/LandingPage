@@ -1,6 +1,28 @@
 <template>
-  <main>
-    <div class="container margin_60">
+  <main class="home-page">
+
+    <b-navbar toggleable="md" class="px-0">
+      <b-container fluid class="d-flex align-items-center ">
+        <b-navbar-brand class="mt-0">
+          <img :src="appImage" style="max-height: 100px;"/>
+        </b-navbar-brand>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav class="ml-auto">
+            <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
+              <b-nav-item @click="$bvModal.show('login-1')">Entrar</b-nav-item>
+              <b-button to="/register.html" class="rounded-lg text-white" variant="primary">Registrarte</b-button>
+            </div>
+            <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
+              <b-nav-item to="/profile">Hola, @{{ User.username }}</b-nav-item>
+              <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
+            </div>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-container>
+    </b-navbar>
+    <div class="container-fluid bg-hero wrapper">
       <div class="row">
         <aside class="col-xl-3 col-lg-4" id="sidebar">
           <AsideProfile :user="profile"></AsideProfile>
@@ -15,6 +37,7 @@
 </template>
 <script>
   import AsideProfile from './components/aside-profile'
+  import { getServerFile } from '@/libs/util'
   import { mapGetters, mapActions } from 'vuex'
 
   export default {
@@ -83,13 +106,26 @@
         'hasToken',
         'settings',
         'getUser'
-      ])
+      ]),
+      User() {
+        return this.getUser || {}
+      },
+      appName () {
+        return this.settings?.COMPANY_NAME
+      },
+      appImage () {
+        return getServerFile('public/company/company_logo.png')
+      }
     },
     methods: {
       ...mapActions([
+        'handleLogOut',
         'getAppointmentsStatus',
         'getUserInfo'
-      ])
+      ]),
+      dispachLogout () {
+        this.handleLogOut()
+      }
     },
     mounted() {
       window['$']('#sidebar').theiaStickySidebar({
@@ -116,3 +152,20 @@
     }
   }
 </script>
+<style lang="scss">
+  .home-page {
+    &.box_list .wrapper {
+      // margin-top: 0 !important;
+      // padding-top: 30px !important;
+    }
+  }
+  .home-page {
+    .navbar {
+      min-height: 100px;
+    }
+    .bg-hero {
+      padding-top: 151px !important;
+      padding-bottom: 30px;
+    }
+  }
+</style>

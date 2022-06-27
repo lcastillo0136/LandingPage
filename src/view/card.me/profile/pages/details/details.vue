@@ -159,7 +159,7 @@
         </div>
       </form>
     </div>
-    <div class="box_general_2 add_bottom_45" v-if="isProvider">
+    <div class="box_general_2 add_bottom_45">
       <h4>Informacion profesional</h4>
 
       <div class="row">
@@ -172,7 +172,7 @@
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
             <label>Especialidad</label>
-            <input type="text" class="form-control" placeholder="Correo electronico" v-model="profile.especialidad" autocomplete="chrome-off">
+            <input type="text" class="form-control" placeholder="---------" v-model="profile.especialidad" autocomplete="chrome-off">
           </div>
         </div>
       </div>
@@ -207,7 +207,7 @@
       </div>
 
     </div>
-    <div class="box_general_2 add_bottom_30" v-if="isProvider">
+    <div class="box_general_2 add_bottom_30">
       <h4>Informacion adicional</h4>
       <div class="form-group">
         <label>Cita</label>

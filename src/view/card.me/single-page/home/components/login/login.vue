@@ -7,7 +7,7 @@
       </h4>
     </template>
     <a-form-model ref="loginForm" :rules="rules" :model="form">
-      <div class="box_form clearfix">
+      <div class="clearfix">
         <div class="box_login last flipInX animated" v-if="!forgot.open">
           <div class="form-group">
             <a-form-model-item prop="username" label="Usuario o correo electronico">
