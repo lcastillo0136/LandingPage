@@ -37,6 +37,19 @@ export default [
         component: () => import('@/view/' + config.theme + '/card-page')
       }, 
       {
+        path: '/invoice.html',
+        name: 'invoice-page',
+        meta: {
+          hideInMenu: true,
+          title: 'invoice-page.title',
+          notCache: true,
+          icon: 'md-booking',
+          headerSticky: true,
+          order: '213f7f2b-74c8-4f83-9534-878176c8e16c'
+        },
+        component: () => import('@/view/' + config.theme + '/invoice-page')
+      }, 
+      {
         path: '/login.html',
         name: 'login',
         meta: {

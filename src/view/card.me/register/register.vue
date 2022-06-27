@@ -11,13 +11,13 @@
             <div class="box_login last flipInX animated">
               <div class="">
                 <a-form-model-item prop="first_name" label="Nombre">
-                  <a-input type="text" class="" placeholder="Nombre" v-model="form.first_name" size="large">
+                  <a-input type="text" class="" placeholder="Nombre" v-model="form.first_name" size="large" :disabled="showLoading">
                   </a-input>
                 </a-form-model-item>
               </div>
               <div class="">
                 <a-form-model-item prop="email" label="Correo electronico">
-                  <a-input type="email" class="" placeholder="Correo electronico" v-model="form.email" size="large">
+                  <a-input type="email" class="" placeholder="Correo electronico" v-model="form.email" size="large" :disabled="showLoading">
                     <template #prefix>
                       <b-icon-envelope></b-icon-envelope>
                     </template>
@@ -26,7 +26,7 @@
               </div>
               <div class="">
                 <a-form-model-item prop="realPassword" label="Contraseña">
-                  <a-input :type="passwordType" :placeholder="$t('login.form.password')" v-model="form.realPassword" size="large" ref="password1">
+                  <a-input :type="passwordType" :placeholder="$t('login.form.password')" v-model="form.realPassword" size="large" ref="password1" :disabled="showLoading">
                     <template #prefix>
                       <b-icon-key></b-icon-key>
                     </template>
@@ -39,7 +39,7 @@
               </div>
               <div class="">
                 <a-form-model-item prop="realPassword2" label="Confirmar contraseña">
-                  <a-input :type="passwordType2" placeholder="Confirmar contraseña" v-model="form.realPassword2" size="large">
+                  <a-input :type="passwordType2" placeholder="Confirmar contraseña" v-model="form.realPassword2" size="large" :disabled="showLoading">
                     <template #prefix>
                       <b-icon-key></b-icon-key>
                     </template>
@@ -103,7 +103,8 @@
           email: '',
           realPassword: '',
           realPassword2: '',
-          user_id: ''
+          user_id: '',
+          username: ''
         },
         account: {
           name: '',
@@ -242,8 +243,12 @@
             }).then((response) => {
               this.showLoading = false
               if (response.data.success) {
-                this.$swal(this.$t('register.messages.success.registered'), '', 'success');
+                this.$notification.success({
+                  message: this.$t('register.messages.success.registered'),
+                  description: 'Generando componentes para tarjeta digital...'
+                })
                 this.form.user_id = response.data.data.id
+                this.form.username = response.data.data.username
                 if (this.account.methodSelected == 1) {
                   this.sendPaymentCard()
                 } else {
@@ -319,7 +324,11 @@
                 tagline: false
               },
               onError: (err) => {
-                this.errorMessage('No se pudo realizar el pago con paypal, favor de intentar mas tarde.');
+                this.$notification.error({
+                  message: 'Pago no procesado',
+                  description: 'No se pudo realizar el pago con paypal, favor de intentar mas tarde.',
+                  onClose: () => { this.showLoading = false; }
+                })
               },
               // Set up the transaction
               createOrder: (data, actions) => {
@@ -360,7 +369,11 @@
                   this.handleRegister();
                 })
                 .catch(err => {
-                  this.errorMessage('No se pudo realizar el pago con paypal, favor de intentar mas tarde.');
+                  this.$notification.error({
+                    message: 'Pago no procesado',
+                    description: 'No se pudo realizar el pago con paypal, favor de intentar mas tarde.',
+                    onClose: () => { this.showLoading = false; }
+                  })
                 })
               }
             }).render('#paypal-button-container');
@@ -407,8 +420,21 @@
         if (readyToSave) {
           postOrder(data).then((response) => {
             this.showLoading = false
-            this.$router.replace({ name: 'invoice-page', params: { order: response.data.data.uuid_key } })
+            this.handleLogin({
+              userName: this.form.username, 
+              password: this.form.realPassword, 
+              remember: true
+            }).then(() => {
+              this.$router.push({ name: 'profile-details' })
+            }).catch((error) => {
+            });
+            // this.$router.replace({ name: 'invoice-page', params: { order: response.data.data.uuid_key } })
           }).catch((error) => {
+            this.$notification.error({
+              message: 'Pago no procesado',
+              description: 'No se pudo realizar el pago, favor de intentar mas tarde.',
+              onClose: () => { this.showLoading = false; }
+            })
             this.showLoading = false
           })
         } else {

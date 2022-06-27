@@ -3,19 +3,19 @@
 
     <div class="flex-m w-full payment-methods">
       <template v-for="(method, method_i) in methods">
-        <div class="payment-method" @click.stop.prevent="chooseMethod(1)" :class="{ 'selected': account.methodSelected == 1 }" v-if="method.id == 1 && settings && settings.CONEKTA_CLIENT">
+        <div class="payment-method" @click.stop.prevent="!loading && chooseMethod(1)" :class="{ 'selected': account.methodSelected == 1 }" v-if="method.id == 1 && settings && settings.CONEKTA_CLIENT">
           <b-icon-credit-card></b-icon-credit-card>
           Debit / Credit card
         </div>
-        <div class="payment-method" @click.stop.prevent="chooseMethod(4)" :class="{ 'selected': account.methodSelected == 4 }" v-if="method.id == 4 && settings && settings.PAYPAL_CLIENT">
+        <div class="payment-method" @click.stop.prevent="!loading && chooseMethod(4)" :class="{ 'selected': account.methodSelected == 4 }" v-if="method.id == 4 && settings && settings.PAYPAL_CLIENT">
           <i class="bi bi-paypal b-icon"></i>
           Paypal
         </div>
-        <div class="payment-method" @click.stop.prevent="chooseMethod(3)" :class="{ 'selected': account.methodSelected == 3 }" v-if="method.id == 3">
+        <div class="payment-method" @click.stop.prevent="!loading && chooseMethod(3)" :class="{ 'selected': account.methodSelected == 3 }" v-if="method.id == 3">
           <b-icon-cash-coin></b-icon-cash-coin>
           Cash
         </div>
-        <div class="payment-method" @click.stop.prevent="chooseMethod(2)" :class="{ 'selected': account.methodSelected == 2 }" v-if="method.id == 2 && settings && settings.CONEKTA_CLIENT">
+        <div class="payment-method" @click.stop.prevent="!loading && chooseMethod(2)" :class="{ 'selected': account.methodSelected == 2 }" v-if="method.id == 2 && settings && settings.CONEKTA_CLIENT">
           <span class="b-icon-oxxo"></span>
           Oxxo
         </div>

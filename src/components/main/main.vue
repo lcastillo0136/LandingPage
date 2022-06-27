@@ -3,7 +3,7 @@
 </template>
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-
+import config from '@/config'
 const baseAPI = process.env.VUE_APP_API_ENDPOINT
 
 export default {
