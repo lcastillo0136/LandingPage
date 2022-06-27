@@ -69,9 +69,9 @@
           </div>
           <div class="container-login100-form-btn">
             <template v-if="account.methodSelected !== 4">
-              <b-button class="rounded-lg text-white w-100" variant="primary" :loading="showLoading" @click.stop.prevent="handleRegister" :disabled="!canPay">
+              <a-button class="btn btn-primary rounded-lg text-white w-100" type="success" :loading="showLoading" @click.stop.prevent="handleRegister" :disabled="!canPay">
                 Registrar y Pagar
-              </b-button>
+              </a-button>
             </template>
             <template v-else>
               <div id="paypal-button-container" class="w-100"></div>
@@ -687,6 +687,16 @@
 
     .btn {
       padding: 12px;
+      height: auto;
+      color: #212529;
+      background-color: #54bd95;
+      border-color: #54bd95;
+
+      &:hover {
+        color: #fff;
+        background-color: #41a982;
+        border-color: #3ea07b;
+      }
     }
   }
 
@@ -851,4 +861,5 @@
       height: 100%;
     }
   }
+
 </style>
