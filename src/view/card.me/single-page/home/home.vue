@@ -11,10 +11,10 @@
           <b-navbar-nav class="ml-auto">
             <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
               <b-nav-item @click="$bvModal.show('login-1')">Entrar</b-nav-item>
-              <b-button to="/register.html" class="rounded-lg text-white" variant="primary">Registrarte</b-button>
+              <b-button :to="{ name: 'register' }" class="rounded-lg text-white" variant="primary">Registrarte</b-button>
             </div>
             <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
-              <b-nav-item to="/profile">Hola, @{{ User.username }}</b-nav-item>
+              <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
               <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
             </div>
           </b-navbar-nav>

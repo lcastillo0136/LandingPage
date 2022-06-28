@@ -4,13 +4,36 @@
       <img :src="avatar" alt="" class="img-fluid" v-if="isImage">
       <img :src="avatarFile" alt="" class="img-fluid" v-else>
     </figure>
-    <template v-if="user && user.role && user.role.is_provider">
+    <template>
       <small v-if="user.especialidad">
         {{ user.especialidad }}
       </small>
     </template>
-    <h1 v-if="user && user.first_name">{{ user.first_name }}</h1>
-
+    <h1 v-if="user && user.first_name" class="mb-0">
+      {{ user.first_name }}
+    </h1>
+    <div class="mb-3 link-cardme">
+      <template v-if="user.active_account">
+        <a :to="{ name: 'card-preview-page' }" target="_blank">
+          <a-tag color="green">
+            Perfil desactivado 
+            <b-icon-box-arrow-up-right></b-icon-box-arrow-up-right>
+          </a-tag>
+        </a>
+      </template>
+      <template v-else>
+        <router-link :to="{ name: 'card-preview-page' }" target="_blank">
+          <a-tag color="red">
+            Perfil desactivado
+            <b-icon-box-arrow-up-right></b-icon-box-arrow-up-right>
+          </a-tag>
+        </router-link>
+      </template>
+    </div>
+    <div class="button-group d-flex">
+      <a-button type="dashed">Copiar link</a-button>
+      <a-button type="dashed">Enviar Email</a-button>
+    </div>
     <!-- <ul class="contacts">
       <li><h6>Direccion</h6>{{ getUser.address.street }} {{ getUser.address.suburb }}, {{ getUser.address.city}}</li>
       <li v-if="getUser.phone"><h6>Telefono</h6><a :href="'tel:' + getUser.phone ">{{ getUser.phone | phone }}</a></li>
@@ -28,12 +51,6 @@
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li>
-      <li v-if="isProvider">
-        <router-link :to="{ name: 'profile-patients' }">
-          <span>Pacientes</span>
-          <i class="arrow_carrot-right"></i>
-        </router-link>
-      </li>
       <li>
         <router-link :to="{ name: 'profile-orders' }">
           <span>Ordenes</span>
@@ -46,13 +63,13 @@
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li> -->
-      <li v-if="isProvider">
+      <li>
         <router-link :to="{ name: 'profile-reviews' }">
           <span>Reseñas</span>
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li>
-      <li v-if="isProvider">
+      <li>
         <router-link :to="{ name: 'profile-settings' }">
           <span>Configuraciones</span>
           <i class="arrow_carrot-right"></i>
@@ -164,6 +181,7 @@
         }
       }
       .contacts {
+        border-top: none;
         li {
           margin-bottom: 4px;
           a {
@@ -183,6 +201,25 @@
               color: var(--light);
               background: var(--cyan);
             }
+          }
+        }
+      }
+
+      .link-cardme {
+        .ant-tag {
+          cursor: pointer;
+        }
+      }
+      .button-group {
+        display: flex;
+        margin: 0 -25px;
+        flex-direction: row;
+        .ant-btn {
+          border-radius: 0;
+          flex: 1 1 auto;
+          min-height: 42px;
+          & + .ant-btn {
+            
           }
         }
       }

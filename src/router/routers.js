@@ -37,6 +37,19 @@ export default [
         component: () => import('@/view/' + config.theme + '/card-page')
       }, 
       {
+        path: '/p/preview',
+        name: 'card-preview-page',
+        meta: {
+          hideInMenu: true,
+          title: 'card.title',
+          notCache: true,
+          icon: 'md-list',
+          headerSticky: false,
+          preview: true
+        },
+        component: () => import('@/view/' + config.theme + '/card-page')
+      }, 
+      {
         path: '/invoice.html',
         name: 'invoice-page',
         meta: {

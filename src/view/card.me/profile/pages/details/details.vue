@@ -67,25 +67,32 @@
       <div class="row">
         <div class="col-md-3 col-sm-6">
           <div class="form-group">
-            <label>Telefono</label>
-            <input type="text" class="form-control" placeholder="Tel." v-model="profile.phone" autocomplete="chrome-off">
+            <label>Telefono Casa</label>
+            <input type="number" class="form-control" placeholder="Tel." v-model="profile.phone" autocomplete="chrome-off">
           </div>
         </div>
-        <div class="col-md-5 col-sm-6">
+        <div class="col-md-3 col-sm-6">
+          <div class="form-group">
+            <label>Telefono oficina</label>
+            <input type="number" class="form-control" placeholder="Tel." v-model="profile.tel_oficina" autocomplete="chrome-off">
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6">
           <div class="form-group">
             <label>Correo electronico</label>
             <input type="text" class="form-control" placeholder="Correo electronico" v-model="profile.email" autocomplete="chrome-off">
           </div>
         </div>
-        <div class="col-md-4 col-sm-6">
+      </div>
+
+      <div class="row">
+        <div class="col-md-3 col-sm-6">
           <div class="form-group">
             <label>Fecha nacimiento</label>
             <a-date-picker v-model="profile.bday" size="large" />
           </div>
         </div>
-      </div>
 
-      <div class="row">
         <div class="col-md-3">
           <div class="form-group">
             <label>Genero</label>
@@ -109,7 +116,7 @@
             </select>
           </div>
         </div>
-        <div class="col-md-7" style="padding-top: 23px;">
+        <div class="col-md-6" style="padding-top: 23px;">
 
           <a-form-model-item help="*Hay que guardar para que se reflejen los cambios en el sitio">
             <a-upload name="file" :multiple="false" accept="image/*" :showUploadList="false" size="large" :beforeUpload="handleUpload">
@@ -131,14 +138,16 @@
             </div>
           </div>
           <div class="col-md-4 col-sm-4">
-            <div class="form-group">
+            <div class="form-group was-validated">
               <label>Contraseña</label>
               <div class="hideShowPassword-wrapper">
-                <input type="password" class="form-control" placeholder="Contraseña" v-model="user_pass.password" autocomplete="off" ref="password">
-
+                <input type="password" class="form-control" placeholder="Contraseña" v-model="user_pass.password" autocomplete="off" ref="password" :class="{ 'has-error is-invalid': !matchPassword }">
                 <button type="button" role="button" aria-label="Mostrar contraseña" title="Mostra contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.password);user_pass.passwordVisible=true" v-if="!user_pass.passwordVisible">Mostrar</button>
 
                 <button type="button" role="button" aria-label="Ocultar contraseña" title="Ocultar contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.password);user_pass.passwordVisible=false" v-else>Ocultar</button>
+                <div class="invalid-feedback">
+                  Las contraseñas no coinciden
+                </div>
               </div>
             </div>
           </div>
@@ -146,7 +155,7 @@
             <div class="form-group">
               <label>Confirmar contraseña</label>
               <div class="hideShowPassword-wrapper">
-                <input type="password" class="form-control" placeholder="Confirmar contraseña" v-model="user_pass.confirmpassword" autocomplete="off" ref="confirmpassword">
+                <input type="password" class="form-control" placeholder="Confirmar contraseña" v-model="user_pass.confirmpassword" autocomplete="off" ref="confirmpassword" :class="{ 'has-error is-invalid': !matchPassword } ">
                 <button type="button" role="button" aria-label="Mostrar contraseña" title="Mostra contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.confirmpassword);user_pass.password2Visible=true" v-if="!user_pass.password2Visible">Mostrar</button>
 
                 <button type="button" role="button" aria-label="Ocultar contraseña" title="Ocultar contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.confirmpassword);user_pass.password2Visible=false" v-else>Ocultar</button>
@@ -160,19 +169,146 @@
       </form>
     </div>
     <div class="box_general_2 add_bottom_45">
+      <h4>Redes sociales</h4>
+
+      <div class="row">
+        <div class="col-md-4 col-sm-6">
+          <div class="form-group">
+            <label>Url personal</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <b-icon-link></b-icon-link>
+                </span>
+              </div>
+              <input type="text" class="form-control" placeholder="----------" v-model="profile.personal_url" autocomplete="chrome-off">
+            </div>
+          </div>
+        </div>
+      </div>
+      <a-divider dashed ></a-divider>
+      <div class="row">
+        <div class="col-md-4 col-sm-6">
+          <div class="form-group">
+            <label>Facebook</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text icon-facebook">
+                  <b-icon-facebook></b-icon-facebook>
+                </span>
+              </div>
+              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_facebook" autocomplete="chrome-off">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="form-group">
+            <label>Instagram</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text icon-instagram">
+                  <b-icon-instagram></b-icon-instagram>
+                </span>
+              </div>
+              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_instagram" autocomplete="chrome-off">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="form-group">
+            <label>Linkedin</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text icon-linkedin">
+                  <b-icon-linkedin></b-icon-linkedin>
+                </span>
+              </div>
+              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_linkedin" autocomplete="chrome-off">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-sm-6">
+          <div class="form-group">
+            <label>Paypal</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text icon-paypal">
+                  <i class="bi bi-paypal"></i>
+                </span>
+              </div>
+              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_paypal" autocomplete="chrome-off">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="form-group">
+            <label>TikTok</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text icon-tiktok">
+                  <i class="bi bi-tiktok"></i>
+                </span>
+              </div>
+              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_tiktok" autocomplete="chrome-off">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="form-group">
+            <label>Twitter</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text icon-twitter">
+                  <b-icon-twitter></b-icon-twitter>
+                </span>
+              </div>
+              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_twitter" autocomplete="chrome-off">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="form-group">
+            <label>Youtube</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text icon-youtube">
+                  <b-icon-youtube></b-icon-youtube>
+                </span>
+              </div>
+              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_youtube" autocomplete="chrome-off">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box_general_2 add_bottom_45">
       <h4>Informacion profesional</h4>
 
       <div class="row">
-        <div class="col-md-6 col-sm-6">
+        <div class="col-md-3 col-sm-6">
+          <div class="form-group">
+            <label>Profesion</label>
+            <input type="text" class="form-control" placeholder="----------" v-model="profile.profesion" autocomplete="chrome-off">
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <div class="form-group">
+            <label>Especialidad</label>
+            <input type="text" class="form-control" placeholder="---------" v-model="profile.especialidad" autocomplete="chrome-off">
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
           <div class="form-group">
             <label>Cedula Profesional</label>
             <input type="text" class="form-control" placeholder="----------" v-model="profile.cedula_profesional" autocomplete="chrome-off">
           </div>
         </div>
-        <div class="col-md-6 col-sm-6">
+        <div class="col-md-3 col-sm-6">
           <div class="form-group">
-            <label>Especialidad</label>
-            <input type="text" class="form-control" placeholder="---------" v-model="profile.especialidad" autocomplete="chrome-off">
+            <label>Company</label>
+            <input type="text" class="form-control" placeholder="" v-model="profile.company_name" autocomplete="chrome-off">
           </div>
         </div>
       </div>
@@ -205,7 +341,6 @@
           <a-icon type="plus" /> Agregar
         </a-tag>
       </div>
-
     </div>
     <div class="box_general_2 add_bottom_30">
       <h4>Informacion adicional</h4>
@@ -346,7 +481,7 @@
             ...this.profile,
             ...{
               bday: this.profile.bday && this.profile.bday.format('YYYY-MM-DD'),
-              phone: (this.profile.phone||'').replace(/\D/g, ''),
+              phone: (`${this.profile.phone||''}`).replace(/\D/g, ''),
             }, ...(this.user_pass.password != "" && this.matchPassword ? {
               password: this.user_pass.password,
               password_confirmation: this.user_pass.password,
@@ -356,6 +491,11 @@
             this.saving = false
             this.$refs.registerForm.classList.remove('was-validated')
             this.user_pass.password = this.user_pass.confirmpassword = ''
+
+            this.$notification.success({
+              message: 'Datos guardados',
+              description: 'Los datos del usuario han sido actulizados'
+            })
           }).catch((error) => {
             this.saving = false
             this.errors = error.data.error
@@ -393,5 +533,39 @@
   }
   .ant-tag {
     margin-bottom: 5px;
+  }
+  .was-validated {
+    input.form-control.has-error {
+      border-color: #dc3545;
+    }
+    .invalid-feedback {
+      position: absolute;
+    }
+  }
+  .icon-twitter { color: #00aced; color: rgb(0, 172, 237); }
+  .icon-facebook { color: #3b5998; color: rgb(59, 89, 152); }
+  .icon-googleplus { color: #dd4b39; color: rgb(221, 75, 57); }
+  .icon-rss { color: #f26522; color: rgb(242, 101, 34); }
+  .icon-pinterest { color: #cb2027; color: rgb(203, 32, 39); }
+  .icon-linkedin { color: #007bb6; color: rgb(0, 123, 182); }
+  .icon-youtube { color: #bb0000; color: rgb(187, 0, 0); }
+  .icon-vimeo { color: #1ab7ea; color: rgb(26, 183, 234); }
+  .icon-tumblr { color: #32506d; color: rgb(50, 80, 109); }
+  .icon-instagram { color: #bc2a8d; color: rgb(188, 42, 141); }
+  .icon-flickr { color: #ff0084; color: rgb(255, 0, 132); }
+  .icon-dribbble { color: #ea4c89; color: rgb(234, 76, 137); }
+  .icon-quora { color: #a82400; color: rgb(168, 36, 0); }
+  .icon-foursquare { color: #0072b1; color: rgb(0, 114, 177)}
+  .icon-forrst { color: #5B9A68; color: rgb(91, 154, 104); }
+  .icon-vk { color: #45668e; color: rgb(69, 102, 142); }
+  .icon-wordpress { color: #21759b; color: rgb(33, 117, 155); }
+  .icon-stumbleupon { color: #EB4823; color: rgb(235, 72, 35); }
+  .icon-yahoo { color: #7B0099; color: rgb(123, 0, 153); }
+  .icon-blogger { color: #fb8f3d; color: rgb(251, 143, 61); }
+  .icon-soundcloud { color: #ff3a00; color: rgb(255, 58, 0); }
+  .icon-paypal { color: #003087; color: rgb(0, 48, 135); }
+  .icon-tiktok { 
+    color: #000;
+    text-shadow: -1px -1px 1px #25f4ee, 1px 1px 1px #fe2c55;
   }
 </style>

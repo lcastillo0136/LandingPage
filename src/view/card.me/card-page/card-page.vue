@@ -161,7 +161,7 @@
 
 <script>
   import { mapGetters, mapMutations, mapActions } from 'vuex'
-  import { getCard } from '@/api/user'
+  import { getCard, getUserInfo } from '@/api/user'
   import VCard from 'vcard-creator'
   import * as _ from 'lodash'
 
@@ -173,20 +173,29 @@
         ready: false
       }
     },
+    watch :{
+      getUser() {
+
+      }
+    },
     props: {
     },
     components: { 
     },
     computed: {
+      ...mapGetters([
+        'hasToken',
+        'settings',
+        'getUser'
+      ]),
       isValidBday() {
         return this.$moment(this.card.bday).isValid()
+      },
+      User() {
+        return this.getUser || {}
       }
     },
     methods: {
-      ...mapMutations([
-        'hasToken',
-        'getUser'
-      ]),
       saveContact() {
         const myVCard = new VCard()
 
@@ -294,6 +303,20 @@
         }).catch((err) => {
           setTimeout(() => {
             this.$router.replace({ name: 'home' })
+          }, 10000)
+        }).then(() => {
+          this.ready = true
+        })
+      } else if (this.$route.params && this.$route.meta.preview && this.hasToken) {
+        getUserInfo(this.hasToken).then(({ data }) => data).then((result) => {
+          this.card = { ... result.data }
+          document.title = this.card.full_name
+          this.toDataURL(this.card.avatar, (dataUrl) => {
+            this.card.base_image = dataUrl
+          })
+        }).catch((err) => {
+          setTimeout(() => {
+            // this.$router.replace({ name: 'home' })
           }, 10000)
         }).then(() => {
           this.ready = true
