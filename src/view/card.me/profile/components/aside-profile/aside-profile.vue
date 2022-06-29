@@ -12,7 +12,7 @@
     <h1 v-if="user && user.first_name" class="mb-0">
       {{ user.first_name }}
     </h1>
-    <div class="mb-3 link-cardme">
+    <div class="link-cardme">
       <template v-if="user.active_account">
           <a-tag color="green">
             Perfil activo 
@@ -27,6 +27,7 @@
           </small>
       </template>
     </div>
+    <vue-qr :text="userLink" :size="200"></vue-qr>
     <div class="button-group d-flex">
       <a-button type="dashed" href="/p/preview" target="_blank">Preview</a-button>
       <a-button type="dashed" v-clipboard:copy="userLink" @click="copyLink">Copiar link</a-button>
@@ -72,7 +73,7 @@
 </template>
 <script>
   import { mapGetters } from 'vuex'
-  import { getServerFile2 } from '@/libs/util'
+  import { getServerFile2, getServerFile } from '@/libs/util'
 
   export default {
     name: 'AsideProfile',
@@ -132,6 +133,9 @@
       },
       userLink() {
         return getServerFile2(`p/${this.user.uuid_key}.html`)
+      },
+      appImage () {
+        return getServerFile('public/company/company_logo.png')
       }
     },
     methods: {

@@ -5,6 +5,8 @@ import store from './store'
 import VueWow from 'vue-wow'
 import Moment from 'vue-moment'
 import VueClipboard from 'vue-clipboard2'
+import VueQr from 'vue-qr'
+
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import * as Antd from 'ant-design-vue'
 
@@ -47,6 +49,7 @@ import 'ant-design-vue/lib/modal/style/index.css';
 import '@/assets/css/style.css';
 import '@/assets/scss/main.scss'
 
+Vue.use(VueQr)
 Vue.use(VueClipboard)
 Vue.use(VueSweetalert2);
 Vue.use(PerfectScrollbar)
