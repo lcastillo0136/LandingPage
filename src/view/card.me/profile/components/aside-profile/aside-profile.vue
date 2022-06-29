@@ -23,7 +23,7 @@
             Perfil desactivado
           </a-tag>
           <small>
-            <router-link :to="{ name: 'profile-payment' }">ir a pagar <b-icon-arrow-right></b-icon-arrow-right></router-link>
+            <router-link :to="{ name: 'profile-payment' }">ir a pagar</router-link>
           </small>
       </template>
     </div>

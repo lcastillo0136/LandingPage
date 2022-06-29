@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <loading :loading="stillLoading"></loading>
-    <div id="page" :class="{'menu-open': mobileMenuOpen}">
+    <div id="page" class="h-100" :class="{'menu-open': mobileMenuOpen}">
       <router-view/>
       <cookie-law theme="dark-lime" v-if="cookieEnabled && !stillLoading"></cookie-law>
     </div>
@@ -74,7 +74,7 @@
 </script>
 
 <style lang="scss">
-.size{
+.size {
   width: 100%;
   height: 100%;
 }

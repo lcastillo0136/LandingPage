@@ -159,7 +159,6 @@
       }
       
       this.getAppointmentsStatus().then(() => {}).catch(() => {})
-      
     }
   }
 </script>
@@ -175,8 +174,10 @@
       min-height: 100px;
     }
     &.bg-hero {
-      padding-top: 151px !important;
+      padding-top: 0px !important;
       padding-bottom: 30px;
+      margin-top: 0 !important;
+      min-height: 100%;
     }
   }
 </style>

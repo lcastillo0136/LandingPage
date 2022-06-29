@@ -1,6 +1,5 @@
 <template>
   <div class="">
-
     <div class="flex-m w-full payment-methods">
       <template v-for="(method, method_i) in methods">
         <div class="payment-method" @click.stop.prevent="!loading && chooseMethod(1)" :class="{ 'selected': account.methodSelected == 1 }" v-if="method.id == 1 && settings && settings.CONEKTA_CLIENT">
