@@ -130,9 +130,19 @@ export default [
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-settings')
           },
           {
+            path: 'orders.html',
+            name: 'profile-orders',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-orders')
+          },
+          {
             path: 'files.html',
             name: 'profile-files',
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-files')
+          },
+          {
+            path: 'reviews.html',
+            name: 'profile-reviews',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-reviews')
           }
         ]
       }, {

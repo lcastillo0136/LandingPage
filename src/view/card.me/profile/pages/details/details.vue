@@ -283,6 +283,7 @@
         </div>
       </div>
     </div>
+    <Addressess :profile="profile"></Addressess>
     <div class="box_general_2 add_bottom_45">
       <h4>Informacion profesional</h4>
 
@@ -368,6 +369,7 @@
   import { mapGetters, mapMutations } from 'vuex'
   import { PinturaEditor } from 'vue-pintura'
   import { getEditorDefaults } from 'pintura'
+  import Addressess from './components/addressess'
 
   export default {
     name: 'ProfileDetails',
@@ -381,6 +383,7 @@
     },
     components: {
       PinturaEditor,
+      Addressess
     },
     data () {
       return {
@@ -444,18 +447,15 @@
         this.profile.skills = tags
         this.setUserEdited(true)
       },
-
       showInput() {
         this.inputVisible = true
         this.$nextTick(function() {
           this.$refs.input.focus()
         });
       },
-
       handleInputChange(e) {
         this.inputValue = e.target.value
       },
-
       handleInputConfirm() {
         const inputValue = this.inputValue
         let tags = this.profile.skills.map(s => s.name)
@@ -567,5 +567,15 @@
   .icon-tiktok { 
     color: #000;
     text-shadow: -1px -1px 1px #25f4ee, 1px 1px 1px #fe2c55;
+  }
+
+  .card {
+    width: 30%;
+  }
+
+  .ant-btn {
+    .anticon {
+      vertical-align: initial;
+    }
   }
 </style>

@@ -74,11 +74,14 @@
             <b-icon-house-fill></b-icon-house-fill>
           </div>
           <span>
-            {{ direccion.alias }}
-            <small>
+            {{ direccion.alias || '' }}
+            <small v-if="direccion.latitude && direccion.longitude">
               <a :href="'https://www.google.com/maps/search/?api=1&query='+direccion.latitude+','+direccion.longitude" target="_blank">
                 {{ direccion.street }} {{ direccion.exterior_number }}, {{ direccion.suburb }} {{ direccion.township }}, {{ direccion.state }} {{ direccion.country }}
               </a>
+            </small>
+            <small v-else>
+              {{ direccion.street }} {{ direccion.exterior_number }}, {{ direccion.suburb }} {{ direccion.township }}, {{ direccion.state }} {{ direccion.country }}
             </small>
           </span>
         </div>

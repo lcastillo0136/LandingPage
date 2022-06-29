@@ -182,6 +182,10 @@ export const updateUser = (user, token) => {
     formData.append('skills_tags', JSON.stringify(user.skills.map(s => s.name)));
   }
 
+  if (user.addresses?.length > 0) {
+    formData.append('addresses', JSON.stringify(user.addresses));
+  }
+
   return axios.request({
     url: `users/${user.id}?_method=PUT`,
     data: formData,

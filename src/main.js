@@ -34,8 +34,14 @@ import 'ant-design-vue/lib/tooltip/style/index.css';
 import 'ant-design-vue/lib/tag/style/index.css';
 import 'ant-design-vue/lib/divider/style/index.css';
 import 'ant-design-vue/lib/notification/style/index.css';
+import 'ant-design-vue/lib/table/style/index.css';
+import 'ant-design-vue/lib/pagination/style/index.css';
 import 'ant-design-vue/lib/input/style/index.css';
 import 'ant-design-vue/lib/button/style/index.css';
+import 'ant-design-vue/lib/card/style/index.css';
+import 'ant-design-vue/lib/switch/style/index.css';
+import 'ant-design-vue/lib/popover/style/index.css';
+
 import '@/assets/css/style.css';
 import '@/assets/scss/main.scss'
 

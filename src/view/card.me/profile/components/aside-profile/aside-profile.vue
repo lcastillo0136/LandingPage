@@ -14,24 +14,22 @@
     </h1>
     <div class="mb-3 link-cardme">
       <template v-if="user.active_account">
-        <a :to="{ name: 'card-preview-page' }" target="_blank">
           <a-tag color="green">
-            Perfil desactivado 
-            <b-icon-box-arrow-up-right></b-icon-box-arrow-up-right>
+            Perfil activo 
           </a-tag>
-        </a>
       </template>
       <template v-else>
-        <router-link :to="{ name: 'card-preview-page' }" target="_blank">
           <a-tag color="red">
             Perfil desactivado
-            <b-icon-box-arrow-up-right></b-icon-box-arrow-up-right>
           </a-tag>
-        </router-link>
+          <small>
+            ir a pagar <b-icon-arrow-right></b-icon-arrow-right>
+          </small>
       </template>
     </div>
     <div class="button-group d-flex">
-      <a-button type="dashed">Copiar link</a-button>
+      <a-button type="dashed" href="/p/preview" target="_blank">Preview</a-button>
+      <a-button type="dashed" @click="copyLink">Copiar link</a-button>
       <a-button type="dashed">Enviar Email</a-button>
     </div>
     <!-- <ul class="contacts">
@@ -46,14 +44,8 @@
         </router-link>
       </li>
       <li>
-        <router-link :to="{ name: 'profile-appointments' }">
-          <span>Citas</span>
-          <i class="arrow_carrot-right"></i>
-        </router-link>
-      </li>
-      <li>
         <router-link :to="{ name: 'profile-orders' }">
-          <span>Ordenes</span>
+          <span>Pagos</span>
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li>
@@ -69,17 +61,18 @@
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li>
-      <li>
+      <!-- <li>
         <router-link :to="{ name: 'profile-settings' }">
           <span>Configuraciones</span>
           <i class="arrow_carrot-right"></i>
         </router-link>
-      </li>
+      </li> -->
     </ul>
   </div>
 </template>
 <script>
   import { mapGetters } from 'vuex'
+  import * as ClipboardJS from 'clipboard'
 
   export default {
     name: 'AsideProfile',
@@ -141,6 +134,10 @@
     methods: {
       preventClick(arg1, arg2, arg3) {
         
+      },
+      copyLink() {
+        debugger
+        new ClipboardJS('.btn');
       }
     },
     mounted() {
@@ -218,8 +215,10 @@
           border-radius: 0;
           flex: 1 1 auto;
           min-height: 42px;
+          line-height: 42px;
+          font-size: 13px;
           & + .ant-btn {
-            
+
           }
         }
       }

@@ -128,10 +128,6 @@
       }
     },
     mounted() {
-      window['$']('#sidebar').theiaStickySidebar({
-        additionalMarginTop: 30
-      });
-
       if (!this.hasToken) {
         this.$router.replace({ name: 'home' })
       } else {
@@ -143,6 +139,21 @@
                 bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD')
               }
             }
+            
+            if (this.profile.addresses) {
+              this.profile.addresses.forEach((a) => {
+                a.favorite = !!a.favorite
+              })
+            }
+            this.$nextTick().then(() => {
+              setTimeout(() => {
+                if ((window['$']('#sidebar .aside-profile').get(0).offsetHeight + 30) < window.innerHeight) {
+                  window['$']('#sidebar').theiaStickySidebar({
+                    additionalMarginTop: 30
+                  });
+                }
+              }, 1000)
+            });
           }
         })
       }

@@ -1,6 +1,6 @@
 <template>
   <div class="box_general_2">
-    <h4>Ordenes</h4>
+    <h4>Pagos realizados</h4>
     <a-table :columns="columns" :data-source="orders" class="components-table-demo-nested" rowKey="id" bordered>
       <a slot="method" slot-scope="record">
         {{ record.method.name }}
@@ -47,7 +47,7 @@
         'getUser'
       ]),
       orders() {
-        return this.getUser.role && this.getUser.role.is_provider ? this.getUser.orders_providers : this.getUser.orders
+        return this.getUser.orders
       }
     },
     mounted() {
