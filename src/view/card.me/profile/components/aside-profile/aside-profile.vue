@@ -23,14 +23,14 @@
             Perfil desactivado
           </a-tag>
           <small>
-            ir a pagar <b-icon-arrow-right></b-icon-arrow-right>
+            <router-link :to="{ name: 'profile-payment' }">ir a pagar <b-icon-arrow-right></b-icon-arrow-right></router-link>
           </small>
       </template>
     </div>
     <div class="button-group d-flex">
       <a-button type="dashed" href="/p/preview" target="_blank">Preview</a-button>
-      <a-button type="dashed" @click="copyLink">Copiar link</a-button>
-      <a-button type="dashed">Enviar Email</a-button>
+      <a-button type="dashed" v-clipboard:copy="userLink" @click="copyLink">Copiar link</a-button>
+      <!-- <a-button type="dashed">Enviar Email</a-button> -->
     </div>
     <!-- <ul class="contacts">
       <li><h6>Direccion</h6>{{ getUser.address.street }} {{ getUser.address.suburb }}, {{ getUser.address.city}}</li>
@@ -55,12 +55,12 @@
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li> -->
-      <li>
+      <!-- <li>
         <router-link :to="{ name: 'profile-reviews' }">
           <span>Reseñas</span>
           <i class="arrow_carrot-right"></i>
         </router-link>
-      </li>
+      </li> -->
       <!-- <li>
         <router-link :to="{ name: 'profile-settings' }">
           <span>Configuraciones</span>
@@ -72,7 +72,6 @@
 </template>
 <script>
   import { mapGetters } from 'vuex'
-  import * as ClipboardJS from 'clipboard'
 
   export default {
     name: 'AsideProfile',
@@ -129,6 +128,9 @@
       },
       isClient() {
         return this.user.role && this.user.role.is_client
+      },
+      userLink() {
+        return `${window.location.protocol}//${window.location.host}/p/${this.user.uuid_key}.html`
       }
     },
     methods: {
@@ -136,8 +138,10 @@
         
       },
       copyLink() {
-        debugger
-        new ClipboardJS('.btn');
+        this.$notification.success({
+          message: 'Enlace copiado',
+          description: 'Ya lo puedes compartir con tus contactos'
+        })
       }
     },
     mounted() {

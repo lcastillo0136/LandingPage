@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import VueWow from 'vue-wow'
 import Moment from 'vue-moment'
+import VueClipboard from 'vue-clipboard2'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import * as Antd from 'ant-design-vue'
 
@@ -45,6 +46,7 @@ import 'ant-design-vue/lib/popover/style/index.css';
 import '@/assets/css/style.css';
 import '@/assets/scss/main.scss'
 
+Vue.use(VueClipboard)
 Vue.use(VueSweetalert2);
 Vue.use(PerfectScrollbar)
 

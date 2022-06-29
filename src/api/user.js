@@ -161,7 +161,7 @@ export const updateUser = (user, token) => {
   const formData = new FormData()
 
   Object.keys(user).forEach((k) => {
-    if (!Array.isArray(user[k]) && user[k] !== '' && user[k] !== null) {
+    if (!Array.isArray(user[k]) && user[k] !== null) {
       formData.append(k, user[k]);
     } else {
 
