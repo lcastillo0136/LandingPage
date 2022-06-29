@@ -72,6 +72,7 @@
 </template>
 <script>
   import { mapGetters } from 'vuex'
+  import { getServerFile2 } from '@/libs/util'
 
   export default {
     name: 'AsideProfile',
@@ -130,7 +131,7 @@
         return this.user.role && this.user.role.is_client
       },
       userLink() {
-        return `${window.location.protocol}//${window.location.host}/p/${this.user.uuid_key}.html`
+        return getServerFile2(`p/${this.user.uuid_key}.html`)
       }
     },
     methods: {

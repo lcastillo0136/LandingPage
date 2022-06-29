@@ -646,10 +646,6 @@
         box-shadow: 0 1px 1px 0 rgb(0 0 0 / 12%), 0 0 0 1px #5469d4, 0 2px 5px 0 rgb(60 66 87 / 8%);
         cursor: pointer;
         border: 0;
-        transition-delay: 0s,0s;
-        transition-duration: .24s,.24s;
-        transition-property: background-color,box-shadow;
-        transition-timing-function: ease,ease;
       }
     }
   }

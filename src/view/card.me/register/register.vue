@@ -5,7 +5,7 @@
       <div class="wrap-login100 p-l-50 p-r-50 p-t-72 p-b-50">
         <a-form-model class="login100-form validate-form" ref="registerForm" :rules="rules" :model="form">
           <span class="login100-form-title p-b-35">
-            Sign Up
+            Registrarse
           </span>
           <div class="w-100 clearfix">
             <div class="box_login last flipInX animated">
@@ -26,7 +26,7 @@
               </div>
               <div class="">
                 <a-form-model-item prop="realPassword" label="Contraseña">
-                  <a-input :type="passwordType" :placeholder="$t('login.form.password')" v-model="form.realPassword" size="large" ref="password1" :disabled="showLoading">
+                  <a-input :type="passwordType" :placeholder="$t('login.form.password')" v-model="form.realPassword" size="large" ref="password1" :disabled="showLoading" :maxLength="20" >
                     <template #prefix>
                       <b-icon-key></b-icon-key>
                     </template>
@@ -39,7 +39,7 @@
               </div>
               <div class="">
                 <a-form-model-item prop="realPassword2" label="Confirmar contraseña">
-                  <a-input :type="passwordType2" placeholder="Confirmar contraseña" v-model="form.realPassword2" size="large" :disabled="showLoading">
+                  <a-input :type="passwordType2" placeholder="Confirmar contraseña" v-model="form.realPassword2" size="large" :disabled="showLoading"  :maxLength="20">
                     <template #prefix>
                       <b-icon-key></b-icon-key>
                     </template>
@@ -81,6 +81,67 @@
         </a-form-model>
       </div>
     </div>
+    <a-modal :visible="oxxoPayment" title="OXXO Pay" class="oxxo-modal" :footer="null" :closable="true" @cancel="oxxoClose">
+      <div class="Voucher Voucher-pending" ref="OXXOvoucher" v-if="order.id > 0">
+        <div class="OXXO-container d-flex flex-column">
+          <img src="/img/oxxo.svg" alt="oxxo" class="Icon Voucher-Logo--oxxo loc_logo Icon--square">
+          <div class="ProductHeader d-flex spacing-8 flex-column">
+            <div class="flex-fill flex-grow-1">
+              <span class="loc_amount Text Text-color--gray900 Text-fontSize--36 Text-fontWeight--600" style="line-height: 1;">
+                <span>{{ order.total | currency }}&nbsp;MXN</span>
+              </span>
+            </div>
+            <div class="flex-fill flex-grow-1">
+              <span class="Text Text-color--gray500 Text-fontSize--14 Text-fontWeight--500">
+                <div class="loc_expireDate flex-fill flex-grow-1">
+                  <div class="d-flex spacing-8 flex-row">
+                    <div class="flex-fill w-auto flex-grow-0">Caduca el {{ oxxoTime }}</div>
+                    <div class="flex-fill w-auto flex-grow-0">
+                      <div class="Tag Tag-orange">
+                        <span class="Text Text-color--orange Text-fontSize--11 Text-fontWeight--700">{{ oxxoRemain }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+          <div class="OXXO-barcode">
+            <div class="Barcode loc_barcode">
+              <img :src="order.payment_orders.metadata_object.barcode_url" />
+              <div style="font-family: monospace; font-size: 14px; margin: 4px;">{{ order.payment_orders.metadata_object.reference | oxxo }}</div>
+            </div>
+          </div>
+          <div class="OXXO-instructions loc_instructionsToPay d-flex flex-column">
+            <div class="flex-fill flex-grow-1">
+              <span class="Text Text-color--gray800 Text-fontSize--14 Text-fontWeight--600">Instrucciones para pagar tu OXXO:</span>
+            </div>
+            <div class="flex-fill flex-grow-1">
+              <ol>
+                <li>
+                  <p>Acude a la tienda OXXO más cercana. <a href="https://www.google.com.mx/maps/search/oxxo/" target="_blank">Encuéntrala aquí</a>.</p>
+                </li>
+                <li>
+                  <p>Indica en caja que quieres realizar un pago de <strong>OXXOPay</strong>.</p>
+                </li>
+                <li>
+                  <p>Dicta al cajero el número de referencia en esta ficha para que tecleé directamete en la pantalla de venta.</p>
+                </li>
+                <li>
+                  <p>Realiza el pago correspondiente con dinero en efectivo.</p>
+                </li>
+                <li>
+                  <p>Al confirmar tu pago, el cajero te entregará un comprobante impreso. <strong>En el podrás verificar que se haya realizado correctamente.</strong> Conserva este comprobante de pago.</p>
+                </li>
+              </ol>
+            </div>
+          </div>
+          <div class="OXXO-printInstructions flex-fill flex-grow-1">
+            <button class="HostedVoucherButton" type="button" style="background-color: rgb(100, 92, 252); color: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgb(70, 70, 226) 0px 0px 0px 1px, rgba(60, 66, 87, 0.08) 0px 2px 5px 0px;" @click.stop.prevent="downloadOXXO">Descargar</button>
+          </div>
+        </div>
+      </div>
+    </a-modal>
   </div>
 </template>
 <script>
@@ -89,6 +150,7 @@
   import LoadingGeneral from '@/components/loading-general'
   import DetailsPayment from './components/details-payment'
   import * as conekta from '@/libs/conekta'
+  import * as html2canvas from 'html2canvas'
 
   export default {
     name: 'Register',
@@ -140,8 +202,10 @@
           realPassword: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
               callback(new Error('Favor de no dejar este campo vacio'));
-            } if (value !== this.form.realPassword2 && this.form.realPassword2) {
+            } else if (value !== this.form.realPassword2 && this.form.realPassword2) {
               callback(new Error('Las contraseñas no coinciden'));
+            } else if (value.length > 20) {
+              callback(new Error('Caracteres maximos permitidos: 20'));
             } else {
               callback();
               if (this.form.realPassword == this.form.realPassword2) {
@@ -156,6 +220,9 @@
               callback(new Error('Las contraseñas no coinciden'));
             } else {
               callback();
+              if (this.form.realPassword == this.form.realPassword2) {
+                this.$refs.registerForm.validateField('realPassword')
+              }
             }
           }, trigger: 'change' }],
         },
@@ -164,7 +231,36 @@
         passwordType2: 'text',
         policyTerms: false,
         paypalready: false,
-        product: null
+        product: null,
+        oxxoPayment: false,
+        order: {
+          id: -1,
+          name: "",
+          phone: "",
+          email: "",
+          payment_method: 0,
+          titular: "",
+          card: "",
+          expiration: "",
+          subtotal: 0,
+          discount: 0,
+          total: 0,
+          uuid_key: "",
+          qty: 0,
+          status: {},
+          user_id: -1,
+          conekta_id: "",
+          auth_code: null,
+          paypal_id: null,
+          invoice_path: null,
+          rfc: null,
+          razon_social: null,
+          cfdi: null,
+          provider_id: null,
+          payment_metadata: null,
+          method: { },
+          payment_orders: { }
+        }
       }
     },
     watch: {
@@ -226,6 +322,22 @@
       getServices () {
         return [this.product]
       },
+      orderOXXO() {
+        if (this.order.payment_orders && this.order.payment_orders.type == 'oxxo') {
+          return this.order.method && this.order.method.id == 2 && this.order.payment_orders.metadata_object
+        }
+
+        return {}
+      },
+      oxxoExpired() {
+        return this.$moment.unix(this.orderOXXO.expires_at).isBefore()
+      },
+      oxxoTime() {
+        return this.$moment.unix(this.orderOXXO.expires_at).format('DD [de] MMMM [de] YYYY [a las] hh:mm a')
+      },
+      oxxoRemain() {
+        return this.$moment.unix(this.orderOXXO.expires_at).fromNow()
+      }
     },
     methods: {
       ...mapActions([
@@ -419,15 +531,20 @@
 
         if (readyToSave) {
           postOrder(data).then((response) => {
+            this.order = { ...response.data.data }
             this.showLoading = false
-            this.handleLogin({
-              userName: this.form.username, 
-              password: this.form.realPassword, 
-              remember: true
-            }).then(() => {
-              this.$router.push({ name: 'profile-details' })
-            }).catch((error) => {
-            });
+            if (this.order.method.id == 2) {
+              this.oxxoPayment = true
+            } else {
+              this.handleLogin({
+                userName: this.form.username, 
+                password: this.form.realPassword, 
+                remember: true
+              }).then(() => {
+                this.$router.push({ name: 'profile-details' })
+              }).catch((error) => {
+              });
+            }
             // this.$router.replace({ name: 'invoice-page', params: { order: response.data.data.uuid_key } })
           }).catch((error) => {
             this.$notification.error({
@@ -447,6 +564,41 @@
             this.product = data
           })
         }
+      },
+      downloadOXXO() {
+        window['html2canvas'](this.$refs.OXXOvoucher, { 
+          backgroundColor: '#ffffff'
+        }).then((canvas) => {
+          this.saveAs(canvas.toDataURL(), 'file-name.png');
+          // let _window = window.open()
+          // _window.document.write('<img src="'+canvas.toDataURL("image/png")+'"/>');
+
+        });
+      },
+      saveAs(uri, filename) {
+        var link = document.createElement('a');
+
+        if (typeof link.download === 'string') {
+          link.href = uri;
+          link.download = filename;
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else {
+          window.open(uri);
+        }
+      },
+      oxxoClose() {
+        this.oxxoPayment = false
+        this.handleLogin({
+          userName: this.form.username, 
+          password: this.form.realPassword, 
+          remember: true
+        }).then(() => {
+          this.$router.push({ name: 'profile-details' })
+        }).catch((error) => {
+        });
       }
     },
     mounted() {
@@ -885,6 +1037,140 @@
     height: 100%;
     .limiter {
       height: 100%;
+    }
+  }
+  .oxxo-modal {
+    .Voucher {
+      width: 443px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 32px;
+      border-radius: 6px;
+      box-shadow: 0 0 0 1px hsl(0deg 0% 69% / 20%), 0 15px 35px 0 rgb(49 49 93 / 8%), 0 5px 15px 0 rgb(0 0 0 / 6%);
+    }
+    .OXXO-container {
+      .Voucher-Logo {
+        width: 100px;
+        height: auto;
+        margin-bottom: 24px
+      }
+
+      .Voucher-Logo--oxxo {
+        width: 80px;
+        margin: 0 0 16px
+      }
+
+      ol {
+        -webkit-padding-start: 1.2em;
+        padding-inline-start:1.2em
+      }
+      .spacing-8 {
+        margin: -4px;
+        &>.flex-fill {
+          padding: 4px;
+        }
+      }
+      .Text {
+        margin: 0;
+      }
+      .Text-fontSize--11 {
+        font-size: 11px;
+      }
+      .Text-fontSize--14 {
+        font-size: 14px;
+      }
+      .Text-fontSize--36 {
+        font-size: 36px;
+      }
+      .Text-fontWeight--500 {
+        font-weight: 500;
+      }
+      .Text-fontWeight--600 {
+        font-weight: 600;
+      }
+      .Text-fontWeight--700 {
+        font-weight: 700;
+      }
+      .Text-color--gray500 {
+        color: #1a1a1a99;
+      }
+      .Text-color--gray800 {
+        color: #1a1a1ae6;
+      }
+      .Text-color--gray900 {
+        color: #1a1a1a;
+      }
+      .Text-color--orange {
+        color: #bb5504;
+      }
+
+      .Tag {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        padding: 2px 4px;
+        border-radius: 4px
+      }
+
+      .Tag-orange {
+        background-color: #ffde92
+      }
+
+      .Tag-red {
+        background-color: #fde2dd
+      }
+
+
+      .OXXO-barcode {
+        -webkit-align-self: center;
+        -ms-flex-item-align: center;
+        -ms-grid-row-align: center;
+        align-self: center;
+        margin: 32px 0;
+        text-align: center
+      }
+
+      .OXXO-instructions {
+        font-size: 14px
+      }
+
+      .OXXO-instructions ol>li {
+        margin: 0 0 1em
+      }
+
+      .OXXO-copyUrl,.OXXO-printInstructions {
+        margin-top: 16px
+      }
+
+      .Link {
+        text-decoration: none;
+        cursor: pointer
+      }
+
+      .Link:focus {
+        outline: 1px dotted rgba(26,26,26,.5)
+      }
+
+      .Link--primary {
+        color: #0074d4
+      }
+
+      .Link--secondary {
+        color: rgba(26,26,26,.5);
+        text-decoration: underline
+      }
+      .HostedVoucherButton {
+        width: 100%;
+        border-radius: 4px;
+        padding: 12px;
+        min-height: 28px;
+        font-weight: 400;
+        font-size: 14px;
+        box-shadow: 0 1px 1px 0 rgb(0 0 0 / 12%), 0 0 0 1px #5469d4, 0 2px 5px 0 rgb(60 66 87 / 8%);
+        cursor: pointer;
+        border: 0;
+      }
     }
   }
 

@@ -42,6 +42,7 @@ import 'ant-design-vue/lib/button/style/index.css';
 import 'ant-design-vue/lib/card/style/index.css';
 import 'ant-design-vue/lib/switch/style/index.css';
 import 'ant-design-vue/lib/popover/style/index.css';
+import 'ant-design-vue/lib/modal/style/index.css';
 
 import '@/assets/css/style.css';
 import '@/assets/scss/main.scss'
