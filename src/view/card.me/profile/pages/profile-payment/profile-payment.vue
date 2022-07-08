@@ -10,7 +10,7 @@
       </div>
     </template>
     <template v-if="oxxoPayment">
-      <div class="Voucher Voucher-pending" ref="OXXOvoucher">
+      <div class="Voucher Voucher-pending" ref="OXXOvoucher" :class="{ 'generando-imagen': showLoading }">
         <div class="OXXO-container d-flex flex-column">
           <img src="/img/oxxo.svg" alt="oxxo" class="Icon Voucher-Logo--oxxo loc_logo Icon--square">
           <div class="ProductHeader d-flex spacing-8 flex-column">
@@ -36,7 +36,7 @@
           </div>
           <div class="OXXO-barcode">
             <div class="Barcode loc_barcode">
-              <img :src="order.payment_orders.metadata_object.barcode_url" />
+              <img :src="oxxoBarcode" />
               <div style="font-family: monospace; font-size: 14px; margin: 4px;">{{ order.payment_orders.metadata_object.reference | oxxo }}</div>
             </div>
           </div>
@@ -65,7 +65,7 @@
             </div>
           </div>
           <div class="OXXO-printInstructions flex-fill flex-grow-1">
-            <button class="HostedVoucherButton" type="button" style="background-color: rgb(100, 92, 252); color: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgb(70, 70, 226) 0px 0px 0px 1px, rgba(60, 66, 87, 0.08) 0px 2px 5px 0px;" @click.stop.prevent="downloadOXXO">Descargar</button>
+            <button class="HostedVoucherButton" type="button" style="background-color: rgb(100, 92, 252); color: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgb(70, 70, 226) 0px 0px 0px 1px, rgba(60, 66, 87, 0.08) 0px 2px 5px 0px;" @click.stop.prevent="downloadOXXO" v-if="!showLoading">Descargar</button>
           </div>
         </div>
       </div>
@@ -95,9 +95,11 @@
 <script>
   import { postOrder, getProduct } from '@/api/data'
   import { mapGetters, mapActions } from 'vuex'
+  import { getServerFile } from '@/libs/util'
   import DetailsPayment from '@/view/card.me/register/components/details-payment'
   import * as conekta from '@/libs/conekta'
   import * as html2canvas from 'html2canvas'
+  import domtoimage from 'dom-to-image';
 
   export default {
     name: 'ProfilePayment',
@@ -155,7 +157,7 @@
           cfdi: null,
           provider_id: null,
           payment_metadata: null,
-          method: { },
+          method: {},
           payment_orders: {
           }
         }
@@ -217,6 +219,9 @@
       },
       oxxoRemain() {
         return this.$moment.unix(this.orderOXXO.expires_at).fromNow()
+      },
+      oxxoBarcode() {
+        return getServerFile(`files/${this.order.user_id}/barcodes/${this.orderOXXO.reference}.png`)
       }
     },
     methods: {
@@ -404,34 +409,14 @@
         }
       },
       downloadOXXO() {
-        html2canvas(this.$refs.OXXOvoucher).then((canvas) => {
-          let ctx = canvas.getContext("2d")
-
-          var imgd = ctx.getImageData(0, 0, canvas.width, canvas.height),
-            pix = imgd.data,
-            newColor = {r:255,g:255,b:255, a:255};
-
-          for (var i = 0, n = pix.length; i <n; i += 4) {
-            var r = pix[i],
-                    g = pix[i+1],
-                    b = pix[i+2],
-                    a = pix[i+3];
-
-            // If its white then change it
-            if (r >= 215 && r <= 220 && g >= 215 && g<= 220 && b >= 215 && b <= 220) { 
-              // Change the white to whatever.
-              pix[i] = newColor.r;
-              pix[i+1] = newColor.g;
-              pix[i+2] = newColor.b;
-              pix[i+3] = newColor.a;
-            }
-          }
-
-          ctx.putImageData(imgd, 0, 0);
-          this.saveAs(canvas.toDataURL(), 'file-name.png');
-          // let _window = window.open()
+        this.showLoading = true
+        domtoimage.toJpeg(this.$refs.OXXOvoucher, { quality: 0.95 }).then((dataUrl) => {
+          this.saveAs(dataUrl, 'file-name.png');
+          // let _window = window.open(dataUrl)
           // _window.document.write('<img src="'+canvas.toDataURL("image/png")+'"/>');
-
+          this.showLoading = false
+        }).catch(() => {
+          this.showLoading = false
         });
       },
       saveAs(uri, filename) {
@@ -517,12 +502,19 @@
       }
     }
     .Voucher {
-      width: 443px;
+      max-width: 443px;
       margin-left: auto;
       margin-right: auto;
       padding: 32px;
       border-radius: 6px;
       box-shadow: 0 0 0 1px hsl(0deg 0% 69% / 20%), 0 15px 35px 0 rgb(49 49 93 / 8%), 0 5px 15px 0 rgb(0 0 0 / 6%);
+      background-color: #fff;
+      @media only screen and (max-width: 450px) {
+        padding: 16px;
+      }
+      &.generando-imagen {
+        margin: 0;
+      }
     }
     .OXXO-container {
       .Voucher-Logo {
@@ -647,6 +639,9 @@
         cursor: pointer;
         border: 0;
       }
+    }
+    @media only screen and (max-width: 450px) {
+      padding: 16px;
     }
   }
 </style>
