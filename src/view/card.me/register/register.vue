@@ -264,16 +264,6 @@
       }
     },
     watch: {
-      'form.user': {
-        deep: true,
-        handler() {
-          if (this.form.user.password != this.form.user.confirmpassword) {
-            this.$refs.confirmpassword.setCustomValidity("Invalid field")
-          } else {
-            this.$refs.confirmpassword.setCustomValidity("")
-          }
-        }
-      },
       'account': {
         deep: true,
         handler () {

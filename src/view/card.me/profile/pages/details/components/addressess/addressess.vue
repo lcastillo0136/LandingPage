@@ -191,7 +191,15 @@
       line-height: 1
     }
   }
-  .address-card.card {
-    width: 30%
+
+  @media only screen and (min-width: 576px) {
+    .address-card.card {
+      width: calc(50% - 10px);
+    }
+  }
+  @media only screen and (min-width: 1050px) {
+    .address-card.card {
+      width: 30%
+    }
   }
 </style>

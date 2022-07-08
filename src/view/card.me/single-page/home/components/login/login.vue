@@ -135,7 +135,7 @@
                     params: { ...this.meta }
                   })
                 } else {
-                  // this.$router.push({ name: response.role.is_provider ? 'profile-details' : 'list-page' })
+                  this.$router.push({ name: 'profile-details' })
                   this.$refs.loginModal.hide()
                 }
                 this.loading = false

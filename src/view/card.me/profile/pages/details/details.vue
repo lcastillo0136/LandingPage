@@ -1,131 +1,137 @@
 <template>
   <div v-if="profile">
-    <div class="box_general_2 add_bottom_45">
-      <h4>Datos personales</h4>
-      <div class="row">
-        <div class="col-md-3 col-sm-12">
-          <div class="form-group">
-            <label>Titulo</label>
-            <select v-model="profile.title" class="form-control" >
-              <option value="">&nbsp;</option>
-              <option value="Dr.">
-                Dr. (Doctor)
-              </option>
-              <option value="Esq.">
-                Esq. (Esquire)
-              </option>
-              <option value="Hon.">
-                Hon. (Honorable)
-              </option>
-              <option value="Jr.">
-                Jr. (Junior)
-              </option>
-              <option value="Mr.">
-                Mr.
-              </option>
-              <option value="Mrs.">
-                Mrs.
-              </option>
-              <option value="Ms.">
-                Ms.
-              </option>
-              <option value="Msgr.">
-                Msgr. (Monsignor)
-              </option>
-              <option value="Prof.">
-                Prof. (Professor)
-              </option>
-              <option value="Rev.">
-                Rev. (Reverend)
-              </option>
-              <option value="Rt. Hon.">
-                Rt. Hon. (Right Honorable)
-              </option>
-              <option value="Sr.">
-                Sr. (Senior)
-              </option>
-              <option value="St.">
-                St. (Saint)
-              </option>
-            </select>
+    <a-form-model class="details-form validate-form" ref="detailsForm" :rules="rules" :model="user">
+      <div class="box_general_2 add_bottom_45">
+        <h4>Datos personales</h4>
+        <div class="row">
+          <div class="col-md-3 col-sm-12">
+            <a-form-model-item prop="title" label="Titulo">
+              <a-select v-model="profile.title" size="large">
+                <a-select-option value="Dr.">
+                  Dr. (Doctor)
+                </a-select-option>
+                <a-select-option value="Arq.">
+                  Arq. (Arquitecto)
+                </a-select-option>
+                <a-select-option value="Profr.">
+                  Profr. (Profesor/a)
+                </a-select-option>
+                <a-select-option value="Lic.">
+                  Lic. (Licenciado/a)
+                </a-select-option>
+                <a-select-option value="Ing.">
+                  Ing. (Ingeniero/a)
+                </a-select-option>
+                <a-select-option value="Esq.">
+                  Esq. (Esquire)
+                </a-select-option>
+                <a-select-option value="Hon.">
+                  Hon. (Honorable)
+                </a-select-option>
+                <a-select-option value="Jr.">
+                  Jr. (Junior)
+                </a-select-option>
+                <a-select-option value="Mr.">
+                  Mr.
+                </a-select-option>
+                <a-select-option value="Mrs.">
+                  Mrs.
+                </a-select-option>
+                <a-select-option value="Ms.">
+                  Ms.
+                </a-select-option>
+                <a-select-option value="Msgr.">
+                  Msgr. (Monsignor)
+                </a-select-option>
+                <a-select-option value="Rev.">
+                  Rev. (Reverend)
+                </a-select-option>
+                <a-select-option value="Rt. Hon.">
+                  Rt. Hon. (Right Honorable)
+                </a-select-option>
+                <a-select-option value="Sr.">
+                  Sr. (Senior)
+                </a-select-option>
+                <a-select-option value="St.">
+                  St. (Saint)
+                </a-select-option>
+              </a-select>
+            </a-form-model-item>
+          </div>
+          <div class="col-md-5 col-sm-6">
+            <a-form-model-item prop="first_name" label="Nombre(s)">
+              <a-input type="text" class="" placeholder="Nombre(s)" v-model="profile.first_name" :disabled="saving" size="large">
+              </a-input>
+            </a-form-model-item>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <a-form-model-item prop="last_name" label="Apellido(s)">
+              <a-input type="text" class="" placeholder="Apellido(s)" v-model="profile.last_name" :disabled="saving" size="large">
+              </a-input>
+            </a-form-model-item>
           </div>
         </div>
-        <div class="col-md-5 col-sm-6">
-          <div class="form-group">
-            <label>Nombre(s)</label>
-            <input type="text" class="form-control" placeholder="Tu nombre" v-model="profile.first_name" autocomplete="chrome-off">
+
+        <div class="row">
+          <div class="col-md-3 col-sm-6">
+            <a-form-model-item prop="phone" label="Telefono móvil">
+              <a-input type="number" class="" placeholder="Telefono móvil" v-model="profile.phone" :disabled="saving" size="large">
+              </a-input>
+            </a-form-model-item>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <a-form-model-item prop="tel_oficina" label="Telefono trabajo">
+              <a-input type="number" class="" placeholder="Telefono trabajo" v-model="profile.tel_oficina" :disabled="saving" size="large">
+              </a-input>
+            </a-form-model-item>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <a-form-model-item prop="email" label="Correo electronico">
+              <a-input type="text" class="" placeholder="Correo electronico" v-model="profile.email" :disabled="saving" size="large">
+              </a-input>
+            </a-form-model-item>
           </div>
         </div>
-        <div class="col-md-4 col-sm-6">
-          <div class="form-group">
-            <label>Apellido(s)</label>
-            <input type="text" class="form-control" placeholder="Tu apelido" v-model="profile.last_name" autocomplete="chrome-off">
+
+        <div class="row">
+          <div class="col-md-3 col-sm-6">
+            <a-form-model-item prop="bday" label="Fecha nacimiento">
+              <a-date-picker v-model="profile.bday" size="large" />
+            </a-form-model-item>
+          </div>
+
+          <div class="col-md-3">
+            <a-form-model-item prop="gender" label="Genero">
+              <a-select v-model="profile.gender" size="large">
+                <a-select-option value="male">
+                  Masculino
+                </a-select-option>
+                <a-select-option value="female">
+                  Femenino
+                </a-select-option>
+                <a-select-option value="other">
+                  Otro
+                </a-select-option>
+                <a-select-option value="not_sure">
+                  No estoy seguro
+                </a-select-option>
+                <a-select-option value="rather_not_say">
+                  Prefiero no decir
+                </a-select-option>
+              </a-select>
+            </a-form-model-item>
+          </div>
+          <div class="col-md-6" style="padding-top: 18px;">
+
+            <a-form-model-item help="*Hay que guardar para que se reflejen los cambios en el sitio">
+              <a-upload name="file" :multiple="false" accept="image/*" :showUploadList="false" size="large" :beforeUpload="handleUpload">
+                <a-button> <a-icon type="upload" /> Cambiar imagen de perfil </a-button>
+              </a-upload>
+            </a-form-model-item>
           </div>
         </div>
       </div>
-
-      <div class="row">
-        <div class="col-md-3 col-sm-6">
-          <div class="form-group">
-            <label>Telefono Casa</label>
-            <input type="number" class="form-control" placeholder="Tel." v-model="profile.phone" autocomplete="chrome-off">
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <div class="form-group">
-            <label>Telefono oficina</label>
-            <input type="number" class="form-control" placeholder="Tel." v-model="profile.tel_oficina" autocomplete="chrome-off">
-          </div>
-        </div>
-        <div class="col-md-6 col-sm-6">
-          <div class="form-group">
-            <label>Correo electronico</label>
-            <input type="text" class="form-control" placeholder="Correo electronico" v-model="profile.email" autocomplete="chrome-off">
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-3 col-sm-6">
-          <div class="form-group">
-            <label>Fecha nacimiento</label>
-            <a-date-picker v-model="profile.bday" size="large" />
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="form-group">
-            <label>Genero</label>
-            <select v-model="profile.gender" class="form-control">
-              <option value="">&nbsp;</option>
-              <option value="male">
-                Masculino
-              </option>
-              <option value="female">
-                Femenino
-              </option>
-              <option value="other">
-                Otro
-              </option>
-              <option value="not_sure">
-                No estoy seguro
-              </option>
-              <option value="rather_not_say">
-                Prefiero no decir
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-6" style="padding-top: 23px;">
-
-          <a-form-model-item help="*Hay que guardar para que se reflejen los cambios en el sitio">
-            <a-upload name="file" :multiple="false" accept="image/*" :showUploadList="false" size="large" :beforeUpload="handleUpload">
-              <a-button> <a-icon type="upload" /> Cambiar imagen de perfil </a-button>
-            </a-upload>
-          </a-form-model-item>
-        </div>
-      </div>
-    </div>
+    </a-form-model>
 
     <div class="box_general_2 add_bottom_45">
       <h4>Informacion de cuenta</h4>
@@ -399,7 +405,51 @@
           passwordVisible: false,
           password2Visible: false
         },
-        errors: []
+        errors: [],
+        rules: {
+          first_name: [{ validator: (rule, value, callback) => {
+            if ((value === '' || !value)) {
+              callback(new Error('Favor de no dejar este campo vacio'));
+            } else {
+              callback();
+            }
+          }, trigger: 'change' }],
+          email: [{ validator: (rule, value, callback) => {
+            if ((value === '' || !value)) {
+              callback(new Error('Favor de no dejar este campo vacio'));
+            } if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))) {
+              callback(new Error('No es un correo valido'));
+            }else {
+              callback();
+            }
+          }, trigger: 'change' }],
+          realPassword: [{ validator: (rule, value, callback) => {
+            if ((value === '' || !value)) {
+              callback(new Error('Favor de no dejar este campo vacio'));
+            } else if (value !== this.form.realPassword2 && this.form.realPassword2) {
+              callback(new Error('Las contraseñas no coinciden'));
+            } else if (value.length > 20) {
+              callback(new Error('Caracteres maximos permitidos: 20'));
+            } else {
+              callback();
+              if (this.form.realPassword == this.form.realPassword2) {
+                this.$refs.registerForm.validateField('realPassword2')
+              }
+            }
+          }, trigger: 'change' }],
+          realPassword2: [{ validator: (rule, value, callback) => {
+            if ((value === '' || !value)) {
+              callback(new Error('Favor de no dejar este campo vacio'));
+            } if (value !== this.form.realPassword) {
+              callback(new Error('Las contraseñas no coinciden'));
+            } else {
+              callback();
+              if (this.form.realPassword == this.form.realPassword2) {
+                this.$refs.registerForm.validateField('realPassword')
+              }
+            }
+          }, trigger: 'change' }],
+        }
       }
     },
     watch: {
@@ -477,6 +527,7 @@
         this.saving = true
         this.$refs.registerForm.classList.add('was-validated')
         if ((this.user_pass.password != "" && this.matchPassword) || this.user_pass.password == '') {
+          this.errors = []
           updateUser({
             ...this.profile,
             ...{
@@ -569,13 +620,62 @@
     text-shadow: -1px -1px 1px #25f4ee, 1px 1px 1px #fe2c55;
   }
 
-  .card {
-    width: 30%;
-  }
-
   .ant-btn {
     .anticon {
       vertical-align: initial;
+    }
+  }
+  .details-form {
+    .ant-form-item-label {
+      line-height: 1;
+      & > label {
+        line-height: 1;
+      }
+    }
+    .has-feedback .ant-input-affix-wrapper .ant-input-suffix {
+      padding-right: 0
+    }
+    
+    .input-checkbox100 {
+      display: none;
+    }
+
+    .label-checkbox100 {
+      margin: 0;
+
+      display: block;
+      position: relative;
+      padding-left: 26px;
+      cursor: pointer;
+    }
+
+    .label-checkbox100 > span.check {
+      font-size: 13px;
+      color: transparent;
+
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 2px;
+      background: #e6e6e6;
+      left: 0;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      -o-transform: translateY(-50%);
+      transform: translateY(-50%);
+    }
+
+    .input-checkbox100:checked + .label-checkbox100 > span.check {
+      color: #c87ef0;
     }
   }
 </style>

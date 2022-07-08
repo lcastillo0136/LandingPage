@@ -49,7 +49,7 @@
             </svg>
 
             <p class="hero-description">
-              Hagamos que su trabajo sea más organizado y fácil usando Taskio Dashboard con muchas de las funciones más recientes para administrar el trabajo todos los días.
+              Hagamos que su trabajo llegue a mas clientes y alcance nuevos horizontes junto con la presentacion de su tarjeta digital.
             </p>
           </b-col>
           <br class="d-none d-sm-block" />
@@ -335,6 +335,7 @@
               class="rounded-lg ml-lg-auto text-white"
               variant="primary"
               size="lg"
+              :to="{ name: 'register' }"
               >Comencemos</b-button
             >
           </b-col>
@@ -881,31 +882,78 @@
           </b-col>
           <b-col cols="12" lg="6" sm="12" md="6">
             <b-card bg-variant="monocrhome" class="p-lg-5">
-              <div class="d-flex flex-column">
-                <div class="d-flex mx-auto">
-                  <img :src="appImage" style="max-height: 100px;"/>
-                </div>
+              <a-form-model class="register-form validate-form" ref="registerForm" :rules="rules" :model="form">
+                <div class="d-flex flex-column">
+                  <div class="d-flex mx-auto">
+                    <img :src="appImage" style="max-height: 100px;"/>
+                  </div>
 
-                <h3 class="text-center">Comenzemos</h3>
-                <div>
-                  <label>Email</label>
-                  <b-form-input placeholder="Enter your email" />
+                  <h3 class="text-center">Comenzemos</h3>
+                  <div>
+                    <a-form-model-item prop="first_name" label="Nombre">
+                      <a-input type="text" class="" placeholder="Nombre" v-model="form.first_name" size="large" :disabled="showLoading">
+                      </a-input>
+                    </a-form-model-item>
+                  </div>
+                  <div class="my-2">
+                    <a-form-model-item prop="email" label="Correo electronico">
+                      <a-input type="email" class="" placeholder="Correo electronico" v-model="form.email" size="large" :disabled="showLoading">
+                        <template #prefix>
+                          <b-icon-envelope></b-icon-envelope>
+                        </template>
+                      </a-input>
+                    </a-form-model-item>
+                  </div>
+                  <div>
+                    <a-form-model-item prop="realPassword" label="Contraseña">
+                      <a-input :type="passwordType" :placeholder="$t('login.form.password')" v-model="form.realPassword" size="large" ref="password1" :disabled="showLoading" :maxLength="20" >
+                        <template #prefix>
+                          <b-icon-key></b-icon-key>
+                        </template>
+                        <template #suffix>
+                          <b-icon-eye-slash font-scale="1.5" @click.stop.prevent="togglePassword" v-if="passwordType =='password'"></b-icon-eye-slash>
+                          <b-icon-eye font-scale="1.5" @click.stop.prevent="togglePassword" v-else></b-icon-eye>
+                        </template>
+                      </a-input>
+                    </a-form-model-item>
+                  </div>
+                  <div class="my-2">
+                    <a-form-model-item prop="realPassword2" label="Confirmar contraseña">
+                      <a-input :type="passwordType2" placeholder="Confirmar contraseña" v-model="form.realPassword2" size="large" :disabled="showLoading" :maxLength="20">
+                        <template #prefix>
+                          <b-icon-key></b-icon-key>
+                        </template>
+                        <template #suffix>
+                          <b-icon-eye-slash font-scale="1.5" @click.stop.prevent="togglePassword2" v-if="passwordType2 =='password'"></b-icon-eye-slash>
+                          <b-icon-eye font-scale="1.5" @click.stop.prevent="togglePassword2" v-else></b-icon-eye>
+                        </template>
+                      </a-input>
+                    </a-form-model-item>
+                  </div>
+
+                  <div class="contact100-form-checkbox">
+                    <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me" v-model="policyTerms">
+                    <label class="label-checkbox100" for="ckb1">
+                      <span class="check"><b-icon-check-2 font-scale="1.2"></b-icon-check-2></span>
+                      <span class="txt1">
+                        Estoy de acuerdo con los
+                        <router-link :to="{ path: '/terminos-y-condiciones' }"class="txt2 hov1">
+                          Términos de Usuario
+                        </router-link>
+                      </span>
+                    </label>
+                  </div>
+                  <div class="my-2">
+                    <b-button block variant="primary" class="text-white" :loading="showLoading" @click.stop.prevent="handleRegister">Registrate</b-button
+                    >
+                  </div>
+                  <div class="clearfix">
+                    <span class="float-right">o
+                      <b-link href="#" class="text-white" @click="$bvModal.show('login-1')">Inicia sesion</b-link>
+                    </span>
+                  </div>
                 </div>
-                <div class="my-2">
-                  <label>Message</label>
-                  <b-form-textarea rows="2" placeholder="What are you say!" />
-                </div>
-                <div class="my-2">
-                  <b-button block variant="primary" class="text-white"
-                    >Registrate</b-button
-                  >
-                </div>
-                <div class="clearfix">
-                  <span class="float-right">o
-                    <b-link href="#" class="text-white" @click="$bvModal.show('login-1')">Inicia sesion</b-link>
-                  </span>
-                </div>
-              </div>
+              </a-form-model>
             </b-card>
           </b-col>
         </b-row>
@@ -960,7 +1008,8 @@
 
 <script>
   import { getServerFile } from '@/libs/util'
-  import { mapGetters, mapActions } from 'vuex'
+  import { registerCustomer, postOrder, getProduct } from '@/api/data'
+  import { mapGetters, mapActions, mapMutations } from 'vuex'
   import { BIconPlayFill, BIconArrowRight, BIconGithub, BIconGlobe } from 'bootstrap-vue'
   import RegisterForm from './components/register'
   import Login from './components/login'
@@ -978,6 +1027,62 @@
     },
     data () {
       return {
+        form: {
+          first_name: '',
+          email: '',
+          realPassword: '',
+          realPassword2: '',
+          user_id: '',
+          username: ''
+        },
+        rules: {
+          first_name: [{ validator: (rule, value, callback) => {
+            if ((value === '' || !value)) {
+              callback(new Error('Favor de no dejar este campo vacio'));
+            } else {
+              callback();
+            }
+          }, trigger: 'change' }],
+          email: [{ validator: (rule, value, callback) => {
+            if ((value === '' || !value)) {
+              callback(new Error('Favor de no dejar este campo vacio'));
+            } if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))) {
+              callback(new Error('No es un correo valido'));
+            }else {
+              callback();
+            }
+          }, trigger: 'change' }],
+          realPassword: [{ validator: (rule, value, callback) => {
+            if ((value === '' || !value)) {
+              callback(new Error('Favor de no dejar este campo vacio'));
+            } else if (value !== this.form.realPassword2 && this.form.realPassword2) {
+              callback(new Error('Las contraseñas no coinciden'));
+            } else if (value.length > 20) {
+              callback(new Error('Caracteres maximos permitidos: 20'));
+            } else {
+              callback();
+              if (this.form.realPassword == this.form.realPassword2) {
+                this.$refs.registerForm.validateField('realPassword2')
+              }
+            }
+          }, trigger: 'change' }],
+          realPassword2: [{ validator: (rule, value, callback) => {
+            if ((value === '' || !value)) {
+              callback(new Error('Favor de no dejar este campo vacio'));
+            } if (value !== this.form.realPassword) {
+              callback(new Error('Las contraseñas no coinciden'));
+            } else {
+              callback();
+              if (this.form.realPassword == this.form.realPassword2) {
+                this.$refs.registerForm.validateField('realPassword')
+              }
+            }
+          }, trigger: 'change' }],
+        },
+        showLoading: false,
+        passwordType: 'text',
+        passwordType2: 'text',
+        policyTerms: false,
       }
     },
     computed: {
@@ -998,11 +1103,77 @@
     },
     methods: {
       ...mapActions([
-        'handleLogOut'
+        'handleLogOut',
+        'handleLogin'
       ]),
+      handleRegister () {
+        this.showLoading = true
+        this.$refs.registerForm.validate().then(valid => {
+          if (valid) {
+            registerCustomer({
+              email: this.form.email, 
+              password: this.form.realPassword, 
+              first_name: this.form.first_name,
+              password_confirmation: this.form.realPassword2,
+            }).then((response) => {
+              this.showLoading = false
+              if (response.data.success) {
+                this.$notification.success({
+                  message: this.$t('register.messages.success.registered'),
+                  description: 'Generando componentes para tarjeta digital...'
+                })
+                this.form.user_id = response.data.data.id
+                this.form.username = response.data.data.username
+                this.handleLogin({
+                  userName: this.form.username, 
+                  password: this.form.realPassword, 
+                  remember: true
+                }).then(() => {
+                  this.$router.push({ name: 'profile-details' })
+                }).catch((error) => {
+                });
+              } else {  
+              }
+            }).catch((reason) => {
+              this.showLoading = false
+              if (reason.data.message) {
+                this.$notification.error({
+                  message: 'No se pudo crear el usuario',
+                  description: this.$t(`errors.${reason.data.message}`)
+                })
+              } else if (reason.data.error) {
+                Object.keys(reason.data.error).forEach((e) => {
+                  this.$notification.error({
+                    message: 'No se pudo crear el usuario',
+                    description: this.$t(`errors.${e}.${reason.data.error[e][0]}`)
+                  })
+                });
+              }
+            })
+          } else {
+            this.showLoading = false
+          }
+        }).catch((error) => {
+          this.showLoading = false
+        });
+      },
       dispachLogout () {
         this.handleLogOut()
-      }
+      },
+      togglePassword() {
+        this.passwordType = this.passwordType == 'password' ? 'text' : 'password'
+      },
+      togglePassword2() {
+        this.passwordType2 = this.passwordType2 == 'password' ? 'text' : 'password'
+      },
+    },
+    mounted() {
+      this.$nextTick().then(()=>{
+        setTimeout(()=> {
+          this.togglePassword2()
+          this.togglePassword()
+        }, 300)
+      })
     }
   }
 </script>
@@ -1011,6 +1182,61 @@
   .home-page {
     .navbar {
       min-height: 100px;
+    }
+  }
+  .register-form {
+    color: #fff;
+    .ant-form-item-label {
+      line-height: 1;
+      & > label {
+        color: #fff;
+        line-height: 1;
+      }
+    }
+    .has-feedback .ant-input-affix-wrapper .ant-input-suffix {
+      padding-right: 0
+    }
+    
+    .input-checkbox100 {
+      display: none;
+    }
+
+    .label-checkbox100 {
+      margin: 0;
+
+      display: block;
+      position: relative;
+      padding-left: 26px;
+      cursor: pointer;
+    }
+
+    .label-checkbox100 > span.check {
+      font-size: 13px;
+      color: transparent;
+
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 2px;
+      background: #e6e6e6;
+      left: 0;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      -o-transform: translateY(-50%);
+      transform: translateY(-50%);
+    }
+
+    .input-checkbox100:checked + .label-checkbox100 > span.check {
+      color: #c87ef0;
     }
   }
 </style>

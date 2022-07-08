@@ -12,7 +12,17 @@ export default {
       not_available: 'Email not available',
       not_valid: 'Email not valid'
     },
-    too_many_request: 'Too many request, please wait'
+    too_many_request: 'Too many request, please wait',
+    phone: {
+      mustbe_numeric : '',
+      not_available: ''
+    },
+    first_name: {
+      required_field: 'First name required'
+    },
+    email: {
+      required_field: 'Email required'
+    }
   },
   home: {
     title: '首页',

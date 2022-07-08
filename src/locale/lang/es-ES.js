@@ -12,7 +12,17 @@ export default {
       not_available: 'Correo electronico no disponible',
       not_valid: 'Correo electrónico no valido'
     },
-    too_many_request: 'Demasiadas solicitudes, por favor espere'
+    too_many_request: 'Demasiadas solicitudes, por favor espere',
+    phone: {
+      mustbe_numeric : '',
+      not_available: ''
+    },
+    first_name: {
+      required_field: 'Campo nombre requerido'
+    },
+    email: {
+      required_field: 'Campo correo electrónico requerido'
+    }
   },
   home: {
     title: 'Inicio',

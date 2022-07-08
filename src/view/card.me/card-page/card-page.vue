@@ -1,158 +1,163 @@
 <template>
   <main class="card-container" v-if="ready">
-    <b-card
-      :img-src="card.avatar"
-      img-alt="Image"
-      img-top
-      tag="article"
-      class="mb-md-4 shadow"
-      v-if="card">
-      <div v-if="card.phone" class="send-whatsapp">
-        <a :href="`https://wa.me/+52${card.phone}`" target="_blank">
-          <b-icon-whatsapp></b-icon-whatsapp>
-        </a>
-      </div>
-      <b-card-title class="mb-1">
-        {{ card.title || '' }} {{ card.first_name }}<br>{{ card.last_name }}
-      </b-card-title>
-      <b-card-sub-title>
-        {{ card.profesion }} <div v-if="card.company_name" class="company-name">{{ card.company_name }}</div>
-      </b-card-sub-title>
-      <b-card-text class="mt-3">
-        {{ card.biography }}
-      </b-card-text>
-      <div>
-        <div class="caracteristica" v-if="card.bday && isValidBday">
-          <div class="rounded-circle bg-success icon">
-            <b-icon-calendar2-fill></b-icon-calendar2-fill>
-          </div>
-          <span>
-            <span>{{ card.bday | moment('DD/MM/YYYY') }}</span>
-            <small>Cumpleaños</small>
-          </span>
+    <template v-if="card">
+      <b-card
+        :img-src="card.avatar"
+        img-alt="Image"
+        img-top
+        tag="article"
+        class="mb-md-4 shadow">
+        <div v-if="card.phone" class="send-whatsapp">
+          <a :href="`https://wa.me/+52${card.phone}`" target="_blank">
+            <b-icon-whatsapp></b-icon-whatsapp>
+          </a>
         </div>
-        <div class="caracteristica" v-if="card.personal_url">
-          <div class="rounded-circle bg-success icon">
-            <b-icon-link></b-icon-link>
+        <b-card-title class="mb-1">
+          {{ card.title || '' }} {{ card.first_name }}<br>{{ card.last_name }}
+        </b-card-title>
+        <b-card-sub-title>
+          {{ card.profesion }} <div v-if="card.company_name" class="company-name">{{ card.company_name }}</div>
+        </b-card-sub-title>
+        <b-card-text class="mt-3">
+          {{ card.biography }}
+        </b-card-text>
+        <div>
+          <div class="caracteristica" v-if="card.bday && isValidBday">
+            <div class="rounded-circle bg-success icon">
+              <b-icon-calendar2-fill></b-icon-calendar2-fill>
+            </div>
+            <span>
+              <span>{{ card.bday | moment('DD/MM/YYYY') }}</span>
+              <small>Cumpleaños</small>
+            </span>
           </div>
-          <span>
-            <a :href="card.personal_url" target="_blank">{{ card.personal_url }}</a>
-          </span>
-        </div>
-        <div class="caracteristica" v-if="card.phone">
-          <div class="rounded-circle bg-success icon">
-            <b-icon-telephone-fill></b-icon-telephone-fill>
+          <div class="caracteristica" v-if="card.personal_url">
+            <div class="rounded-circle bg-success icon">
+              <b-icon-link></b-icon-link>
+            </div>
+            <span>
+              <a :href="card.personal_url" target="_blank">{{ card.personal_url }}</a>
+            </span>
           </div>
-          <span>
-            <a :href="`tel:+${card.phone}`" target="_blank">
-              {{ card.phone | phone }}
-            </a>
-            <small>Casa</small>
-          </span>
-        </div>
-        <div class="caracteristica" v-if="card.tel_oficina">
-          <div class="rounded-circle bg-success icon">
-            <b-icon-telephone-fill></b-icon-telephone-fill>
-          </div>
-          <span>
-            <a :href="`tel:+${card.tel_oficina}`" target="_blank">
-              {{ card.tel_oficina | phone }}
-            </a>
-            <small>Oficina</small>
-          </span>
-        </div>
-        <div class="caracteristica" v-if="card.email">
-          <div class="rounded-circle bg-success icon">
-            <b-icon-envelope-fill></b-icon-envelope-fill>
-          </div>
-          <span>
-            <a :href="`mailto:${card.email}`">{{ card.email }}</a>
-          </span>
-        </div>
-        <div class="caracteristica" v-for="(direccion) in card.addresses">
-          <div class="rounded-circle bg-success icon">
-            <b-icon-house-fill></b-icon-house-fill>
-          </div>
-          <span>
-            {{ direccion.alias || '' }}
-            <small v-if="direccion.latitude && direccion.longitude">
-              <a :href="'https://www.google.com/maps/search/?api=1&query='+direccion.latitude+','+direccion.longitude" target="_blank">
-                {{ direccion.street }} {{ direccion.exterior_number }}, {{ direccion.suburb }} {{ direccion.township }}, {{ direccion.state }} {{ direccion.country }}
+          <div class="caracteristica" v-if="card.phone">
+            <div class="rounded-circle bg-success icon">
+              <b-icon-telephone-fill></b-icon-telephone-fill>
+            </div>
+            <span>
+              <a :href="`tel:+${card.phone}`" target="_blank">
+                {{ card.phone | phone }}
               </a>
-            </small>
-            <small v-else>
-              {{ direccion.street }} {{ direccion.exterior_number }}, {{ direccion.suburb }} {{ direccion.township }}, {{ direccion.state }} {{ direccion.country }}
-            </small>
-          </span>
-        </div>
-        <div class="caracteristica" v-if="card.social_facebook">
-          <div class="rounded-circle bg-success icon">
-            <b-icon-facebook></b-icon-facebook>
+              <small>Móvil</small>
+            </span>
           </div>
-          <span>
-            <a :href="card.social_facebook" target="_blank">{{ card.social_facebook }}</a>
-          </span>
-        </div>
-        <div class="caracteristica" v-if="card.social_twitter">
-          <div class="rounded-circle bg-success icon">
-            <b-icon-twitter></b-icon-twitter>
+          <div class="caracteristica" v-if="card.tel_oficina">
+            <div class="rounded-circle bg-success icon">
+              <b-icon-telephone-fill></b-icon-telephone-fill>
+            </div>
+            <span>
+              <a :href="`tel:+${card.tel_oficina}`" target="_blank">
+                {{ card.tel_oficina | phone }}
+              </a>
+              <small>Trabajo</small>
+            </span>
           </div>
-          <span>
-            <a :href="card.social_twitter" target="_blank">{{ card.social_twitter }}</a>
-          </span>
-        </div>
-        <div class="caracteristica" v-if="card.social_instagram">
-          <div class="rounded-circle bg-success icon">
-            <b-icon-instagram></b-icon-instagram>
+          <div class="caracteristica" v-if="card.email">
+            <div class="rounded-circle bg-success icon">
+              <b-icon-envelope-fill></b-icon-envelope-fill>
+            </div>
+            <span>
+              <a :href="`mailto:${card.email}`">{{ card.email }}</a>
+            </span>
           </div>
-          <span>
-            <a :href="card.social_instagram" target="_blank">{{ card.social_instagram }}</a>
-          </span>
-        </div>
-        <div class="caracteristica" v-if="card.social_linkedin">
-          <div class="rounded-circle bg-success icon">
-            <b-icon-linkedin></b-icon-linkedin>
+          <div class="caracteristica" v-for="(direccion) in card.addresses">
+            <div class="rounded-circle bg-success icon">
+              <b-icon-house-fill></b-icon-house-fill>
+            </div>
+            <span>
+              {{ direccion.alias || '' }}
+              <small v-if="direccion.latitude && direccion.longitude">
+                <a :href="'https://www.google.com/maps/search/?api=1&query='+direccion.latitude+','+direccion.longitude" target="_blank">
+                  {{ direccion.street }} {{ direccion.exterior_number }}, {{ direccion.suburb }} {{ direccion.township }}, {{ direccion.state }} {{ direccion.country }}
+                </a>
+              </small>
+              <small v-else>
+                {{ direccion.street }} {{ direccion.exterior_number }}, {{ direccion.suburb }} {{ direccion.township }}, {{ direccion.state }} {{ direccion.country }}
+              </small>
+            </span>
           </div>
-          <span>
-            <a :href="card.social_linkedin" target="_blank">{{ card.social_linkedin }}</a>
-          </span>
-        </div>
-        <div class="caracteristica" v-if="card.social_youtube">
-          <div class="rounded-circle bg-success icon">
-            <b-icon-youtube></b-icon-youtube>
+          <div class="caracteristica" v-if="card.social_facebook">
+            <div class="rounded-circle bg-success icon">
+              <b-icon-facebook></b-icon-facebook>
+            </div>
+            <span>
+              <a :href="card.social_facebook" target="_blank">{{ card.social_facebook }}</a>
+            </span>
           </div>
-          <span>
-            <a :href="card.social_youtube" target="_blank">{{ card.social_youtube }}</a>
-          </span>
-        </div>
-        <div class="caracteristica" v-if="card.social_tiktok">
-          <div class="rounded-circle bg-success icon">
-            <i class="bi bi-tiktok"></i>
+          <div class="caracteristica" v-if="card.social_twitter">
+            <div class="rounded-circle bg-success icon">
+              <b-icon-twitter></b-icon-twitter>
+            </div>
+            <span>
+              <a :href="card.social_twitter" target="_blank">{{ card.social_twitter }}</a>
+            </span>
           </div>
-          <span>
-            <a :href="card.social_tiktok" target="_blank">{{ card.social_tiktok }}</a>
-          </span>
-        </div>
-        <div class="caracteristica" v-if="card.social_paypal">
-          <div class="rounded-circle bg-success icon">
-            <i class="bi bi-paypal"></i>
+          <div class="caracteristica" v-if="card.social_instagram">
+            <div class="rounded-circle bg-success icon">
+              <b-icon-instagram></b-icon-instagram>
+            </div>
+            <span>
+              <a :href="card.social_instagram" target="_blank">{{ card.social_instagram }}</a>
+            </span>
           </div>
-          <span>
-            <a :href="card.social_paypal" target="_blank">{{ card.social_paypal }}</a>
-          </span>
+          <div class="caracteristica" v-if="card.social_linkedin">
+            <div class="rounded-circle bg-success icon">
+              <b-icon-linkedin></b-icon-linkedin>
+            </div>
+            <span>
+              <a :href="card.social_linkedin" target="_blank">{{ card.social_linkedin }}</a>
+            </span>
+          </div>
+          <div class="caracteristica" v-if="card.social_youtube">
+            <div class="rounded-circle bg-success icon">
+              <b-icon-youtube></b-icon-youtube>
+            </div>
+            <span>
+              <a :href="card.social_youtube" target="_blank">{{ card.social_youtube }}</a>
+            </span>
+          </div>
+          <div class="caracteristica" v-if="card.social_tiktok">
+            <div class="rounded-circle bg-success icon">
+              <i class="bi bi-tiktok"></i>
+            </div>
+            <span>
+              <a :href="card.social_tiktok" target="_blank">{{ card.social_tiktok }}</a>
+            </span>
+          </div>
+          <div class="caracteristica" v-if="card.social_paypal">
+            <div class="rounded-circle bg-success icon">
+              <i class="bi bi-paypal"></i>
+            </div>
+            <span>
+              <a :href="card.social_paypal" target="_blank">{{ card.social_paypal }}</a>
+            </span>
+          </div>
         </div>
-      </div>
-      
-      <div class="skills">
-        <div class="skill " v-for="(skill) in card.skills">
-          <b-badge pill variant="light">#{{ skill.name }}</b-badge>
+        
+        <div class="skills">
+          <div class="skill " v-for="(skill) in card.skills">
+            <b-badge pill variant="light">#{{ skill.name }}</b-badge>
+          </div>
         </div>
-      </div>
-      
-      <div class="quote">{{ card.quote }}</div>
+        
+        <div class="quote">{{ card.quote }}</div>
 
-      <b-button variant="primary" @click.stop.prevent="saveContact" class="w-100">Guardar contacto</b-button>
-    </b-card>
+        <b-button variant="primary" @click.stop.prevent="saveContact" class="w-100">Guardar contacto</b-button>
+        
+      </b-card>
+      <footer class="powered-footer">
+        <router-link :to="{ name: 'home' }">Cardme</router-link> powered with <b-icon-heart></b-icon-heart> by <a target="_blank" href="https://www.zibasoft.com/">zibasoft</a>
+      </footer>
+    </template>
     <template v-else>
       <div class="d-flex flex-column">
         <h2>No se encontro la tarjeta</h2>
@@ -463,14 +468,25 @@
           font-size: 13px;
         }
       }
-    } 
+    }
+    .powered-footer {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+    }
 
     @media only screen and (max-width: 450px) {
       padding-top: 0;
+      flex-direction: column;
       .card {
         width: 100%;
         border-radius: 0;
         border: none;
+      }
+      .powered-footer {
+        position: static;
+        margin-top: 10px;
+        margin-left: 10px;
       }
     }
   }

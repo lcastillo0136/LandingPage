@@ -3,7 +3,7 @@
     <b-navbar toggleable="md" class="px-0">
       <b-container class="d-flex align-items-center ">
         <b-navbar-brand class="mt-0">
-          <img :src="appImage" style="max-height: 100px;" :to="{ name: 'profile' }"/>
+          <img :src="appImage" style="max-height: 100px;max-width: 100%;" :to="{ name: 'profile' }"/>
         </b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -172,6 +172,14 @@
   .home-page {
     .navbar {
       min-height: 100px;
+    }
+    @media only screen and (max-width: 450px) {
+      .navbar { 
+        padding: 0.5rem 1rem !important;
+        .navbar-brand {
+          max-width: 50%;
+        }
+      }
     }
     &.bg-hero {
       padding-top: 0px !important;

@@ -1,5 +1,5 @@
 <template>
-  <div class="box_profile aside-profile">
+  <div class="box_profile aside-profile mb-2">
     <figure v-if="avatar">
       <img :src="avatar" alt="" class="img-fluid" v-if="isImage">
       <img :src="avatarFile" alt="" class="img-fluid" v-else>
@@ -184,6 +184,17 @@
       @media (max-width: 991px) {
         figure {
           margin: 25px auto;
+        }
+        .link-cardme {
+          .ant-tag {
+
+          }
+        }
+        ul.contacts {
+          border-bottom: none;
+          margin-bottom: 0;
+          margin-top: 0;
+          padding-bottom: 0;
         }
       }
       .contacts {
