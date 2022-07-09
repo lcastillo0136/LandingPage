@@ -82,7 +82,7 @@
       </div>
     </div>
     <a-modal :visible="oxxoPayment" title="OXXO Pay" class="oxxo-modal" :footer="null" :closable="true" @cancel="oxxoClose">
-      <div class="Voucher Voucher-pending" ref="OXXOvoucher" v-if="order.id > 0">
+      <div class="Voucher Voucher-pending" ref="OXXOvoucher" v-if="order.id > 0" :class="{ 'generando-imagen': downloadingOxxo }">
         <div class="OXXO-container d-flex flex-column">
           <img src="/img/oxxo.svg" alt="oxxo" class="Icon Voucher-Logo--oxxo loc_logo Icon--square">
           <div class="ProductHeader d-flex spacing-8 flex-column">
@@ -108,7 +108,7 @@
           </div>
           <div class="OXXO-barcode">
             <div class="Barcode loc_barcode">
-              <img :src="order.payment_orders.metadata_object.barcode_url" />
+              <img :src="oxxoBarcode" />
               <div style="font-family: monospace; font-size: 14px; margin: 4px;">{{ order.payment_orders.metadata_object.reference | oxxo }}</div>
             </div>
           </div>
@@ -147,10 +147,12 @@
 <script>
   import { registerCustomer, postOrder, getProduct } from '@/api/data'
   import { mapGetters, mapActions, mapMutations } from 'vuex'
+  import { getServerFile } from '@/libs/util'
   import LoadingGeneral from '@/components/loading-general'
   import DetailsPayment from './components/details-payment'
   import * as conekta from '@/libs/conekta'
   import * as html2canvas from 'html2canvas'
+  import domtoimage from 'dom-to-image';
 
   export default {
     name: 'Register',
@@ -182,6 +184,7 @@
           open: false
         },
         showLoading: false,
+        downloadingOxxo: false,
         rules: {
           first_name: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
@@ -327,6 +330,9 @@
       },
       oxxoRemain() {
         return this.$moment.unix(this.orderOXXO.expires_at).fromNow()
+      },
+      oxxoBarcode() {
+        return getServerFile(`files/${this.order.user_id}/barcodes/${this.orderOXXO.reference}.png`)
       }
     },
     methods: {
@@ -556,13 +562,14 @@
         }
       },
       downloadOXXO() {
-        window['html2canvas'](this.$refs.OXXOvoucher, { 
-          backgroundColor: '#ffffff'
-        }).then((canvas) => {
-          this.saveAs(canvas.toDataURL(), 'file-name.png');
+        this.downloadingOxxo = true
+        domtoimage.toJpeg(this.$refs.OXXOvoucher, { quality: 0.95 }).then((dataUrl) => {
+          this.saveAs(dataUrl, 'voucher.png');
           // let _window = window.open()
           // _window.document.write('<img src="'+canvas.toDataURL("image/png")+'"/>');
-
+          this.downloadingOxxo = false
+        }).catch(() => {
+          this.downloadingOxxo = false
         });
       },
       saveAs(uri, filename) {
@@ -1037,6 +1044,13 @@
       padding: 32px;
       border-radius: 6px;
       box-shadow: 0 0 0 1px hsl(0deg 0% 69% / 20%), 0 15px 35px 0 rgb(49 49 93 / 8%), 0 5px 15px 0 rgb(0 0 0 / 6%);
+      background-color: #fff;
+      @media only screen and (max-width: 450px) {
+        padding: 16px;
+      }
+      &.generando-imagen {
+        margin: 0;
+      }
     }
     .OXXO-container {
       .Voucher-Logo {
@@ -1161,6 +1175,9 @@
         cursor: pointer;
         border: 0;
       }
+    }
+    @media only screen and (max-width: 450px) {
+      padding: 16px;
     }
   }
 

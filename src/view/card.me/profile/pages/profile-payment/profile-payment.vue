@@ -411,7 +411,7 @@
       downloadOXXO() {
         this.showLoading = true
         domtoimage.toJpeg(this.$refs.OXXOvoucher, { quality: 0.95 }).then((dataUrl) => {
-          this.saveAs(dataUrl, 'file-name.png');
+          this.saveAs(dataUrl, 'voucher.png');
           // let _window = window.open(dataUrl)
           // _window.document.write('<img src="'+canvas.toDataURL("image/png")+'"/>');
           this.showLoading = false
