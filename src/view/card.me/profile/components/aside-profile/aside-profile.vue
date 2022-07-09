@@ -13,7 +13,7 @@
       {{ user.first_name }}
     </h1>
     <div class="link-cardme">
-      <template v-if="user.active_account">
+      <template v-if="active_account">
           <a-tag color="green">
             Perfil activo 
           </a-tag>
@@ -136,6 +136,9 @@
       },
       appImage () {
         return getServerFile('public/company/company_logo.png')
+      },
+      active_account() {
+        return this.user.active_account && this.$moment.utc(this.user.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.user.active_account))
       }
     },
     methods: {
