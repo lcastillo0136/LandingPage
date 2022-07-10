@@ -49,12 +49,12 @@
     </template>
     <template v-if="account.methodSelected == 2">
       <p class="add_top_20">
-        <small>Al finalizar el flujo se generara el folio a pagar en alguna sucursal de la cadena OXXO</small>
+        <small>Al finalizar el flujo se generará el folio a pagar en alguna sucursal de la cadena OXXO</small>
       </p>
     </template>
     <template v-if="account.methodSelected == 3">
       <p class="add_top_20">
-        <small>Al finalizar el flujo se generara la orden lista para pagar en las instalaciones</small>
+        <small>Al finalizar el flujo se generará la orden lista para pagar en las instalaciones</small>
       </p>
     </template>
     <template v-if="account.methodSelected == 4">

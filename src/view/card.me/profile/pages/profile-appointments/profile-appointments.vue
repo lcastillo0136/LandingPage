@@ -155,12 +155,12 @@
                   <strong>{{ modal.data.client.first_name }} {{ modal.data.client.last_name }}</strong>
                 </div>
                 <br>
-                <span>Correo electronico</span>
+                <span>Correo electrónico</span>
                 <div>
                   <strong>{{ modal.data.client.email }}</strong>
                 </div>
                 <br>
-                <span>Telefono</span>
+                <span>Teléfono</span>
                 <div>
                   <strong>{{ modal.data.client.phone | phone }}</strong>
                 </div>
@@ -214,7 +214,7 @@
                     <div class="form-group">
                       <label>Teléfono</label>
                       <a-form-model-item prop="phone">
-                        <a-input v-model="modal.data.phone" type="text" autocomplete="off" placeholder="Telefono"/>
+                        <a-input v-model="modal.data.phone" type="text" autocomplete="off" placeholder="Teléfono"/>
                       </a-form-model-item>
                     </div>
                   </div>
@@ -337,12 +337,12 @@
                 <strong>{{ viewModal.data.client.first_name }} {{ viewModal.data.client.last_name }}</strong>
               </div>
               <br>
-              <span>Correo electronico</span>
+              <span>Correo electrónico</span>
               <div>
                 <strong>{{ viewModal.data.client.email }}</strong>
               </div>
               <br>
-              <span>Telefono</span>
+              <span>Teléfono</span>
               <div>
                 <strong>{{ viewModal.data.client.phone | phone }}</strong>
               </div>
@@ -484,7 +484,7 @@
         rules: {
           start_date: [{ validator: (rule, value, callback) => {
             if (value === '' || !value) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               if (this.eventDuration <= 0) {
                 callback(new Error('No se puede crear una cita sin duracion'))
@@ -495,7 +495,7 @@
           }, trigger: 'change' }],
           end_date: [{ validator: (rule, value, callback) => {
             if (value === '' || !value) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               if (this.eventDuration <= 0) {
                 callback(new Error('No se puede crear una cita sin duracion'))
@@ -506,14 +506,14 @@
           }, trigger: 'change' }],
           payment_method: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && !this.modal.data.id && this.modal.data.order_product_id) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           payment_status: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && !this.modal.data.id && this.modal.data.payment_method) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
@@ -521,7 +521,7 @@
           phone: [{ validator: (rule, value, callback) => {
             const _parsedValue = value && value.replace(/[^0-9.]/g, '')
             if ((value === '' || !value) && this.modal.newClient) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else if (`${_parsedValue}`.length < 10) { 
               callback(new Error('Favor de caputurar un teléfono valido'))
             } else {
@@ -530,14 +530,14 @@
           }, trigger: 'change' }],
           name: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && this.modal.newClient) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           email:  [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && this.modal.newClient) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else if (!this.validEmail(value)) {
               callback(new Error('Favor de caputurar un email valido'))
             } else {
@@ -548,7 +548,7 @@
         review_rules: {
           comment: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }

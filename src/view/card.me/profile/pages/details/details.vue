@@ -74,20 +74,20 @@
 
         <div class="row">
           <div class="col-md-3 col-sm-6">
-            <a-form-model-item prop="phone" label="Telefono móvil">
-              <a-input type="number" class="" placeholder="Telefono móvil" v-model="profile.phone" :disabled="saving" size="large">
+            <a-form-model-item prop="phone" label="Teléfono móvil">
+              <a-input type="number" class="" placeholder="Teléfono móvil" v-model="profile.phone" :disabled="saving" size="large">
               </a-input>
             </a-form-model-item>
           </div>
           <div class="col-md-3 col-sm-6">
-            <a-form-model-item prop="tel_oficina" label="Telefono trabajo">
-              <a-input type="number" class="" placeholder="Telefono trabajo" v-model="profile.tel_oficina" :disabled="saving" size="large">
+            <a-form-model-item prop="tel_oficina" label="Teléfono trabajo">
+              <a-input type="number" class="" placeholder="Teléfono trabajo" v-model="profile.tel_oficina" :disabled="saving" size="large">
               </a-input>
             </a-form-model-item>
           </div>
           <div class="col-md-6 col-sm-6">
-            <a-form-model-item prop="email" label="Correo electronico">
-              <a-input type="text" class="" placeholder="Correo electronico" v-model="profile.email" :disabled="saving" size="large">
+            <a-form-model-item prop="email" label="Correo electrónico">
+              <a-input type="text" class="" placeholder="Correo electrónico" v-model="profile.email" :disabled="saving" size="large">
               </a-input>
             </a-form-model-item>
           </div>
@@ -95,13 +95,13 @@
 
         <div class="row">
           <div class="col-md-3 col-sm-6">
-            <a-form-model-item prop="bday" label="Fecha nacimiento">
+            <a-form-model-item prop="bday" label="Fecha de nacimiento">
               <a-date-picker v-model="profile.bday" size="large" />
             </a-form-model-item>
           </div>
 
           <div class="col-md-3">
-            <a-form-model-item prop="gender" label="Genero">
+            <a-form-model-item prop="gender" label="Género">
               <a-select v-model="profile.gender" size="large">
                 <a-select-option value="male">
                   Masculino
@@ -122,7 +122,6 @@
             </a-form-model-item>
           </div>
           <div class="col-md-6" style="padding-top: 18px;">
-
             <a-form-model-item help="*Hay que guardar para que se reflejen los cambios en el sitio">
               <a-upload name="file" :multiple="false" accept="image/*" :showUploadList="false" size="large" :beforeUpload="handleUpload">
                 <a-button> <a-icon type="upload" /> Cambiar imagen de perfil </a-button>
@@ -134,7 +133,7 @@
     </a-form-model>
 
     <div class="box_general_2 add_bottom_45">
-      <h4>Informacion de cuenta</h4>
+      <h4>Información de cuenta</h4>
       <form ref="registerForm">
         <div class="row">
           <div class="col-md-4 col-sm-4">
@@ -237,7 +236,7 @@
       <div class="row">
         <div class="col-md-4 col-sm-6">
           <div class="form-group">
-            <label>Paypal</label>
+            <label>PayPal</label>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text icon-paypal">
@@ -291,12 +290,12 @@
     </div>
     <Addressess :profile="profile"></Addressess>
     <div class="box_general_2 add_bottom_45">
-      <h4>Informacion profesional</h4>
+      <h4>Información profesional</h4>
 
       <div class="row">
         <div class="col-md-3 col-sm-6">
           <div class="form-group">
-            <label>Profesion</label>
+            <label>Profesión</label>
             <input type="text" class="form-control" placeholder="----------" v-model="profile.profesion" autocomplete="chrome-off">
           </div>
         </div>
@@ -308,13 +307,13 @@
         </div>
         <div class="col-md-3 col-sm-6">
           <div class="form-group">
-            <label>Cedula Profesional</label>
+            <label>Cédula Profesional</label>
             <input type="text" class="form-control" placeholder="----------" v-model="profile.cedula_profesional" autocomplete="chrome-off">
           </div>
         </div>
         <div class="col-md-3 col-sm-6">
           <div class="form-group">
-            <label>Company</label>
+            <label>Compañía / Empresa</label>
             <input type="text" class="form-control" placeholder="" v-model="profile.company_name" autocomplete="chrome-off">
           </div>
         </div>
@@ -350,18 +349,20 @@
       </div>
     </div>
     <div class="box_general_2 add_bottom_30">
-      <h4>Informacion adicional</h4>
+      <h4>Información adicional</h4>
       <div class="form-group">
         <label>Cita</label>
         <input type="text" class="form-control" placeholder="Frase que te describa" v-model="profile.quote" autocomplete="chrome-off">
       </div>
       <div class="form-group">
-        <label>Biografia</label>
-        <a-textarea :autoSize="true" class="form-control" placeholder="Biografia" v-model="profile.biography" :rows="4"/>
+        <label>Biografía</label>
+        <a-textarea :autoSize="true" class="form-control" placeholder="Biografía" v-model="profile.biography" :rows="4"/>
       </div>
     </div>
     <div style="text-align: right;">
-      <a-button type="primary" size="large" @click="handleSave" :loading="saving" :disabled="!matchPassword">Guardar</a-button>
+      <a-button type="primary" class="save-button" shape="circle" size="large" @click="handleSave" :loading="saving" :disabled="!matchPassword">
+        <a-icon type="save" theme="filled" v-if="!saving" />
+      </a-button>
       <div v-for="(e, ei) in errors">
         <div v-for="ee in e" class="d-block invalid-feedback">
           {{ $t(`errors.${ei}.${ee}`) }}
@@ -409,14 +410,14 @@
         rules: {
           first_name: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           email: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))) {
               callback(new Error('No es un correo valido'));
             }else {
@@ -425,7 +426,7 @@
           }, trigger: 'change' }],
           realPassword: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else if (value !== this.form.realPassword2 && this.form.realPassword2) {
               callback(new Error('Las contraseñas no coinciden'));
             } else if (value.length > 20) {
@@ -439,7 +440,7 @@
           }, trigger: 'change' }],
           realPassword2: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } if (value !== this.form.realPassword) {
               callback(new Error('Las contraseñas no coinciden'));
             } else {
@@ -621,6 +622,14 @@
   }
 
   .ant-btn {
+    &.save-button {
+      width: 50px;
+      position: fixed;
+      bottom: 16px;
+      height: 50px;
+      font-size: 20px;
+      right: 20px;
+    }
     .anticon {
       vertical-align: initial;
     }

@@ -23,11 +23,14 @@
             Perfil desactivado
           </a-tag>
           <small>
-            <router-link :to="{ name: 'profile-payment' }">ir a pagar</router-link>
+            <router-link :to="{ name: 'profile-payment' }">Ir a pagar</router-link>
           </small>
       </template>
     </div>
-    <vue-qr :text="userLink" :size="200"></vue-qr>
+    <div class="position-relative p-3">
+      <vue-qr :text="userLink" :size="200" :margin="10" ref="QRCode"></vue-qr>
+      <a-button class="download-message" @click="downloadQR">Descargar QR</a-button>
+    </div>
     <div class="button-group d-flex">
       <a-button type="dashed" href="/p/preview" target="_blank">Preview</a-button>
       <a-button type="dashed" v-clipboard:copy="userLink" @click="copyLink">Copiar link</a-button>
@@ -35,7 +38,7 @@
     </div>
     <!-- <ul class="contacts">
       <li><h6>Direccion</h6>{{ getUser.address.street }} {{ getUser.address.suburb }}, {{ getUser.address.city}}</li>
-      <li v-if="getUser.phone"><h6>Telefono</h6><a :href="'tel:' + getUser.phone ">{{ getUser.phone | phone }}</a></li>
+      <li v-if="getUser.phone"><h6>Teléfono</h6><a :href="'tel:' + getUser.phone ">{{ getUser.phone | phone }}</a></li>
     </ul> -->
     <ul class="contacts">
       <li>
@@ -74,6 +77,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { getServerFile2, getServerFile } from '@/libs/util'
+  import domtoimage from 'dom-to-image';
 
   export default {
     name: 'AsideProfile',
@@ -150,6 +154,27 @@
           message: 'Enlace copiado',
           description: 'Ya lo puedes compartir con tus contactos'
         })
+      },
+      downloadQR () {
+        domtoimage.toJpeg(this.$refs.QRCode.$el, { quality: 0.95 }).then((dataUrl) => {
+          this.saveAs(dataUrl, 'QR.png');
+        }).catch((err) => {
+          debugger
+        });
+      },
+      saveAs(uri, filename) {
+        var link = document.createElement('a');
+
+        if (typeof link.download === 'string') {
+          link.href = uri;
+          link.download = filename;
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else {
+          window.open(uri);
+        }
       }
     },
     mounted() {
@@ -244,6 +269,14 @@
 
           }
         }
+      }
+      .download-message {
+        color: #484848;
+        font-size: 17px;
+        font-weight: bold;
+        background: #ffffffcf;
+        white-space: nowrap;
+        cursor: pointer;
       }
     }
   }

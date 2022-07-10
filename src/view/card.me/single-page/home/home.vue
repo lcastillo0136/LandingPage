@@ -3,7 +3,7 @@
     <b-navbar toggleable="md">
       <b-container class="d-flex align-items-center">
         <b-navbar-brand class="mt-0">
-          <img :src="appImage" style="max-height: 100px;"/>
+          <img src="/img/logo.png" style="max-height: 100px;"/>
         </b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -29,7 +29,7 @@
           <b-col cols="12" lg="6" md="6" sm="12">
             <h1>
               Estamos para <br />
-              Aumentar tu <br />
+              Aumentar tú <br />
               Productividad
             </h1>
             <svg
@@ -49,7 +49,7 @@
             </svg>
 
             <p class="hero-description">
-              Hagamos que su trabajo llegue a mas clientes y alcance nuevos horizontes junto con la presentacion de su tarjeta digital.
+              Hagamos que su trabajo llegue a mas clientes y alcance nuevos horizontes junto con la presentación de su tarjeta digital.
             </p>
           </b-col>
           <br class="d-none d-sm-block" />
@@ -321,7 +321,7 @@
             class="d-flex align-items-center"
           >
             <p class="text-muted">
-              Ofrecemos una variedad de características interesantes que pueden ayudarlo a aumentar su productividad en el trabajo y administrar su proyecto facilmente
+              Ofrecemos una variedad de características interesantes que pueden ayudarlo a aumentar su productividad en el trabajo y administrar su proyecto fácilmente.
             </p>
           </b-col>
           <b-col
@@ -365,7 +365,7 @@
                 :src="require(`@/assets/img/features/cloud_storage.png`)"
               ></b-img>
               <b-card-text class="pt-2">
-                <h5>Siempre en linea</h5>
+                <h5>Siempre en línea</h5>
                 <p class="text-muted">
                   Se puede acceder inmediatamente a la tarjeta a través de una simple URL sin necesidad de descargar y registrarse en una aplicación
                 </p>
@@ -398,7 +398,7 @@
             <b-col lg="6" md="6" sm="12">
               <h2>
                 ¿Qué beneficios <br class="d-none d-lg-block" />
-                obtendras?
+                obtendrás?
               </h2>
               <div class="d-flex flex-column mt-5">
                 <div class="my-1 d-flex flex-row align-items-center">
@@ -433,7 +433,7 @@
                       fill="#54BD95"
                     />
                   </svg>
-                  <p class="ml-2 mb-0">Chat directo con tu Whatsapp</p>
+                  <p class="ml-2 mb-0">Chat directo con tu WhatsApp</p>
                 </div>
                 <div class="my-1 d-flex flex-row align-items-center">
                   <svg
@@ -484,7 +484,7 @@
                       fill="#54BD95"
                     />
                   </svg>
-                  <p class="ml-2 mb-0">Incluye código Qr</p>
+                  <p class="ml-2 mb-0">Incluye código QR</p>
                 </div>
               </div>
             </b-col>
@@ -871,7 +871,7 @@
       <b-container>
         <b-row>
           <b-col cols="12" lg="6" sm="12" md="6">
-            <h2>La gente está hablando de eso</h2>
+            <h2>La gente está hablando de esto</h2>
             <p>
               Proteger el medio ambiente reduciendo el consumo de plástico y papel
             </p>
@@ -885,7 +885,7 @@
               <a-form-model class="register-form validate-form" ref="registerForm" :rules="rules" :model="form">
                 <div class="d-flex flex-column">
                   <div class="d-flex mx-auto">
-                    <img :src="appImage" style="max-height: 100px;"/>
+                    <img src="/img/footer.png" style="max-height: 100px;"/>
                   </div>
 
                   <h3 class="text-center">Comenzemos</h3>
@@ -896,8 +896,8 @@
                     </a-form-model-item>
                   </div>
                   <div class="my-2">
-                    <a-form-model-item prop="email" label="Correo electronico">
-                      <a-input type="email" class="" placeholder="Correo electronico" v-model="form.email" size="large" :disabled="showLoading">
+                    <a-form-model-item prop="email" label="Correo electrónico">
+                      <a-input type="email" class="" placeholder="Correo electrónico" v-model="form.email" size="large" :disabled="showLoading">
                         <template #prefix>
                           <b-icon-envelope></b-icon-envelope>
                         </template>
@@ -931,25 +931,27 @@
                     </a-form-model-item>
                   </div>
 
-                  <div class="contact100-form-checkbox">
-                    <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me" v-model="policyTerms">
-                    <label class="label-checkbox100" for="ckb1">
-                      <span class="check"><b-icon-check-2 font-scale="1.2"></b-icon-check-2></span>
-                      <span class="txt1">
-                        Estoy de acuerdo con los
-                        <router-link :to="{ path: '/terminos-y-condiciones' }"class="txt2 hov1">
-                          Términos de Usuario
-                        </router-link>
-                      </span>
-                    </label>
-                  </div>
+                  <a-form-model-item prop="policy_terms">
+                    <div class="contact100-form-checkbox">
+                      <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me" v-model="policyTerms">
+                      <label class="label-checkbox100" for="ckb1">
+                        <span class="check"><b-icon-check-2 font-scale="1.2"></b-icon-check-2></span>
+                        <span class="txt1">
+                          Estoy de acuerdo con los
+                          <router-link :to="{ path: '/terminos-y-condiciones' }"class="txt2 hov1">
+                            Términos de Usuario
+                          </router-link>
+                        </span>
+                      </label>
+                    </div>
+                  </a-form-model-item>
                   <div class="my-2">
                     <b-button block variant="primary" class="text-white" :loading="showLoading" @click.stop.prevent="handleRegister">Registrate</b-button
                     >
                   </div>
                   <div class="clearfix">
                     <span class="float-right">o
-                      <b-link href="#" class="text-white" @click="$bvModal.show('login-1')">Inicia sesion</b-link>
+                      <b-link href="#" class="text-white" @click="$bvModal.show('login-1')">Inicia sesión</b-link>
                     </span>
                   </div>
                 </div>
@@ -965,7 +967,7 @@
           <b-col cols="12" lg="6" md="6">
             <div>
               <div>
-                <img :src="appImage" style="max-height: 100px;"/>
+                <img src="/img/footer.png" style="max-height: 100px;"/>
               </div>
             </div>
           </b-col>
@@ -1038,14 +1040,14 @@
         rules: {
           first_name: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           email: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))) {
               callback(new Error('No es un correo valido'));
             }else {
@@ -1054,7 +1056,7 @@
           }, trigger: 'change' }],
           realPassword: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else if (value !== this.form.realPassword2 && this.form.realPassword2) {
               callback(new Error('Las contraseñas no coinciden'));
             } else if (value.length > 20) {
@@ -1068,7 +1070,7 @@
           }, trigger: 'change' }],
           realPassword2: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } if (value !== this.form.realPassword) {
               callback(new Error('Las contraseñas no coinciden'));
             } else {
@@ -1076,6 +1078,13 @@
               if (this.form.realPassword == this.form.realPassword2) {
                 this.$refs.registerForm.validateField('realPassword')
               }
+            }
+          }, trigger: 'change' }],
+          policy_terms: [{ validator: (rule, value, callback) => {
+            if (!value) {
+              callback(new Error('Favor de no dejar este campo vacío'))
+            } else {
+              callback();
             }
           }, trigger: 'change' }],
         },
@@ -1203,11 +1212,12 @@
 
     .label-checkbox100 {
       margin: 0;
-
+      color: #fff;
       display: block;
       position: relative;
       padding-left: 26px;
       cursor: pointer;
+      line-height: 1;
     }
 
     .label-checkbox100 > span.check {

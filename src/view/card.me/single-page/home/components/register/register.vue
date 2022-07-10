@@ -1,7 +1,7 @@
 <template>
   <b-modal id="register-1" ref="registerModal">
     <template #modal-header="{ cancel }">
-      <img :src="appImage" style="max-height: 100px;"/>
+      <img src="/img/logo.png" style="max-height: 100px;"/>
       <h4>
         Comenzemos
         <small></small>
@@ -17,8 +17,8 @@
             </a-form-model-item>
           </div>
           <div class="">
-            <a-form-model-item prop="email" label="Correo electronico">
-              <a-input type="email" class="" placeholder="Correo electronico" v-model="form.email" size="large">
+            <a-form-model-item prop="email" label="Correo electrónico">
+              <a-input type="email" class="" placeholder="Correo electrónico" v-model="form.email" size="large">
                 <template #prefix>
                   <b-icon-envelope></b-icon-envelope>
                 </template>
@@ -88,14 +88,14 @@
         rules: {
           first_name: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           email: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))) {
               callback(new Error('No es un correo valido'));
             }else {
@@ -104,14 +104,14 @@
           }, trigger: 'change' }],
           realPassword: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           realPassword2: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } if (value !== this.form.realPassword) {
               callback(new Error('Las contraseñas no coinciden'));
             }else {

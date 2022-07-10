@@ -1,16 +1,16 @@
 <template>
   <b-modal id="login-1" ref="loginModal">
     <template #modal-header="{ cancel }">
-      <img :src="appImage" style="max-height: 100px;"/>
+      <img src="/img/logo.png" style="max-height: 100px;"/>
       <h4>
-        Iniciar sesion
+        Iniciar sesión
       </h4>
     </template>
     <a-form-model ref="loginForm" :rules="rules" :model="form">
       <div class="clearfix">
         <div class="box_login last flipInX animated" v-if="!forgot.open">
           <div class="form-group">
-            <a-form-model-item prop="username" label="Usuario o correo electronico">
+            <a-form-model-item prop="username" label="Usuario o correo electrónico">
               <a-input type="email" :placeholder="$t('login.form.username')" v-model="form.username" size="large">
                 <template #prefix>
                   <b-icon-at font-scale="1"></b-icon-at>
@@ -35,7 +35,7 @@
         </div>
         <div class="box_login last flipInX animated" v-if="forgot.open">
           <div class="form-group">
-            <a-form-model-item prop="username" label="Usuario o correo electronico">
+            <a-form-model-item prop="username" label="Usuario o correo electrónico">
               <a-input type="email" class="form-control" :placeholder="$t('login.form.username')" v-model="form.username" size="large"/>
               <a slot="help" href="" class="forgot" @click.stop.prevent="closeForgot"><small>{{ $t('login.form.login_form') }}</small></a>
             </a-form-model-item>
@@ -82,14 +82,14 @@
         rules: {
           username: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           realPassword: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && !this.forgot.open) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
@@ -125,7 +125,7 @@
               }).then((response) => {
                 let _current_time = this.$moment().isBetween(this.$moment().set({ hour: 6, minute: 0 }), this.$moment().set({ hour: 12, minute: 0 })) ? 'Buen dia' : (this.$moment().isBetween(this.$moment().set({ hour: 12, minute: 1 }), this.$moment().set({ hour: 18, minute: 30 })) ? 'Buenas tardes' : 'Buenas noches')
                 this.$notification.success({
-                  message: 'Inicio de sesion', 
+                  message: 'Inicio de sesión', 
                   description: `${_current_time} ${response.title || ''} ${response.first_name || ''} ${response.last_name || ''}`
                 })
 

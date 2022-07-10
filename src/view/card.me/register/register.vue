@@ -4,9 +4,12 @@
       <div class="login100-more" style="background-image: url('img/bg-01.jpg');"></div>
       <div class="wrap-login100 p-l-50 p-r-50 p-t-72 p-b-50">
         <a-form-model class="login100-form validate-form" ref="registerForm" :rules="rules" :model="form">
+          
+          <img src="/img/logo.png" style="max-height: 100px;max-width: 100%;" :to="{ name: 'profile' }"/>
           <span class="login100-form-title p-b-35">
             Registrarse
           </span>
+
           <div class="w-100 clearfix">
             <div class="box_login last flipInX animated">
               <div class="">
@@ -16,8 +19,8 @@
                 </a-form-model-item>
               </div>
               <div class="">
-                <a-form-model-item prop="email" label="Correo electronico">
-                  <a-input type="email" class="" placeholder="Correo electronico" v-model="form.email" size="large" :disabled="showLoading">
+                <a-form-model-item prop="email" label="Correo electrónico">
+                  <a-input type="email" class="" placeholder="Correo electrónico" v-model="form.email" size="large" :disabled="showLoading">
                     <template #prefix>
                       <b-icon-envelope></b-icon-envelope>
                     </template>
@@ -72,10 +75,12 @@
               <a-button class="btn btn-primary rounded-lg text-white w-100" type="success" :loading="showLoading" @click.stop.prevent="handleRegister" :disabled="!canPay">
                 Registrar y Pagar
               </a-button>
+              <span>o <a href="#" @click="$bvModal.show('login-1')">inicia sesion</a></span>
+              <Login></Login>
             </template>
             <template v-else>
               <div id="paypal-button-container" class="w-100"></div>
-              <small>Pagar con paypal y registrarse</small>
+              <small>Pagar con PayPal  y registrarse</small>
             </template>
           </div>
         </a-form-model>
@@ -150,6 +155,7 @@
   import { getServerFile } from '@/libs/util'
   import LoadingGeneral from '@/components/loading-general'
   import DetailsPayment from './components/details-payment'
+  import Login from '../single-page/home/components/login'
   import * as conekta from '@/libs/conekta'
   import * as html2canvas from 'html2canvas'
   import domtoimage from 'dom-to-image';
@@ -158,7 +164,8 @@
     name: 'Register',
     components: {
       LoadingGeneral,
-      DetailsPayment
+      DetailsPayment,
+      Login
     },
     data() {
       return {
@@ -188,14 +195,14 @@
         rules: {
           first_name: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           email: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))) {
               callback(new Error('No es un correo valido'));
             }else {
@@ -204,7 +211,7 @@
           }, trigger: 'change' }],
           realPassword: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else if (value !== this.form.realPassword2 && this.form.realPassword2) {
               callback(new Error('Las contraseñas no coinciden'));
             } else if (value.length > 20) {
@@ -218,7 +225,7 @@
           }, trigger: 'change' }],
           realPassword2: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } if (value !== this.form.realPassword) {
               callback(new Error('Las contraseñas no coinciden'));
             } else {
