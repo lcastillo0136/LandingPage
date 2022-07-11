@@ -2,7 +2,7 @@
   <main class="home-page">
     <b-navbar toggleable="md">
       <b-container class="d-flex align-items-center">
-        <b-navbar-brand class="mt-0">
+        <b-navbar-brand class="mt-0" :to="{ name: 'home' }">
           <img src="/img/logo.png" style="max-height: 100px;"/>
         </b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -938,7 +938,7 @@
                         <span class="check"><b-icon-check-2 font-scale="1.2"></b-icon-check-2></span>
                         <span class="txt1">
                           Estoy de acuerdo con los
-                          <router-link :to="{ path: '/terminos-y-condiciones' }"class="txt2 hov1">
+                          <router-link :to="{ name: 'terms-conditions' }"class="txt2 hov1">
                             Términos de Usuario
                           </router-link>
                         </span>
@@ -974,11 +974,8 @@
           <b-col cols="12" lg="6" md="6">
             <b-row style="justify-content: end !important; text-align: right;">
               <b-col lg="4" md="4" sm="12" cols="12" class="d-flex flex-column mt-3" >
-                <h6 class="mt-2 mb-4">Product</h6>
-                <b-link href="#" class="text-white">Update</b-link>
-                <b-link href="#" class="text-white">Security</b-link>
-                <b-link href="#" class="text-white">Beta Test</b-link>
-                <b-link href="#" class="text-white">Pricing product</b-link>
+                <h6 class="mt-2 mb-4">Informacion Legal</h6>
+                <b-link :to="{ name: 'terms-conditions' }" class="text-white">Terminos y condiciones</b-link>
               </b-col>
             </b-row>
           </b-col>
@@ -989,12 +986,12 @@
       <b-container>
         <b-row>
           <b-col cols="12" lg="6" md="6" sm="6">
-            <h6>@ 2022 powered with <b-icon-heart></b-icon-heart> by zibasoft</h6>
+            <h6>@ 2022 powered with <b-icon-heart></b-icon-heart> by <a target="_blank" href="https://www.zibasoft.com/">Zibasoft</a></h6>
           </b-col>
           <b-col cols="12" lg="6" md="6" sm="6">
             <div class="clearfix">
               <h6 class="float-lg-right float-md-right">
-                Terms and Conditions . Privacy Policy
+                <router-link :to="{ name: 'privacy' } ">Política de privacidad</router-link>
               </h6>
             </div>
           </b-col>

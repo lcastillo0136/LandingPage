@@ -708,5 +708,11 @@ export default {
   },
   card: {
     title: 'Business card'
+  },
+  termsconditions: {
+    title: 'Terms & Conditions'
+  },
+  privacy: {
+    title: 'Privacy'
   }
 }

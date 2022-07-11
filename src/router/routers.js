@@ -85,7 +85,7 @@ export default [
         component: () => import('@/view/' + config.theme + '/register')
       }, 
       {
-        path: '/terms-conditions.html',
+        path: '/terms.html',
         name: 'terms-conditions',
         meta: {
           hideInMenu: true,
@@ -93,7 +93,7 @@ export default [
           notCache: true,
           icon: 'md-contacts'
         },
-        component: () => import('@/view/' + config.theme + '/contacts')
+        component: () => import('@/view/' + config.theme + '/terms')
       }, 
       {
         path: '/privacy.html',
@@ -104,7 +104,7 @@ export default [
           notCache: true,
           icon: 'md-contacts'
         },
-        component: () => import('@/view/' + config.theme + '/contacts')
+        component: () => import('@/view/' + config.theme + '/privacy')
       }, 
       {
         path: '/profile',

@@ -2,7 +2,7 @@
   <main class="home-page bg-hero wrapper">
     <b-navbar toggleable="md" class="px-0">
       <b-container class="d-flex align-items-center ">
-        <b-navbar-brand class="mt-0">
+        <b-navbar-brand class="mt-0" :to="{ name: 'home' }">
           <img src="/img/logo.png" style="max-height: 100px;max-width: 100%;" :to="{ name: 'profile' }"/>
         </b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

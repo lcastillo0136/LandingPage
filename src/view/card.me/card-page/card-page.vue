@@ -155,7 +155,7 @@
         
       </b-card>
       <footer class="powered-footer">
-        <router-link :to="{ name: 'home' }">Cardme</router-link> powered with <b-icon-heart></b-icon-heart> by <a target="_blank" href="https://www.zibasoft.com/">zibasoft</a>
+        <router-link :to="{ name: 'home' }">Cardme</router-link> powered with <b-icon-heart></b-icon-heart> by <a target="_blank" href="https://www.zibasoft.com/">Zibasoft</a>
       </footer>
     </template>
     <template v-else>

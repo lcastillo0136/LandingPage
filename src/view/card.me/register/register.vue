@@ -4,8 +4,9 @@
       <div class="login100-more" style="background-image: url('img/bg-01.jpg');"></div>
       <div class="wrap-login100 p-l-50 p-r-50 p-t-72 p-b-50">
         <a-form-model class="login100-form validate-form" ref="registerForm" :rules="rules" :model="form">
-          
-          <img src="/img/logo.png" style="max-height: 100px;max-width: 100%;" :to="{ name: 'profile' }"/>
+          <router-link :to="{ name: 'home' }">
+            <img src="/img/logo.png" style="max-height: 100px;max-width: 100%;"/>
+          </router-link>
           <span class="login100-form-title p-b-35">
             Registrarse
           </span>
@@ -62,7 +63,7 @@
                   <span class="check"><b-icon-check-2 font-scale="1.2"></b-icon-check-2></span>
                   <span class="txt1">
                     Estoy de acuerdo con los
-                    <router-link :to="{ path: '/terminos-y-condiciones' }"class="txt2 hov1">
+                    <router-link :to="{ name: 'terms-conditions' }"class="txt2 hov1">
                       Términos de Usuario
                     </router-link>
                   </span>
