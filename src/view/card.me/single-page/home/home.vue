@@ -1,9 +1,9 @@
 <template>
-  <main class="home-page">
+  <main class="home-page landing">
     <b-navbar toggleable="md">
       <b-container class="d-flex align-items-center">
         <b-navbar-brand class="mt-0" :to="{ name: 'home' }">
-          <img src="/img/logo.png" style="max-height: 100px;"/>
+          <img src="/img/logo.svg" style="max-height: 100px;"/>
         </b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -881,14 +881,13 @@
             </div>
           </b-col>
           <b-col cols="12" lg="6" sm="12" md="6">
-            <b-card bg-variant="monocrhome" class="p-lg-5">
+            <b-card bg-variant="monocrhome" class="px-lg-5 pb-lg-5">
               <a-form-model class="register-form validate-form" ref="registerForm" :rules="rules" :model="form">
                 <div class="d-flex flex-column">
-                  <div class="d-flex mx-auto">
-                    <img src="/img/footer.png" style="max-height: 100px;"/>
+                  <div class="d-flex mx-auto mb-4">
+                    <img src="/img/logo-footer.svg" style="max-height: 100px;max-width: 100%;"/>
                   </div>
 
-                  <h3 class="text-center">Comenzemos</h3>
                   <div>
                     <a-form-model-item prop="first_name" label="Nombre">
                       <a-input type="text" class="" placeholder="Nombre" v-model="form.first_name" size="large" :disabled="showLoading">
@@ -967,7 +966,7 @@
           <b-col cols="12" lg="6" md="6">
             <div>
               <div>
-                <img src="/img/footer.png" style="max-height: 100px;"/>
+                <img src="/img/logo-footer-2.svg" style="max-height: 100px;"/>
               </div>
             </div>
           </b-col>
@@ -1185,9 +1184,22 @@
 </script>
 
 <style lang="scss">
-  .home-page {
+  .home-page.landing {
     .navbar {
       min-height: 100px;
+    }
+    @media only screen and (max-width: 450px) {
+      .bg-hero {
+        margin-top: -166px !important;
+        padding-top: 125px !important;
+        h1 {
+          font-size: 50px !important;
+          line-height: 46px !important;
+        }
+        svg {
+          max-width: 100%;
+        }
+      }
     }
   }
   .register-form {

@@ -85,15 +85,15 @@
               </small>
             </span>
           </div>
-          <div class="caracteristica" v-if="card.social_facebook">
+          <div class="caracteristica icon-facebook" v-if="card.social_facebook">
             <div class="rounded-circle bg-success icon">
               <b-icon-facebook></b-icon-facebook>
             </div>
             <span>
-              <a :href="card.social_facebook" target="_blank">{{ card.social_facebook }}</a>
+              <a :href="(isMobile ? 'fb://facewebmodal/f?href=' : '')+card.social_facebook" target="_blank">{{ card.social_facebook }}</a>
             </span>
           </div>
-          <div class="caracteristica" v-if="card.social_twitter">
+          <div class="caracteristica icon-twitter" v-if="card.social_twitter">
             <div class="rounded-circle bg-success icon">
               <b-icon-twitter></b-icon-twitter>
             </div>
@@ -101,7 +101,7 @@
               <a :href="card.social_twitter" target="_blank">{{ card.social_twitter }}</a>
             </span>
           </div>
-          <div class="caracteristica" v-if="card.social_instagram">
+          <div class="caracteristica icon-instagram" v-if="card.social_instagram">
             <div class="rounded-circle bg-success icon">
               <b-icon-instagram></b-icon-instagram>
             </div>
@@ -109,7 +109,7 @@
               <a :href="card.social_instagram" target="_blank">{{ card.social_instagram }}</a>
             </span>
           </div>
-          <div class="caracteristica" v-if="card.social_linkedin">
+          <div class="caracteristica icon-linkedin" v-if="card.social_linkedin">
             <div class="rounded-circle bg-success icon">
               <b-icon-linkedin></b-icon-linkedin>
             </div>
@@ -117,7 +117,7 @@
               <a :href="card.social_linkedin" target="_blank">{{ card.social_linkedin }}</a>
             </span>
           </div>
-          <div class="caracteristica" v-if="card.social_youtube">
+          <div class="caracteristica icon-youtube" v-if="card.social_youtube">
             <div class="rounded-circle bg-success icon">
               <b-icon-youtube></b-icon-youtube>
             </div>
@@ -125,7 +125,7 @@
               <a :href="card.social_youtube" target="_blank">{{ card.social_youtube }}</a>
             </span>
           </div>
-          <div class="caracteristica" v-if="card.social_tiktok">
+          <div class="caracteristica icon-tiktok" v-if="card.social_tiktok">
             <div class="rounded-circle bg-success icon">
               <i class="bi bi-tiktok"></i>
             </div>
@@ -133,7 +133,7 @@
               <a :href="card.social_tiktok" target="_blank">{{ card.social_tiktok }}</a>
             </span>
           </div>
-          <div class="caracteristica" v-if="card.social_paypal">
+          <div class="caracteristica icon-paypal" v-if="card.social_paypal">
             <div class="rounded-circle bg-success icon">
               <i class="bi bi-paypal"></i>
             </div>
@@ -155,7 +155,7 @@
         
       </b-card>
       <footer class="powered-footer">
-        <router-link :to="{ name: 'home' }">Cardme</router-link> powered with <b-icon-heart></b-icon-heart> by <a target="_blank" href="https://www.zibasoft.com/">Zibasoft</a>
+        <router-link :to="{ name: 'home' }">Onlycards</router-link> powered with <b-icon-heart></b-icon-heart> by <a target="_blank" href="https://www.zibasoft.com/">Zibasoft</a>
       </footer>
     </template>
     <template v-else>
@@ -201,6 +201,13 @@
       },
       User() {
         return this.getUser || {}
+      },
+      isMobile() {
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+          return true
+        } else {
+          return false
+        }
       }
     },
     methods: {
@@ -292,18 +299,43 @@
         xhr.open('GET', url);
         xhr.responseType = 'blob';
         xhr.send();
+      },
+      validateUrl (url) {
+        if (url) {
+          let _finalUrl = url;
+          if (!/^(https?:\/\/)/.test(_finalUrl)) {
+            _finalUrl = 'https://'+_finalUrl
+          }
+          return _finalUrl
+        } else {
+          return false;
+        }
       }
     },
     created () {
-      window.addEventListener('scroll', this.handleScroll);
+      //window.addEventListener('scroll', this.handleScroll);
     },
     destroyed () {
-      window.removeEventListener('scroll', this.handleScroll);
+      //window.removeEventListener('scroll', this.handleScroll);
     },
     mounted() {
       if (this.$route.params && this.$route.params.uuid) {
         getCard(this.$route.params.uuid).then(({ data }) => data).then((result) => {
           this.card = { ... result.data }
+
+          _.forEach([
+            'social_paypal', 
+            'social_tiktok', 
+            'social_youtube', 
+            'social_linkedin',
+            'social_instagram',
+            'social_twitter',
+            'social_facebook',
+            'personal_url'
+          ], (p) => {
+            this.card[p] = this.validateUrl(this.card[p]);
+          })
+
           document.title = this.card.full_name
           this.toDataURL(this.card.avatar, (dataUrl) => {
             this.card.base_image = dataUrl
@@ -318,6 +350,20 @@
       } else if (this.$route.params && this.$route.meta.preview && this.hasToken) {
         getUserInfo(this.hasToken).then(({ data }) => data).then((result) => {
           this.card = { ... result.data }
+
+          _.forEach([
+            'social_paypal', 
+            'social_tiktok', 
+            'social_youtube', 
+            'social_linkedin',
+            'social_instagram',
+            'social_twitter',
+            'social_facebook',
+            'personal_url'
+          ], (p) => {
+            this.card[p] = this.validateUrl(this.card[p]);
+          })
+
           document.title = this.card.full_name
           this.toDataURL(this.card.avatar, (dataUrl) => {
             this.card.base_image = dataUrl
@@ -395,6 +441,151 @@
           line-height: 35px;
           flex: 0 0 auto;
         }
+
+        &.icon-twitter { 
+          font-size: 19px;
+          color: #00aced; 
+          color: rgb(0, 172, 237); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
+        }
+        &.icon-facebook { 
+          font-size: 19px;
+          color: #3b5998; 
+          color: rgb(59, 89, 152); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
+        }
+        &.icon-googleplus { 
+          color: #dd4b39; 
+          color: rgb(221, 75, 57); 
+        }
+        &.icon-rss { 
+          color: #f26522; 
+          color: rgb(242, 101, 34); 
+        }
+        &.icon-pinterest { 
+          color: #cb2027; 
+          color: rgb(203, 32, 39); 
+        }
+        &.icon-linkedin { 
+          font-size: 19px;
+          color: #007bb6; 
+          color: rgb(0, 123, 182); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
+        }
+        &.icon-youtube { 
+          font-size: 19px;
+          color: #bb0000; 
+          color: rgb(187, 0, 0); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
+        }
+        &.icon-vimeo { 
+          color: #1ab7ea; 
+          color: rgb(26, 183, 234); 
+        }
+        &.icon-tumblr { 
+          color: #32506d; 
+          color: rgb(50, 80, 109); 
+        }
+        &.icon-instagram { 
+          font-size: 19px;
+          color: #bc2a8d; 
+          color: rgb(188, 42, 141); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
+        }
+        &.icon-flickr { 
+          color: #ff0084; 
+          color: rgb(255, 0, 132); 
+        }
+        &.icon-dribbble { 
+          color: #ea4c89; 
+          color: rgb(234, 76, 137); 
+        }
+        &.icon-quora { 
+          color: #a82400; 
+          color: rgb(168, 36, 0); 
+        }
+        &.icon-foursquare { 
+          color: #0072b1; 
+          color: rgb(0, 114, 177);
+        }
+        &.icon-forrst { 
+          color: #5B9A68; 
+          color: rgb(91, 154, 104); 
+        }
+        &.icon-vk { 
+          color: #45668e; 
+          color: rgb(69, 102, 142); 
+        }
+        &.icon-wordpress { 
+          color: #21759b; 
+          color: rgb(33, 117, 155); 
+        }
+        &.icon-stumbleupon { 
+          color: #EB4823; 
+          color: rgb(235, 72, 35); 
+        }
+        &.icon-yahoo { 
+          color: #7B0099; 
+          color: rgb(123, 0, 153); 
+        }
+        &.icon-blogger { 
+          color: #fb8f3d; 
+          color: rgb(251, 143, 61); 
+        }
+        &.icon-soundcloud { 
+          color: #ff3a00; 
+          color: rgb(255, 58, 0); 
+        }
+        &.icon-paypal { 
+          font-size: 19px;
+          color: #003087; 
+          color: rgb(0, 48, 135);
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          } 
+        }
+        &.icon-tiktok { 
+          font-size: 15px;
+          color: #f1f1f1;
+          text-shadow: -1px -1px 1px #25f4ee, 1px 1px 1px #fe2c55;
+          span {
+            text-shadow: none;
+          }
+          .bg-success {
+            background-color: #000 !important;
+            border: solid 1px #28a745;
+          }
+        }
+
+        &[class*="icon-"] {
+          .icon {
+            color: inherit;
+          }
+          span {
+            color: #555;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: inline-block;
+            overflow: hidden;
+          }
+        }
+
         span {
           font-size: 14px;
           display: flex;
@@ -487,6 +678,7 @@
         position: static;
         margin-top: 10px;
         margin-left: 10px;
+        margin-bottom: 5px;
       }
     }
   }

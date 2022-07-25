@@ -203,6 +203,14 @@
                 </span>
               </div>
               <input type="text" class="form-control" placeholder="----------" v-model="profile.social_facebook" autocomplete="chrome-off">
+              <small id="passwordHelpBlock" class="form-text text-muted">
+                <a-popover placement="bottom">
+                  <template #content>
+                    <img src="/img/urls/facebook-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
+                  </template>
+                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
+                </a-popover>
+              </small>
             </div>
           </div>
         </div>
@@ -216,6 +224,14 @@
                 </span>
               </div>
               <input type="text" class="form-control" placeholder="----------" v-model="profile.social_instagram" autocomplete="chrome-off">
+              <small id="passwordHelpBlock" class="form-text text-muted">
+                <a-popover placement="bottom">
+                  <template #content>
+                    <img src="/img/urls/instagram-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
+                  </template>
+                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
+                </a-popover>
+              </small>
             </div>
           </div>
         </div>
@@ -229,6 +245,14 @@
                 </span>
               </div>
               <input type="text" class="form-control" placeholder="----------" v-model="profile.social_linkedin" autocomplete="chrome-off">
+              <small id="passwordHelpBlock" class="form-text text-muted">
+                <a-popover placement="bottom">
+                  <template #content>
+                    <img src="/img/urls/linkedin-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
+                  </template>
+                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
+                </a-popover>
+              </small>
             </div>
           </div>
         </div>
@@ -244,6 +268,14 @@
                 </span>
               </div>
               <input type="text" class="form-control" placeholder="----------" v-model="profile.social_paypal" autocomplete="chrome-off">
+              <small id="passwordHelpBlock" class="form-text text-muted">
+                <a-popover placement="bottom">
+                  <template #content>
+                    <img src="/img/urls/paypal-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
+                  </template>
+                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
+                </a-popover>
+              </small>
             </div>
           </div>
         </div>
@@ -257,6 +289,14 @@
                 </span>
               </div>
               <input type="text" class="form-control" placeholder="----------" v-model="profile.social_tiktok" autocomplete="chrome-off">
+              <small id="passwordHelpBlock" class="form-text text-muted">
+                <a-popover placement="bottom">
+                  <template #content>
+                    <img src="/img/urls/tiktok-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
+                  </template>
+                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
+                </a-popover>
+              </small>
             </div>
           </div>
         </div>
@@ -270,6 +310,14 @@
                 </span>
               </div>
               <input type="text" class="form-control" placeholder="----------" v-model="profile.social_twitter" autocomplete="chrome-off">
+              <small id="passwordHelpBlock" class="form-text text-muted">
+                <a-popover placement="bottom">
+                  <template #content>
+                    <img src="/img/urls/twitter-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
+                  </template>
+                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
+                </a-popover>
+              </small>
             </div>
           </div>
         </div>
@@ -283,6 +331,14 @@
                 </span>
               </div>
               <input type="text" class="form-control" placeholder="----------" v-model="profile.social_youtube" autocomplete="chrome-off">
+              <small id="passwordHelpBlock" class="form-text text-muted">
+                <a-popover placement="bottom">
+                  <template #content>
+                    <img src="/img/urls/youtube-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
+                  </template>
+                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
+                </a-popover>
+              </small>
             </div>
           </div>
         </div>

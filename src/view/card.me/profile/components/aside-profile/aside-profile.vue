@@ -29,7 +29,10 @@
     </div>
     <div class="position-relative p-3">
       <vue-qr :text="userLink" :size="200" :margin="10" ref="QRCode"></vue-qr>
-      <a-button class="download-message" @click="downloadQR">Descargar QR</a-button>
+      <a-button class="download-message" @click="downloadQR" :loading="downloadingQR">
+        <a-icon type="download"></a-icon>
+        Descargar QR
+      </a-button>
     </div>
     <div class="button-group d-flex">
       <a-button type="dashed" href="/p/preview" target="_blank">Preview</a-button>
@@ -72,6 +75,14 @@
         </router-link>
       </li> -->
     </ul>
+    <b class="pt-4 d-block">
+      Perfil activo hasta el <br>
+      {{ user.active_account | moment('dddd DD, MMM YYYY hh:mm a') }}
+    </b>
+    <a-divider></a-divider>
+    <b>
+      Quedan {{ daysRemaining }} dias
+    </b>
   </div>
 </template>
 <script>
@@ -92,7 +103,8 @@
     data() {
       return {
         visible: false,
-        avatarFile: ''
+        avatarFile: '',
+        downloadingQR: false
       }
     },
     watch:{
@@ -143,6 +155,9 @@
       },
       active_account() {
         return this.user.active_account && this.$moment.utc(this.user.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.user.active_account))
+      },
+      daysRemaining() {
+        return (this.active_account ? this.$moment.utc(this.user.active_account).diff(this.$moment(), 'days') : 0)
       }
     },
     methods: {
@@ -156,24 +171,25 @@
         })
       },
       downloadQR () {
-        domtoimage.toJpeg(this.$refs.QRCode.$el, { quality: 0.95 }).then((dataUrl) => {
-          this.saveAs(dataUrl, 'QR.png');
-        }).catch((err) => {
-          debugger
-        });
+        this.downloadingQR = true
+        this.saveAs(this.$refs.QRCode.$el.src, 'QR.png');
       },
       saveAs(uri, filename) {
         var link = document.createElement('a');
 
         if (typeof link.download === 'string') {
-          link.href = uri;
+          link.href = encodeURI(uri);
           link.download = filename;
 
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
+          setTimeout(() => {
+            this.downloadingQR = false
+          }, 1000)
         } else {
           window.open(uri);
+          this.downloadingQR = false
         }
       }
     },

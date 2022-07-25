@@ -63,7 +63,7 @@
                   <span class="check"><b-icon-check-2 font-scale="1.2"></b-icon-check-2></span>
                   <span class="txt1">
                     Estoy de acuerdo con los
-                    <router-link :to="{ name: 'terms-conditions' }"class="txt2 hov1">
+                    <router-link :to="{ name: 'terms-conditions' } "class="txt2 hov1" target="_blank">
                       Términos de Usuario
                     </router-link>
                   </span>
