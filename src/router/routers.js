@@ -107,6 +107,17 @@ export default [
         component: () => import('@/view/' + config.theme + '/privacy')
       }, 
       {
+        path: '/contacts.html',
+        name: 'contacts',
+        meta: {
+          hideInMenu: true,
+          title: 'contacts.title',
+          notCache: true,
+          icon: 'md-contacts'
+        },
+        component: () => import('@/view/' + config.theme + '/contacts')
+      }, 
+      {
         path: '/profile',
         alias: '/profile.html',
         name: 'profile',

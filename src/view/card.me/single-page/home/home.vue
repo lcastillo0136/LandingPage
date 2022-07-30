@@ -867,7 +867,7 @@
       </section> -->
     </div>
 
-    <section class="bg-dark text-white pt-5">
+    <section class="bg-dark text-white pt-5 pb-4">
       <b-container>
         <b-row>
           <b-col cols="12" lg="6" sm="12" md="6">
@@ -960,7 +960,7 @@
         </b-row>
       </b-container>
     </section>
-    <section class="bg-dark text-white pt-5">
+    <section class="bg-dark text-white pt-4 bg-darker">
       <b-container>
         <b-row>
           <b-col cols="12" lg="6" md="6">
@@ -973,15 +973,15 @@
           <b-col cols="12" lg="6" md="6">
             <b-row style="justify-content: end !important; text-align: right;">
               <b-col lg="4" md="4" sm="12" cols="12" class="d-flex flex-column mt-3" >
-                <h6 class="mt-2 mb-4">Informacion Legal</h6>
                 <b-link :to="{ name: 'terms-conditions' }" class="text-white">Terminos y condiciones</b-link>
+                <b-link :to="{ name: 'contacts' }" class="text-white">Contactanos</b-link>
               </b-col>
             </b-row>
           </b-col>
         </b-row>
       </b-container>
     </section>
-    <section class="py-5 bg-dark text-white">
+    <section class="py-5 bg-dark text-white bg-darker">
       <b-container>
         <b-row>
           <b-col cols="12" lg="6" md="6" sm="6">
@@ -1200,6 +1200,9 @@
           max-width: 100%;
         }
       }
+    }
+    .bg-dark.bg-darker {
+      background-color: #28292c !important;
     }
   }
   .register-form {

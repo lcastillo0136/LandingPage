@@ -1,5 +1,7 @@
 import axios from '@/libs/api.request'
 import { getToken } from '@/libs/util'
+import config from '@/config'
+const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 
 export const Messages = {
   list: () => {
@@ -37,6 +39,16 @@ export const Messages = {
       data: formData,
       headers: {
         authorization: `Bearer ${ getToken() }`
+      },
+      method: 'post'
+    })
+  },
+  comment(form) {
+    return axios.request({
+      baseURL: baseUrl.replace('/api/', '/web/'),
+      url: `contact`,
+      data: form,
+      headers: {
       },
       method: 'post'
     })
