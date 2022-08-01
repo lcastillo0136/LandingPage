@@ -171,6 +171,7 @@
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import { getCard, getUserInfo } from '@/api/user'
   import VCard from 'vcard-creator'
+
   import * as _ from 'lodash'
 
   export default {
@@ -320,36 +321,44 @@
     },
     mounted() {
       if (this.$route.params && this.$route.params.uuid) {
-        getCard(this.$route.params.uuid).then(({ data }) => data).then((result) => {
-          this.card = { ... result.data }
+        this.$fingerprint.get((components) => {
+          debugger
+          let _fingerprint = this.$fingerprint.x64hash128(components.map((pair) => { return pair.value }).join(), 31)
+          getCard({ 
+            fingerprint: _fingerprint,
+            uuid: this.$route.params.uuid
+          }).then(({ data }) => data).then((result) => {
+            this.card = { ... result.data }
 
-          _.forEach([
-            'social_paypal', 
-            'social_tiktok', 
-            'social_youtube', 
-            'social_linkedin',
-            'social_instagram',
-            'social_twitter',
-            'social_facebook',
-            'personal_url'
-          ], (p) => {
-            this.card[p] = this.validateUrl(this.card[p]);
-          })
+            _.forEach([
+              'social_paypal', 
+              'social_tiktok', 
+              'social_youtube', 
+              'social_linkedin',
+              'social_instagram',
+              'social_twitter',
+              'social_facebook',
+              'personal_url'
+            ], (p) => {
+              this.card[p] = this.validateUrl(this.card[p]);
+            })
 
-          document.title = this.card.full_name
-          this.toDataURL(this.card.avatar, (dataUrl) => {
-            this.card.base_image = dataUrl
+            document.title = this.card.full_name
+            this.toDataURL(this.card.avatar, (dataUrl) => {
+              this.card.base_image = dataUrl
+            })
+          }).catch((err) => {
+            setTimeout(() => {
+              this.$router.replace({ name: 'home' })
+            }, 10000)
+          }).then(() => {
+            this.ready = true
           })
-        }).catch((err) => {
-          setTimeout(() => {
-            this.$router.replace({ name: 'home' })
-          }, 10000)
-        }).then(() => {
-          this.ready = true
-        })
+        });
       } else if (this.$route.params && this.$route.meta.preview && this.hasToken) {
         getUserInfo(this.hasToken).then(({ data }) => data).then((result) => {
           this.card = { ... result.data }
+          
 
           _.forEach([
             'social_paypal', 

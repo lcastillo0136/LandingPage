@@ -2,7 +2,7 @@
   <div v-if="profile">
     <a-form-model class="details-form validate-form" ref="detailsForm" :rules="rules" :model="user">
       <div class="box_general_2 add_bottom_45">
-        <h4>Datos personales</h4>
+        <h4>Datos personales <small class="ml-4 text-black-50">(vistas: {{ profile.viewed || 0 }})</small></h4>
         <div class="row">
           <div class="col-md-3 col-sm-12">
             <a-form-model-item prop="title" label="Titulo">

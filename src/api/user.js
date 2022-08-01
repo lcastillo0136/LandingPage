@@ -264,10 +264,13 @@ export const sendInvoice = (order, token, postFiles = null) => {
   })
 }
 
-export const getCard = (uuid) => {
+export const getCard = ({ fingerprint, uuid }) => {
   return axios.request({
     baseURL: baseUrl.replace('/api/', '/web/'),
     url: `/profile/${uuid}`,
+    params: {
+      fingerprint
+    },
     method: 'get'
   })
 }

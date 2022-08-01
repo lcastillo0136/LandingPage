@@ -3,22 +3,29 @@
     <b-navbar toggleable="md">
       <b-container class="d-flex align-items-center">
         <b-navbar-brand class="mt-0" :to="{ name: 'home' }">
-          <img src="/img/logo.svg" style="max-height: 100px;"/>
+          <img src="/img/logo.svg" style="max-height: 100px;" class="mw-100"/>
         </b-navbar-brand>
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-        <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav class="ml-auto">
-            <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
-              <b-nav-item @click="$bvModal.show('login-1')">Entrar</b-nav-item>
-              <b-button :to="{ name: 'register' }" class="rounded-lg text-white" variant="primary">Registrarte</b-button>
-            </div>
-            <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
-              <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
-              <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
-            </div>
-          </b-navbar-nav>
-        </b-collapse>
+       
+        <b-navbar-nav class="ml-auto d-none d-md-block">
+          <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
+            <b-button class="rounded-lg mx-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
+            <b-button :to="{ name: 'register' }" class="rounded-lg text-white" variant="primary">Registrarte</b-button>
+          </div>
+          <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
+            <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
+            <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
+          </div>
+        </b-navbar-nav>
+        <b-navbar-nav class="ml-auto d-block d-md-none w-100">
+          <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
+            <b-button class="d-block w-100 my-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
+            <b-button :to="{ name: 'register' }" class="text-white w-100 my-1" variant="primary">Registrarte</b-button>
+          </div>
+          <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
+            <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
+            <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
+          </div>
+        </b-navbar-nav>
       </b-container>
     </b-navbar>
     <Login></Login>
@@ -1185,6 +1192,8 @@
 
 <style lang="scss">
   .home-page.landing {
+    background: #dbf0eb;
+    background: linear-gradient(119deg, #dbf0eb 0%, #f9f9f9ef 32%, #f9f9f9 66%, #dbf0eb 100%);
     .navbar {
       min-height: 100px;
     }

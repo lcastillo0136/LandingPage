@@ -2,10 +2,10 @@
   <div class="limiter">
     <div class="container-login100">
       <div class="login100-more" style="background-image: url('img/bg-01.jpg');"></div>
-      <div class="wrap-login100 p-l-50 p-r-50 p-t-72 p-b-50">
+      <div class="wrap-login100 p-l-50 p-r-50 pt-5 p-b-50">
         <a-form-model class="login100-form validate-form" ref="registerForm" :rules="rules" :model="form">
           <router-link :to="{ name: 'home' }">
-            <img src="/img/logo.png" style="max-height: 100px;max-width: 100%;"/>
+            <img src="/img/logo.svg" style="max-height: 100px;max-width: 100%;" class="mb-3"/>
           </router-link>
           <span class="login100-form-title p-b-35">
             Registrarse
@@ -76,7 +76,10 @@
               <a-button class="btn btn-primary rounded-lg text-white w-100" type="success" :loading="showLoading" @click.stop.prevent="handleRegister" :disabled="!canPay">
                 Registrar y Pagar
               </a-button>
-              <span>o <a href="#" @click="$bvModal.show('login-1')">inicia sesion</a></span>
+              <span>
+                si ya tienes cuenta inicia sesion aqui: 
+                <b-button class="my-1" variant="outline-primary" @click="$bvModal.show('login-1')"size="sm">Iniciar sesion</b-button>
+              </span>
               <Login></Login>
             </template>
             <template v-else>
@@ -868,7 +871,7 @@
     justify-content: space-between;
     align-items: center;
 
-    .btn {
+    .btn:not(.btn-outline-primary) {
       padding: 12px;
       height: auto;
       color: #212529;
