@@ -74,7 +74,7 @@
           <div class="container-login100-form-btn">
             <template v-if="account.methodSelected !== 4">
               <a-button class="btn btn-primary rounded-lg text-white w-100" type="success" :loading="showLoading" @click.stop.prevent="handleRegister" :disabled="!canPay">
-                Registrar y Pagar
+                Registrar y Pagar {{ (product && product.precio_venta) | currency }}<small> por 1 año</small>
               </a-button>
               <span>
                 si ya tienes cuenta inicia sesion aqui: 
@@ -84,7 +84,7 @@
             </template>
             <template v-else>
               <div id="paypal-button-container" class="w-100"></div>
-              <small>Pagar con PayPal  y registrarse</small>
+              <small>Pagar con PayPal  y registrarse ( {{ (product && product.precio_venta) | currency }}<small> por 1 año de servicio</small>)</small>
             </template>
           </div>
         </a-form-model>
