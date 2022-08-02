@@ -392,7 +392,12 @@
       onSelectDate (value) {
         this.booking.date = value
         this.getDoctorBooking(this.$route.params.id, this.booking.date).then(() => {
-          this.availableTimes = this.availableDates.find(d => d.date === value).times
+          this.availableTimes = this.availableDates.find(d => d.date === value) ? this.availableDates.find(d => d.date === value).times : []
+
+          if (this.availableTimes.length <= 0) {
+            this.booking.time = false
+            // this.booking.date = ''
+          }
         })
       },
       onSelectTime (value) {
@@ -473,7 +478,8 @@
           tz: Intl.DateTimeFormat().resolvedOptions().timeZone
         }).then((response) => response.data)
           .then((response) => {
-            this.availableDates = response.data.dates
+            this.availableDates = response.data.dates.filter((f) => f.times.filter(t => t.available).length > 0)
+
             this.loadingBook = false
             return response
           })
