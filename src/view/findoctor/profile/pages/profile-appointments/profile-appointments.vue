@@ -94,7 +94,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Metodo de pago</label>
+                      <label>Método de pago</label>
                       <a-form-model-item prop="payment_method" help="*Favor de procesar el pago en ventanilla">
                         <a-select show-search option-filter-prop="children" v-model="modal.data.payment_method" allowClear>
                           <a-select-option value="1">
@@ -308,7 +308,7 @@
               </div>
               <div class="col-md-6" v-if="viewModal.data.order">
                 <div class="form-group">
-                  <label class="mb-0">Metodo de pago</label>
+                  <label class="mb-0">Método de pago</label>
                   <div class="font-weight-bold">{{ viewModal.data.order.method.name }}</div>
                 </div>
               </div>

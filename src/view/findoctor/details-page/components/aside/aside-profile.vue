@@ -17,7 +17,7 @@
       <li>{{ doctor.rating.patients }} Pacientes</li>
     </ul>
     <ul class="contacts">
-      <li><h6>Direccion</h6>{{ doctor.address }}</li>
+      <li><h6>Dirección</h6>{{ doctor.address }}</li>
       <li v-if="doctor.phone_number"><h6>Telefono</h6><a :href="'tel:' + doctor.phone_number ">{{ doctor.phone_number | phone }}</a></li>
     </ul>
     <div class="text-center">

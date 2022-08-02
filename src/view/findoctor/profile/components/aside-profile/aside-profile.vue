@@ -12,7 +12,7 @@
     <h1 v-if="user && user.first_name">{{ user.first_name }}</h1>
 
     <!-- <ul class="contacts">
-      <li><h6>Direccion</h6>{{ getUser.address.street }} {{ getUser.address.suburb }}, {{ getUser.address.city}}</li>
+      <li><h6>Dirección</h6>{{ getUser.address.street }} {{ getUser.address.suburb }}, {{ getUser.address.city}}</li>
       <li v-if="getUser.phone"><h6>Telefono</h6><a :href="'tel:' + getUser.phone ">{{ getUser.phone | phone }}</a></li>
     </ul> -->
     <ul class="contacts">

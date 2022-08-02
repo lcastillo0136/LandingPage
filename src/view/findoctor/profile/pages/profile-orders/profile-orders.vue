@@ -21,7 +21,7 @@
 </template>
 <script>
   const columns = [
-    { title: 'Metodo', key: 'method', scopedSlots: { customRender: 'method' } },
+    { title: 'Método', key: 'method', scopedSlots: { customRender: 'method' } },
     { title: 'Estatus', key: 'status', scopedSlots: { customRender: 'status' } },
     { title: 'Total', key: 'total', scopedSlots: { customRender: 'total' } },
     { title: 'Fecha', key: 'created_at', scopedSlots: { customRender: 'created_at' } }

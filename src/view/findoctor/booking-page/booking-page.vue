@@ -7,7 +7,7 @@
         <div class="col-xl-8 col-lg-8">
           <div class="box_general_3 cart">
             <div class="message" v-if="!hasToken">
-              <p>¿Cliente existente? <router-link :to="{ name: 'login', params: { page: 'booking-page', info: { ...$route.params } } }">Haz click aquí para iniciar sesión</router-link></p>
+              <p>¿Ya tienes cuenta con nosotros? <router-link :to="{ name: 'login', params: { page: 'booking-page', info: { ...$route.params } } }">Haz clic aquí para iniciar sesión</router-link></p>
             </div>
 
             <div class="form_title">
@@ -67,7 +67,7 @@
                 <ul>
                   <li>Fecha: <strong class="float-right">{{ getDate }}</strong></li>
                   <li>Hora: <strong class="float-right">{{ getTimeFormated }}</strong></li>
-                  <li>Medico: <strong class="float-right">{{ doctor.name }}</strong></li>
+                  <li>Médico: <strong class="float-right">{{ doctor.name }}</strong></li>
                 </ul>
               </div>
               <ul class="treatments checkout clearfix" v-if="getServices.length > 0">
@@ -330,6 +330,7 @@
             product_id: s.id,
             name: s.name,
             precio_venta: s.price,
+            precio_real: (s.price / 1.16),
             date: this.$moment(this.getDate, 'DD/MM/YYYY').format('DDMMYYYY'),
             time: this.getTime,
             phone: this.client.phone,
