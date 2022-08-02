@@ -77,7 +77,7 @@
                       {{ `${record.date} ${record.time}` | ServerToDate('DD/MM/YYYY hh:mm a') }}
                     </div>
                     <div slot="total" slot-scope="record" class="text-right data-record">
-                      {{ record.precio_venta | currency }}
+                      {{ record.precio_venta | currency }} <small>{{ appCurrency }}</small>
                     </div>
                   </a-table>
 
@@ -133,7 +133,7 @@
                       </div>
                       <div class="invoice-totals-grand">
                         <div>Cantidad Total</div>
-                        <span>{{ order.total | currency }}</span>
+                        <span>{{ order.total | currency }} <small>{{ appCurrency }}</small></span>
                       </div>
                     </div>
                   </div>
@@ -163,7 +163,7 @@
             <a-button size="large" style="flex: 1 1 auto;" @click="generateReport">Descargar</a-button>
           </div>
           <a-button size="large" class="w-100 mt-2" type="primary" @click.stop.prevent="navigateToHome">
-            <a-icon type="arrow-left"></a-icon>
+            <b-icon-arrow-left-short></b-icon-arrow-left-short>
             Volver a inicio
           </a-button>
         </aside>
@@ -182,13 +182,16 @@
   import { sendInvoice } from '@/api/user'
   import { getServerFile } from '@/libs/util'
   import { mapGetters, mapMutations, mapActions } from 'vuex'
+  import { BIconArrowLeftShort } from 'bootstrap-vue'
+
   import moment from 'moment'
 
   export default {
     name: 'InvoicePage',
     components: {
       BreadCrumb,
-      VueHtml2pdf
+      VueHtml2pdf,
+      BIconArrowLeftShort
     },
     data () {
       return {

@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import VueWow from 'vue-wow'
 import Moment from 'vue-moment'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 const moment = require('moment')
 require('moment/locale/es')
@@ -37,8 +38,10 @@ import 'vue-select/dist/vue-select.css';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
 import 'iview/dist/styles/iview.css';
 import 'video.js/dist/video-js.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 
-import "@/assets/css/bootstrap.min.css"
 import "@/assets/css/style.css"
 
 Vue.component('l-map', LMap);
@@ -50,6 +53,8 @@ Vue.component('v-select', vSelect)
 
 Vue.use(VueSweetalert2);
 Vue.use(PerfectScrollbar)
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
 
 Vue.use(Antd)
 
