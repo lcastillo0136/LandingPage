@@ -3,24 +3,52 @@
     <figure v-if="avatar">
       <img :src="avatar" alt="" class="img-fluid" v-if="isImage">
       <img :src="avatarFile" alt="" class="img-fluid" v-else>
+      <template v-if="isProvider">
+        <a-dropdown :trigger="['contextmenu']">
+          <div class="d-none d-lg-inline">
+            <vue-qr ref="QRCode" :text="userLink" :size="75" class="qr-image" :margin="5" v-clipboard:copy="userLink" v-clipboard:success="copyLink"></vue-qr>
+          </div>
+          <a-menu slot="overlay">
+            <a-menu-item key="copy" v-clipboard:copy="userLink" v-clipboard:success="copyLink">
+              Copiar enlace
+            </a-menu-item>
+            <a-menu-item key="share">
+              <navigator-share :url="userLink" :title="user.full_name" :text="user.full_name">
+                <template #clickable>
+                  Compartir Enlace
+                </template>
+              </navigator-share>
+            </a-menu-item>
+            <a-menu-item key="qr" @click="downloadQR" :loading="downloadingQR">
+              Descargar QR
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </template>
+    </figure>
+    <template v-if="isProvider">
       <a-dropdown :trigger="['contextmenu']">
-        <div>
-          <vue-qr ref="QRCode" :text="userLink" :size="75" class="qr-image" :margin="5" v-clipboard:copy="userLink" v-clipboard:success="copyLink"></vue-qr>
+        <div class="d-lg-none">
+          <vue-qr ref="QRCode" :text="userLink" :size="200" class="qr-image" :margin="5" v-clipboard:copy="userLink" v-clipboard:success="copyLink"></vue-qr>
         </div>
         <a-menu slot="overlay">
           <a-menu-item key="copy" v-clipboard:copy="userLink" v-clipboard:success="copyLink">
             Copiar enlace
           </a-menu-item>
           <a-menu-item key="share">
-            Compartir Enlace
+            <navigator-share :url="userLink" :title="user.full_name">
+              <template #clickable>
+                Compartir Enlace
+              </template>
+            </navigator-share>
           </a-menu-item>
           <a-menu-item key="qr" @click="downloadQR" :loading="downloadingQR">
             Descargar QR
           </a-menu-item>
         </a-menu>
       </a-dropdown>
-    </figure>
-    <template v-if="user && user.role && user.role.is_provider">
+    </template>
+    <template v-if="isProvider">
       <small v-if="user.especialidad">
         {{ user.especialidad }}
       </small>
@@ -79,6 +107,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { getServerFile2, getServerFile } from '@/libs/util'
+  import NavigatorShare from 'vue-navigator-share'
 
   export default {
     name: 'AsideProfile',
@@ -89,6 +118,9 @@
           return { }
         }
       }
+    },
+    components: {
+      NavigatorShare
     },
     data() {
       return {

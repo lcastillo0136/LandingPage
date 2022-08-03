@@ -83,7 +83,6 @@
           </div>
         </div>
       </div>
-
       <div class="row">
         <div class="col-md-3">
           <div class="form-group">
@@ -233,6 +232,8 @@
   import { PinturaEditor } from 'vue-pintura'
   import { getEditorDefaults } from 'pintura'
 
+  import NavigatorShare from 'vue-navigator-share'
+
   export default {
     name: 'ProfileDetails',
     props: {
@@ -245,6 +246,7 @@
     },
     components: {
       PinturaEditor,
+      NavigatorShare
     },
     data () {
       return {
@@ -297,6 +299,12 @@
       },
       isClient() {
         return this.user.role && this.user.role.is_client
+      },
+      url() {
+        return window.location.href;
+      },
+      title() {
+        return document.title;
       }
     },
     methods: {
@@ -371,6 +379,13 @@
         if (field) {
           field.type = field.type == 'password' ? 'text' : 'password'
         }
+      },
+      onError(err) {
+        alert(err);
+        console.log(err);
+      },
+      onSuccess(err) {
+        console.log(err);
       }
     },
     mounted() {
