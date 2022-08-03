@@ -423,3 +423,7 @@ export const setTitle = (routeItem, vm) => {
 export const getServerFile = (path) => {
   return `${baseUrl.replace('api/', 'storage/')}${path.replace('public/', '')}`
 }
+
+export const getServerFile2 = (path) => {
+  return `${baseUrl.replace('api/', '')}${path.replace('public/', '')}` 
+}

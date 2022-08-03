@@ -63,7 +63,6 @@
           </div>
         </div>
       </div>
-
       <div class="row">
         <div class="col-md-3 col-sm-6">
           <div class="form-group">
@@ -346,7 +345,7 @@
             ...this.profile,
             ...{
               bday: this.profile.bday && this.profile.bday.format('YYYY-MM-DD'),
-              phone: (this.profile.phone||'').replace(/\D/g, ''),
+              phone: `${this.profile.phone}`.replace(/\D/g, ''),
             }, ...(this.user_pass.password != "" && this.matchPassword ? {
               password: this.user_pass.password,
               password_confirmation: this.user_pass.password,

@@ -4,6 +4,9 @@ import router from './router'
 import store from './store'
 import VueWow from 'vue-wow'
 import Moment from 'vue-moment'
+import VueClipboard from 'vue-clipboard2'
+import VueQr from 'vue-qr'
+
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 const moment = require('moment')
@@ -51,6 +54,8 @@ Vue.component('l-icon-default', LIconDefault)
 Vue.component('l-popup', LPopup)
 Vue.component('v-select', vSelect)
 
+Vue.use(VueQr)
+Vue.use(VueClipboard)
 Vue.use(VueSweetalert2);
 Vue.use(PerfectScrollbar)
 Vue.use(BootstrapVue)
