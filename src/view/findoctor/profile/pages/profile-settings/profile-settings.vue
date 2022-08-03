@@ -2,10 +2,10 @@
   <div v-if="getUser.id">
     <!-- <h4 class="add_bottom_30">Configuraciones</h4> -->
     <div class="box_general_2 settings-container">
-      <h4>Configuracion Calendario</h4>
+      <h4>Configuración Calendario</h4>
       <div class="row">
         <div class="col-md-6 col-sm-6 helper-container">
-          <span class="helper-text">A partir de esta hora se mostraran los horarios de las citas que pueden seleccionar los clientes</span>
+          <span class="helper-text">A partir de esta hora se mostrarán los horarios de las citas que pueden seleccionar los clientes</span>
         </div>
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
@@ -18,7 +18,7 @@
       </div>
       <div class="row">
         <div class="col-md-6 col-sm-6 helper-container">
-          <span class="helper-text">Hasta este horario se pintaran las citas disponibles</span>
+          <span class="helper-text">Hasta este horario se pintarán las citas disponibles</span>
         </div>
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
@@ -27,7 +27,7 @@
               <a-time-picker use12-hours v-model="close_time" size="large" format="h:mm a" />
             </a-form-model-item>
             <a-checkbox v-model="extend_last_appointment" style="margin-bottom: 7px;">
-              <small class="helper-text">Extender el horario si la ultima cita excede la hora de cierre</small>
+              <small class="helper-text">Extender el horario si la última cita excede la hora de cierre</small>
             </a-checkbox>
           </div>
         </div>
@@ -35,7 +35,7 @@
       <div class="row">
         <div class="col-md-6 col-sm-6 helper-container">
           <span class="helper-text">
-            El calendario que visualiza el proveedor se dividira en espacios del tiempo seleccionado
+            El calendario que visualiza el proveedor se dividirá en espacios del tiempo seleccionado
           </span>
         </div>
         <div class="col-md-6 col-sm-6">
@@ -50,12 +50,12 @@
     </div>
 
     <div class="box_general_2 settings-container">
-      <h4>Configuracion Servicios</h4>
+      <h4>Configuración Servicios</h4>
 
       <div class="row">
         <div class="col-md-6 col-sm-6 helper-container">
           <span class="helper-text">
-            Permitir que el paciente seleccione multiples servicios en en sitio
+            Permitir que el paciente seleccione múltiples servicios en sitio
           </span>
         </div>
         <div class="col-md-6 col-sm-6">
@@ -69,12 +69,12 @@
       <div class="row">
         <div class="col-md-6 col-sm-6 helper-container">
           <span class="helper-text">
-            Cantidad de dias que muestra el calendario
+            Cantidad de días que muestra el calendario
           </span>
         </div>
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
-            <label>Maximo de dias</label>
+            <label>Máximo de días</label>
             <a-row>
               <a-col :span="17">
                 <a-slider :default-value="7" :min="1" :max="31" v-model="max_days" />
@@ -89,12 +89,12 @@
       <div class="row">
         <div class="col-md-6 col-sm-6 helper-container">
           <span class="helper-text">
-            Muestra los dias disponibles en el calendario a partir del dia actual + los dias aqui seleccionados
+            Muestra los días disponibles en el calendario a partir del día actual + los días aquí seleccionados
           </span>
         </div>
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
-            <label>Cantidad de dias</label>
+            <label>Cantidad de días</label>
             <a-row>
               <a-col :span="17">
                 <a-slider :default-value="7" :min="0" :max="7" v-model="next_day" />
@@ -110,7 +110,7 @@
       <div class="row">
         <div class="col-md-6 col-sm-6 helper-container">
           <span class="helper-text">
-            <div style="background-color: #bce8f14d; width: 20px; height: 20px;display: inline-block;margin-right: 5px;vertical-align: middle;border: solid 1px #bce8f1;"></div>Dias disponibles para seleccionar cita
+            <div style="background-color: #bce8f14d; width: 20px; height: 20px;display: inline-block;margin-right: 5px;vertical-align: middle;border: solid 1px #bce8f1;"></div>Días disponibles para seleccionar cita
           </span>
         </div>
         <div class="col-md-6 col-sm-6" v-if="!flag">
@@ -187,7 +187,7 @@
             </div>
             <div class="col-md-3 col-sm-3">
               <div class="form-group">
-                <label>Duracion</label>
+                <label>Duración</label>
                 <a-form-model-item prop="duration">
                   <a-time-picker v-model="editDuration" format="HH:mm" />
                 </a-form-model-item>
@@ -240,7 +240,7 @@
     scopedSlots: { customRender: 'price' } ,
     key: 'price',
   }, {
-    title: 'Duracion',
+    title: 'Duración',
     scopedSlots: { customRender: 'duration' } ,
     key: 'duration',
   }, {

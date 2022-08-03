@@ -28,7 +28,7 @@
                         <a-time-picker use12-hours v-model="modal.data.start_date" size="large" format="h:mm a"  />
                       </a-form-model-item>
                       <small v-if="eventDuration > 0">
-                        Duracion: {{ eventDuration | mtoh }}
+                        Duración: {{ eventDuration | mtoh }}
                       </small>
                     </div>
                   </div>
@@ -49,7 +49,7 @@
                         <a-date-picker show-time v-model="modal.data.start_date" size="large" />
                       </a-form-model-item>
                       <small v-if="eventDuration > 0">
-                        Duracion: {{ eventDuration | mtoh }}
+                        Duración: {{ eventDuration | mtoh }}
                       </small>
                     </div>
                   </div>
@@ -155,12 +155,12 @@
                   <strong>{{ modal.data.client.first_name }} {{ modal.data.client.last_name }}</strong>
                 </div>
                 <br>
-                <span>Correo electronico</span>
+                <span>Correo electrónico</span>
                 <div>
                   <strong>{{ modal.data.client.email }}</strong>
                 </div>
                 <br>
-                <span>Telefono</span>
+                <span>Teléfono</span>
                 <div>
                   <strong>{{ modal.data.client.phone | phone }}</strong>
                 </div>
@@ -214,7 +214,7 @@
                     <div class="form-group">
                       <label>Teléfono</label>
                       <a-form-model-item prop="phone">
-                        <a-input v-model="modal.data.phone" type="text" autocomplete="off" placeholder="Telefono"/>
+                        <a-input v-model="modal.data.phone" type="text" autocomplete="off" placeholder="Teléfono"/>
                       </a-form-model-item>
                     </div>
                   </div>
@@ -231,10 +231,10 @@
               <a-icon type="inbox" />
             </p>
             <p class="ant-upload-text">
-              Haga click aquí o suelta tus archivos en esta área para empezar la carga
+              Haga clic aquí o suelta tus archivos en esta área para empezar la carga
             </p>
             <p class="ant-upload-hint">
-              Soporte para carga multiple de archivos. estrictamente prohibido subir archivos con derechos de autor
+              Soporte para carga múltiple de archivos. Estrictamente prohibido subir archivos con derechos de autor
             </p>
           </a-upload-dragger>
         </template>
@@ -283,7 +283,7 @@
                     {{ viewModal.data.start_date | moment('DD/MM/YYYY hh:mm a') }}
                   </div>
                   <small v-if="eventDuration > 0">
-                    Duracion: {{ eventDuration | mtoh }}
+                    Duración: {{ eventDuration | mtoh }}
                   </small>
                 </div>
               </div>
@@ -337,12 +337,12 @@
                 <strong>{{ viewModal.data.client.first_name }} {{ viewModal.data.client.last_name }}</strong>
               </div>
               <br>
-              <span>Correo electronico</span>
+              <span>Correo electrónico</span>
               <div>
                 <strong>{{ viewModal.data.client.email }}</strong>
               </div>
               <br>
-              <span>Telefono</span>
+              <span>Teléfono</span>
               <div>
                 <strong>{{ viewModal.data.client.phone | phone }}</strong>
               </div>
@@ -487,7 +487,7 @@
               callback(new Error('Favor de no dejar este campo vacio'));
             } else {
               if (this.eventDuration <= 0) {
-                callback(new Error('No se puede crear una cita sin duracion'))
+                callback(new Error('No se puede crear una cita sin duración'))
               } else {
                 callback();
               }
@@ -498,7 +498,7 @@
               callback(new Error('Favor de no dejar este campo vacio'));
             } else {
               if (this.eventDuration <= 0) {
-                callback(new Error('No se puede crear una cita sin duracion'))
+                callback(new Error('No se puede crear una cita sin duración'))
               } else {
                 callback();
               }
@@ -762,7 +762,7 @@
               }
               this.$notification.success({
                 message: 'Datos Actualizados',
-                description: this.$moment(event.start).isSame(oldEvent.start) ? 'La duracion ha sido actualizada' : 'La hora de inicio ha sido actualizada'
+                description: this.$moment(event.start).isSame(oldEvent.start) ? 'La duración ha sido actualizada' : 'La hora de inicio ha sido actualizada'
               })
             }).catch((error) => {
 

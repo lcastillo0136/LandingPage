@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-md-3 col-sm-12">
           <div class="form-group">
-            <label>Titulo</label>
+            <label>Título</label>
             <select v-model="profile.title" class="form-control" >
               <option value="">&nbsp;</option>
               <option value="Dr.">
@@ -67,14 +67,14 @@
       <div class="row">
         <div class="col-md-3 col-sm-6">
           <div class="form-group">
-            <label>Telefono</label>
+            <label>Teléfono</label>
             <input type="text" class="form-control" placeholder="Tel." v-model="profile.phone" autocomplete="chrome-off">
           </div>
         </div>
         <div class="col-md-5 col-sm-6">
           <div class="form-group">
-            <label>Correo electronico</label>
-            <input type="text" class="form-control" placeholder="Correo electronico" v-model="profile.email" autocomplete="chrome-off">
+            <label>Correo electrónico</label>
+            <input type="text" class="form-control" placeholder="Correo electrónico" v-model="profile.email" autocomplete="chrome-off">
           </div>
         </div>
         <div class="col-md-4 col-sm-6">
@@ -88,7 +88,7 @@
       <div class="row">
         <div class="col-md-3">
           <div class="form-group">
-            <label>Genero</label>
+            <label>Género</label>
             <select v-model="profile.gender" class="form-control">
               <option value="">&nbsp;</option>
               <option value="male">
@@ -121,7 +121,7 @@
     </div>
 
     <div class="box_general_2 add_bottom_45">
-      <h4>Informacion de cuenta</h4>
+      <h4>Información de cuenta</h4>
       <form ref="registerForm">
         <div class="row">
           <div class="col-md-4 col-sm-4">
@@ -160,19 +160,19 @@
       </form>
     </div>
     <div class="box_general_2 add_bottom_45" v-if="isProvider">
-      <h4>Informacion profesional</h4>
+      <h4>Información profesional</h4>
 
       <div class="row">
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
-            <label>Cedula Profesional</label>
+            <label>Cédula Profesional</label>
             <input type="text" class="form-control" placeholder="----------" v-model="profile.cedula_profesional" autocomplete="chrome-off">
           </div>
         </div>
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
             <label>Especialidad</label>
-            <input type="text" class="form-control" placeholder="Correo electronico" v-model="profile.especialidad" autocomplete="chrome-off">
+            <input type="text" class="form-control" placeholder="Especialidad" v-model="profile.especialidad" autocomplete="chrome-off">
           </div>
         </div>
       </div>
@@ -208,14 +208,14 @@
 
     </div>
     <div class="box_general_2 add_bottom_30" v-if="isProvider">
-      <h4>Informacion adicional</h4>
+      <h4>Información adicional</h4>
       <div class="form-group">
         <label>Cita</label>
         <input type="text" class="form-control" placeholder="Frase que te describa" v-model="profile.quote" autocomplete="chrome-off">
       </div>
       <div class="form-group">
-        <label>Biografia</label>
-        <a-textarea :autoSize="true" class="form-control" placeholder="Biografia" v-model="profile.biography" :rows="4"/>
+        <label>Biografía</label>
+        <a-textarea :autoSize="true" class="form-control" placeholder="Biografía" v-model="profile.biography" :rows="4"/>
       </div>
     </div>
     <div style="text-align: right;">

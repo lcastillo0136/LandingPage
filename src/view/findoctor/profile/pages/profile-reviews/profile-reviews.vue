@@ -211,7 +211,9 @@
         right: 15px;
         top: 15px;
       }
-
+      .ant-list-item-main {
+        overflow-wrap: anywhere;
+      }
       &.disabled {
         opacity: 0.4;
       }

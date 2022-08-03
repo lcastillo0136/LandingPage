@@ -18,7 +18,7 @@
     </ul>
     <ul class="contacts">
       <li><h6>Dirección</h6>{{ doctor.address }}</li>
-      <li v-if="doctor.phone_number"><h6>Telefono</h6><a :href="'tel:' + doctor.phone_number ">{{ doctor.phone_number | phone }}</a></li>
+      <li v-if="doctor.phone_number"><h6>Teléfono</h6><a :href="'tel:' + doctor.phone_number ">{{ doctor.phone_number | phone }}</a></li>
     </ul>
     <div class="text-center">
       <a :href="googleMapDir" class="btn_1 outline" target="_blank"><i class="icon_pin"></i> Ver en mapa</a>

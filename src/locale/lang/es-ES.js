@@ -9,7 +9,7 @@ export default {
       max_limit: 'Se alcanzó el límite máximo de caracteres de la contraseña'
     },
     email: {
-      not_available: 'Correo electronico no disponible',
+      not_available: 'Correo electrónico no disponible',
       not_valid: 'Correo electrónico no valido'
     },
     too_many_request: 'Demasiadas solicitudes, por favor espere'
@@ -181,7 +181,7 @@ export default {
       name: 'Nombre(s)',
       last_name: 'Apellido(s)',
       email: 'Correo electrónico',
-      phone: 'Numero de telefono',
+      phone: 'Numero de teléfono',
       message: 'Hola doctor',
       submit: 'Enviar'
     },

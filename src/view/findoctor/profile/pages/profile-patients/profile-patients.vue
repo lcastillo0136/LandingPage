@@ -11,7 +11,7 @@
   const columns = [
     { title: 'Nombre', key: 'name', scopedSlots: { customRender: 'name' } },
     { title: 'Email', dataIndex: 'email', key: 'email' },
-    { title: 'Telefono', key: 'phone', scopedSlots: { customRender: 'phone' }  }
+    { title: 'Teléfono', key: 'phone', scopedSlots: { customRender: 'phone' }  }
   ];
 
   import { mapGetters } from 'vuex'

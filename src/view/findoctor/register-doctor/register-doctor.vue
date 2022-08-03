@@ -166,7 +166,7 @@
                 <!-- /row -->
 
                 <div class="add_bottom_30"><input type="submit" class="btn_1" :value="$t('register_doctor.form.submit')" @click.stop.prevent="handleRegister"></div>
-                <div class="text-center"><small>La informacion de tu registro sera enviada al correo electronico que nos proporciones.</small></div>
+                <div class="text-center"><small>La informacion de tu registro sera enviada al correo electrónico que nos proporciones.</small></div>
               </form>
             </div>
             <!-- /box_form -->

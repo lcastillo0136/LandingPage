@@ -11,7 +11,7 @@
                 <a href="#0" class="social_bt google" disabled>{{ $t('login.social.google') }}</a>
                 <a href="#0" class="social_bt linkedin" disabled>{{ $t('login.social.linkedin') }}</a>
                 <span>
-                  <small>* el registro y sesion por redes sociales no esta activo por el momento</small>
+                  <small>* el registro y sesión por redes sociales no esta activo por el momento</small>
                 </span>
               </div>
               <div class="box_login last flipInX animated" v-if="!forgot.open">
@@ -120,7 +120,7 @@
               }).then((response) => {
                 let _current_time = this.$moment().isBetween(this.$moment().set({ hour: 6, minute: 0 }), this.$moment().set({ hour: 12, minute: 0 })) ? 'Buen dia' : (this.$moment().isBetween(this.$moment().set({ hour: 12, minute: 1 }), this.$moment().set({ hour: 18, minute: 30 })) ? 'Buenas tardes' : 'Buenas noches')
                 this.$notification.success({
-                  message: 'Inicio de sesion', 
+                  message: 'Inicio de sesión', 
                   description: `${_current_time} ${response.title || ''} ${response.first_name || ''} ${response.last_name || ''}`
                 })
 
@@ -143,7 +143,7 @@
                     break;
                   default:
                     this.$notification.error({
-                      message: 'No se encontro el usuario',
+                      message: 'No se encontró el usuario',
                       description: 'Favor de revisar su usuario o contraseña he intentar de nuevo.'
                     })
                     break;

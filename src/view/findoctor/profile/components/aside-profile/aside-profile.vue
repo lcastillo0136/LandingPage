@@ -13,7 +13,7 @@
 
     <!-- <ul class="contacts">
       <li><h6>Dirección</h6>{{ getUser.address.street }} {{ getUser.address.suburb }}, {{ getUser.address.city}}</li>
-      <li v-if="getUser.phone"><h6>Telefono</h6><a :href="'tel:' + getUser.phone ">{{ getUser.phone | phone }}</a></li>
+      <li v-if="getUser.phone"><h6>Teléfono</h6><a :href="'tel:' + getUser.phone ">{{ getUser.phone | phone }}</a></li>
     </ul> -->
     <ul class="contacts">
       <li>
@@ -36,7 +36,7 @@
       </li>
       <li>
         <router-link :to="{ name: 'profile-orders' }">
-          <span>Ordenes</span>
+          <span>Órdenes</span>
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li>
