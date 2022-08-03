@@ -3,25 +3,22 @@
     <figure v-if="avatar">
       <img :src="avatar" alt="" class="img-fluid" v-if="isImage">
       <img :src="avatarFile" alt="" class="img-fluid" v-else>
-      
-        
-
-<a-dropdown :trigger="['contextmenu']">
-    <div>
-      <vue-qr :text="userLink" :size="75" class="qr-image" :margin="5" v-clipboard:copy="userLink" v-clipboard:success="copyLink"></vue-qr>
-    </div>
-    <a-menu slot="overlay">
-      <a-menu-item key="copy" v-clipboard:copy="userLink" v-clipboard:success="copyLink">
-        Copiar enlace
-      </a-menu-item>
-      <a-menu-item key="share">
-        Compartir Enlace
-      </a-menu-item>
-      <a-menu-item key="qr">
-        Descargar QR
-      </a-menu-item>
-    </a-menu>
-  </a-dropdown>
+      <a-dropdown :trigger="['contextmenu']">
+        <div>
+          <vue-qr ref="QRCode" :text="userLink" :size="75" class="qr-image" :margin="5" v-clipboard:copy="userLink" v-clipboard:success="copyLink"></vue-qr>
+        </div>
+        <a-menu slot="overlay">
+          <a-menu-item key="copy" v-clipboard:copy="userLink" v-clipboard:success="copyLink">
+            Copiar enlace
+          </a-menu-item>
+          <a-menu-item key="share">
+            Compartir Enlace
+          </a-menu-item>
+          <a-menu-item key="qr" @click="downloadQR" :loading="downloadingQR">
+            Descargar QR
+          </a-menu-item>
+        </a-menu>
+      </a-dropdown>
     </figure>
     <template v-if="user && user.role && user.role.is_provider">
       <small v-if="user.especialidad">
@@ -96,7 +93,8 @@
     data() {
       return {
         visible: false,
-        avatarFile: ''
+        avatarFile: '',
+        downloadingQR: false
       }
     },
     watch:{
@@ -150,11 +148,33 @@
       preventClick(arg1, arg2, arg3) {
         
       },
+      downloadQR () {
+        this.downloadingQR = true
+        this.saveAs(this.$refs.QRCode.$el.src, 'QR.png');
+      },
       copyLink() {
         this.$notification.success({
           message: 'Enlace copiado',
           description: 'Ya lo puedes compartir con tus contactos'
         })
+      },
+      saveAs(uri, filename) {
+        var link = document.createElement('a');
+
+        if (typeof link.download === 'string') {
+          link.href = encodeURI(uri);
+          link.download = filename;
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setTimeout(() => {
+            this.downloadingQR = false
+          }, 1000)
+        } else {
+          window.open(uri);
+          this.downloadingQR = false
+        }
       }
     },
     mounted() {
