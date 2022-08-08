@@ -7,7 +7,7 @@ import Moment from 'vue-moment'
 import VueClipboard from 'vue-clipboard2'
 import VueQr from 'vue-qr'
 
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import { BootstrapVue, BootstrapVueIcons, IconsPlugin } from 'bootstrap-vue'
 
 const moment = require('moment')
 require('moment/locale/es')
@@ -44,6 +44,7 @@ import 'video.js/dist/video-js.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+import 'bootstrap-icons/font/bootstrap-icons.scss'
 
 import "@/assets/css/style.css"
 
@@ -59,7 +60,7 @@ Vue.use(VueClipboard)
 Vue.use(VueSweetalert2);
 Vue.use(PerfectScrollbar)
 Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
+Vue.use(BootstrapVueIcons)
 
 Vue.use(Antd)
 

@@ -673,7 +673,16 @@ export default {
     title: 'Agenda y pago'
   },
   profile: {
-    title: 'Perfil'
+    title: 'Perfil',
+    clients: {
+      genere: {
+        male: 'Masculino',
+        female: 'Femenino',
+        other: 'Otro',
+        'not sure': 'No estoy seguro',
+        'rather not say': 'Prefiero no decir',
+      }
+    }
   },
   payment_status : {
     CANCELED: 'Cancelado',

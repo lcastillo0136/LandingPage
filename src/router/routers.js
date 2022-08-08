@@ -266,6 +266,16 @@ export default [
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-patients')
           },
           {
+            path: 'patients/:id',
+            name: 'profile-patients-edit',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-patients-edit')
+          },
+          {
+            path: 'patients/:id/consulta',
+            name: 'profile-patients-ehr',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-patients-ehr')
+          },
+          {
             path: 'orders.html',
             name: 'profile-orders',
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-orders')

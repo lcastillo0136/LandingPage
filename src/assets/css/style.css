@@ -3321,6 +3321,7 @@ label.css-label strong {
     border-radius: 5px;
     border: 1px solid #e1e8ed;
     padding: 0 25px 25px;
+    overflow: hidden;
 }
 
 .box_profile ul.statistic li,

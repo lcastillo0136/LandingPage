@@ -169,13 +169,39 @@
                 <br>
                 <span>Referencia OXXO</span>
                 <div>
-                  <strong>{{ orderOXXO.reference | oxxo }}</strong>
+                  <strong :class="{ 'oxxo-paid': orderPaid }">{{ orderOXXO.reference | oxxo }}</strong>
                   <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
                   <a-tag color="red" v-if="oxxoExpired && !orderPaid">Expirado</a-tag>
                   <div v-if="!orderPaid && !oxxoExpired">
                     <small>Pagar antes de {{ oxxoTime }}</small>
                   </div>
                 </div>
+              </template>
+              <template v-else-if="modal.data.order.method.id == 1">
+                <br>
+                <span>Método de pago</span>
+                <div>
+                  <strong>{{ modal.data.order.method.name }}</strong>
+                </div>
+                <br>
+                <span>Entidad emisora</span>
+                <div>
+                  <strong>
+                    {{ modal.data.order.payment_orders.metadata_object.account_type }} 
+                    <small>- {{ modal.data.order.payment_orders.metadata_object.brand }}</small>
+                  </strong>
+                  <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
+                </div>
+              </template>
+              <template v-else-if="modal.data.order.method.id == 3">
+                <br>
+                <span>Método de pago</span>
+                <div>
+                  <strong>{{ modal.data.order.method.name }}</strong>
+                  <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
+                  <a-tag color="red" v-else>Pago pendiente</a-tag>
+                </div>
+                <br>
               </template>
               <template v-if="modal.newClient">
                 <div class="row">
@@ -219,6 +245,16 @@
                     </div>
                   </div>
                 </div>
+              </template>
+              <template v-else-if="modal.data.order.ehr_id <= 0">
+                <a-button class="btn-warning">
+                  Iniciar consulta
+                  <b-icon-clipboard-plus class="ml-1"></b-icon-clipboard-plus>
+                </a-button>
+               
+              </template>
+              <template v-else-if="modal.data.order.ehr_id > 0">
+                <a-button>Ver consulta</a-button>
               </template>
             </div>
           </div>
@@ -408,6 +444,7 @@
   import timeGridPlugin from '@fullcalendar/timegrid'
   import { toDuration } from 'moment'
   import esLocale from '@fullcalendar/core/locales/es'
+  import { BIconClipboardPlus }  from 'bootstrap-vue'
   import _ from 'lodash'
 
   import { mapGetters } from 'vuex'
@@ -424,7 +461,8 @@
       }
     },
     components: {
-      FullCalendar // make the <FullCalendar> tag available
+      FullCalendar,
+      BIconClipboardPlus
     },
     name: 'ProfileAppointments',
     data() {
@@ -668,7 +706,7 @@
       },
       orderPaid() {
         if (this.modal.open) {
-          return this.modal.data.order.payment_orders.status == 'paid'
+          return this.modal.data.order.payment_orders && this.modal.data.order.payment_orders.status == 'paid'
         } else {
           return this.viewModal.data.order.payment_orders.status == 'paid'
         }
@@ -1044,15 +1082,15 @@
       },
       handleDelete() {
         this.$confirm({
-          title: 'Desea borrar la cita seleccionada?',
-          content: 'Al aceptar esta ventana no se podra recuperar la informacion de la cita eliminada',
+          title: '¿Desea borrar la cita seleccionada?',
+          content: 'Al aceptar esta ventana no se podrá recuperar la información de la cita eliminada',
           okText: 'Aceptar',
           cancelText: 'Cancelar',
           onOk: (close) => {
             return deleteAppointment(this.modal.data, this.hasToken).then((response) => {
               this.$notification.success({
                 message: 'Cita eliminada',
-                description: 'El espacio ya esta disponible para mas citas' 
+                description: 'El espacio ya esta disponible para más citas' 
               });
 
               let _event = this.$refs.fullCalendar.getApi().getEventById(this.modal.data.id)
@@ -1070,15 +1108,15 @@
       handleRemove(file) {
         if (file.user_id) {
           this.$confirm({
-            title: 'Desea borrar el archivo seleccionado?',
-            content: 'Al aceptar esta ventana no se podra recuperar el archivo eliminado',
+            title: '¿Desea borrar el archivo seleccionado?',
+            content: 'Al aceptar esta ventana no se podrá recuperar el archivo eliminado',
             okText: 'Aceptar',
             cancelText: 'Cancelar',
             onOk: (close) => {
               return deleteFile(file.user_id, file.uid, this.hasToken).then((response) => {
                 this.$notification.success({
                   message: 'Archivo eliminado',
-                  description: 'El archivo ya no estara disponble en el sistema'
+                  description: 'El archivo ya no estará disponible en el sistema'
                 });
                 
                 _.remove(this.modal.data.oldPostFiles, { uid: file.uid })
