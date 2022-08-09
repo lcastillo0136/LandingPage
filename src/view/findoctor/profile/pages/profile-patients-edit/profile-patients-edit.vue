@@ -16,8 +16,8 @@
           <div class="d-flex flex-column flex-fill">
             <h5 class="mb-1">
               <b>{{ client.full_name }}</b> 
-              <a-tag color="green" class="ml-1" v-if="client.active">activo</a-tag>
-              <a-tag color="red" class="ml-1" v-else>inactivo</a-tag>
+              <a-tag color="green" class="ml-1" v-if="client.active" style="vertical-align: top;">activo</a-tag>
+              <a-tag color="red" class="ml-1" v-else style="vertical-align: top;">inactivo</a-tag>
             </h5>
             <small>
               <b>

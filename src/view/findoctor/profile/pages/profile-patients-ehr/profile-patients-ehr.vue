@@ -144,7 +144,7 @@
           reason: [{ validator: (rule, value, callback) => {
             value = (`${value||''}`).trim()
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
@@ -152,7 +152,7 @@
           comments: [{ validator: (rule, value, callback) => {
             value = (`${value||''}`).trim()
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
@@ -160,7 +160,7 @@
           weight: [{ validator: (rule, value, callback) => {
             value = (`${value||''}`).trim()
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
@@ -168,7 +168,7 @@
           height: [{ validator: (rule, value, callback) => {
             value = (`${value||''}`).trim()
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
@@ -176,7 +176,7 @@
           temperature: [{ validator: (rule, value, callback) => {
             value = (`${value||''}`).trim()
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
@@ -184,7 +184,7 @@
           blood_type: [{ validator: (rule, value, callback) => {
             value = (`${value||''}`).trim()
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }

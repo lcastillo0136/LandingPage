@@ -93,7 +93,7 @@
         rules: {
           message: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }

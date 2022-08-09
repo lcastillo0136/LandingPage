@@ -76,14 +76,14 @@
         rules: {
           username: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           realPassword: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && !this.forgot.open) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }

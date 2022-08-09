@@ -1,7 +1,7 @@
 <template>
   <div class="box_general_2">
     <h4>Pacientes</h4>
-    <a-table :columns="columns" :data-source="clients" class="table-responsive" rowKey="id" bordered>
+    <a-table :columns="columns" :data-source="clients" class="table-responsive" rowKey="id" bordered :loading="loading">
       <a slot="name" slot-scope="record">{{ record.first_name }} {{ record.last_name }}</a>
       <small slot="contact" slot-scope="record">
         <a :href="`mailto:${record.email}`">{{ record.email }}</a><br>
@@ -22,7 +22,7 @@
             <a-menu-item key="1" @click="viewProfile(record.id)">
               Ver detalles
             </a-menu-item>
-            <a-menu-item key="2">
+            <a-menu-item key="2" @click="ehrProfile(record.id)">
               Iniciar Consulta
             </a-menu-item>
           </a-menu>
@@ -35,6 +35,7 @@
   </div>
 </template>
 <script>
+  import { getClient } from '@/api/user'
   import { BIconThreeDotsVertical } from 'bootstrap-vue'
 
   const columns = [
@@ -49,7 +50,8 @@
   export default {
     data() {
       return {
-        columns
+        columns,
+        loading: false
       };
     },
     name: 'ProfilePatients',
@@ -73,6 +75,19 @@
         this.$router.push({ 
           name: 'profile-patients-edit',
           params: { id: client_id }
+        })
+      },
+      ehrProfile (client_id) {
+        this.loading = true
+        getClient(client_id, this.hasToken).then(response => response.data).then((response) => {
+          this.loading = false
+          this.$router.push({ 
+            name: 'profile-patients-ehr',
+            params: { 
+              client: { ...response.data },
+              provider: this.getUser
+            }
+          })
         })
       }
     },

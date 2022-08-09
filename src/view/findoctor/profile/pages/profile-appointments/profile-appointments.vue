@@ -522,7 +522,7 @@
         rules: {
           start_date: [{ validator: (rule, value, callback) => {
             if (value === '' || !value) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               if (this.eventDuration <= 0) {
                 callback(new Error('No se puede crear una cita sin duración'))
@@ -533,7 +533,7 @@
           }, trigger: 'change' }],
           end_date: [{ validator: (rule, value, callback) => {
             if (value === '' || !value) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               if (this.eventDuration <= 0) {
                 callback(new Error('No se puede crear una cita sin duración'))
@@ -544,14 +544,14 @@
           }, trigger: 'change' }],
           payment_method: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && !this.modal.data.id && this.modal.data.order_product_id) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           payment_status: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && !this.modal.data.id && this.modal.data.payment_method) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
@@ -559,7 +559,7 @@
           phone: [{ validator: (rule, value, callback) => {
             const _parsedValue = value && value.replace(/[^0-9.]/g, '')
             if ((value === '' || !value) && this.modal.newClient) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else if (`${_parsedValue}`.length < 10) { 
               callback(new Error('Favor de caputurar un teléfono valido'))
             } else {
@@ -568,14 +568,14 @@
           }, trigger: 'change' }],
           name: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && this.modal.newClient) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           email:  [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && this.modal.newClient) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else if (!this.validEmail(value)) {
               callback(new Error('Favor de caputurar un email valido'))
             } else {
@@ -586,7 +586,7 @@
         review_rules: {
           comment: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
