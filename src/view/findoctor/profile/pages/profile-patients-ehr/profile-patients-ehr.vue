@@ -75,11 +75,35 @@
             <b class="ml-3">{{ blood_type }}</b>
           </a-form-model-item>
           <a-divider dashed></a-divider>
-          <a-form-model-item prop="reason" label="Motivo / Malestar principal">
-            <a-textarea :rows="6" v-model="client.last_medical_record.reason" />
+          <a-form-model-item prop="reason" label="Motivo / Malestar principal" >
+            <a-textarea :rows="3" v-model="client.last_medical_record.reason" :disabled="recording1" />
           </a-form-model-item>
+            <div class="d-flex flex-row-reverse" v-if="canRecord">
+              <template v-if="!recording1">
+                <a-button type="secondary" icon="audio" @click="toggleRecord1">
+                  Dictar
+                </a-button>
+              </template>
+              <template v-else>
+                <a-button type="danger" icon="pause-circle" @click="toggleRecord1">
+                  Escuchando
+                </a-button>
+              </template>
+            </div>
           <a-form-model-item prop="comments" label="Comentarios">
-            <a-textarea :rows="4" type="text" v-model="client.last_medical_record.comments" />
+            <a-textarea :rows="2" type="text" v-model="client.last_medical_record.comments" :disabled="recording2" />
+            <div class="d-flex flex-row-reverse" v-if="canRecord">
+              <template v-if="!recording2">
+                <a-button type="secondary" icon="audio" @click="toggleRecord2">
+                  Dictar
+                </a-button>
+              </template>
+              <template v-else>
+                <a-button type="danger" icon="pause-circle" @click="toggleRecord2">
+                  Escuchando
+                </a-button>
+              </template>
+            </div>
           </a-form-model-item>
         </a-form-model>
 
@@ -97,6 +121,13 @@
 
   import * as _ from 'lodash'
 
+  var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+  var recognition = new SpeechRecognition();
+
+  recognition.lang = "es-ES";
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
   export default {
     data() {
       return {
@@ -105,6 +136,10 @@
         blood_type_letter: 'A',
         blood_type_sign: '+' ,
         loading: false,
+        recording1: false,
+        recording2: false,
+        field: 'reason',
+        canRecord: !!SpeechRecognition,
         rules: {
           reason: [{ validator: (rule, value, callback) => {
             value = (`${value||''}`).trim()
@@ -208,6 +243,24 @@
         }).catch((err) => {
           this.loading = false
         })
+      },
+      toggleRecord1() {
+        this.field = 'reason'
+        this.recording1 = !this.recording1
+        if (this.recording1) {
+          recognition.start()
+        } else {
+          recognition.stop()
+        }
+      },
+      toggleRecord2() {
+        this.field = 'comment'
+        this.recording2 = !this.recording2
+        if (this.recording2) {
+          recognition.start()
+        } else {
+          recognition.stop()
+        }
       }
     },
     mounted() {
@@ -242,7 +295,21 @@
         this.blood_type_sign = this.client.last_medical_record.blood_type.split('').pop() || '+'
         this.blood_type_letter = this.client.last_medical_record.blood_type.replace(/[\+\-]/g, '') || 'A'
 
-      }else {
+        recognition.onresult = (event) => {
+          for (var i = event.resultIndex; i < event.results.length; i++) {
+            if (event.results[i].isFinal) {
+              console.log(event.results[i][0].transcript);
+
+              if (this.field == 'reason') {
+                this.client.last_medical_record.reason += event.results[i][0].transcript
+              } else if (this.field == 'comment') {
+                this.client.last_medical_record.comments += event.results[i][0].transcript
+              }
+            }
+          }
+        }
+
+      } else {
         this.$router.back()
       }
     }
@@ -283,6 +350,12 @@
     }
     .gap-5 {
       gap: 3rem !important;
+    }
+
+    .ant-btn {
+      .anticon {
+        vertical-align: baseline;
+      }
     }
     *::after {
       display: none; 
