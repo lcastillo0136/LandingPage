@@ -152,17 +152,25 @@
               <template v-if="modal.data.client">
                 <span>Nombre</span>
                 <div>
-                  <strong>{{ modal.data.client.first_name }} {{ modal.data.client.last_name }}</strong>
+                  <strong>
+                    <router-link :to="{ name: 'profile-patients-edit', params: { id: modal.data.client.id } }">
+                      {{ modal.data.client.first_name }} {{ modal.data.client.last_name }}
+                    </router-link>
+                  </strong>
                 </div>
                 <br>
                 <span>Correo electrónico</span>
                 <div>
-                  <strong>{{ modal.data.client.email }}</strong>
+                  <strong>
+                    <a :href="'mailto:'+modal.data.client.email">{{ modal.data.client.email }}</a>
+                  </strong>
                 </div>
                 <br>
                 <span>Teléfono</span>
                 <div>
-                  <strong>{{ modal.data.client.phone | phone }}</strong>
+                  <strong>
+                    <a :href="'tel:'+modal.data.client.phone">{{ modal.data.client.phone | phone }}</a>
+                  </strong>
                 </div>
               </template>
               <template v-if="orderOXXO">
@@ -886,7 +894,7 @@
               updateAppointment({ ..._event.extendedProps }, this.hasToken, _.differenceBy(this.modal.data.postFiles, [{ 'status': 'error' }], 'status') || []).then((response) => {
                 
                 this.$notification.success({
-                  mesage: 'Datos actualizados',
+                  message: 'Datos actualizados',
                   description: 'Detalles de la cita actualizados' 
                 });
 

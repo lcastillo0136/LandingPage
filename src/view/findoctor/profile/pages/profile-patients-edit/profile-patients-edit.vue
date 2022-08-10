@@ -39,11 +39,15 @@
               <div class="d-flex flex-row">
                 <span class="d-flex flex-column flex-fill" v-if="client.phone">
                   <small class="profile-mute">Teléfono</small>
-                  <small>{{ client.phone | phone }}</small>
+                  <small>
+                    <a :href="`tel:${client.phone}`">{{ client.phone | phone }}</a>
+                  </small>
                 </span>
                 <span class="d-flex flex-column flex-fill" v-if="client.email">
                   <small class="profile-mute">Correo electrónico</small>
-                  <small>{{ client.email }}</small>
+                  <small>
+                    <a :href="`mailto:${client.email}`">{{ client.email }}</a>
+                  </small>
                 </span>
               </div>
             </template>
@@ -126,6 +130,57 @@
             Archivos
           </span>
           <div class="box_general_2">
+            <!-- <template v-for="(user_file) in client.files">
+              <div>
+                {{ user_file.name }}
+              </div>
+            </template> -->
+            <a-upload-dragger name="file" :multiple="true" class="d-flex mb-3">
+              <p class="ant-upload-drag-icon">
+                <a-icon type="inbox" />
+              </p>
+              <p class="ant-upload-text">
+                Haga clic aquí o suelta tus archivos en esta área para empezar la carga
+              </p>
+              <p class="ant-upload-hint">
+                Soporte para carga múltiple de archivos. Estrictamente prohibido subir archivos con derechos de autor.
+              </p>
+            </a-upload-dragger>
+            <a-divider dashed></a-divider>
+            <a-table :columns="columns" :data-source="files" class="table-responsive files-table" rowKey="id" bordered :loading="loading_files">
+              <a slot="name" slot-scope="record" :href="record.url" target="_blank">
+                <small>{{ record.name }}</small>
+              </a>
+              <small slot="tags" slot-scope="record">
+                <a-tag v-for="tag in record.tags" :key="tag.id">
+                  {{ tag }}
+                </a-tag>
+              </small>
+              <span slot="size" slot-scope="record">
+                <small>{{ record.size | prettyBytes }}</small>
+              </span>
+              <small slot="last_date" slot-scope="record" class="text-right d-block">
+                <small v-if="record.updated_at">
+                  {{ record.updated_at | moment('dddd DD/MM/YYYY') }}<br>
+                  {{ record.updated_at | moment('hh:mm a') }}
+                </small>
+              </small>
+              <div slot="actions" slot-scope="record" >
+                <a-dropdown placement="bottomRight">
+                  <a-menu slot="overlay">
+                    <a-menu-item key="1" @click="openfile(record.id)">
+                      Ver
+                    </a-menu-item>
+                    <a-menu-item key="2" @click="deleteFile(record.id)">
+                      Borrar
+                    </a-menu-item>
+                  </a-menu>
+                  <a-button shape="circle" type="dashed" >
+                    <b-icon-three-dots-vertical></b-icon-three-dots-vertical>
+                  </a-button>
+                </a-dropdown>
+              </div>
+            </a-table>
           </div>
         </a-tab-pane>
       </a-tabs>
@@ -220,10 +275,22 @@
   import { getClient } from '@/api/user'
   import { mapGetters } from 'vuex'
 
+
+  const columns = [
+    { title: 'Nombre', key: 'name', scopedSlots: { customRender: 'name' } },
+    { title: 'Etiquetas', key: 'tags', scopedSlots: { customRender: 'tags' } },
+    { title: 'Tamaño', key: 'size', scopedSlots: { customRender: 'size' } },
+    { title: '', key: 'last_date', scopedSlots: { customRender: 'last_date' } },
+    { title: '', key: 'actions', scopedSlots: { customRender: 'actions' } }
+  ];
+
   export default {
     data() {
       return {
+        columns,
         client: false,
+        loading_files: false,
+        upload_files: false
       };
     },
     name: 'ProfilePatientsEdit',
@@ -237,6 +304,14 @@
         'settings',
         'getUser'
       ]),
+      files() {
+        return this.client.files
+      }
+    },
+    methods: {
+      openFileUpload() {
+        this.upload_files = true
+      }
     },
     mounted() {
       if (this.$route.params.id) {
@@ -256,6 +331,7 @@
       max-width: 180px;
       max-height: 180px;
       overflow: hidden;
+      border-radius: 6px;
       img {
         max-width: 100%;
       }
@@ -286,6 +362,11 @@
     }
     .btn .anticon {
       vertical-align: baseline;
+    }
+    .files-table {
+      a {
+        color: #639bbe
+      }
     }
     .ant-tabs-bar {
       background: #fff;

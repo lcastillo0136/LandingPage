@@ -1,7 +1,7 @@
 <template>
   <div class="box_general_2">
     <h4>Pacientes</h4>
-    <a-table :columns="columns" :data-source="clients" class="table-responsive" rowKey="id" bordered :loading="loading">
+    <a-table :columns="columns" :data-source="clients" class="table-responsive patients-table" rowKey="id" bordered :loading="loading">
       <a slot="name" slot-scope="record">{{ record.first_name }} {{ record.last_name }}</a>
       <small slot="contact" slot-scope="record">
         <a :href="`mailto:${record.email}`">{{ record.email }}</a><br>
@@ -95,3 +95,11 @@
     }
   }
 </script>
+
+<style lang="scss">
+  .patients-table {
+    a {
+      color: #639bbe
+    }
+  }
+</style>
