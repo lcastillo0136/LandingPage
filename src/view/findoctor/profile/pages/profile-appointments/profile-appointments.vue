@@ -254,16 +254,19 @@
                   </div>
                 </div>
               </template>
-              <template v-else-if="modal.data.order.ehr_id <= 0">
+              <template v-else-if="modal.data.ehr_id <= 0">
                 <b-button class="btn-warning" @click="openEHR" size="sm">
                   Iniciar consulta
                   <a-icon type="loading" v-if="searchEhrPatient" />
                   <b-icon-clipboard-plus class="ml-1" v-else></b-icon-clipboard-plus>
                 </b-button>
-               
               </template>
-              <template v-else-if="modal.data.order.ehr_id > 0">
-                <a-button>Ver consulta</a-button>
+              <template v-else-if="modal.data.ehr_id > 0">
+                <b-button class="btn-info" @click="openEHR" size="sm">
+                  Ver consulta
+                  <a-icon type="loading" v-if="searchEhrPatient" />
+                  <b-icon-box-arrow-right class="ml-1" v-else></b-icon-box-arrow-right>
+                </b-button>
               </template>
             </div>
           </div>
@@ -1216,7 +1219,9 @@
             params: {
               id: response.data.id,
               client: { ...response.data },
-              provider: this.getUser
+              provider: this.getUser,
+              appointment: this.modal.data,
+              ehr: this.modal.data.ehr
             }
           })
         }).catch((err) => {

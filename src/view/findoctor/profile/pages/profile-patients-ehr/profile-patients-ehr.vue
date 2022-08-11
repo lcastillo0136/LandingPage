@@ -9,47 +9,47 @@
         </b-button>
       </h4>
       <div class="profile-patient-ehr box_general_2">
-        <a-form-model ref="ehrform" :rules="rules" :model="client.last_medical_record">
+        <a-form-model ref="ehrform" :rules="rules" :model="client.last_medical_record" :disabled="disableAllFields">
           <div class="d-flex flex-row gap-2 mb-2">
             <a-form-model-item prop="height" label="Altura">
-              <a-input type="number" v-model="client.last_medical_record.height">
+              <a-input type="number" v-model="client.last_medical_record.height" :readOnly="disableAllFields">
                 <span slot="suffix">cm</span>
               </a-input>
             </a-form-model-item>
             <a-form-model-item prop="weight" label="Peso">
-              <a-input type="number" v-model="client.last_medical_record.weight">
+              <a-input type="number" v-model="client.last_medical_record.weight" :readOnly="disableAllFields">
                 <span slot="suffix">kg</span>
               </a-input>
             </a-form-model-item>
             <a-form-model-item prop="bmi" label="BMI">
-              <a-input type="number" v-model="client.last_medical_record.bmi" />
+              <a-input type="number" v-model="client.last_medical_record.bmi"  :readOnly="disableAllFields"/>
             </a-form-model-item>
             <a-form-model-item prop="temperature" label="Temperatura">
-              <a-input type="number" v-model="client.last_medical_record.temperature">
+              <a-input type="number" v-model="client.last_medical_record.temperature" :readOnly="disableAllFields">
                 <span slot="suffix">°</span>
               </a-input>
             </a-form-model-item>
           </div>
           <div class="d-flex flex-row gap-2 mb-2">
             <a-form-model-item prop="breathing_frequency" label="Frecuencia respiratoria">
-              <a-input type="number" v-model="client.last_medical_record.breathing_frequency">
+              <a-input type="number" v-model="client.last_medical_record.breathing_frequency" :readOnly="disableAllFields">
                 <span slot="suffix">imv</span>
               </a-input>
             </a-form-model-item>
             <a-form-model-item prop="blood_pressure" label="Presión arterial">
-              <a-input type="number" v-model="client.last_medical_record.blood_pressure">
+              <a-input type="number" v-model="client.last_medical_record.blood_pressure" :readOnly="disableAllFields">
                 <span slot="suffix">mmHg</span>
               </a-input>
             </a-form-model-item>
             <a-form-model-item prop="heart_rate" label="Ritmo cardiaco">
-              <a-input type="number" v-model="client.last_medical_record.heart_rate">
+              <a-input type="number" v-model="client.last_medical_record.heart_rate" :readOnly="disableAllFields">
                 <span slot="suffix">bpm</span>
               </a-input>
             </a-form-model-item>
           </div>
 
           <a-form-model-item prop="blood_type" label="Grupo sanguíneo">
-            <a-radio-group v-model="blood_type_letter">
+            <a-radio-group v-model="blood_type_letter" :disabled="disableAllFields">
               <a-radio-button value="A">
                 A
               </a-radio-button>
@@ -64,7 +64,7 @@
               </a-radio-button>
             </a-radio-group>
 
-            <a-radio-group v-model="blood_type_sign" class="ml-2">
+            <a-radio-group v-model="blood_type_sign" class="ml-2" :disabled="disableAllFields">
               <a-radio-button value="+">
                 +
               </a-radio-button>
@@ -76,23 +76,23 @@
           </a-form-model-item>
           <a-divider dashed></a-divider>
           <a-form-model-item prop="reason" label="Motivo / Malestar principal" >
-            <a-textarea :rows="3" v-model="client.last_medical_record.reason" :disabled="recording1" />
+            <a-textarea :rows="3" v-model="client.last_medical_record.reason" :readOnly="recording1 || disableAllFields" />
           </a-form-model-item>
-            <div class="d-flex flex-row-reverse" v-if="canRecord">
-              <template v-if="!recording1">
-                <a-button type="secondary" icon="audio" @click="toggleRecord1">
-                  Dictar
-                </a-button>
-              </template>
-              <template v-else>
-                <a-button type="danger" icon="pause-circle" @click="toggleRecord1">
-                  Escuchando
-                </a-button>
-              </template>
-            </div>
+          <div class="d-flex flex-row-reverse" v-if="canRecord && !disableAllFields">
+            <template v-if="!recording1">
+              <a-button type="secondary" icon="audio" @click="toggleRecord1">
+                Dictar
+              </a-button>
+            </template>
+            <template v-else>
+              <a-button type="danger" icon="pause-circle" @click="toggleRecord1">
+                Escuchando
+              </a-button>
+            </template>
+          </div>
           <a-form-model-item prop="comments" label="Comentarios">
-            <a-textarea :rows="2" type="text" v-model="client.last_medical_record.comments" :disabled="recording2" />
-            <div class="d-flex flex-row-reverse" v-if="canRecord">
+            <a-textarea :rows="2" type="text" v-model="client.last_medical_record.comments" :readOnly="recording2 || disableAllFields" />
+            <div class="d-flex flex-row-reverse" v-if="canRecord && !disableAllFields">
               <template v-if="!recording2">
                 <a-button type="secondary" icon="audio" @click="toggleRecord2">
                   Dictar
@@ -107,10 +107,19 @@
           </a-form-model-item>
         </a-form-model>
 
-        <a-button class=" mt-2" type="primary" @click="saveEHR" :loading="loading">
+        <a-button class=" mt-2" type="primary" @click="saveEHR" :loading="loading" v-if="!disableAllFields">
           <a-icon type="save" style="vertical-align: baseline;"></a-icon>
           Guardar
         </a-button>
+        <br>
+        <small v-if="disableAllFields" class="text-info">
+          <b-icon-exclamation-triangle></b-icon-exclamation-triangle>
+          Las consultas ya generadas no se pueden modificar
+        </small>
+        <br>
+        <small v-if="appointment" class="text-mute">
+          Consulta de la cita del {{ appointment.start_date | moment('dddd DD [de] MMMM [a las] hh:mm a') }}
+        </small>
       </div>
     </template>
   </div>
@@ -133,6 +142,7 @@
       return {
         client: false,
         provider: false,
+        appointment: false,
         blood_type_letter: 'A',
         blood_type_sign: '+' ,
         loading: false,
@@ -140,6 +150,7 @@
         recording2: false,
         field: 'reason',
         canRecord: !!SpeechRecognition,
+        disableAllFields: false,
         rules: {
           reason: [{ validator: (rule, value, callback) => {
             value = (`${value||''}`).trim()
@@ -233,6 +244,13 @@
               ...this.client.last_medical_record
             }, this.hasToken).then((response) => response.data).then(response => {
               this.loading = false
+              if (this.appointment && this.appointment.id > 0) {
+                let _appt = _.find(this.getUser.appointments_provider, { id: this.appointment.id })
+
+                _appt.ehr_id = response.data.id
+                _appt.ehr = { ...response.data }
+              }
+
               this.$router.back()
             }).catch((err) => {
               this.loading = false
@@ -267,6 +285,7 @@
       if (this.$route.params.client && this.$route.params.provider) {
         this.client = { ...this.$route.params.client }
         this.provider = { ...this.$route.params.provider }
+        this.appointment = { ...this.$route.params.appointment }
 
         if (!this.client.last_medical_record) {
           this.client.last_medical_record = {
@@ -292,6 +311,16 @@
           this.client.last_medical_record.reason = ''
           this.client.last_medical_record.user_id = this.provider.id
         }
+
+        if (this.appointment && this.appointment.id > 0) {
+          this.client.last_medical_record.appointment_id = this.appointment.id
+        }
+
+        if (this.$route.params.ehr && this.$route.params.ehr.id > 0) {
+          this.disableAllFields = true
+          this.client.last_medical_record = { ...this.$route.params.ehr }
+        }
+
         this.blood_type_sign = this.client.last_medical_record.blood_type.split('').pop() || '+'
         this.blood_type_letter = this.client.last_medical_record.blood_type.replace(/[\+\-]/g, '') || 'A'
 
@@ -308,7 +337,6 @@
             }
           }
         }
-
       } else {
         this.$router.back()
       }
