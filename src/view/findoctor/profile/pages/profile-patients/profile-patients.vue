@@ -84,6 +84,7 @@
           this.$router.push({ 
             name: 'profile-patients-ehr',
             params: { 
+              id: response.data.id,
               client: { ...response.data },
               provider: this.getUser
             }

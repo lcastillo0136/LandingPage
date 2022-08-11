@@ -255,10 +255,11 @@
                 </div>
               </template>
               <template v-else-if="modal.data.order.ehr_id <= 0">
-                <a-button class="btn-warning">
+                <b-button class="btn-warning" @click="openEHR" size="sm">
                   Iniciar consulta
-                  <b-icon-clipboard-plus class="ml-1"></b-icon-clipboard-plus>
-                </a-button>
+                  <a-icon type="loading" v-if="searchEhrPatient" />
+                  <b-icon-clipboard-plus class="ml-1" v-else></b-icon-clipboard-plus>
+                </b-button>
                
               </template>
               <template v-else-if="modal.data.order.ehr_id > 0">
@@ -442,7 +443,7 @@
   </div>
 </template>
 <script>
-  import { updateAppointment, deleteFile, createAppointment, deleteAppointment, postReview } from '@/api/user'
+  import { getClient, updateAppointment, deleteFile, createAppointment, deleteAppointment, postReview } from '@/api/user'
   import { postOrder } from '@/api/data'
   import { validFileType, validFileSize } from '@/libs/tools'
   import '@fullcalendar/core/vdom' // solves problem with Vite
@@ -600,7 +601,8 @@
             }
           }, trigger: 'change' }],
         },
-        phoneAlt: ''
+        phoneAlt: '',
+        searchEhrPatient: false
       }
     },
     watch: {
@@ -1204,6 +1206,22 @@
         }
 
         return postOrder(data)
+      },
+      openEHR () {
+        this.searchEhrPatient = true
+        getClient(this.modal.data.client.id, this.hasToken).then(response => response.data).then((response) => {
+          this.searchEhrPatient = false
+          this.$router.push({ 
+            name: 'profile-patients-ehr',
+            params: {
+              id: response.data.id,
+              client: { ...response.data },
+              provider: this.getUser
+            }
+          })
+        }).catch((err) => {
+          this.searchEhrPatient = false
+        })
       }
     },
     mounted() {
