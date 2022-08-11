@@ -130,22 +130,29 @@
             Archivos
           </span>
           <div class="box_general_2">
-            <!-- <template v-for="(user_file) in client.files">
-              <div>
-                {{ user_file.name }}
-              </div>
-            </template> -->
-            <a-upload-dragger name="file" :multiple="true" class="d-flex mb-3">
-              <p class="ant-upload-drag-icon">
-                <a-icon type="inbox" />
-              </p>
-              <p class="ant-upload-text">
-                Haga clic aquí o suelta tus archivos en esta área para empezar la carga
-              </p>
-              <p class="ant-upload-hint">
-                Soporte para carga múltiple de archivos. Estrictamente prohibido subir archivos con derechos de autor.
-              </p>
-            </a-upload-dragger>
+            <a-spin :spinning="uploadingprocess">
+              <a-upload-dragger ref="uploadDragger" name="file" :multiple="true" class="d-flex mb-3" :beforeUpload="uploadFile" :showUploadList="false" :customRequest="customRequest">
+                <p class="ant-upload-drag-icon">
+                  <a-icon type="inbox" />
+                </p>
+                <p class="ant-upload-text">
+                  Haga clic aquí o suelta tus archivos en esta área para empezar la carga
+                </p>
+                <p class="ant-upload-hint">
+                  Soporte para carga múltiple de archivos. Estrictamente prohibido subir archivos con derechos de autor.
+                </p>
+              </a-upload-dragger>
+            </a-spin>
+            <a-list bordered :data-source="uploadErrors" size="small" class="upload-errors-list" v-if="uploadErrors.length > 0">
+              <a-list-item slot="renderItem" slot-scope="item, index">
+                <a-icon :style="{ color: 'red' }" type="close-circle" /> {{ item }}
+              </a-list-item>
+            </a-list>
+            <a-list bordered :data-source="validFiles" size="small" class="upload-valid-list mt-2" v-if="validFiles.length > 0">
+              <a-list-item slot="renderItem" slot-scope="item, index">
+                <a-icon type="loading" /> {{ item.name }}
+              </a-list-item>
+            </a-list>
             <a-divider dashed></a-divider>
             <a-table :columns="columns" :data-source="files" class="table-responsive files-table" rowKey="id" bordered :loading="loading_files">
               <a slot="name" slot-scope="record" :href="record.url" target="_blank">
@@ -168,11 +175,13 @@
               <div slot="actions" slot-scope="record" >
                 <a-dropdown placement="bottomRight">
                   <a-menu slot="overlay">
-                    <a-menu-item key="1" @click="openfile(record.id)">
-                      Ver
+                    <a-menu-item key="1">
+                      <a :href="record.url" target="_blank">Ver</a>
                     </a-menu-item>
-                    <a-menu-item key="2" @click="deleteFile(record.id)">
-                      Borrar
+                    <a-menu-item key="2">
+                      <a-popconfirm title="¿Estás seguro de eliminar este archivo?" @confirm="() => deleteFile(record)">
+                        <a>Borrar</a>
+                      </a-popconfirm>
                     </a-menu-item>
                   </a-menu>
                   <a-button shape="circle" type="dashed" >
@@ -272,9 +281,13 @@
   </div>
 </template>
 <script>
-  import { getClient } from '@/api/user'
+  import { getClient, uploadFiles, deleteFile } from '@/api/user'
   import { mapGetters } from 'vuex'
 
+  import * as _ from 'lodash'
+
+  import config from '@/config'
+  const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 
   const columns = [
     { title: 'Nombre', key: 'name', scopedSlots: { customRender: 'name' } },
@@ -290,7 +303,11 @@
         columns,
         client: false,
         loading_files: false,
-        upload_files: false
+        upload_files: false,
+        uploadingprocess: false,
+        uploadErrors: [
+        ],
+        validFiles: []
       };
     },
     name: 'ProfilePatientsEdit',
@@ -306,11 +323,87 @@
       ]),
       files() {
         return this.client.files
+      },
+      uploadAction () {
+        return ``
+      },
+      uploadHeaders () {
+        return {
+          
+        }
       }
     },
     methods: {
       openFileUpload() {
         this.upload_files = true
+      },
+      uploadFile(file, fileList) {
+        if (this.validateFileType(file) && this.validateFileSize(file.size)) {
+          this.validFiles.push(file)
+        } else if (!this.validateFileType(file)) {
+          this.uploadErrors.push(`El archivo ${file.name} no es valido`);
+        } else if (!this.validateFileSize(file.size)) {
+          this.uploadErrors.push(`El archivo ${file.name} excede el tamaño máximo permitido (5MB)`);
+        } else {
+          this.uploadErrors.push(`El archivo ${file.name} no es valido`);
+        }
+
+        if (file == _.last(fileList)) {
+          this.uploadingprocess = true
+          this.loading_files = true
+          uploadFiles(this.client, this.hasToken, this.validFiles).then(response => response.data).then((response) => {
+            this.client.files = [...response.data].concat(this.client.files)
+            this.uploadingprocess = false
+            this.loading_files = false
+            this.validFiles = []
+          }).catch((err) => {
+            this.uploadingprocess = false
+            this.loading_files = false
+            this.validFiles = []
+          })
+
+          setTimeout(() => {
+            this.uploadErrors = []
+            this.uploadingprocess = false
+            this.loading_files = false
+          }, 10 * 1000)
+        }
+        return false;
+      },
+      changeUpload(file, fileList) {
+        
+      },
+      customRequest () {
+        
+      },
+      deleteFile(file) {
+        this.loading_files = true
+        deleteFile(this.client.id, file.hash_name, this.hasToken).then(r=>r.data).then(response => {
+          this.client.files = _.filter(this.client.files, (f) => f.id != file.id)
+          this.loading_files = false
+        }).catch(err => {
+          this.loading_files = false
+        })
+      },
+      validateFileType(file) {
+        const valid_extensions = ['.docx', '.jpg', '.jpng', '.png', '.pdf', '.doc', '.ppt', '.pptx', '.csv', '.xls', '.xlsx', '.png', '.gif', '.tiff', '.bmp', '.mp3', '.acc', '.wma', '.json', '.avi'];
+        const extension = file.name.slice((file.name.lastIndexOf(".") - 2 >>> 0) + 2);
+
+        return file.type.indexOf('application/pdf') != -1 || 
+          file.type.indexOf('application/msword') != -1 ||
+          file.type.indexOf('application/vnd.ms-powerpoint') != -1 ||
+          file.type.indexOf('application/vnd.ms-excel') != -1 ||
+          file.type.indexOf('application/vnd.openxmlformats-officedocument.presentationml.presentation') != -1 ||
+          file.type.indexOf('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') != -1 ||
+          file.type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') != -1 ||
+          file.type.indexOf('image/') != -1 ||
+          file.type.indexOf('audio/') != -1 ||
+          file.type.indexOf('video/') != -1 || 
+          file.type.indexOf('text/') != -1 ||
+          valid_extensions.includes(extension);
+      },
+      validateFileSize(size) {
+        return size <= 5242880;
       }
     },
     mounted() {
@@ -365,7 +458,12 @@
     }
     .files-table {
       a {
-        color: #639bbe
+        color: #639bbe;
+      }
+      .ant-pagination {
+        .anticon {
+          vertical-align: text-top;
+        }
       }
     }
     .ant-tabs-bar {
@@ -376,6 +474,36 @@
     .ant-tabs-ink-bar {
       bottom: auto;
       top: 0px;
+    }
+    .upload-errors-list {
+      border: 1px solid #ff8989;
+      color: #ff2020;
+      font-size: 12px;
+      .ant-list-item {
+        padding: 5px 8px;
+        border-bottom: 1px solid #ff8989;
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+      .anticon {
+        vertical-align: baseline;
+      }
+    }
+    .upload-valid-list {
+      border: 1px solid #388e3c;
+      color: #388e3c;
+      font-size: 12px;
+      .ant-list-item {
+        padding: 5px 8px;
+        border-bottom: 1px solid #388e3c;
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+      .anticon {
+        vertical-align: baseline;
+      }
     }
     *::after {
       display: none; 

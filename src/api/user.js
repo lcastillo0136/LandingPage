@@ -145,6 +145,24 @@ export const deleteFile = (user, hash, token) => {
   })
 }
 
+export const uploadFiles = (client, token, postFiles = null) => {
+  const formData = new FormData()
+  if (postFiles !== null) {
+    postFiles.forEach(f => {
+      formData.append('files[]', f, f.name);
+    })
+  }
+  
+  return axios.request({
+    url: `clients/${client.id}/archivo`,
+    data: formData,
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'post'
+  })
+}
+
 export const deleteAppointment = (appointment, token) => {
   return axios.request({
     url: `appointments/${appointment.id}`,
@@ -294,3 +312,4 @@ export const postEHR = (medical_record, token, postFiles = null) => {
     method: 'post'
   })
 }
+
