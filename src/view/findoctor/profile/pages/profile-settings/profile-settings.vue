@@ -1,5 +1,5 @@
 <template>
-  <div v-if="getUser.id">
+  <div v-if="getUser.id" class=" mt-3 mt-lg-0">
     <!-- <h4 class="add_bottom_30">Configuraciones</h4> -->
     <div class="box_general_2 settings-container">
       <h4>Configuración Calendario</h4>
@@ -76,11 +76,11 @@
           <div class="form-group">
             <label>Máximo de días</label>
             <a-row>
-              <a-col :span="17">
+              <a-col :lg="17" :xs="24">
                 <a-slider :default-value="7" :min="1" :max="31" v-model="max_days" />
               </a-col>
-              <a-col :span="4">
-                <a-input-number v-model="max_days" :min="1" :max="31" style="marginLeft: 16px" />
+              <a-col :lg="4" :xs="24">
+                <a-input-number v-model="max_days" :min="1" :max="31" class="ml-md-3" />
               </a-col>
             </a-row>
           </div>
@@ -96,11 +96,11 @@
           <div class="form-group">
             <label>Cantidad de días</label>
             <a-row>
-              <a-col :span="17">
+              <a-col :lg="17" :xs="24">
                 <a-slider :default-value="7" :min="0" :max="7" v-model="next_day" />
               </a-col>
-              <a-col :span="4">
-                <a-input-number v-model="next_day" :min="0" :max="7" style="marginLeft: 16px" />
+              <a-col :lg="4" :xs="24">
+                <a-input-number v-model="next_day" :min="0" :max="7" class="ml-md-3" />
               </a-col>
             </a-row>
           </div>
@@ -113,7 +113,7 @@
             <div style="background-color: #bce8f14d; width: 20px; height: 20px;display: inline-block;margin-right: 5px;vertical-align: middle;border: solid 1px #bce8f1;"></div>Días disponibles para seleccionar cita
           </span>
         </div>
-        <div class="col-md-6 col-sm-6" v-if="!flag">
+        <div class="col-md-6 col-sm-6 mt-3 mt-lg-0" v-if="!flag">
           <FullCalendar :options="calendarOptions" ref="fullCalendar" />
         </div>
       </div>
@@ -124,21 +124,35 @@
 
       <a-button icon="plus" @click="e => editRecord({})" style="margin-bottom: 10px;">Agregar servicio</a-button>
 
-      <a-table :columns="columns_services" :data-source="user.services" :pagination="false" class="add_bottom_30" rowKey="id" bordered :row-selection="{ selectedRowKeys: [ editingKey.id ], hideDefaultSelections: true, columnWidth: 0 }">
-        
+      <a-table :columns="columns_services" :data-source="user.services" :pagination="false" class="add_bottom_30 table-responsive" rowKey="id" bordered>
+        <template slot="name" slot-scope="record, index">
+          {{ record.name }}
+          <div class="d-flex flex-column gap-1 d-md-none mt-2">
+            <a-divider dashed class="my-2"></a-divider>
+            <a-tag class="mt-1">
+              {{ record.price | currency(false) }}
+            </a-tag>
+            <a-tag class="mt-1" color="blue">
+              <a-icon type="clock-circle" style="vertical-align: baseline;" class="mr-1" />{{ record.duration }}
+            </a-tag>
+            <a-tag :color="record.active ? 'green' : 'red'" class="mt-1">
+              {{ record.active ? 'Activo' : 'Inactivo' }}
+            </a-tag>
+          </div>
+        </template>
         <template slot="price" slot-scope="record">
           <span>{{ record.price | currency }}</span>
         </template>
         <span slot="active" slot-scope="record">
           <a-tag :color="record.active ? 'green' : 'red'">
-            {{ record.active ? 'Activo' : 'Desactivo' }}
+            {{ record.active ? 'Activo' : 'Inactivo' }}
           </a-tag>
         </span>
         <template slot="duration" slot-scope="record">
           <span>{{ record.duration }}</span>
         </template>
         <template slot="operation" slot-scope="text, record, index">
-          <div class="editable-row-operations">
+          <div class="editable-row-operations d-none d-md-inline">
             <span>
               <a-tooltip>
                 <template slot="title">
@@ -163,6 +177,33 @@
               </a-popconfirm>
             </span>
           </div>
+          <div class="d-block d-md-none">
+            <a-tooltip>
+              <template slot="title">
+                Editar registro
+              </template>
+              <a-button  size="small" :disabled="editingKey !== ''" @click="() => editRecord(record)">
+                <b-icon-pencil-square class="mr-1"></b-icon-pencil-square> <small>Editar</small>
+              </a-button>
+            </a-tooltip>
+            <a-popconfirm
+              title="¿Estás seguro de eliminar este registro?"
+              ok-text="Si"
+              cancel-text="No"
+              @confirm="() => deleteRecord(record)"
+              @cancel="() => cancelRecord({})"
+            >
+              <a-tooltip>
+                <template slot="title">
+                  Borrar registro
+                </template>
+                <a-button size="small" :disabled="editingKey !== ''" class="mt-1" type="danger">
+                  <a-icon type="delete" style="vertical-align: baseline;"/> <small>Borrar</small>
+                </a-button>
+                
+              </a-tooltip>
+            </a-popconfirm>
+          </div>
         </template>
       </a-table>
 
@@ -181,7 +222,9 @@
               <div class="form-group">
                 <label>Precio</label>
                 <a-form-model-item prop="price">
-                  <a-input v-model="editPrice" @keyup="e => currencyFormat(editingKey)" @keypress="preventNumericInput($event)" autocomplete="chrome-off" />
+                  <a-input v-model="editPrice" @keyup="e => currencyFormat(editingKey)" @keypress="preventNumericInput($event)" autocomplete="chrome-off">
+                    <b-icon-currency-dollar slot="prefix" style="margin-top: -2px;"></b-icon-currency-dollar>
+                  </a-input>
                 </a-form-model-item>
               </div>
             </div>
@@ -233,20 +276,23 @@
   
   const columns_services = [{
     title: 'Nombre',
-    dataIndex: 'name',
+    scopedSlots: { customRender: 'name' } ,
     key: 'name',
   }, {
     title: 'Precio',
     scopedSlots: { customRender: 'price' } ,
-    key: 'price',
+    key: 'price', 
+    class: 'd-none d-md-table-cell'
   }, {
     title: 'Duración',
     scopedSlots: { customRender: 'duration' } ,
     key: 'duration',
+    class: 'd-none d-md-table-cell'
   }, {
     title: 'Estatus',
     scopedSlots: { customRender: 'active' } ,
     key: 'active',
+    class: 'd-none d-md-table-cell'
   }, {
     title: '',
     dataIndex: 'operation',

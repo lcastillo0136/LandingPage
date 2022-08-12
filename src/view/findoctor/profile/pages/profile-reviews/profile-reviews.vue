@@ -1,5 +1,5 @@
 <template>
-  <div class="box_general_2 reviews-container">
+  <div class="box_general_2 reviews-container mt-3 mt-lg-0">
     <h4>Reseñas</h4>
 
     <a-list item-layout="vertical" size="large" :data-source="reviews" :split="false">
@@ -216,6 +216,25 @@
       }
       &.disabled {
         opacity: 0.4;
+      }
+    }
+
+    @media (max-width: 426px) {
+      &.box_general_2, .box_general_2 {
+        padding: 16px;
+      }
+
+      .ant-list-item {
+        .ant-list-item-meta-title {
+          
+        }
+
+        .ant-list-item-extra {
+          position: relative;
+          top: inherit;
+          right: inherit;
+          margin: 0;
+        }
       }
     }
   }

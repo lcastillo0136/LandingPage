@@ -1,6 +1,24 @@
 <template>
-  <div class="box_general_2 add_bottom_45">
-    <FullCalendar :options="calendarOptions" ref="fullCalendar"  />
+  <div class="box_general_2 add_bottom_45 mt-3 mt-md-0 calendar-page">
+    <FullCalendar :options="calendarOptions" ref="fullCalendar" class="d-none d-md-inline"  />
+    <a-list class="d-md-none"  item-layout="horizontal" :data-source="events" :pagination="pagination" ref="Apptlist">
+      <a-list-item slot="renderItem" slot-scope="item, index" @click="openEvent({ event: item })">
+        <a-list-item-meta>
+          <template v-if="item.extendedProps.client">
+            <router-link slot="avatar" :to="{ name: 'profile-patients-edit', params: { id: item.extendedProps.client.id } }">
+              <a-avatar :src="item.extendedProps.client.avatar" />
+            </router-link>
+            <span slot="title">
+              {{ item.extendedProps.client.title }} {{ item.extendedProps.client.first_name }} {{ item.extendedProps.client.last_name }}
+            </span>
+          </template>
+          <small slot="description">
+            {{ item.start | moment('hh:mm a') }} - {{ item.end | moment('hh:mm a') }}<br>
+            {{ item.start | moment('DD/MM/YYYY') }}
+          </small>
+        </a-list-item-meta>
+      </a-list-item>
+    </a-list>
     <a-modal :visible="modal.open" :width="900" @cancel="handleCancel">
       <div v-if="modal.data" slot="title">Detalles de la cita</div>
       <div v-if="modal.data">
@@ -193,7 +211,7 @@
                 </div>
                 <br>
                 <span>Entidad emisora</span>
-                <div>
+                <div class="d-flex d-md-block flex-row justify-content-between">
                   <strong>
                     {{ modal.data.order.payment_orders.metadata_object.account_type }} 
                     <small>- {{ modal.data.order.payment_orders.metadata_object.brand }}</small>
@@ -204,7 +222,7 @@
               <template v-else-if="modal.data.order.method.id == 3">
                 <br>
                 <span>Método de pago</span>
-                <div>
+                <div class="d-flex d-md-block flex-row justify-content-between">
                   <strong>{{ modal.data.order.method.name }}</strong>
                   <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
                   <a-tag color="red" v-else>Pago pendiente</a-tag>
@@ -255,14 +273,14 @@
                 </div>
               </template>
               <template v-else-if="modal.data.ehr_id <= 0">
-                <b-button class="btn-warning" @click="openEHR" size="sm">
+                <b-button class="btn-warning mt-3" @click="openEHR" size="sm">
                   Iniciar consulta
                   <a-icon type="loading" v-if="searchEhrPatient" />
                   <b-icon-clipboard-plus class="ml-1" v-else></b-icon-clipboard-plus>
                 </b-button>
               </template>
               <template v-else-if="modal.data.ehr_id > 0">
-                <b-button class="btn-info" @click="openEHR" size="sm">
+                <b-button class="btn-info mt-3" @click="openEHR" size="sm">
                   Ver consulta
                   <a-icon type="loading" v-if="searchEhrPatient" />
                   <b-icon-box-arrow-right class="ml-1" v-else></b-icon-box-arrow-right>
@@ -279,7 +297,7 @@
               <a-icon type="inbox" />
             </p>
             <p class="ant-upload-text">
-              Haga clic aquí o suelta tus archivos en esta área para empezar la carga
+              Haga clic aquí <span class="d-none d-md-inline">o suelta tus archivos en esta área para empezar la carga</span>
             </p>
             <p class="ant-upload-hint">
               Soporte para carga múltiple de archivos. Estrictamente prohibido subir archivos con derechos de autor
@@ -604,6 +622,12 @@
             }
           }, trigger: 'change' }],
         },
+        pagination: {
+          onChange: page => {
+            this.$refs.Apptlist.$el.scrollIntoView({ behavior: "smooth" })
+          },
+          pageSize: 10,
+        },
         phoneAlt: '',
         searchEhrPatient: false
       }
@@ -648,7 +672,7 @@
           if (this.user.role.is_provider) {
             return this.user.appointments_provider.map(a => Object({
               id: a.id,
-              title: ((a.client && `Cliente: ${a.client.first_name} ${a.client.last_name}`) || a.notes || 'Sin informacion') + ((a.item && a.item.name) || ''), 
+              title: ((a.client && `Cliente: ${a.client.first_name} ${a.client.last_name} `) || a.notes || 'Sin informacion') + ((a.item && a.item.name) || ''), 
               start: a.start_date, 
               end: a.end_date, 
               editable: true,
@@ -1263,5 +1287,15 @@
   }
   .ant-modal {
     max-width: 95%;
+    .ant-modal-body {
+    }
+      *::after {
+        display: none; 
+      }
+  }
+  .calendar-page {
+    *::after {
+      display: none; 
+    }
   }
 </style>

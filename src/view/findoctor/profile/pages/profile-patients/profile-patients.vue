@@ -1,8 +1,24 @@
 <template>
-  <div class="box_general_2">
+  <div class="box_general_2 mt-3 mt-md-0 ">
     <h4>Pacientes</h4>
     <a-table :columns="columns" :data-source="clients" class="table-responsive patients-table" rowKey="id" bordered :loading="loading">
-      <a slot="name" slot-scope="record">{{ record.first_name }} {{ record.last_name }}</a>
+      <div slot="name" slot-scope="record" >
+        <a>
+          {{ record.first_name }} {{ record.last_name }}
+        </a>
+        <div class="d-flex flex-column gap-1 d-md-none mt-2">
+          <a :href="`mailto:${record.email}`" style="white-space: pre-wrap;max-width: 120px;" class="small">
+            {{ record.email }}
+          </a>
+          <a :href="`tel:${record.phone}`" style="white-space: pre-wrap;max-width: 120px;" class="mt-1 small">
+            {{ record.phone | phone }}
+          </a>
+          <a-tag v-if="record.next_appointment">
+            {{ record.next_appointment.start_date | moment('ddd DD/MM/YYYY') }}<br>
+            {{ record.next_appointment.start_date | moment('hh:mm a') }}
+          </a-tag>
+        </div>
+      </div>
       <small slot="contact" slot-scope="record">
         <a :href="`mailto:${record.email}`">{{ record.email }}</a><br>
         <a :href="`tel:${record.phone}`">{{ record.phone | phone }}</a>
@@ -40,8 +56,8 @@
 
   const columns = [
     { title: 'Nombre', key: 'name', scopedSlots: { customRender: 'name' } },
-    { title: 'Contacto', key: 'email', scopedSlots: { customRender: 'contact' } },
-    { title: 'Prox. Cita', key: 'appointments', scopedSlots: { customRender: 'appointments' } },
+    { title: 'Contacto', key: 'email', scopedSlots: { customRender: 'contact' }, class: 'd-none d-md-table-cell' },
+    { title: 'Prox. Cita', key: 'appointments', scopedSlots: { customRender: 'appointments' }, class: 'd-none d-md-table-cell' },
     { title: '', key: 'actions', scopedSlots: { customRender: 'actions' } }
   ];
 

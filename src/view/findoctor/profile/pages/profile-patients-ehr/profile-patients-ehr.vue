@@ -10,7 +10,7 @@
       </h4>
       <div class="profile-patient-ehr box_general_2">
         <a-form-model ref="ehrform" :rules="rules" :model="client.last_medical_record" :disabled="disableAllFields">
-          <div class="d-flex flex-row gap-2 mb-2">
+          <div class="d-flex flex-md-row gap-2 mb-2 flex-column">
             <a-form-model-item prop="height" label="Altura">
               <a-input type="number" v-model="client.last_medical_record.height" :readOnly="disableAllFields">
                 <span slot="suffix">cm</span>
@@ -30,7 +30,7 @@
               </a-input>
             </a-form-model-item>
           </div>
-          <div class="d-flex flex-row gap-2 mb-2">
+          <div class="d-flex flex-md-row gap-2 mb-2 flex-column">
             <a-form-model-item prop="breathing_frequency" label="Frecuencia respiratoria">
               <a-input type="number" v-model="client.last_medical_record.breathing_frequency" :readOnly="disableAllFields">
                 <span slot="suffix">imv</span>
@@ -64,7 +64,7 @@
               </a-radio-button>
             </a-radio-group>
 
-            <a-radio-group v-model="blood_type_sign" class="ml-2" :disabled="disableAllFields">
+            <a-radio-group v-model="blood_type_sign" class="ml-md-2" :disabled="disableAllFields">
               <a-radio-button value="+">
                 +
               </a-radio-button>
@@ -72,20 +72,22 @@
                 -
               </a-radio-button>
             </a-radio-group>
-            <b class="ml-3">{{ blood_type }}</b>
+            <b class="ml-3 d-block d-md-inline">{{ blood_type }}</b>
           </a-form-model-item>
           <a-divider dashed></a-divider>
           <a-form-model-item prop="reason" label="Motivo / Malestar principal" >
-            <a-textarea :rows="3" v-model="client.last_medical_record.reason" :readOnly="recording1 || disableAllFields" />
+            <a-textarea :rows="3" v-model="client.last_medical_record.reason" :readOnly="recording1 || disableAllFields">
+              <a-icon slot="prefix" type="user" />
+            </a-textarea>
           </a-form-model-item>
           <div class="d-flex flex-row-reverse" v-if="canRecord && !disableAllFields">
             <template v-if="!recording1">
-              <a-button type="secondary" icon="audio" @click="toggleRecord1">
+              <a-button type="secondary" icon="audio" @click="toggleRecord1" class="flex-fill flex-sm-grow-0 mb-4 mb-md-0">
                 Dictar
               </a-button>
             </template>
             <template v-else>
-              <a-button type="danger" icon="pause-circle" @click="toggleRecord1">
+              <a-button type="danger" icon="pause-circle" @click="toggleRecord1" class="flex-fill flex-sm-grow-0 mb-4 mb-md-0">
                 Escuchando
               </a-button>
             </template>
@@ -94,12 +96,12 @@
             <a-textarea :rows="2" type="text" v-model="client.last_medical_record.comments" :readOnly="recording2 || disableAllFields" />
             <div class="d-flex flex-row-reverse" v-if="canRecord && !disableAllFields">
               <template v-if="!recording2">
-                <a-button type="secondary" icon="audio" @click="toggleRecord2">
+                <a-button type="secondary" icon="audio" @click="toggleRecord2" class="flex-fill flex-sm-grow-0 mb-4 mb-md-0">
                   Dictar
                 </a-button>
               </template>
               <template v-else>
-                <a-button type="danger" icon="pause-circle" @click="toggleRecord2">
+                <a-button type="danger" icon="pause-circle" @click="toggleRecord2" class="flex-fill flex-sm-grow-0 mb-4 mb-md-0">
                   Escuchando
                 </a-button>
               </template>
@@ -107,7 +109,7 @@
           </a-form-model-item>
         </a-form-model>
 
-        <a-button class=" mt-2" type="primary" @click="saveEHR" :loading="loading" v-if="!disableAllFields">
+        <a-button class="flex-fill flex-sm-grow-0 mt-2" type="primary" @click="saveEHR" :loading="loading" v-if="!disableAllFields">
           <a-icon type="save" style="vertical-align: baseline;"></a-icon>
           Guardar
         </a-button>
@@ -117,7 +119,7 @@
           Las consultas ya generadas no se pueden modificar
         </small>
         <br>
-        <small v-if="appointment" class="text-mute">
+        <small v-if="appointment && appointment.id > 0" class="text-mute">
           Consulta de la cita del {{ appointment.start_date | moment('dddd DD [de] MMMM [a las] hh:mm a') }}
         </small>
       </div>

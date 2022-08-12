@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div class="mt-3 mt-lg-0">
     <template v-if="client">
       <h4 class="mb-3">
         Paciente: {{ client.full_name }} 
-        <b-button class="float-right ml-2" :to="{ name: 'profile-patients' }" variant="outline-secondary" size="sm">
+        <b-button class="float-md-right mt-2 mt-md-0 ml-md-2 d-block d-md-inline" :to="{ name: 'profile-patients' }" variant="outline-secondary" size="sm">
           <a-icon type="arrow-left" style="vertical-align: baseline;"></a-icon>
           Volver
         </b-button>
       </h4>
       <div class="profile-patient-edit box_general_2">
-        <div class="d-flex flex-row gap-2">
+        <div class="d-flex flex-column gap-2 flex-md-row">
           <div class="profile-picture">
             <img :src="client.avatar" />
           </div>
@@ -36,7 +36,7 @@
             </small>
             <template v-if="client.phone || client.email">
               <a-divider dashed class="my-3"></a-divider>
-              <div class="d-flex flex-row">
+              <div class="d-flex flex-column flex-md-row">
                 <span class="d-flex flex-column flex-fill" v-if="client.phone">
                   <small class="profile-mute">Teléfono</small>
                   <small>
@@ -65,35 +65,35 @@
         <template v-if="client.last_medical_record">
           <a-divider dashed class="my-3"></a-divider>
           <div class="row">
-            <span class="col-md-3 d-flex flex-column mb-2">
+            <span class="col-6 col-md-3 d-flex flex-column mb-2">
               <small class="profile-mute">Altura</small>
               <small>{{ client.last_medical_record.height }}cm</small>
             </span>
-            <span class="col-md-3 d-flex flex-column">
+            <span class="col-6 col-md-3 d-flex flex-column">
               <small class="profile-mute">Peso</small>
               <small>{{ client.last_medical_record.weight }}kg</small>
             </span>
-            <span class="col-md-3 d-flex flex-column">
+            <span class="col-6 col-md-3 d-flex flex-column">
               <small class="profile-mute">Masa corporal (BMI)</small>
               <small>{{ client.last_medical_record.bmi }}</small>
             </span>
-            <span class="col-md-3 d-flex flex-column">
+            <span class="col-6 col-md-3 d-flex flex-column">
               <small class="profile-mute">Temperatura</small>
               <small>{{ client.last_medical_record.temperature }}°</small>
             </span>
-            <span class="col-md-3 d-flex flex-column">
+            <span class="col-6 col-md-3 d-flex flex-column">
               <small class="profile-mute">Frecuencia respiratoria</small>
               <small>{{ client.last_medical_record.breathing_frequency }}</small>
             </span>
-            <span class="col-md-3 d-flex flex-column">
+            <span class="col-6 col-md-3 d-flex flex-column">
               <small class="profile-mute">Presión arterial</small>
               <small>{{ client.last_medical_record.blood_pressure }}</small>
             </span>
-            <span class="col-md-3 d-flex flex-column">
+            <span class="col-6 col-md-3 d-flex flex-column">
               <small class="profile-mute">Ritmo cardiaco</small>
               <small>{{ client.last_medical_record.heart_rate }}</small>
             </span>
-            <span class="col-md-3 d-flex flex-column">
+            <span class="col-6 col-md-3 d-flex flex-column">
               <small class="profile-mute">Grupo sanguíneo</small>
               <small>{{ client.last_medical_record.blood_type }}</small>
             </span>
@@ -136,7 +136,7 @@
                   <a-icon type="inbox" />
                 </p>
                 <p class="ant-upload-text">
-                  Haga clic aquí o suelta tus archivos en esta área para empezar la carga
+                  Haga clic aquí <span class="d-none d-md-inline">o suelta tus archivos en esta área para empezar la carga</span>
                 </p>
                 <p class="ant-upload-hint">
                   Soporte para carga múltiple de archivos. Estrictamente prohibido subir archivos con derechos de autor.
@@ -155,10 +155,19 @@
             </a-list>
             <a-divider dashed></a-divider>
             <a-table :columns="columns" :data-source="files" class="table-responsive files-table" rowKey="id" bordered :loading="loading_files">
-              <a slot="name" slot-scope="record" :href="record.url" target="_blank">
-                <small>{{ record.name }}</small>
-              </a>
-              <small slot="tags" slot-scope="record">
+              <div slot="name" slot-scope="record" >
+                <a :href="record.url" target="_blank">
+                  <small>{{ record.name }}</small>
+                </a>
+                <div class="d-flex flex-column gap-1 d-md-none mt-2">
+                  <a-tag>{{ record.size | prettyBytes }}</a-tag>
+                  <a-tag v-if="record.updated_at">
+                    {{ record.updated_at | moment('ddd DD/MM/YYYY') }}<br>
+                    {{ record.updated_at | moment('hh:mm a') }}
+                  </a-tag>
+                </div>
+              </div>
+              <small slot="tags" slot-scope="record" class="hidden visible-md">
                 <a-tag v-for="tag in record.tags" :key="tag.id">
                   {{ tag }}
                 </a-tag>
@@ -291,9 +300,9 @@
 
   const columns = [
     { title: 'Nombre', key: 'name', scopedSlots: { customRender: 'name' } },
-    { title: 'Etiquetas', key: 'tags', scopedSlots: { customRender: 'tags' } },
-    { title: 'Tamaño', key: 'size', scopedSlots: { customRender: 'size' } },
-    { title: '', key: 'last_date', scopedSlots: { customRender: 'last_date' } },
+    { title: 'Etiquetas', key: 'tags', scopedSlots: { customRender: 'tags' }, class: 'd-none d-md-table-cell' },
+    { title: 'Tamaño', key: 'size', scopedSlots: { customRender: 'size' }, class: 'd-none d-md-table-cell' },
+    { title: '', key: 'last_date', scopedSlots: { customRender: 'last_date' }, class: 'd-none d-md-table-cell' },
     { title: '', key: 'actions', scopedSlots: { customRender: 'actions' } }
   ];
 
@@ -507,6 +516,21 @@
     }
     *::after {
       display: none; 
+    }
+    a {
+      color: #007bff;
+    }
+    @media (max-width: 426px) {
+      &.box_general_2, .box_general_2 {
+        padding: 16px;
+      }
+      .profile-picture {
+        max-width: 80%;
+        max-height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 16px;
+      }
     }
   }
 </style>
