@@ -256,6 +256,11 @@ export default [
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-files')
           },
           {
+            path: 'patient-ehr.html',
+            name: 'profile-ehr',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-ehr')
+          },
+          {
             path: 'appointments.html',
             name: 'profile-appointments',
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-appointments')

@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="mt-3 mt-lg-0">
     <template v-if="client.last_medical_record">
       <h4 class="mb-3">
         Consulta medica para {{ client.full_name }}
-        <b-button class="float-right ml-2" @click="$router.back()" variant="outline-secondary" size="sm">
+        <b-button class="float-md-right mt-2 mt-md-0 ml-md-2 d-block d-md-inline" @click="$router.back()" variant="outline-secondary" size="sm">
           <a-icon type="arrow-left" style="vertical-align: baseline;"></a-icon>
           Volver
         </b-button>
@@ -268,7 +268,11 @@
         this.field = 'reason'
         this.recording1 = !this.recording1
         if (this.recording1) {
-          recognition.start()
+          try {
+            recognition.start()
+          } catch (err) {
+            recognition.stop()
+          }
         } else {
           recognition.stop()
         }
@@ -277,7 +281,11 @@
         this.field = 'comment'
         this.recording2 = !this.recording2
         if (this.recording2) {
-          recognition.start()
+          try {
+            recognition.start()
+          } catch (err) {
+            recognition.stop()
+          }
         } else {
           recognition.stop()
         }

@@ -104,11 +104,11 @@
         <a-tab-pane key="1">
           <span slot="tab">
             <i class="bi bi-clipboard2-pulse"></i>
-            Historial Medico
+            Historial Médico
           </span>
           <div class="box_general_2">
             <div>
-              <b-button :to="{ name: 'profile-patients-ehr', params: { client, provider: getUser } }" variant="primary" size="sm">
+              <b-button :to="{ name: 'profile-patients-ehr', params: { client, provider: getUser } }" variant="primary" size="sm" class="text-white">
                 <a-icon type="plus" style="vertical-align: baseline;"></a-icon>
                 Agregar consulta
               </b-button>

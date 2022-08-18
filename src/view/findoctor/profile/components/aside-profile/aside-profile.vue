@@ -83,12 +83,18 @@
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li>
-      <!-- <li>
+      <li v-if="!isProvider">
         <router-link :to="{ name: 'profile-files' }">
           <span>Archivos</span>
           <i class="arrow_carrot-right"></i>
         </router-link>
-      </li> -->
+      </li>
+      <li v-if="!isProvider">
+        <router-link :to="{ name: 'profile-ehr' }">
+          <span>Historial Médico</span>
+          <i class="arrow_carrot-right"></i>
+        </router-link>
+      </li>
       <li v-if="isProvider">
         <router-link :to="{ name: 'profile-reviews' }">
           <span>Reseñas</span>
