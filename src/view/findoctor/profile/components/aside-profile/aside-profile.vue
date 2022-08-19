@@ -54,6 +54,21 @@
       </small>
     </template>
     <h1 v-if="user && user.first_name">{{ user.first_name }}</h1>
+    <div v-if="isProvider" class="pb-3">
+      <template v-if="active_account">
+        <a-tag color="green">
+          Perfil activo 
+        </a-tag>
+      </template>
+      <template v-else>
+        <a-tag color="red">
+          Perfil desactivado
+        </a-tag>
+        <small>
+          <router-link :to="{ name: 'profile-payment' }">Ir a pagar</router-link>
+        </small>
+      </template>
+    </div>
     <!-- <ul class="contacts">
       <li><h6>Dirección</h6>{{ getUser.address.street }} {{ getUser.address.suburb }}, {{ getUser.address.city}}</li>
       <li v-if="getUser.phone"><h6>Teléfono</h6><a :href="'tel:' + getUser.phone ">{{ getUser.phone | phone }}</a></li>
@@ -108,6 +123,16 @@
         </router-link>
       </li>
     </ul>
+    <template v-if="isProvider && active_account">
+      <b class=" d-block">
+        Perfil activo hasta el <br>
+        {{ user.active_account | moment('dddd DD, MMM YYYY hh:mm a') }}
+      </b>
+      <a-divider></a-divider>
+      <b>
+        Quedan {{ daysRemaining }} dias
+      </b>
+    </template>
   </div>
 </template>
 <script>
@@ -180,6 +205,12 @@
       },
       appImage () {
         return getServerFile('public/company/company_logo.png')
+      },
+      active_account() {
+        return this.user.active_account && this.$moment.utc(this.user.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.user.active_account))
+      },
+      daysRemaining() {
+        return (this.active_account ? this.$moment.utc(this.user.active_account).diff(this.$moment(), 'days') : 0)
       }
     },
     methods: {

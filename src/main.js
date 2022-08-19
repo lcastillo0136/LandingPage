@@ -34,6 +34,7 @@ import 'ant-design-vue/lib/drawer/style/index.css';
 import 'ant-design-vue/lib/menu/style/index.css';
 import 'ant-design-vue/lib/tabs/style/index.css';
 import 'ant-design-vue/lib/tooltip/style/index.css';
+import 'ant-design-vue/lib/modal/style/index.css';
 import '@/assets/css/ant-design-drawer.css'
 import '@/assets/css/ant-design-menu.css'
 import 'leaflet/dist/leaflet.css';

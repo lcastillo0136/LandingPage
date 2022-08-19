@@ -66,7 +66,7 @@
             {{ record.updated_at | moment('hh:mm a') }}
           </small>
         </small>
-        <div slot="actions" slot-scope="record" >
+        <div slot="actions" slot-scope="record" class="text-center">
           <a-dropdown placement="bottomRight">
             <a-menu slot="overlay">
               <a-menu-item key="1">

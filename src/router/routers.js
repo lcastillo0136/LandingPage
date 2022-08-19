@@ -289,6 +289,11 @@ export default [
             path: 'reviews.html',
             name: 'profile-reviews',
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-reviews')
+          },
+          {
+            path: 'payment.html',
+            name: 'profile-payment',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-payment')
           }
         ]
       }, {
