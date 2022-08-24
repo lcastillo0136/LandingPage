@@ -1,6 +1,11 @@
 <template>
   <div class="box_general_2 mt-3 mt-md-0 ">
-    <h4>Pacientes</h4>
+    <h4>
+      Pacientes
+    </h4>
+    <small v-if="!active_account" class="text-danger mb-1 d-block">
+      * Obten todos los beneficios, como historial de consultas, activando tu cuenta <router-link :to="{ name: 'profile-payment' }" class="btn-link focus">aqui</router-link>.
+    </small>
     <a-table :columns="columns" :data-source="clients" class="table-responsive patients-table" rowKey="id" bordered :loading="loading">
       <div slot="name" slot-scope="record" >
         <a>
@@ -38,7 +43,7 @@
             <a-menu-item key="1" @click="viewProfile(record.id)">
               Ver detalles
             </a-menu-item>
-            <a-menu-item key="2" @click="ehrProfile(record.id)">
+            <a-menu-item key="2" @click="ehrProfile(record.id)" :disabled="!active_account">
               Iniciar Consulta
             </a-menu-item>
           </a-menu>
@@ -84,6 +89,15 @@
       ]),
       clients() {
         return this.getUser.clients
+      },
+      isProvider() {
+        return this.getUser.role && this.getUser.role.is_provider
+      },
+      isClient() {
+        return this.getUser.role && this.getUser.role.is_client
+      },
+      active_account() {
+        return this.getUser.active_account && this.$moment.utc(this.getUser.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.getUser.active_account))
       }
     },
     methods: {

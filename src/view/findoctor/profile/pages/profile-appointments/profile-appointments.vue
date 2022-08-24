@@ -19,6 +19,9 @@
         </a-list-item-meta>
       </a-list-item>
     </a-list>
+    <small v-if="!active_account && isProvider" class="text-danger d-block mt-3">
+      * Obten todos los beneficios, como crear o editar citas, activando tu cuenta <router-link :to="{ name: 'profile-payment' }" class="btn-link focus">aqui</router-link>.
+    </small>
     <a-modal :visible="modal.open" :width="900" @cancel="handleCancel">
       <div v-if="modal.data" slot="title">Detalles de la cita</div>
       <div v-if="modal.data">
@@ -33,7 +36,7 @@
             <a-tag :color="modal.data.status.color">{{ modal.data.status.name }}</a-tag>
           </template>
         </h5>
-        <a-divider />
+        <a-divider dashed/>
         <a-form-model ref="eventForm" :model="modal.data" :rules="rules">
           <div class="row">
             <div :class="{ 'col-md-8': (modal.data.client || modal.newClient), 'col-md-12': !(modal.data.client||modal.newClient)}">
@@ -224,8 +227,8 @@
                 <span>Método de pago</span>
                 <div class="d-flex d-md-block flex-row justify-content-between">
                   <strong>{{ modal.data.order.method.name }}</strong>
-                  <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
-                  <a-tag color="red" v-else>Pago pendiente</a-tag>
+                  <a-tag color="green" v-if="orderPaid" class="ml-md-2">Pagado</a-tag>
+                  <a-tag color="red" v-else class="ml-md-2">Pago pendiente</a-tag>
                 </div>
                 <br>
               </template>
@@ -290,7 +293,7 @@
           </div>
         </a-form-model>
         <template v-if="modal.data.client_id || modal.newClient">
-          <a-divider></a-divider>
+          <a-divider dashed></a-divider>
           <h6>Archivos relacionados a la cita</h6>
           <a-upload-dragger name="file" :multiple="true" :beforeUpload="handleUpload" :fileList="modal.data.oldPostFiles" :remove="handleRemove" listType="picture" :showUploadList="{ showDownloadIcon : true, showPreviewIcon: true }" :preview="handlePreview" accept="image/*,application/pdf,application/msword,audio/*,video/*,application/vnd.ms-powerpoint,application/vnd.ms-excel,text/*,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
             <p class="ant-upload-drag-icon">
@@ -335,7 +338,7 @@
             <a-tag :color="viewModal.data.status.color">{{ $t(`appointment_status.${viewModal.data.status.name.toUpperCase()}`.replace(/\s/g, '_')) }}</a-tag>
           </template>
         </h5>
-        <a-divider />
+        <a-divider dashed/>
         <div class="row">
           <div class="col-md-8">
             <div class="row">
@@ -393,7 +396,6 @@
                 </div>
               </div>
             </div>
-
           </div>
 
           <div class="col-md-4">
@@ -427,14 +429,39 @@
             </template>
           </div>
         </div>
-        <a-divider />
-        <a-form-model ref="reviewForm" :model="viewModal.review" :rules="review_rules">
+        <template v-if="isClient && viewModal.data.client_id == user.id">
+          <a-divider dashed/>
+          <a-form-model ref="reviewForm" :model="viewModal.review" :rules="review_rules">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="mb-0">Calificar</label>
+                  <div>
+                    <a-rate v-model="viewModal.review.rate" :disabled="!!viewModal.data.review"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="mb-0">Comentario</label>
+                  <a-form-model-item prop="comment" :help="!!viewModal.data.review ? '*La reseña ya esta publicada y no se puede editar' : `${(viewModal.review.comment||'').length}/320` ">
+                     <a-textarea v-model="viewModal.review.comment" :rows="4" :disabled="!!viewModal.data.review" :maxLength="320"  />
+                  </a-form-model-item>
+                </div>
+              </div>
+            </div>
+          </a-form-model>
+        </template>
+        <template v-else>
+          <a-divider dashed/>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label class="mb-0">Calificar</label>
+                <label class="mb-0">Calificacion</label>
                 <div>
-                  <a-rate v-model="viewModal.review.rate" :disabled="!!viewModal.data.review"/>
+                  <a-rate v-model="viewModal.review.rate" :disabled="true"/>
                 </div>
               </div>
             </div>
@@ -443,20 +470,18 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="mb-0">Comentario</label>
-                <a-form-model-item prop="comment" :help="!!viewModal.data.review ? '*La reseña ya esta publicada y no se puede editar' : `${(viewModal.review.comment||'').length}/320` ">
-                   <a-textarea v-model="viewModal.review.comment" :rows="4" :disabled="!!viewModal.data.review" :maxLength="320"  />
-                </a-form-model-item>
+                <a-textarea v-value="viewModal.review.comment" :disabled="true" />
               </div>
             </div>
           </div>
-        </a-form-model>
+        </template>
       </div>
 
       <template slot="footer">
         <a-button key="back" @click="handleViewCancel">
           Cancelar
         </a-button>
-        <a-button key="submit" type="primary" :loading="viewModal.loading" @click="handleViewOk" v-if="!viewModal.data.review">
+        <a-button key="submit" type="primary" :loading="viewModal.loading" @click="handleViewOk" v-if="!viewModal.data.review && isClient && viewModal.data.client_id == user.id">
           Publicar
         </a-button>
       </template>
@@ -523,7 +548,7 @@
           slotMaxTime: '24:00:00',
           scrollTimeReset: false,
           eventClick: this.openEvent,
-          eventChange: this.eventChange,
+          eventChange: this.active_account && this.eventChange,
           selectable: true,
           select: (data) => {
             this.isProvider && this.handleDateClick({
@@ -675,7 +700,7 @@
               title: ((a.client && `Cliente: ${a.client.first_name} ${a.client.last_name} `) || a.notes || 'Sin informacion') + ((a.item && a.item.name) || ''), 
               start: a.start_date, 
               end: a.end_date, 
-              editable: true,
+              editable: this.active_account && this.isProvider,
               backgroundColor: a.status.color,
               borderColor: a.status.color,
               extendedProps: { ... a }
@@ -759,6 +784,9 @@
       },
       isClient() {
         return this.user.role && this.user.role.is_client
+      },
+      active_account() {
+        return this.user.active_account && this.$moment.utc(this.user.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.user.active_account))
       }
     },
     methods: {
@@ -816,9 +844,11 @@
         this.showModal()
       },
       openEvent({ event }) {
-        if (this.isProvider) {
+        if (this.isProvider && this.active_account) {
           this.editEvent({ event })
         } else if (this.isClient) {
+          this.viewEvent({ event })
+        } else {
           this.viewEvent({ event })
         }
       },

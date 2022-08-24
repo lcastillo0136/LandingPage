@@ -100,6 +100,9 @@
           </div>
         </template>
       </div>
+      <small v-if="!active_account" class="text-danger mb-1 d-block">
+        * Obten todos los beneficios, como historial de consultas y subir archivos, activando tu cuenta <router-link :to="{ name: 'profile-payment' }" class="btn-link focus">aqui</router-link>.
+      </small>
       <a-tabs class="profile-patient-edit">
         <a-tab-pane key="1">
           <span slot="tab">
@@ -108,7 +111,7 @@
           </span>
           <div class="box_general_2">
             <div>
-              <b-button :to="{ name: 'profile-patients-ehr', params: { client, provider: getUser } }" variant="primary" size="sm" class="text-white">
+              <b-button :to="{ name: 'profile-patients-ehr', params: { client, provider: getUser } }" variant="primary" size="sm" class="text-white" :disabled="!active_account">
                 <a-icon type="plus" style="vertical-align: baseline;"></a-icon>
                 Agregar consulta
               </b-button>
@@ -131,7 +134,7 @@
           </span>
           <div class="box_general_2">
             <a-spin :spinning="uploadingprocess">
-              <a-upload-dragger ref="uploadDragger" name="file" :multiple="true" class="d-flex mb-3" :beforeUpload="uploadFile" :showUploadList="false" :customRequest="customRequest">
+              <a-upload-dragger ref="uploadDragger" name="file" :multiple="true" class="d-flex mb-3" :beforeUpload="uploadFile" :showUploadList="false" :customRequest="customRequest" :disabled="!active_account">
                 <p class="ant-upload-drag-icon">
                   <a-icon type="inbox" />
                 </p>
@@ -187,10 +190,13 @@
                     <a-menu-item key="1">
                       <a :href="record.url" target="_blank">Ver</a>
                     </a-menu-item>
-                    <a-menu-item key="2">
-                      <a-popconfirm title="¿Estás seguro de eliminar este archivo?" @confirm="() => deleteFile(record)">
+                    <a-menu-item key="2" :disabled="!active_account">
+                      <a-popconfirm title="¿Estás seguro de eliminar este archivo?" @confirm="() => deleteFile(record)" v-if="active_account">
                         <a>Borrar</a>
                       </a-popconfirm>
+                      <template v-else>
+                        <span>Borrar</span>
+                      </template>
                     </a-menu-item>
                   </a-menu>
                   <a-button shape="circle" type="dashed" >
@@ -340,6 +346,9 @@
         return {
           
         }
+      },
+      active_account() {
+        return this.getUser.active_account && this.$moment.utc(this.getUser.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.getUser.active_account))
       }
     },
     methods: {
@@ -519,6 +528,9 @@
     }
     a {
       color: #007bff;
+    }
+    .ant-upload-disabled {
+      opacity: 0.5;
     }
     @media (max-width: 426px) {
       &.box_general_2, .box_general_2 {
