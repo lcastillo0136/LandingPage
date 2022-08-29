@@ -166,9 +166,15 @@
         this.$refs.loginForm.validate().then(valid => {
           if (valid) {
             if (this.form.username !== '') {
-              this.$swal(this.$t('login.messages.success.recover_send', { username: this.form.username }), '', 'success')
+              this.$notification.success({
+                message: this.$t('login.messages.success.recover_send', { username: this.form.username }), 
+                description: ''
+              })
             } else {
-              this.$swal(this.$t('login.messages.error.missing_info'), '', 'error')
+              this.$notification.error({
+                message: 'No se encontró el usuario',
+                description: 'Favor de revisar su usuario o contraseña he intentar de nuevo.'
+              })
             }
             this.loading = false
           } else {
