@@ -4,6 +4,8 @@
       <MessageListItem :message="message" :contact="contact" :phone="phone" :key="i" @fileClick="onFileClick"></MessageListItem>
     </template>
     <MessageListItem :sending="sending" :message="{ body: '', direction: 'outbound-api' }" :contact="contact" :phone="phone" v-if="sending"></MessageListItem>
+    <MessageListItem :message="{ body: 'Detectado como spam', direction: 'outbound-api', isSpam: true }" :contact="contact" :phone="phone" v-if="banned">
+    </MessageListItem>
   </perfect-scrollbar>
 </template>
 <script>
@@ -21,7 +23,8 @@
       contact: Object,
       phone: String,
       messages: Array,
-      sending: Boolean
+      sending: Boolean,
+      banned: Boolean
     },
     components: {
       MessageListItem

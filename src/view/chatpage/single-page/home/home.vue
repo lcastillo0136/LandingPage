@@ -7,6 +7,7 @@
         :contact="selectedContact" 
         :messages="messages" 
         :phone="selectedPhone" 
+        :banned="banned"
         @onReply="onReply"
         ref="ChatViewPanel"
       ></ChatView>
@@ -49,7 +50,8 @@
         contacts: [],
         selectedContact: null,
         selectedPhone: '',
-        messages: []
+        messages: [],
+        banned: false
       }
     },
     computed: {
@@ -76,12 +78,14 @@
         this.messages = []
         this.selectedContact = null
         this.selectedPhone = ''
+        this.banned = false
         
         Messages.get(contact.last_message.id).then((response) => {
           let { data } = response.data
           this.selectedContact = data.contact
           this.selectedPhone = data.phone
           this.messages = data.messages
+          this.banned = data.banned
 
           const db = getDatabase()
           let _basePhone = this.$options.filters.phone(this.$options.filters.waPhone(data.contact ? `${data.contact.phone}` : data.phone))
@@ -184,9 +188,10 @@
           let parentChats = ref(db, `chats`)
           onValue(parentChats, (snapshot) => {
             let _message = snapshot.val();
+
             let _found = _.filter(_message, (c) => {
               let _tmpPhone = c.direction == 'outbound-api' ? c.to_phone : c.from_phone;
-              return !_.find(this.contacts, { phone: _tmpPhone });
+              return !_.find(this.contacts, (tmpC) => { return `${tmpC.phone}`.indexOf(this.$options.filters.waPhone(_tmpPhone)) > -1 });
             })
 
             if (_found && _found.length > 0) {

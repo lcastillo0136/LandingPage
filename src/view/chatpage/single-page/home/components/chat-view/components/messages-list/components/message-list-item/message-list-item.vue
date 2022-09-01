@@ -1,5 +1,6 @@
 <template>
   <div class="message-row" :class="{
+    'spam': message.isSpam,
     'me': message.direction != 'inbound-api',
     'contact': message.direction == 'inbound-api',
     'first-of-group': isFirstMessageOfGroup(message) || sending,
@@ -13,7 +14,7 @@
     <div class="bubble" v-if="message.body">
       <div class="message-content" :title="message.date_sent" v-html="$options.filters.parseURLs(message.body, true, { target: '__blank' })"></div>
       
-      <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
+      <div class="time secondary-text">{{ message.created_at | moment('DD/MM/YY, hh:mm a') }}</div>
     </div>
     <div class="send-at-content" v-if="message.send_at">
       {{ message.send_at | sendAt }}
@@ -207,6 +208,9 @@
           }
           if (!!this.message.media_uri && !!this.message.body) {
             this.$refs.messageRow.classList.add('message-w-file')
+          }
+          if (!!this.message.isSpam) {
+            this.$refs.messageRow.classList.add('spam')
           }
 
           if (!this.shouldShowContactAvatar(this.message) && this.message.direction == 'inbound-api' && this.$refs.messageRow.querySelector('img.avatar')) {
@@ -589,6 +593,20 @@
                   display: flex;
               }
           }
+      }
+
+      &.message-row.spam {
+        padding-left: 0px;
+        margin-left: 0;
+        .bubble {
+          background-color: var(--cyan);
+          color: var(--white);
+          border-radius: 5px;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 10px;
+          width: 90%;
+        }
       }
   }
 </style>

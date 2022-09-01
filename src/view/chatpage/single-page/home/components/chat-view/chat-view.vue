@@ -4,7 +4,7 @@
       <loading :loading="loadingFiles"></loading>
       <template v-if="messages && messages.length > 0">
         <div class="messages-box">
-          <MessagesList :messages="messages" :contact="contact" :phone="phone" :sending="sending" ref="messageListPanel" @fileClick="onFileClick" v-cloak></MessagesList>
+          <MessagesList :messages="messages" :contact="contact" :phone="phone" :sending="sending" :banned="banned" ref="messageListPanel" @fileClick="onFileClick" v-cloak></MessagesList>
         </div>
         <Upload
           multiple
@@ -33,7 +33,7 @@
             <p>Enviando Archivo.</p>
           </div>
         </Upload>
-        <div class="message-form">
+        <div class="message-form" v-if="!banned">
           <div class="message-input">
             <twemoji-picker
               :emojiData="emojiDataAll"
@@ -81,6 +81,29 @@
             </a-button>
           </div>
         </div>
+        <div class="message-form" v-else>
+          <div class="message-input">
+            <twemoji-picker
+              :emojiData="emojiDataAll"
+              :emojiGroups="emojiGroups"
+              :skinsSelection="false"
+              :searchEmojisFeat="false"
+              :disabled="true"
+            ></twemoji-picker>
+            <a-input :placeholder="TypeAMessage" ref="inputmessage" :disabled="true" />
+            <Icon type="md-attach" :disabled="true"></Icon>
+          </div>
+          <div class="message-action">
+            <a-button type="primary" shape="circle" class="schedule-button" :disabled="true">
+              <Icon type="md-calendar"></Icon>
+            </a-button>
+          </div>
+          <div class="message-action">
+            <a-button type="primary" shape="circle" :disabled="true">
+              <Icon type="md-send"></Icon>
+            </a-button>
+          </div>
+        </div>
       </template>
       <template v-else>
         <a-empty image="img/smila-chat.png">
@@ -118,7 +141,8 @@
     props: {
       contact: Object,
       phone: String,
-      messages: Array
+      messages: Array,
+      banned: Boolean
     },
     components: {
       MessagesList,
@@ -212,7 +236,7 @@
           direction: 'outbound-api',
           from_phone: `whatsapp:+${this.TwilioPhone}`,
           status: 'queued',
-          to_phone: this.contact ? `whtasapp:+52${this.contact.phone}` : this.phone
+          to_phone: this.phone
         };
 
         this.$emit('onReply', { message: _message })

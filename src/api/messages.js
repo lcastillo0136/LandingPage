@@ -20,7 +20,7 @@ export const Messages = {
       method: 'get'
     })
   },
-  post(text, file= null) {
+  post(text, file = null) {
     const formData = new FormData()
     if (file !== null) {
       formData.append('file', file, file.name);
