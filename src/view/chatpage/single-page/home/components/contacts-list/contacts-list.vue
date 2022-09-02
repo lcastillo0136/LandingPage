@@ -3,7 +3,7 @@
     <a-card :bordered="false">
       <perfect-scrollbar>
         <a-list item-layout="horizontal" :data-source="reverseList">
-          <a-list-item slot="renderItem" slot-scope="item, index" @click.prevent.stop="clickOnContact(item, index)">
+          <a-list-item slot="renderItem" slot-scope="item, index" @click.prevent.stop="clickOnContact(item, index)" :class="{ 'choosed': selectedContact && selectedContact.phone == item.phone }">
             <a-list-item-meta>
               <template slot="title">
                 <a>
@@ -88,7 +88,8 @@
     data () {
       return {
         filterText: '',
-        contact_index: 0
+        contact_index: 0,
+        selectedContact: null
       }
     },
     computed: {
@@ -104,6 +105,7 @@
     },
     methods: {
       clickOnContact(contact, index) {
+        this.selectedContact = contact
         this.$emit('onContactClick', {
           contact, 
           index
@@ -176,6 +178,10 @@
             align-content: center;
             justify-content: center;
             align-items: center;
+          }
+
+          &.choosed {
+            background: #f5f5f5;
           }
         }
       }

@@ -132,6 +132,65 @@ Vue.filter('parseURLs', function(value, isHTML = false, options = {}) {
   return isHTML ? html.join('') : URLS;
 })
 
+Vue.filter('parseMarkup', function(value) {
+  const linkExp = /\*([A-Za-zÀ-ÿ0-9._%+\-\s\(\)\_\~\<\>\=\"]*)\*/i;
+  const linkExp2 = /\_([A-Za-zÀ-ÿ0-9._%+\-\s\(\)\*\~\<\>\=\"]*)\_/i;
+  const linkExp3 = /\~([A-Za-zÀ-ÿ0-9._%+\-\s\(\)\_\*\<\>\=\"]*)\~/i;
+
+  if (typeof value !== 'string') { return value; }
+  if (value === null || value === '') { return value; }
+  let rawText = value;
+  let html = [];
+  let match;
+  let i;
+
+  // eslint-disable-next-line no-cond-assign
+  while ((match = rawText.match(linkExp)) && match[1]) {
+    i = match.index;
+    if (rawText.substr(0, i)) {
+      html.push(rawText.substr(0, i));
+    }
+    html.push('<b>');
+    html.push(match[1]);
+    html.push('</b>');
+    rawText = rawText.substring(i + match[0].length);
+  }
+  if (rawText) {
+    html.push(rawText);
+  }
+  rawText = html.join('');
+  html = [];
+  while ((match = rawText.match(linkExp2)) && match[1]) {
+    i = match.index;
+    if (rawText.substr(0, i)) {
+      html.push(rawText.substr(0, i));
+    }
+    html.push('<span class="text-italic">');
+    html.push(match[1]);
+    html.push('</span>');
+    rawText = rawText.substring(i + match[0].length);
+  }
+  if (rawText) {
+    html.push(rawText);
+  }
+  rawText = html.join('');
+  html = [];
+  while ((match = rawText.match(linkExp3)) && match[1]) {
+    i = match.index;
+    if (rawText.substr(0, i)) {
+      html.push(rawText.substr(0, i));
+    }
+    html.push('<span class="text-strike">');
+    html.push(match[1]);
+    html.push('</span>');
+    rawText = rawText.substring(i + match[0].length);
+  }
+  if (rawText) {
+    html.push(rawText);
+  }
+  return html.join('');
+})
+
 Vue.filter('currency', function (value, style) {
   return (typeof value !== "number") ? value : (new Intl.NumberFormat('en-US', { style: 'currency', currency: style || 'USD' })).format(value);
 });

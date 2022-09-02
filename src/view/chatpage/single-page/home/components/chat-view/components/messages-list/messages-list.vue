@@ -112,7 +112,7 @@
           let _messageContent = document.createElement('div')
           _messageContent.classList.add('message-content')
           _messageContent.title = this.$moment(message.date_sent).format('DD/MM/YY, hh:mm a')
-          _messageContent.innerHTML = this.$options.filters.parseURLs(message.body, true, { target: '__blank' })
+          _messageContent.innerHTML = this.parseBody(message.body)
 
           let _messageTime = document.createElement('div')
           _messageTime.classList.add('time')
@@ -142,7 +142,7 @@
             _messageContent.append(_img)
 
           } else {
-            _messageContent.innerHTML = this.$options.filters.parseURLs(message.media_uri, true, { target: '__blank' })
+            _messageContent.innerHTML = this.parseBody(message.media_uri)
 
           }
           let _messageTime = document.createElement('div')
@@ -208,6 +208,9 @@
       },
       onFileClick({message, type}) {
         this.$emit('fileClick', { message, type })
+      },
+      parseBody(text) {
+        return this.$options.filters.parseMarkup(this.$options.filters.parseURLs(text, true, { target: '__blank' }))
       }
     },
     mounted() {

@@ -12,7 +12,7 @@
     <img v-if="shouldShowContactAvatar(message) && !contact" :src="defaultAvatar" class="avatar" />
 
     <div class="bubble" v-if="message.body">
-      <div class="message-content" :title="message.date_sent" v-html="$options.filters.parseURLs(message.body, true, { target: '__blank' })"></div>
+      <div class="message-content" :title="message.date_sent" v-html="parseBody(message.body)"></div>
       
       <div class="time secondary-text">{{ message.created_at | moment('DD/MM/YY, hh:mm a') }}</div>
     </div>
@@ -51,7 +51,7 @@
       <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
     </div>
     <div class="bubble" v-if="message.media_uri && isOtherFile(message)">
-      <div class="message-content" :title="message.date_sent" v-html="$options.filters.parseURLs(message.media_uri, true, { target: '__blank' })"></div>
+      <div class="message-content" :title="message.date_sent" v-html="parseBody(message.media_uri)"></div>
       <div class="time secondary-text">{{ message.date_sent | moment('DD/MM/YY, hh:mm a') }}</div>
     </div>
     <div class="bubble sending" v-if="sending">
@@ -188,6 +188,9 @@
             src: message.media_uri
           }]
         }
+      },
+      parseBody(text) {
+        return this.$options.filters.parseMarkup(this.$options.filters.parseURLs(text, true, { target: '__blank' }))
       }
     },
     mounted() {
@@ -374,6 +377,13 @@
               }
 
               &::after { display: none; }
+
+              .text-italic {
+                font-style: italic;
+              }
+              .text-strike {
+                text-decoration: line-through;
+              }
           }
 
 
