@@ -1,8 +1,80 @@
 <template>
   <div class="chat-view-container" :class="{ 'file-open': fileUploadOpen }" @dragover="fileUploadOpen=messages && messages.length > 0">
     <a-card :bordered="false">
-      <loading :loading="loadingFiles"></loading>
+      <loading :loading="loadingFiles || loadingChat"></loading>
       <template v-if="messages && messages.length > 0">
+        <div slot="title">
+          <template v-if="contact">
+            <a-avatar :src="contact.avatar" class="mr-2"/>
+            {{ contact.full_name }}
+          </template>
+          <template v-else>
+            <a-avatar :src="defaultAvatar" class="mr-2"/>
+            {{ phone | waPhone | phone }}
+          </template>
+          <span class="float-right">
+            <a-dropdown>
+              <a-button class="chatmenu-options">
+                <a-icon type="more"></a-icon>
+              </a-button>
+              <a-menu slot="overlay">
+                <template v-if="contact">
+                  <a-menu-item>
+                    <a href="javascript:;" @click="profilePreview=true"> Información de contacto </a>
+                  </a-menu-item>
+                  <a-menu-item v-if="!banned">
+                    <a href="javascript:;" @click="fileUploadOpen=!fileUploadOpen"> Enviar archivos </a>
+                  </a-menu-item>
+                  <a-divider dashed class="my-1"></a-divider>
+                  <template v-if="!banned">
+                    <a-menu-item v-if="bot_enabled">
+                      <a href="javascript:;" @click="disableChatbot"> Desactivar Chatbot </a>
+                    </a-menu-item>
+                    <a-menu-item v-else>
+                      <a href="javascript:;" @click="enableChatbot"> Activar Chatbot </a>
+                    </a-menu-item>
+                  </template>
+                  <a-menu-item>
+                    <a href="javascript:;" @click="openGallery(false)"> Ver archivos </a>
+                  </a-menu-item>
+                </template>
+                <template v-else>
+                  <a-menu-item>
+                    <a href="javascript:;" @click="registerClient"> Registrar cliente </a>
+                  </a-menu-item>
+                  <a-menu-item v-if="!banned">
+                    <a href="javascript:;" @click="fileUploadOpen=!fileUploadOpen"> Enviar archivos </a>
+                  </a-menu-item>
+                  <a-divider dashed class="my-1"></a-divider>
+                  <template v-if="!banned">
+                    <a-menu-item v-if="bot_enabled">
+                      <a href="javascript:;" @click="disableChatbot"> Desactivar Chatbot </a>
+                    </a-menu-item>
+                    <a-menu-item v-else>
+                      <a href="javascript:;" @click="enableChatbot"> Activar Chatbot </a>
+                    </a-menu-item>
+                  </template>
+                  <a-menu-item>
+                    <a href="javascript:;" @click="openGallery(false)"> Ver archivos </a>
+                  </a-menu-item>
+                </template>
+                <a-divider dashed class="my-1"></a-divider>
+                <a-menu-item v-if="!banned">
+                  <a href="javascript:;" @click="banuser">
+                    <a-icon type="lock"></a-icon>
+                    Bloquear usuario 
+                  </a>
+                </a-menu-item>
+                <a-menu-item v-else>
+                  <a href="javascript:;" @click="unbanuser"> 
+                    <a-icon type="unlock"></a-icon>
+                    Desbloquear usuario 
+                  </a>
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
+          </span>
+        </div>
         <div class="messages-box">
           <MessagesList :messages="messages" :contact="contact" :phone="phone" :sending="sending" :banned="banned" ref="messageListPanel" @fileClick="onFileClick" v-cloak></MessagesList>
         </div>
@@ -88,7 +160,7 @@
               :emojiGroups="emojiGroups"
               :skinsSelection="false"
               :searchEmojisFeat="false"
-              :disabled="true"
+              :emojiPickerDisabled="true"
             ></twemoji-picker>
             <a-input :placeholder="TypeAMessage" ref="inputmessage" :disabled="true" />
             <Icon type="md-attach" :disabled="true"></Icon>
@@ -104,6 +176,12 @@
             </a-button>
           </div>
         </div>
+        <a-drawer placement="right" :visible="profilePreview" @close="onCloseProfilePreview" :get-container="false"
+          :wrap-style="{ position: 'absolute' }">
+          <div slot="title">
+            Informacion del contacto
+          </div>
+        </a-drawer>
       </template>
       <template v-else>
         <a-empty image="img/smila-chat.png">
@@ -116,9 +194,9 @@
       </template>
     </a-card>
   </div>
-  <!-- /white_bg -->
 </template>
 <script>
+  import { disableChatbot, enableChatbot, registerClient, banUser, unbanUser } from '@/api/user'
   import Loading from '@/components/loading'
   import { TwemojiPicker } from '@kevinfaguiar/vue-twemoji-picker';
   import EmojiAllData from '@kevinfaguiar/vue-twemoji-picker/emoji-data/es-mx/emoji-all-groups.json';
@@ -135,6 +213,10 @@
   import PhotoSwipe from 'photoswipe/dist/photoswipe.esm.js';
 
   const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
+  
+  const errors = {
+    'role_clients_not_found': 'No hay definido un rol para clientes'
+  }
 
   export default {
     name: 'ChatView',
@@ -142,7 +224,9 @@
       contact: Object,
       phone: String,
       messages: Array,
-      banned: Boolean
+      banned: Boolean,
+      bot_enabled: Boolean,
+      loadingChat: Boolean
     },
     components: {
       MessagesList,
@@ -178,6 +262,7 @@
         formSchedule: {
           scheduleDate: this.$moment().add({ seconds: 3710 })
         },
+        profilePreview: false
       }
     },
     watch:{
@@ -187,7 +272,8 @@
     },
     computed: {
       ...mapGetters({
-        settings: 'settings'
+        settings: 'settings',
+        hasToken: 'hasToken'
       }),
       TypeAMessage() {
         return `Enviar un mensaje a ${ this.contact ? this.contact.full_name : this.PhoneFormated }`
@@ -203,6 +289,9 @@
       },
       emojiGroups() {
         return EmojiGroups;
+      },
+      defaultAvatar() {
+        return `${baseUrl.replace('/api/', '/')}storage/default.png`
       }
     },
     methods: {
@@ -393,7 +482,6 @@
         return size <= 5242880;
       },
       onFileClick({ message, type }) {
-        
         this.openGallery(message.media_uri)
       },
       openGallery(url = '') {
@@ -457,7 +545,7 @@
           pswp.init();
 
           pswp.on('afterInit', () => {
-            console.log('afterInit');
+            /// console.log('afterInit');
           });
 
           pswp.addFilter('isContentZoomable', (isContentZoomable, content) => {
@@ -481,6 +569,63 @@
           img.onerror = (error) => reject(error);
           img.src = url;
         });
+      },
+      onCloseProfilePreview() {
+        this.profilePreview = false
+      },
+      enableChatbot() {
+        enableChatbot(this.hasToken, this.contact, this.phone).then(({ data }) => {
+          this.$notification.info({
+            message: `Bot Activado`,
+            description: `El cliente ${this.contact ? this.contact.full_name : this.PhoneFormated} ya recibirá respuestas del bot nuevamente`
+          })
+          this.$emit('chatbotStateChange', true)
+        })
+      },
+      disableChatbot() {
+        disableChatbot(this.hasToken, this.contact, this.phone).then(({ data }) => {
+          // if (this.contact) this.contact.disable_bot = this.$moment().add(60, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+          this.$notification.info({
+            message: `Bot Desactivado`,
+            description: `El cliente ${this.contact ? this.contact.full_name : this.PhoneFormated} ya no recibirá respuestas del bot durante los próximos 60 minutos`
+          })
+
+          this.$emit('chatbotStateChange', false)
+        })
+      },
+      banuser() {
+        banUser(this.hasToken, this.contact, this.phone).then(({ data }) => {
+          this.$notification.info({
+            message: `Usuario bloqueado`,
+            description: `El cliente ${this.contact ? this.contact.full_name : this.PhoneFormated} ya no podra recibir respuestas del bot`
+          })
+          this.$emit('banStateChange', true, this.contact || { phone: this.phone })
+        })
+      },
+      unbanuser() {
+        unbanUser(this.hasToken, this.contact, this.phone).then(({ data }) => {
+          // if (this.contact) this.contact.disable_bot = this.$moment().add(60, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+          this.$notification.info({
+            message: `Usuario activado`,
+            description: `El cliente ${this.contact ? this.contact.full_name : this.PhoneFormated} ya podra recibir respuestas del bot o de usuarios`
+          })
+
+          this.$emit('banStateChange', false, this.contact || { phone: this.phone })
+        })
+      },
+      registerClient() {
+        registerClient(this.hasToken, {
+          phone: this.phone.replace(/[^0-9]+/, ''),
+          first_name: this.phone,
+        }).then((response) => {
+          let { data } = response.data
+          this.$emit('onContactUpdated', data);  
+        }).catch(({ data }) => {
+          this.$notification.error({
+            message: 'Error al registrar cliente',
+            description: errors[data.message]
+          })
+        })
       }
     },
     mounted() {
@@ -494,12 +639,16 @@
       border-radius: 20px;
       max-height: 100%;
       height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
       .ant-card-body {
         max-height: 100%;
         overflow: hidden;
         height: 100%;
         display: flex;
         flex-direction: column;
+        padding-top: 0;
         .ps {
           max-height: 100%;
           padding-bottom: 42px;
@@ -518,7 +667,7 @@
         .messages-box {
           flex: 1 1 auto;
           overflow: hidden;
-
+          margin-top: 3px;
         }
 
         .message-form {
@@ -577,6 +726,11 @@
           opacity: 0.8;
         }
         &::after, &::before { display: none; }
+      }
+      .chatmenu-options {
+        border: none;
+        font-weight: bold;
+        font-size: 24px;
       }
     }
     .ivu-upload {

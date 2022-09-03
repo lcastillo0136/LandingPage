@@ -113,3 +113,53 @@ export const updateUser = (user, token) => {
     method: 'post'
   })
 }
+
+
+export const enableChatbot = (token, client, phone = '', enabled = true) => {
+  return axios.request({
+    url: 'clients/chatbot',
+    method: 'post',
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    data: {
+      phone, 
+      id: client ? client.id : false, 
+      enabled
+    }
+  })
+}
+
+export const disableChatbot = (token, client, phone = '') => {
+  return enableChatbot(token, client, phone, false);
+}
+
+export const registerClient = (token, client) => {
+  return axios.request({
+    url: 'clients/register',
+    method: 'post',
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    data: client
+  })
+}
+
+export const banUser = (token, client, phone = '', banned = true) => {
+  return axios.request({
+    url: 'clients/ban',
+    method: 'post',
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    data: {
+      phone, 
+      id: client ? client.id : false, 
+      banned
+    }
+  })
+}
+
+export const unbanUser = (token, client, phone = '') => {
+  return banUser(token, client, phone, false);
+}

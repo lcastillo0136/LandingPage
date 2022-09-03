@@ -1,14 +1,19 @@
 <template>
   <main class="main-page py-0">
     <template v-if="TwilioPhone && hasPermission">
-      <ContactsList class="contacts-panel" :contacts="contacts" @onContactClick="selectContact"></ContactsList>
+      <ContactsList class="contacts-panel" :contacts="contacts" :loadingChats="loadingChats" @onContactClick="selectContact"></ContactsList>
       <ChatView 
         class="chatview-panel" 
         :contact="selectedContact" 
         :messages="messages" 
         :phone="selectedPhone" 
         :banned="banned"
+        :bot_enabled="bot_enabled"
+        :loadingChat="loadingChat"
         @onReply="onReply"
+        @chatbotStateChange="chatbotStateChange"
+        @onContactUpdated="onContactUpdated"
+        @banStateChange="banStateChange"
         ref="ChatViewPanel"
       ></ChatView>
     </template>
@@ -51,7 +56,10 @@
         selectedContact: null,
         selectedPhone: '',
         messages: [],
-        banned: false
+        banned: false,
+        loadingChats: false,
+        loadingChat: false,
+        bot_enabled: true
       }
     },
     computed: {
@@ -79,13 +87,16 @@
         this.selectedContact = null
         this.selectedPhone = ''
         this.banned = false
-        
+        this.loadingChat = true
+        this.bot_enabled = true
+
         Messages.get(contact.last_message.id).then((response) => {
           let { data } = response.data
           this.selectedContact = data.contact
           this.selectedPhone = data.phone
           this.messages = data.messages
           this.banned = data.banned
+          this.bot_enabled = data.bot_enabled
 
           const db = getDatabase()
           let _basePhone = this.$options.filters.phone(this.$options.filters.waPhone(data.contact ? `${data.contact.phone}` : data.phone))
@@ -94,6 +105,8 @@
           if (childChat) {
             remove(childChat)
           }
+
+          this.loadingChat = false
         })
         contact.unread = 0
       },
@@ -105,6 +118,8 @@
             _contact.last_message = { ...data }
             this.$refs.ChatViewPanel.push({...data})
           }
+
+          this.bot_enabled = false
         }).catch((error) => {
           this.$notification.error({
             message: 'No se pudo enviar el mensaje',
@@ -114,9 +129,30 @@
             message: message.body
           })
         })
+      },
+      chatbotStateChange(state) {
+        this.bot_enabled = state
+      },
+      onContactUpdated(contact) {
+        let _tmpContact = _.find(this.contacts, (c) => { return `${c.phone}`.indexOf(contact.phone) > -1 })
+
+        _tmpContact.phone = `whatsapp:+${contact.phone}`;
+        _tmpContact.user = { ...contact };
+        _tmpContact.user_full_name = contact.full_name;
+        _tmpContact.user_id = contact.id;
+
+        this.selectContact({ contact: _tmpContact })
+      },
+      banStateChange(state, contact) {
+        this.banned = state
+
+        let _tmpContact = _.find(this.contacts, (c) => { return `${c.phone}`.indexOf(contact.phone) > -1 })
+        if (_tmpContact)
+          _tmpContact.user_banned = state
       }
     },
     mounted () {
+      this.loadingChats = true
       Messages.list().then((response) => {
         this.contacts = _.map(response.data.data, (m) => {
           return {
@@ -150,7 +186,9 @@
 
                   if (this.selectedContact && this.selectedContact.full_name == c.user_full_name) {
                     c.unread = 0;
-                    this.$refs.ChatViewPanel.push({..._message})
+                    if (this.$refs.ChatViewPanel) {
+                      this.$refs.ChatViewPanel.push({..._message})
+                    }
                   }
 
                   c.last_message.created_at = this.$moment().utc().format('YYYY-MM-DD[T]HH:mm:ss[.000000Z]');
@@ -241,8 +279,10 @@
             }
           });
         }
+        this.loadingChats = false
       }).catch((error) => {
         this.handleLogOut()
+        this.loadingChats = false
       })
     },
   }

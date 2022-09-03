@@ -2,8 +2,8 @@
   <div class="contacts-list-container">
     <a-card :bordered="false">
       <perfect-scrollbar>
-        <a-list item-layout="horizontal" :data-source="reverseList">
-          <a-list-item slot="renderItem" slot-scope="item, index" @click.prevent.stop="clickOnContact(item, index)" :class="{ 'choosed': selectedContact && selectedContact.phone == item.phone }">
+        <a-list item-layout="horizontal" :data-source="reverseList" :loading="loadingChats">
+          <a-list-item slot="renderItem" slot-scope="item, index" @click.prevent.stop="clickOnContact(item, index)" :class="{ 'choosed': selectedContact && selectedContact.phone == item.phone, 'banned': item.user_banned }">
             <a-list-item-meta>
               <template slot="title">
                 <a>
@@ -21,7 +21,12 @@
               </template>
               <span slot="description">
                 <template v-if="item.last_message.body">
-                  <span class="message-body">{{ item.last_message.body }}</span>
+                  <span class="message-body text-italic" v-if="item.user_banned">
+                    Detectado como spam
+                  </span>
+                  <span class="message-body" v-else>
+                    {{ item.last_message.body }}
+                  </span>
                 </template>
                 <template v-if="item.last_message.media_uri">
                   <span>Archivo <a-icon type="paper-clip" /></span>
@@ -80,7 +85,8 @@
   export default {
     name: 'ContactsList',
     props: {
-      contacts: Array
+      contacts: Array,
+      loadingChats: Boolean
     },
     components: {
       
@@ -97,7 +103,7 @@
         return `${baseUrl.replace('/api/', '/')}storage/default.png`
       },
       reverseList() {
-        return _.orderBy(this.contacts, (c) => { return c.last_message.created_at }, [ 'desc' ])
+        return this.contacts ? _.orderBy(this.contacts, (c) => { return c.last_message.created_at }, [ 'desc' ]) : []
       },
       totalCount() {
         return _.sumBy(this.contacts, 'unread') || 0
@@ -123,7 +129,12 @@
       },
     },
     mounted() {
-      
+      if (this.$route.params) {
+        if (this.$route.params.phone) {
+          let _tmpContact = _.find(this.contacts, (c) => { return `${c.phone}`.indexOf(this.$route.params.phone) > -1 })
+          this.selectedContact = _tmpContact
+        }
+      }
     }
   }
 </script>
@@ -182,6 +193,15 @@
 
           &.choosed {
             background: #f5f5f5;
+          }
+
+          &.banned {
+            text-shadow: 0 0 6px black !important;
+            color: transparent;
+            opacity: 0.6;
+            a, span {
+              color: transparent;
+            }
           }
         }
       }

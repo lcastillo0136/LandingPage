@@ -195,31 +195,33 @@
     },
     mounted() {
       this.$nextTick(() => {
-        setTimeout(() => {
-          this.$refs.messageRow.classList = ['message-row'];
-          if (this.message.direction == 'inbound-api') {
-            this.$refs.messageRow.classList.add('contact')
-          }
-          if (this.message.direction == 'outbound-api') {
-            this.$refs.messageRow.classList.add('me')
-          }
-          if (this.isFirstMessageOfGroup(this.message)) {
-            this.$refs.messageRow.classList.add('first-of-group')
-          }
-          if (this.isLastMessageOfGroup(this.message)) {
-            this.$refs.messageRow.classList.add('last-of-group')
-          }
-          if (!!this.message.media_uri && !!this.message.body) {
-            this.$refs.messageRow.classList.add('message-w-file')
-          }
-          if (!!this.message.isSpam) {
-            this.$refs.messageRow.classList.add('spam')
-          }
+        if (this.$refs.messageRow) {
+          setTimeout(() => {
+            this.$refs.messageRow.classList = ['message-row'];
+            if (this.message.direction == 'inbound-api') {
+              this.$refs.messageRow.classList.add('contact')
+            }
+            if (this.message.direction == 'outbound-api') {
+              this.$refs.messageRow.classList.add('me')
+            }
+            if (this.isFirstMessageOfGroup(this.message)) {
+              this.$refs.messageRow.classList.add('first-of-group')
+            }
+            if (this.isLastMessageOfGroup(this.message)) {
+              this.$refs.messageRow.classList.add('last-of-group')
+            }
+            if (!!this.message.media_uri && !!this.message.body) {
+              this.$refs.messageRow.classList.add('message-w-file')
+            }
+            if (!!this.message.isSpam) {
+              this.$refs.messageRow.classList.add('spam')
+            }
 
-          if (!this.shouldShowContactAvatar(this.message) && this.message.direction == 'inbound-api' && this.$refs.messageRow.querySelector('img.avatar')) {
-            this.$refs.messageRow.removeChild(this.$refs.messageRow.querySelector('img.avatar'))
-          }
-        }, 100)
+            if (!this.shouldShowContactAvatar(this.message) && this.message.direction == 'inbound-api' && this.$refs.messageRow.querySelector('img.avatar')) {
+              this.$refs.messageRow.removeChild(this.$refs.messageRow.querySelector('img.avatar'))
+            }
+          }, 100)
+        }
       })
     },
     updated() {
