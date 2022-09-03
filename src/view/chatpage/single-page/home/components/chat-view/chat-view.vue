@@ -3,16 +3,24 @@
     <a-card :bordered="false">
       <loading :loading="loadingFiles || loadingChat"></loading>
       <template v-if="messages && messages.length > 0">
-        <div slot="title">
+        <div slot="title" class="user-and-menu">
           <template v-if="contact">
-            <a-avatar :src="contact.avatar" class="mr-2"/>
-            {{ contact.full_name }}
+            <div style="overflow: hidden;">
+              <a-avatar :src="contact.avatar" class="mr-2"/>
+              <span>
+                <span>{{ contact.full_name }}</span>
+                <br>
+                <small>{{ phone | waPhone | phone }}</small>
+              </span>
+            </div>
           </template>
           <template v-else>
-            <a-avatar :src="defaultAvatar" class="mr-2"/>
-            {{ phone | waPhone | phone }}
+            <div>
+              <a-avatar :src="defaultAvatar" class="mr-2"/>
+              <span>{{ phone | waPhone | phone }}</span>
+            </div>
           </template>
-          <span class="float-right">
+          <span style="width: 54px;">
             <a-dropdown>
               <a-button class="chatmenu-options">
                 <a-icon type="more"></a-icon>
@@ -642,6 +650,21 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      .ant-card-head {
+        .user-and-menu {
+          max-width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          > * {
+            flex: 0 1 auto;
+          }
+        }
+        *::after {
+          display: none;
+        }
+      }
       .ant-card-body {
         max-height: 100%;
         overflow: hidden;
@@ -777,7 +800,15 @@
   @media only screen and (max-width: 450px) {
     .chat-view-container {
       .ant-card {
+        .ant-card-head {
+          padding: 10px;
+          .ant-card-head-title {
+            padding: 0px 5px;
+          }
+
+        }
         .ant-card-body {
+          padding: 10px;
           .message-form {
             .message-input {
               padding: 6px 15px;

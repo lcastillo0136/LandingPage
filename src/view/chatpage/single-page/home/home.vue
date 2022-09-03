@@ -336,6 +336,17 @@
     }
   }
 
+  @media only screen and (min-width: 451px) and (max-width: 900px) {
+    main.main-page {
+      .contacts-panel {
+        flex: 0 1 auto;
+        max-width: 40%;
+      }
+      .chatview-panel {
+      }
+    }
+  }
+
   @media only screen and (min-width: 1450px) {
     main.main-page {
       max-width: 1500px;
