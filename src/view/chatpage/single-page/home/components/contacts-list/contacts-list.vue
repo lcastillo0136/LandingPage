@@ -146,10 +146,12 @@
       border-radius: 20px;
       max-height: 100%;
       height: 100%;
+      border: 1px solid #dee2e6!important;
       .ant-card-body {
         max-height: 100%;
         overflow: hidden;
         height: 100%;
+        padding: 0!important;
         .ps {
           max-height: 100%;
         }

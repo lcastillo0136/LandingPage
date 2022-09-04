@@ -189,12 +189,19 @@
           <div slot="title">
             Información de contacto
           </div>
-          <div class="profile-info p-3">
+          <div class="profile-info p-3 mb-3">
             <a-avatar :src="contact.avatar" class=""/>
             <span class="profile-name text-center"><b>{{ contact.full_name }}</b></span>
             <span class="profile-phone">
               <a :href="'tel:'+contact.phone" target="_blank">{{ contact.phone | phone }}</a>
             </span>
+          </div>
+          <div class="profile-files p-3">
+            <div class="d-flex justify-content-between">
+              <span>Archivos</span>
+              <span>{{ contact.files.length }}</span>
+            </div>
+            <a href="javascript:;" @click="openGallery(false)"> Ver archivos </a>
           </div>
         </a-drawer>
       </template>
@@ -758,10 +765,14 @@
         &::after, &::before { display: none; }
 
         .ant-drawer {
+          .ant-drawer-content {
+            background-color: var(--vs-selected-bg);
+          }
           .profile-info {
             display: flex;
             flex-direction: column;
             align-items: center;
+            background-color: var(--white);
             .ant-avatar {
               width: 130px;
               height: 130px;
@@ -773,7 +784,15 @@
               font-size: 1rem
             }
             .profile-phone {
-              color: var(--grey);
+              a {
+                color: var(--gray);
+              }
+            }
+          }
+          .profile-files {
+            background-color: var(--white);
+            *::after {
+              display: none;
             }
           }
         }
