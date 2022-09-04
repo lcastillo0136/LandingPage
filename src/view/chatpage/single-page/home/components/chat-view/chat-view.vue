@@ -187,7 +187,14 @@
         <a-drawer placement="right" :visible="profilePreview" @close="onCloseProfilePreview" :get-container="false"
           :wrap-style="{ position: 'absolute' }">
           <div slot="title">
-            Informacion del contacto
+            Información de contacto
+          </div>
+          <div class="profile-info p-3">
+            <a-avatar :src="contact.avatar" class=""/>
+            <span class="profile-name text-center"><b>{{ contact.full_name }}</b></span>
+            <span class="profile-phone">
+              <a :href="'tel:'+contact.phone" target="_blank">{{ contact.phone | phone }}</a>
+            </span>
           </div>
         </a-drawer>
       </template>
@@ -749,6 +756,27 @@
           opacity: 0.8;
         }
         &::after, &::before { display: none; }
+
+        .ant-drawer {
+          .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .ant-avatar {
+              width: 130px;
+              height: 130px;
+              max-width: 100%;
+              margin: 0 auto;
+              display: block;
+            }
+            .profile-name {
+              font-size: 1rem
+            }
+            .profile-phone {
+              color: var(--grey);
+            }
+          }
+        }
       }
       .chatmenu-options {
         border: none;
