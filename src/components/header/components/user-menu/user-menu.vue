@@ -21,7 +21,7 @@
         </li>
         <li class="divider"></li>
         <li >
-          <a @click="dispachLogout">Cerrar sesion</a> 
+          <a @click="dispachLogout">Cerrar sesión</a> 
         </li>
       </ul>
     </li>

@@ -147,6 +147,24 @@ export const deleteFile = (user, hash, token) => {
   })
 }
 
+export const uploadFiles = (client, token, postFiles = null) => {
+  const formData = new FormData()
+  if (postFiles !== null) {
+    postFiles.forEach(f => {
+      formData.append('files[]', f, f.name);
+    })
+  }
+  
+  return axios.request({
+    url: `clients/${client.id}/archivo`,
+    data: formData,
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'post'
+  })
+}
+
 export const deleteAppointment = (appointment, token) => {
   return axios.request({
     url: `appointments/${appointment.id}`,
@@ -272,5 +290,42 @@ export const getCard = ({ fingerprint, uuid }) => {
       fingerprint
     },
     method: 'get'
+  })
+}
+
+export const getClient = (client_id, token) => {
+  return axios.request({
+    url: `clients/${client_id}`,
+    data: {
+      token
+    },
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'get'
+  })
+}
+
+export const postEHR = (medical_record, token, postFiles = null) => {
+  const formData = new FormData()
+  if (postFiles !== null) {
+    postFiles.forEach(f => {
+      formData.append('ehrFiles[]', f, f.name);
+    })
+  }
+
+  Object.keys(medical_record).forEach((p) => {
+    if (medical_record[p] !== null) {
+      formData.append(p, medical_record[p])
+    }
+  })
+  
+  return axios.request({
+    url: `clients/${medical_record.client_id}/ehr`,
+    data: formData,
+    headers: {
+      authorization: `Bearer ${ token }`
+    },
+    method: 'post'
   })
 }

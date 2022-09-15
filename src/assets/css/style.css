@@ -399,7 +399,8 @@ a.btn_1.full-width {
     padding: 12px 45px;
     font-size: 16px;
     font-size: 1rem;
-    width: 100%
+    width: 100%;
+    height: inherit;
 }
 
 .btn_1:hover,
@@ -2987,6 +2988,7 @@ ul.time_select.version_2 li.disabled:after {
     left: 19px;
     animation: time_select_disabled 0.125s ease-in-out;
     animation-fill-mode: forwards;
+    display: block
 }
 
 
@@ -3182,6 +3184,7 @@ label.css-label strong {
     border-radius: 5px;
     border: 1px solid #e1e8ed;
     padding: 0 25px 25px;
+    overflow: hidden;
 }
 
 .box_profile ul.statistic li,

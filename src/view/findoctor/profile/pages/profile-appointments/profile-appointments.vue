@@ -1,6 +1,27 @@
 <template>
-  <div class="box_general_2 add_bottom_45">
-    <FullCalendar :options="calendarOptions" ref="fullCalendar"  />
+  <div class="box_general_2 add_bottom_45 mt-3 mt-md-0 calendar-page">
+    <FullCalendar :options="calendarOptions" ref="fullCalendar" class="d-none d-md-inline"  />
+    <a-list class="d-md-none"  item-layout="horizontal" :data-source="events" :pagination="pagination" ref="Apptlist">
+      <a-list-item slot="renderItem" slot-scope="item, index" @click="openEvent({ event: item })">
+        <a-list-item-meta>
+          <template v-if="item.extendedProps.client">
+            <router-link slot="avatar" :to="{ name: 'profile-patients-edit', params: { id: item.extendedProps.client.id } }">
+              <a-avatar :src="item.extendedProps.client.avatar" />
+            </router-link>
+            <span slot="title">
+              {{ item.extendedProps.client.title }} {{ item.extendedProps.client.first_name }} {{ item.extendedProps.client.last_name }}
+            </span>
+          </template>
+          <small slot="description">
+            {{ item.start | moment('hh:mm a') }} - {{ item.end | moment('hh:mm a') }}<br>
+            {{ item.start | moment('DD/MM/YYYY') }}
+          </small>
+        </a-list-item-meta>
+      </a-list-item>
+    </a-list>
+    <small v-if="!active_account && isProvider" class="text-danger d-block mt-3">
+      * Obten todos los beneficios, como crear o editar citas, activando tu cuenta <router-link :to="{ name: 'profile-payment' }" class="btn-link focus">aqui</router-link>.
+    </small>
     <a-modal :visible="modal.open" :width="900" @cancel="handleCancel">
       <div v-if="modal.data" slot="title">Detalles de la cita</div>
       <div v-if="modal.data">
@@ -15,7 +36,7 @@
             <a-tag :color="modal.data.status.color">{{ modal.data.status.name }}</a-tag>
           </template>
         </h5>
-        <a-divider />
+        <a-divider dashed/>
         <a-form-model ref="eventForm" :model="modal.data" :rules="rules">
           <div class="row">
             <div :class="{ 'col-md-8': (modal.data.client || modal.newClient), 'col-md-12': !(modal.data.client||modal.newClient)}">
@@ -28,7 +49,7 @@
                         <a-time-picker use12-hours v-model="modal.data.start_date" size="large" format="h:mm a"  />
                       </a-form-model-item>
                       <small v-if="eventDuration > 0">
-                        Duracion: {{ eventDuration | mtoh }}
+                        Duración: {{ eventDuration | mtoh }}
                       </small>
                     </div>
                   </div>
@@ -49,7 +70,7 @@
                         <a-date-picker show-time v-model="modal.data.start_date" size="large" />
                       </a-form-model-item>
                       <small v-if="eventDuration > 0">
-                        Duracion: {{ eventDuration | mtoh }}
+                        Duración: {{ eventDuration | mtoh }}
                       </small>
                     </div>
                   </div>
@@ -94,7 +115,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Metodo de pago</label>
+                      <label>Método de pago</label>
                       <a-form-model-item prop="payment_method" help="*Favor de procesar el pago en ventanilla">
                         <a-select show-search option-filter-prop="children" v-model="modal.data.payment_method" allowClear>
                           <a-select-option value="1">
@@ -152,30 +173,64 @@
               <template v-if="modal.data.client">
                 <span>Nombre</span>
                 <div>
-                  <strong>{{ modal.data.client.first_name }} {{ modal.data.client.last_name }}</strong>
+                  <strong>
+                    <router-link :to="{ name: 'profile-patients-edit', params: { id: modal.data.client.id } }">
+                      {{ modal.data.client.first_name }} {{ modal.data.client.last_name }}
+                    </router-link>
+                  </strong>
                 </div>
                 <br>
-                <span>Correo electronico</span>
+                <span>Correo electrónico</span>
                 <div>
-                  <strong>{{ modal.data.client.email }}</strong>
+                  <strong>
+                    <a :href="'mailto:'+modal.data.client.email">{{ modal.data.client.email }}</a>
+                  </strong>
                 </div>
                 <br>
-                <span>Telefono</span>
+                <span>Teléfono</span>
                 <div>
-                  <strong>{{ modal.data.client.phone | phone }}</strong>
+                  <strong>
+                    <a :href="'tel:'+modal.data.client.phone">{{ modal.data.client.phone | phone }}</a>
+                  </strong>
                 </div>
               </template>
               <template v-if="orderOXXO">
                 <br>
                 <span>Referencia OXXO</span>
                 <div>
-                  <strong>{{ orderOXXO.reference | oxxo }}</strong>
+                  <strong :class="{ 'oxxo-paid': orderPaid }">{{ orderOXXO.reference | oxxo }}</strong>
                   <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
                   <a-tag color="red" v-if="oxxoExpired && !orderPaid">Expirado</a-tag>
                   <div v-if="!orderPaid && !oxxoExpired">
                     <small>Pagar antes de {{ oxxoTime }}</small>
                   </div>
                 </div>
+              </template>
+              <template v-else-if="modal.data.order.method.id == 1">
+                <br>
+                <span>Método de pago</span>
+                <div>
+                  <strong>{{ modal.data.order.method.name }}</strong>
+                </div>
+                <br>
+                <span>Entidad emisora</span>
+                <div class="d-flex d-md-block flex-row justify-content-between">
+                  <strong>
+                    {{ modal.data.order.payment_orders.metadata_object.account_type }} 
+                    <small>- {{ modal.data.order.payment_orders.metadata_object.brand }}</small>
+                  </strong>
+                  <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
+                </div>
+              </template>
+              <template v-else-if="modal.data.order.method.id == 3">
+                <br>
+                <span>Método de pago</span>
+                <div class="d-flex d-md-block flex-row justify-content-between">
+                  <strong>{{ modal.data.order.method.name }}</strong>
+                  <a-tag color="green" v-if="orderPaid" class="ml-md-2">Pagado</a-tag>
+                  <a-tag color="red" v-else class="ml-md-2">Pago pendiente</a-tag>
+                </div>
+                <br>
               </template>
               <template v-if="modal.newClient">
                 <div class="row">
@@ -214,27 +269,41 @@
                     <div class="form-group">
                       <label>Teléfono</label>
                       <a-form-model-item prop="phone">
-                        <a-input v-model="modal.data.phone" type="text" autocomplete="off" placeholder="Telefono"/>
+                        <a-input v-model="modal.data.phone" type="text" autocomplete="off" placeholder="Teléfono"/>
                       </a-form-model-item>
                     </div>
                   </div>
                 </div>
               </template>
+              <template v-else-if="modal.data.ehr_id <= 0">
+                <b-button class="btn-warning mt-3" @click="openEHR" size="sm">
+                  Iniciar consulta
+                  <a-icon type="loading" v-if="searchEhrPatient" />
+                  <b-icon-clipboard-plus class="ml-1" v-else></b-icon-clipboard-plus>
+                </b-button>
+              </template>
+              <template v-else-if="modal.data.ehr_id > 0">
+                <b-button class="btn-info mt-3" @click="openEHR" size="sm">
+                  Ver consulta
+                  <a-icon type="loading" v-if="searchEhrPatient" />
+                  <b-icon-box-arrow-right class="ml-1" v-else></b-icon-box-arrow-right>
+                </b-button>
+              </template>
             </div>
           </div>
         </a-form-model>
         <template v-if="modal.data.client_id || modal.newClient">
-          <a-divider></a-divider>
+          <a-divider dashed></a-divider>
           <h6>Archivos relacionados a la cita</h6>
           <a-upload-dragger name="file" :multiple="true" :beforeUpload="handleUpload" :fileList="modal.data.oldPostFiles" :remove="handleRemove" listType="picture" :showUploadList="{ showDownloadIcon : true, showPreviewIcon: true }" :preview="handlePreview" accept="image/*,application/pdf,application/msword,audio/*,video/*,application/vnd.ms-powerpoint,application/vnd.ms-excel,text/*,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
             <p class="ant-upload-drag-icon">
               <a-icon type="inbox" />
             </p>
             <p class="ant-upload-text">
-              Haga click aquí o suelta tus archivos en esta área para empezar la carga
+              Haga clic aquí <span class="d-none d-md-inline">o suelta tus archivos en esta área para empezar la carga</span>
             </p>
             <p class="ant-upload-hint">
-              Soporte para carga multiple de archivos. estrictamente prohibido subir archivos con derechos de autor
+              Soporte para carga múltiple de archivos. Estrictamente prohibido subir archivos con derechos de autor
             </p>
           </a-upload-dragger>
         </template>
@@ -269,7 +338,7 @@
             <a-tag :color="viewModal.data.status.color">{{ $t(`appointment_status.${viewModal.data.status.name.toUpperCase()}`.replace(/\s/g, '_')) }}</a-tag>
           </template>
         </h5>
-        <a-divider />
+        <a-divider dashed/>
         <div class="row">
           <div class="col-md-8">
             <div class="row">
@@ -283,7 +352,7 @@
                     {{ viewModal.data.start_date | moment('DD/MM/YYYY hh:mm a') }}
                   </div>
                   <small v-if="eventDuration > 0">
-                    Duracion: {{ eventDuration | mtoh }}
+                    Duración: {{ eventDuration | mtoh }}
                   </small>
                 </div>
               </div>
@@ -308,7 +377,7 @@
               </div>
               <div class="col-md-6" v-if="viewModal.data.order">
                 <div class="form-group">
-                  <label class="mb-0">Metodo de pago</label>
+                  <label class="mb-0">Método de pago</label>
                   <div class="font-weight-bold">{{ viewModal.data.order.method.name }}</div>
                 </div>
               </div>
@@ -327,7 +396,6 @@
                 </div>
               </div>
             </div>
-
           </div>
 
           <div class="col-md-4">
@@ -337,12 +405,12 @@
                 <strong>{{ viewModal.data.client.first_name }} {{ viewModal.data.client.last_name }}</strong>
               </div>
               <br>
-              <span>Correo electronico</span>
+              <span>Correo electrónico</span>
               <div>
                 <strong>{{ viewModal.data.client.email }}</strong>
               </div>
               <br>
-              <span>Telefono</span>
+              <span>Teléfono</span>
               <div>
                 <strong>{{ viewModal.data.client.phone | phone }}</strong>
               </div>
@@ -361,14 +429,39 @@
             </template>
           </div>
         </div>
-        <a-divider />
-        <a-form-model ref="reviewForm" :model="viewModal.review" :rules="review_rules">
+        <template v-if="isClient && viewModal.data.client_id == user.id">
+          <a-divider dashed/>
+          <a-form-model ref="reviewForm" :model="viewModal.review" :rules="review_rules">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="mb-0">Calificar</label>
+                  <div>
+                    <a-rate v-model="viewModal.review.rate" :disabled="!!viewModal.data.review"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="mb-0">Comentario</label>
+                  <a-form-model-item prop="comment" :help="!!viewModal.data.review ? '*La reseña ya esta publicada y no se puede editar' : `${(viewModal.review.comment||'').length}/320` ">
+                     <a-textarea v-model="viewModal.review.comment" :rows="4" :disabled="!!viewModal.data.review" :maxLength="320"  />
+                  </a-form-model-item>
+                </div>
+              </div>
+            </div>
+          </a-form-model>
+        </template>
+        <template v-else>
+          <a-divider dashed/>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label class="mb-0">Calificar</label>
+                <label class="mb-0">Calificacion</label>
                 <div>
-                  <a-rate v-model="viewModal.review.rate" :disabled="!!viewModal.data.review"/>
+                  <a-rate v-model="viewModal.review.rate" :disabled="true"/>
                 </div>
               </div>
             </div>
@@ -377,20 +470,18 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="mb-0">Comentario</label>
-                <a-form-model-item prop="comment" :help="!!viewModal.data.review ? '*La reseña ya esta publicada y no se puede editar' : `${(viewModal.review.comment||'').length}/320` ">
-                   <a-textarea v-model="viewModal.review.comment" :rows="4" :disabled="!!viewModal.data.review" :maxLength="320"  />
-                </a-form-model-item>
+                <a-textarea v-value="viewModal.review.comment" :disabled="true" />
               </div>
             </div>
           </div>
-        </a-form-model>
+        </template>
       </div>
 
       <template slot="footer">
         <a-button key="back" @click="handleViewCancel">
           Cancelar
         </a-button>
-        <a-button key="submit" type="primary" :loading="viewModal.loading" @click="handleViewOk" v-if="!viewModal.data.review">
+        <a-button key="submit" type="primary" :loading="viewModal.loading" @click="handleViewOk" v-if="!viewModal.data.review && isClient && viewModal.data.client_id == user.id">
           Publicar
         </a-button>
       </template>
@@ -398,7 +489,7 @@
   </div>
 </template>
 <script>
-  import { updateAppointment, deleteFile, createAppointment, deleteAppointment, postReview } from '@/api/user'
+  import { getClient, updateAppointment, deleteFile, createAppointment, deleteAppointment, postReview } from '@/api/user'
   import { postOrder } from '@/api/data'
   import { validFileType, validFileSize } from '@/libs/tools'
   import '@fullcalendar/core/vdom' // solves problem with Vite
@@ -408,6 +499,7 @@
   import timeGridPlugin from '@fullcalendar/timegrid'
   import { toDuration } from 'moment'
   import esLocale from '@fullcalendar/core/locales/es'
+  import { BIconClipboardPlus }  from 'bootstrap-vue'
   import _ from 'lodash'
 
   import { mapGetters } from 'vuex'
@@ -424,7 +516,8 @@
       }
     },
     components: {
-      FullCalendar // make the <FullCalendar> tag available
+      FullCalendar,
+      BIconClipboardPlus
     },
     name: 'ProfileAppointments',
     data() {
@@ -455,7 +548,7 @@
           slotMaxTime: '24:00:00',
           scrollTimeReset: false,
           eventClick: this.openEvent,
-          eventChange: this.eventChange,
+          eventChange: this.active_account && this.eventChange,
           selectable: true,
           select: (data) => {
             this.isProvider && this.handleDateClick({
@@ -484,10 +577,10 @@
         rules: {
           start_date: [{ validator: (rule, value, callback) => {
             if (value === '' || !value) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               if (this.eventDuration <= 0) {
-                callback(new Error('No se puede crear una cita sin duracion'))
+                callback(new Error('No se puede crear una cita sin duración'))
               } else {
                 callback();
               }
@@ -495,10 +588,10 @@
           }, trigger: 'change' }],
           end_date: [{ validator: (rule, value, callback) => {
             if (value === '' || !value) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               if (this.eventDuration <= 0) {
-                callback(new Error('No se puede crear una cita sin duracion'))
+                callback(new Error('No se puede crear una cita sin duración'))
               } else {
                 callback();
               }
@@ -506,14 +599,14 @@
           }, trigger: 'change' }],
           payment_method: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && !this.modal.data.id && this.modal.data.order_product_id) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           payment_status: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && !this.modal.data.id && this.modal.data.payment_method) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
@@ -521,7 +614,7 @@
           phone: [{ validator: (rule, value, callback) => {
             const _parsedValue = value && value.replace(/[^0-9.]/g, '')
             if ((value === '' || !value) && this.modal.newClient) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else if (`${_parsedValue}`.length < 10) { 
               callback(new Error('Favor de caputurar un teléfono valido'))
             } else {
@@ -530,14 +623,14 @@
           }, trigger: 'change' }],
           name: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && this.modal.newClient) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
           email:  [{ validator: (rule, value, callback) => {
             if ((value === '' || !value) && this.modal.newClient) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else if (!this.validEmail(value)) {
               callback(new Error('Favor de caputurar un email valido'))
             } else {
@@ -548,13 +641,20 @@
         review_rules: {
           comment: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
           }, trigger: 'change' }],
         },
-        phoneAlt: ''
+        pagination: {
+          onChange: page => {
+            this.$refs.Apptlist.$el.scrollIntoView({ behavior: "smooth" })
+          },
+          pageSize: 10,
+        },
+        phoneAlt: '',
+        searchEhrPatient: false
       }
     },
     watch: {
@@ -597,10 +697,10 @@
           if (this.user.role.is_provider) {
             return this.user.appointments_provider.map(a => Object({
               id: a.id,
-              title: ((a.client && `Cliente: ${a.client.first_name} ${a.client.last_name}`) || a.notes || 'Sin informacion') + ((a.item && a.item.name) || ''), 
+              title: ((a.client && `Cliente: ${a.client.first_name} ${a.client.last_name} `) || a.notes || 'Sin informacion') + ((a.item && a.item.name) || ''), 
               start: a.start_date, 
               end: a.end_date, 
-              editable: true,
+              editable: this.active_account && this.isProvider,
               backgroundColor: a.status.color,
               borderColor: a.status.color,
               extendedProps: { ... a }
@@ -668,7 +768,7 @@
       },
       orderPaid() {
         if (this.modal.open) {
-          return this.modal.data.order.payment_orders.status == 'paid'
+          return this.modal.data.order.payment_orders && this.modal.data.order.payment_orders.status == 'paid'
         } else {
           return this.viewModal.data.order.payment_orders.status == 'paid'
         }
@@ -684,6 +784,9 @@
       },
       isClient() {
         return this.user.role && this.user.role.is_client
+      },
+      active_account() {
+        return this.user.active_account && this.$moment.utc(this.user.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.user.active_account))
       }
     },
     methods: {
@@ -741,9 +844,11 @@
         this.showModal()
       },
       openEvent({ event }) {
-        if (this.isProvider) {
+        if (this.isProvider && this.active_account) {
           this.editEvent({ event })
         } else if (this.isClient) {
+          this.viewEvent({ event })
+        } else {
           this.viewEvent({ event })
         }
       },
@@ -762,7 +867,7 @@
               }
               this.$notification.success({
                 message: 'Datos Actualizados',
-                description: this.$moment(event.start).isSame(oldEvent.start) ? 'La duracion ha sido actualizada' : 'La hora de inicio ha sido actualizada'
+                description: this.$moment(event.start).isSame(oldEvent.start) ? 'La duración ha sido actualizada' : 'La hora de inicio ha sido actualizada'
               })
             }).catch((error) => {
 
@@ -848,7 +953,7 @@
               updateAppointment({ ..._event.extendedProps }, this.hasToken, _.differenceBy(this.modal.data.postFiles, [{ 'status': 'error' }], 'status') || []).then((response) => {
                 
                 this.$notification.success({
-                  mesage: 'Datos actualizados',
+                  message: 'Datos actualizados',
                   description: 'Detalles de la cita actualizados' 
                 });
 
@@ -1044,15 +1149,15 @@
       },
       handleDelete() {
         this.$confirm({
-          title: 'Desea borrar la cita seleccionada?',
-          content: 'Al aceptar esta ventana no se podra recuperar la informacion de la cita eliminada',
+          title: '¿Desea borrar la cita seleccionada?',
+          content: 'Al aceptar esta ventana no se podrá recuperar la información de la cita eliminada',
           okText: 'Aceptar',
           cancelText: 'Cancelar',
           onOk: (close) => {
             return deleteAppointment(this.modal.data, this.hasToken).then((response) => {
               this.$notification.success({
                 message: 'Cita eliminada',
-                description: 'El espacio ya esta disponible para mas citas' 
+                description: 'El espacio ya esta disponible para más citas' 
               });
 
               let _event = this.$refs.fullCalendar.getApi().getEventById(this.modal.data.id)
@@ -1070,15 +1175,15 @@
       handleRemove(file) {
         if (file.user_id) {
           this.$confirm({
-            title: 'Desea borrar el archivo seleccionado?',
-            content: 'Al aceptar esta ventana no se podra recuperar el archivo eliminado',
+            title: '¿Desea borrar el archivo seleccionado?',
+            content: 'Al aceptar esta ventana no se podrá recuperar el archivo eliminado',
             okText: 'Aceptar',
             cancelText: 'Cancelar',
             onOk: (close) => {
               return deleteFile(file.user_id, file.uid, this.hasToken).then((response) => {
                 this.$notification.success({
                   message: 'Archivo eliminado',
-                  description: 'El archivo ya no estara disponble en el sistema'
+                  description: 'El archivo ya no estará disponible en el sistema'
                 });
                 
                 _.remove(this.modal.data.oldPostFiles, { uid: file.uid })
@@ -1158,6 +1263,24 @@
         }
 
         return postOrder(data)
+      },
+      openEHR () {
+        this.searchEhrPatient = true
+        getClient(this.modal.data.client.id, this.hasToken).then(response => response.data).then((response) => {
+          this.searchEhrPatient = false
+          this.$router.push({ 
+            name: 'profile-patients-ehr',
+            params: {
+              id: response.data.id,
+              client: { ...response.data },
+              provider: this.getUser,
+              appointment: this.modal.data,
+              ehr: this.modal.data.ehr
+            }
+          })
+        }).catch((err) => {
+          this.searchEhrPatient = false
+        })
       }
     },
     mounted() {
@@ -1194,5 +1317,15 @@
   }
   .ant-modal {
     max-width: 95%;
+    .ant-modal-body {
+    }
+      *::after {
+        display: none; 
+      }
+  }
+  .calendar-page {
+    *::after {
+      display: none; 
+    }
   }
 </style>

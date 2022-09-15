@@ -141,6 +141,39 @@ export default [
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-settings')
           },
           {
+<<<<<<< HEAD
+=======
+            path: 'files.html',
+            name: 'profile-files',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-files')
+          },
+          {
+            path: 'patient-ehr.html',
+            name: 'profile-ehr',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-ehr')
+          },
+          {
+            path: 'appointments.html',
+            name: 'profile-appointments',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-appointments')
+          },
+          {
+            path: 'patients.html',
+            name: 'profile-patients',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-patients')
+          },
+          {
+            path: 'patients/:id',
+            name: 'profile-patients-edit',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-patients-edit')
+          },
+          {
+            path: 'patients/:id/consulta',
+            name: 'profile-patients-ehr',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-patients-ehr')
+          },
+          {
+>>>>>>> mydoctors
             path: 'orders.html',
             name: 'profile-orders',
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-orders')

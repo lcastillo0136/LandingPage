@@ -13,13 +13,13 @@
           
           <div class="box_general_2 add_bottom_45">
             <div class="main_title_4">
-              <h3><i class="icon_circle-slelected"></i>Elije tu consulta</h3>
+              <h3><i class="icon_circle-slelected"></i>Elige tu consulta</h3>
             </div>
 
-            <ServiceChoosen :multiple="doctor.multiple_available" :services="doctor.services" @onSelectService="onSelectService"></ServiceChoosen>
+            <ServiceChoosen :loading="loading" :multiple="doctor.multiple_available" :services="doctor.services" @onSelectService="onSelectService"></ServiceChoosen>
             
             <div class="main_title_4 fadeIn animated" v-if="hasServices">
-              <h3><i class="icon_circle-slelected"></i>Elije tu horario</h3>
+              <h3><i class="icon_circle-slelected"></i>Elige tu horario</h3>
             </div>
             
             <BookingCalendar 
@@ -46,12 +46,12 @@
           
           <div class="tabs_styled_2">
             <a-tabs>
-              <a-tab-pane tab="Informacion General" key="1">
+              <a-tab-pane tab="Información General" key="1">
                 <template v-if="!loading">
                   <p class="lead add_bottom_30" v-if="doctor.short_description" v-html="doctor.short_description"></p>
                   <div class="indent_title_in" v-if="skills.length > 0 || doctor.description">
                     <i class="pe-7s-user"></i>
-                    <h3>Biografia</h3>
+                    <h3>Biografía</h3>
                     <p v-if="doctor.quote">{{ doctor.quote }}.</p>
                   </div>
                   <div class="wrapper_indent" v-if="skills.length > 0 || doctor.description">
@@ -120,7 +120,7 @@
                   </p>
                   <div class="indent_title_in">
                     <i class="pe-7s-user"></i>
-                    <h3>Biografia</h3>
+                    <h3>Biografía</h3>
                     <p><square-skeleton :count="1" :boxProperties="{ height: '16px' }"></square-skeleton></p>
 
                   </div>
@@ -392,7 +392,12 @@
       onSelectDate (value) {
         this.booking.date = value
         this.getDoctorBooking(this.$route.params.id, this.booking.date).then(() => {
-          this.availableTimes = this.availableDates.find(d => d.date === value).times
+          this.availableTimes = this.availableDates.find(d => d.date === value) ? this.availableDates.find(d => d.date === value).times : []
+
+          if (this.availableTimes.length <= 0) {
+            this.booking.time = false
+            // this.booking.date = ''
+          }
         })
       },
       onSelectTime (value) {
@@ -430,7 +435,10 @@
         return (this.countStars(star) * 100) / this.reviews.length
       },
       getDoctorInfo (id) {
-        return getDoctorInfo({id}).then((response) => response.data)
+        return getDoctorInfo({
+          id, 
+          fingerprint: this.finger
+        }).then((response) => response.data)
           .then((response) => {
             const doctor = response.data
             if (doctor) {
@@ -470,7 +478,8 @@
           tz: Intl.DateTimeFormat().resolvedOptions().timeZone
         }).then((response) => response.data)
           .then((response) => {
-            this.availableDates = response.data.dates
+            this.availableDates = response.data.dates.filter((f) => f.times.filter(t => t.available).length > 0)
+
             this.loadingBook = false
             return response
           })
@@ -483,19 +492,19 @@
 
       if (this.$route.params.id) {
         this.loading = true;
-        this.getDoctorInfo(this.$route.params.id).then((d) => {
-          document.title = `Informacion ${d.name}`;
-          this.loading = false;
-          // this.getDoctorBooking(this.$route.params.id, this.startDate)
-        })
+        this.$fingerprint.get((components) => {
+          this.finger = this.$fingerprint.x64hash128(components.map((pair) => { return pair.value }).join(), 31)
+        
+          this.getDoctorInfo(this.$route.params.id).then((d) => {
+            document.title = `Informacion ${d.name}`;
+            this.loading = false;
+            // this.getDoctorBooking(this.$route.params.id, this.startDate)
+          })
+        });
       } else {
         this.$router.back()
       }
 
-      this.$fingerprint.get((components) => {
-        this.finger = this.$fingerprint.x64hash128(components.map((pair) => { return pair.value }).join(), 31)
-        console.log(this.finger)
-      });
     },
     beforeDestroy () {
     }

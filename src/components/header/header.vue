@@ -81,7 +81,7 @@
         //   callback: () => {
         //     this.handleLogOut()
         //   },
-        //   text: 'Cerrar sesion'
+        //   text: 'Cerrar sesión'
         // } : {
         //   url: { name: 'login' },
         //   text: this.$t('header.menu.login')

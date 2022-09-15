@@ -18,7 +18,7 @@
             <label>Número de tarjeta</label>
             <input type="text" class="form-control" placeholder="xxxx - xxxx - xxxx - xxxx" v-model="cardAlt" @keyup="cardFormat" @keypress="preventNumericInput($event)" :disabled="loading">
             <div class="error_message" v-if="!isValidCard && cardAlt">
-              La tarjeta no es valida
+              La tarjeta no es válida
             </div>
           </div>
         </div>
@@ -38,7 +38,7 @@
                 <input type="text" class="form-control" placeholder="MM / YY" v-model="expirationAlt" @keyup="expirationFormat" @keypress="preventNumericInput($event)" :disabled="loading">
               </div>
               <div class="error_message" v-if="!isValidExpiration && expirationAlt">
-                Fecha de expiracion no valida
+                Fecha de expiración no válida
               </div>
             </div>
           </div>
@@ -51,7 +51,7 @@
                 <div class="form-group">
                   <input type="text" class="form-control" placeholder="CCV" v-model="account.ccv" @keypress="preventNumericInput($event)" :disabled="loading">
                   <div class="error_message" v-if="!isValidCCV && account.ccv">
-                    El codigo no es valido
+                    El código no es válido
                   </div>
                 </div>
               </div>
@@ -65,12 +65,12 @@
     </template>
     <template v-if="account.methodSelected == 2">
       <p class="add_top_20">
-        <small>Al finalizar el flujo se generara el folio a pagar en alguna sucursal de la cadena OXXO</small>
+        <small>Al finalizar el flujo se generará el folio a pagar en alguna sucursal de la cadena OXXO</small>
       </p>
     </template>
     <template v-if="account.methodSelected == 3">
       <p class="add_top_20">
-        <small>Al finalizar el flujo se generara la orden y cita lista para pagar en las instalaciones</small>
+        <small>Al finalizar el flujo se generará la orden y cita lista para pagar en las instalaciones</small>
       </p>
     </template>
     <template v-if="account.methodSelected == 4">

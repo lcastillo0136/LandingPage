@@ -51,7 +51,10 @@ export const getCitiesList = (filter) => {
 export const getDoctorInfo = (data) => {
   return axios.request({
     url: `/doctors/${data.id}`,
-    method: 'get'
+    method: 'get',
+    params: {
+      fingerprint: data.fingerprint
+    },
   })
 }
 
@@ -127,5 +130,6 @@ export const getProduct = (key) => {
     baseURL: baseUrl.replace('/api/', '/web/'),
     url: `/products/${key}`,
     method: 'get'
-  })
+  })    
 }
+

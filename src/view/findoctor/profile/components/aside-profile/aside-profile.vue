@@ -3,17 +3,75 @@
     <figure v-if="avatar">
       <img :src="avatar" alt="" class="img-fluid" v-if="isImage">
       <img :src="avatarFile" alt="" class="img-fluid" v-else>
+      <template v-if="isProvider">
+        <a-dropdown :trigger="['contextmenu']">
+          <div class="d-none d-lg-inline">
+            <vue-qr ref="QRCode" :text="userLink" :size="75" class="qr-image" :margin="5" v-clipboard:copy="userLink" v-clipboard:success="copyLink"></vue-qr>
+          </div>
+          <a-menu slot="overlay">
+            <a-menu-item key="copy" v-clipboard:copy="userLink" v-clipboard:success="copyLink">
+              Copiar enlace
+            </a-menu-item>
+            <a-menu-item key="share">
+              <navigator-share :url="userLink" :title="user.full_name" :text="user.full_name">
+                <template #clickable>
+                  Compartir Enlace
+                </template>
+              </navigator-share>
+            </a-menu-item>
+            <a-menu-item key="qr" @click="downloadQR" :loading="downloadingQR">
+              Descargar QR
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </template>
     </figure>
-    <template v-if="user && user.role && user.role.is_provider">
+    <template v-if="isProvider">
+      <a-dropdown :trigger="['contextmenu']">
+        <div class="d-lg-none">
+          <vue-qr ref="QRCode" :text="userLink" :size="200" class="qr-image" :margin="5" v-clipboard:copy="userLink" v-clipboard:success="copyLink"></vue-qr>
+        </div>
+        <a-menu slot="overlay">
+          <a-menu-item key="copy" v-clipboard:copy="userLink" v-clipboard:success="copyLink">
+            Copiar enlace
+          </a-menu-item>
+          <a-menu-item key="share">
+            <navigator-share :url="userLink" :title="user.full_name">
+              <template #clickable>
+                Compartir Enlace
+              </template>
+            </navigator-share>
+          </a-menu-item>
+          <a-menu-item key="qr" @click="downloadQR" :loading="downloadingQR">
+            Descargar QR
+          </a-menu-item>
+        </a-menu>
+      </a-dropdown>
+    </template>
+    <template v-if="isProvider">
       <small v-if="user.especialidad">
         {{ user.especialidad }}
       </small>
     </template>
     <h1 v-if="user && user.first_name">{{ user.first_name }}</h1>
-
+    <div v-if="isProvider" class="pb-3">
+      <template v-if="active_account">
+        <a-tag color="green">
+          Perfil activo 
+        </a-tag>
+      </template>
+      <template v-else>
+        <a-tag color="red">
+          Perfil desactivado
+        </a-tag>
+        <small>
+          <router-link :to="{ name: 'profile-payment' }">Ir a pagar</router-link>
+        </small>
+      </template>
+    </div>
     <!-- <ul class="contacts">
-      <li><h6>Direccion</h6>{{ getUser.address.street }} {{ getUser.address.suburb }}, {{ getUser.address.city}}</li>
-      <li v-if="getUser.phone"><h6>Telefono</h6><a :href="'tel:' + getUser.phone ">{{ getUser.phone | phone }}</a></li>
+      <li><h6>Dirección</h6>{{ getUser.address.street }} {{ getUser.address.suburb }}, {{ getUser.address.city}}</li>
+      <li v-if="getUser.phone"><h6>Teléfono</h6><a :href="'tel:' + getUser.phone ">{{ getUser.phone | phone }}</a></li>
     </ul> -->
     <ul class="contacts">
       <li>
@@ -36,16 +94,22 @@
       </li>
       <li>
         <router-link :to="{ name: 'profile-orders' }">
-          <span>Ordenes</span>
+          <span>Órdenes</span>
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li>
-      <!-- <li>
+      <li v-if="!isProvider">
         <router-link :to="{ name: 'profile-files' }">
           <span>Archivos</span>
           <i class="arrow_carrot-right"></i>
         </router-link>
-      </li> -->
+      </li>
+      <li v-if="!isProvider">
+        <router-link :to="{ name: 'profile-ehr' }">
+          <span>Historial Médico</span>
+          <i class="arrow_carrot-right"></i>
+        </router-link>
+      </li>
       <li v-if="isProvider">
         <router-link :to="{ name: 'profile-reviews' }">
           <span>Reseñas</span>
@@ -59,10 +123,22 @@
         </router-link>
       </li>
     </ul>
+    <template v-if="isProvider && active_account">
+      <b class=" d-block">
+        Perfil activo hasta el <br>
+        {{ user.active_account | moment('dddd DD, MMM YYYY hh:mm a') }}
+      </b>
+      <a-divider></a-divider>
+      <b>
+        Quedan {{ daysRemaining }} dias
+      </b>
+    </template>
   </div>
 </template>
 <script>
   import { mapGetters } from 'vuex'
+  import { getServerFile2, getServerFile } from '@/libs/util'
+  import NavigatorShare from 'vue-navigator-share'
 
   export default {
     name: 'AsideProfile',
@@ -74,10 +150,14 @@
         }
       }
     },
+    components: {
+      NavigatorShare
+    },
     data() {
       return {
         visible: false,
-        avatarFile: ''
+        avatarFile: '',
+        downloadingQR: false
       }
     },
     watch:{
@@ -119,11 +199,51 @@
       },
       isClient() {
         return this.user.role && this.user.role.is_client
+      },
+      userLink() {
+        return getServerFile2(`p/${this.user.uuid_key}.html`)
+      },
+      appImage () {
+        return getServerFile('public/company/company_logo.png')
+      },
+      active_account() {
+        return this.user.active_account && this.$moment.utc(this.user.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.user.active_account))
+      },
+      daysRemaining() {
+        return (this.active_account ? this.$moment.utc(this.user.active_account).diff(this.$moment(), 'days') : 0)
       }
     },
     methods: {
       preventClick(arg1, arg2, arg3) {
         
+      },
+      downloadQR () {
+        this.downloadingQR = true
+        this.saveAs(this.$refs.QRCode.$el.src, 'QR.png');
+      },
+      copyLink() {
+        this.$notification.success({
+          message: 'Enlace copiado',
+          description: 'Ya lo puedes compartir con tus contactos'
+        })
+      },
+      saveAs(uri, filename) {
+        var link = document.createElement('a');
+
+        if (typeof link.download === 'string') {
+          link.href = encodeURI(uri);
+          link.download = filename;
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setTimeout(() => {
+            this.downloadingQR = false
+          }, 1000)
+        } else {
+          window.open(uri);
+          this.downloadingQR = false
+        }
       }
     },
     mounted() {
@@ -137,6 +257,7 @@
       figure {
         margin: -1px -26px 12px;
         position: relative;
+        overflow: visible;
         button {
           border-radius: 50%;
           background: var(--orange);
@@ -155,6 +276,16 @@
           align-items: center;
           box-shadow: 0px 0px 8px -3px #424242;
           outline: none;
+        }
+        .qr-image {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          cursor: pointer;
+          transition: all 250ms linear;
+          &:hover {
+            box-shadow: 0px 0px 6px 2px #00000036;
+          }
         }
       }
 

@@ -7,7 +7,7 @@ import Moment from 'vue-moment'
 import VueClipboard from 'vue-clipboard2'
 import VueQr from 'vue-qr'
 
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import { BootstrapVue, BootstrapVueIcons, IconsPlugin } from 'bootstrap-vue'
 import * as Antd from 'ant-design-vue'
 
 const moment = require('moment')
@@ -26,7 +26,11 @@ import config from '@/config'
 import * as Fingerprint2 from 'fingerprintjs2'
 Vue.prototype.$fingerprint = Fingerprint2;
 
+
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'ant-design-vue/lib/back-top/style/index.css';
 import 'ant-design-vue/lib/form/style/index.css';
@@ -45,6 +49,11 @@ import 'ant-design-vue/lib/card/style/index.css';
 import 'ant-design-vue/lib/switch/style/index.css';
 import 'ant-design-vue/lib/popover/style/index.css';
 import 'ant-design-vue/lib/modal/style/index.css';
+import 'ant-design-vue/lib/drawer/style/index.css';
+import 'ant-design-vue/lib/menu/style/index.css';
+import 'ant-design-vue/lib/tabs/style/index.css';
+import '@/assets/css/ant-design-drawer.css'
+import '@/assets/css/ant-design-menu.css'
 
 import '@/assets/css/style.css';
 import '@/assets/scss/main.scss'
@@ -53,6 +62,8 @@ Vue.use(VueQr)
 Vue.use(VueClipboard)
 Vue.use(VueSweetalert2);
 Vue.use(PerfectScrollbar)
+Vue.use(BootstrapVue)
+Vue.use(BootstrapVueIcons)
 
 Vue.use(Antd)
 Vue.use(VueWow)
@@ -170,6 +181,20 @@ Vue.filter('paymentStatus', function (s) {
   }[s]
 })
 
+Vue.filter('prettyBytes', function (bytes, decimals, kib, maxunit) {
+  kib = kib || false
+  if (bytes === 0) return '0 Bytes'
+  if (isNaN(parseFloat(bytes)) && !isFinite(bytes)) return ''
+  const k = kib ? 1024 : 1000
+  const dm = decimals != null && !isNaN(decimals) && decimals >= 0 ? decimals : 2
+  const sizes = kib ? ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB', 'BiB'] : ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB', 'BB']
+  var i = Math.floor(Math.log(bytes) / Math.log(k))
+  if (maxunit != undefined) {
+    const index = sizes.indexOf(maxunit)
+    if (index != -1) i = index
+  }
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+ })
 new Vue({
   el: '#app',
   router,

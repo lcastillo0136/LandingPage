@@ -11,7 +11,7 @@
         <div class="col-md-6 col-sm-6">
           <div class="form-group">
             <label>Apellido(s)</label>
-            <input type="text" class="form-control" placeholder="Tu apelido" v-model="client.lastName" autocomplete="chrome-off" :disabled="loading">
+            <input type="text" class="form-control" placeholder="Tu apellido" v-model="client.lastName" autocomplete="chrome-off" :disabled="loading">
           </div>
         </div>
       </div>

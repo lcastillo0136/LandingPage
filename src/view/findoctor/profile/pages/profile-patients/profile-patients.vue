@@ -1,17 +1,69 @@
 <template>
-  <div class="box_general_2">
-    <h4>Pacientes</h4>
-    <a-table :columns="columns" :data-source="clients" class="components-table-demo-nested" rowKey="id" bordered>
-      <a slot="name" slot-scope="record">{{ record.first_name }} {{ record.last_name }}</a>
-      <a slot="phone" slot-scope="record">{{ record.phone | phone }}</a>
+  <div class="box_general_2 mt-3 mt-md-0 ">
+    <h4>
+      Pacientes
+    </h4>
+    <small v-if="!active_account" class="text-danger mb-1 d-block">
+      * Obten todos los beneficios, como historial de consultas, activando tu cuenta <router-link :to="{ name: 'profile-payment' }" class="btn-link focus">aqui</router-link>.
+    </small>
+    <a-table :columns="columns" :data-source="clients" class="table-responsive patients-table" rowKey="id" bordered :loading="loading">
+      <div slot="name" slot-scope="record" >
+        <a>
+          {{ record.first_name }} {{ record.last_name }}
+        </a>
+        <div class="d-flex flex-column gap-1 d-md-none mt-2">
+          <a :href="`mailto:${record.email}`" style="white-space: pre-wrap;max-width: 120px;" class="small">
+            {{ record.email }}
+          </a>
+          <a :href="`tel:${record.phone}`" style="white-space: pre-wrap;max-width: 120px;" class="mt-1 small">
+            {{ record.phone | phone }}
+          </a>
+          <a-tag v-if="record.next_appointment">
+            {{ record.next_appointment.start_date | moment('ddd DD/MM/YYYY') }}<br>
+            {{ record.next_appointment.start_date | moment('hh:mm a') }}
+          </a-tag>
+        </div>
+      </div>
+      <small slot="contact" slot-scope="record">
+        <a :href="`mailto:${record.email}`">{{ record.email }}</a><br>
+        <a :href="`tel:${record.phone}`">{{ record.phone | phone }}</a>
+      </small>
+      <small slot="appointments" slot-scope="record" class="text-right d-block">
+        <template v-if="record.next_appointment">
+          {{ record.next_appointment.start_date | moment('dddd DD/MM/YYYY') }}<br>
+          {{ record.next_appointment.start_date | moment('hh:mm a') }}
+        </template>
+        <template v-else>
+          <span class="text-info">---------------</span>
+        </template>
+      </small>
+      <div slot="actions" slot-scope="record" >
+        <a-dropdown placement="bottomRight">
+          <a-menu slot="overlay">
+            <a-menu-item key="1" @click="viewProfile(record.id)">
+              Ver detalles
+            </a-menu-item>
+            <a-menu-item key="2" @click="ehrProfile(record.id)" :disabled="!active_account">
+              Iniciar Consulta
+            </a-menu-item>
+          </a-menu>
+          <a-button shape="circle" type="dashed" >
+            <b-icon-three-dots-vertical></b-icon-three-dots-vertical>
+          </a-button>
+        </a-dropdown>
+      </div>
     </a-table>
   </div>
 </template>
 <script>
+  import { getClient } from '@/api/user'
+  import { BIconThreeDotsVertical } from 'bootstrap-vue'
+
   const columns = [
     { title: 'Nombre', key: 'name', scopedSlots: { customRender: 'name' } },
-    { title: 'Email', dataIndex: 'email', key: 'email' },
-    { title: 'Telefono', key: 'phone', scopedSlots: { customRender: 'phone' }  }
+    { title: 'Contacto', key: 'email', scopedSlots: { customRender: 'contact' }, class: 'd-none d-md-table-cell' },
+    { title: 'Prox. Cita', key: 'appointments', scopedSlots: { customRender: 'appointments' }, class: 'd-none d-md-table-cell' },
+    { title: '', key: 'actions', scopedSlots: { customRender: 'actions' } }
   ];
 
   import { mapGetters } from 'vuex'
@@ -19,13 +71,15 @@
   export default {
     data() {
       return {
-        columns
+        columns,
+        loading: false
       };
     },
     name: 'ProfilePatients',
     watch: {
     },
     components: {
+      BIconThreeDotsVertical
     },
     computed: {
       ...mapGetters([
@@ -35,9 +89,48 @@
       ]),
       clients() {
         return this.getUser.clients
+      },
+      isProvider() {
+        return this.getUser.role && this.getUser.role.is_provider
+      },
+      isClient() {
+        return this.getUser.role && this.getUser.role.is_client
+      },
+      active_account() {
+        return this.getUser.active_account && this.$moment.utc(this.getUser.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.getUser.active_account))
+      }
+    },
+    methods: {
+      viewProfile (client_id) {
+        this.$router.push({ 
+          name: 'profile-patients-edit',
+          params: { id: client_id }
+        })
+      },
+      ehrProfile (client_id) {
+        this.loading = true
+        getClient(client_id, this.hasToken).then(response => response.data).then((response) => {
+          this.loading = false
+          this.$router.push({ 
+            name: 'profile-patients-ehr',
+            params: { 
+              id: response.data.id,
+              client: { ...response.data },
+              provider: this.getUser
+            }
+          })
+        })
       }
     },
     mounted() {
     }
   }
 </script>
+
+<style lang="scss">
+  .patients-table {
+    a {
+      color: #639bbe
+    }
+  }
+</style>

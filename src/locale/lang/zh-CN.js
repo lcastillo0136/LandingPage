@@ -686,7 +686,16 @@ export default {
     title: 'Schedule appontment & payment'
   },
   profile: {
-    title: 'Profile'
+    title: 'Profile',
+    clients: {
+      genere: {
+        male: 'Male',
+        female: 'Female',
+        other: 'Other',
+        'not sure': 'Not sure',
+        'rather not say': 'Rather not say'
+      }
+    }
   },
   payment_status : {
     CANCELED: 'Cancelled',

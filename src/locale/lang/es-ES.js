@@ -9,7 +9,7 @@ export default {
       max_limit: 'Se alcanzó el límite máximo de caracteres de la contraseña'
     },
     email: {
-      not_available: 'Correo electronico no disponible',
+      not_available: 'Correo electrónico no disponible',
       not_valid: 'Correo electrónico no valido'
     },
     too_many_request: 'Demasiadas solicitudes, por favor espere',
@@ -191,7 +191,7 @@ export default {
       name: 'Nombre(s)',
       last_name: 'Apellido(s)',
       email: 'Correo electrónico',
-      phone: 'Numero de telefono',
+      phone: 'Numero de teléfono',
       message: 'Hola doctor',
       submit: 'Enviar'
     },
@@ -599,11 +599,11 @@ export default {
     doctors: 'Doctores',
     clinic: 'Clinicas',
     specialization: 'Especialidad',
-    join_doctor: 'Unete como doctor',
+    join_doctor: 'Únete como doctor',
     download_app: 'Descarga a App',
     contact_us: 'Contacta con nosotros',
     follow_us: 'Siguenos',
-    terms_conditions: 'Terminos y Condiciónes',
+    terms_conditions: 'Términos y Condiciones',
     privacy: 'Privacidad'
   },
   header: {
@@ -661,7 +661,7 @@ export default {
     pacient: 'Pacientes',
     doctor: 'Doctores',
     nurse: 'Enfermeras',
-    clinic: 'Clinicas',
+    clinic: 'Clínicas',
     client: 'Clientes',
     customer: 'Comensales',
     provider: 'Proveedores',
@@ -674,16 +674,25 @@ export default {
     best_rated: 'Mejor Puntuación', 
     oldest: 'Por Edad ↑', 
     youngest: 'Por Edad ↓',
-    most_viewed: 'Mas vistos'
+    most_viewed: 'Más vistos'
   },
   details_page: {
-    title: 'Informacion medica'
+    title: 'Información médica'
   },
   booking_page: {
     title: 'Agenda y pago'
   },
   profile: {
-    title: 'Perfil'
+    title: 'Perfil',
+    clients: {
+      genere: {
+        male: 'Masculino',
+        female: 'Femenino',
+        other: 'Otro',
+        'not sure': 'No estoy seguro',
+        'rather not say': 'Prefiero no decir',
+      }
+    }
   },
   payment_status : {
     CANCELED: 'Cancelado',
@@ -698,8 +707,8 @@ export default {
   appointment_status: {
     SCHEDULED: 'Agendado',
     NO_SHOW: 'No llego',
-    PENDING_APPROVAL: 'Pendiente de aprovación',
-    REQUEST_EXPIRED: 'Peticion expirada',
+    PENDING_APPROVAL: 'Pendiente de aprobación',
+    REQUEST_EXPIRED: 'Petición expirada',
     NEW_TIME_PROPOSED: 'Reagenda propuesta',
     PENDING_RESCHEDULE: 'Reagenda pendiente',
   },

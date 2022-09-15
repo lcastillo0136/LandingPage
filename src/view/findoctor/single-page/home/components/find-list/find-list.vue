@@ -1,8 +1,8 @@
 <template>  
   <div class="container margin_120_95">
     <div class="main_title">
-      <h2>Encuentra a tu medico</h2>
-      <p>Contamos con filtros por ubicacion o especialidad.</p>
+      <h2>Encuentra a tu médico</h2>
+      <p>Contamos con filtros por ubicación o especialidad.</p>
     </div>
     <div class="row justify-content-center">
       <div class="col-xl-4 col-lg-5 col-md-6">
@@ -13,7 +13,7 @@
           </div>
           <ul>
             <li v-for="(zone, zone_i) in lists.zones" :key="zone_i"><router-link :to="{ name: 'list-page', params: { layout: 'map', search: zone.name }}"><strong>{{ zone.total }}</strong>{{ zone.name }}</router-link></li>
-            <li><router-link :to="{ name: 'list-page', params: { layout: 'map' }}">Mas...</router-link></li>
+            <li><router-link :to="{ name: 'list-page', params: { layout: 'map' }}">Más...</router-link></li>
           </ul>
         </div>
       </div>
@@ -25,7 +25,7 @@
           </div>
           <ul>
             <li v-for="(type, type_i) in lists.types" :key="type_i"><router-link :to="{ name: 'list-page', params: { layout: 'list', search: type.name }}"><strong>{{ type.total }}</strong>{{ type.name }}</router-link></li>
-            <li><router-link :to="{ name: 'list-page', params: { layout: 'list' }}">Mas....</router-link></li>
+            <li><router-link :to="{ name: 'list-page', params: { layout: 'list' }}">Más....</router-link></li>
           </ul>
         </div>
       </div>

@@ -42,9 +42,9 @@
 
                 <div class="invoice-details">
                   <div>
-                    <div>Numero de orden</div>
+                    <div>Número de orden</div>
                     <div><label>{{ order_key }}</label></div>
-                    <div><label>Fecha de emision: </label> {{ order.created_at | moment('DD MMM YYYY') }}</div>
+                    <div><label>Fecha de emisión: </label> {{ order.created_at | moment('DD MMM YYYY') }}</div>
                   </div>
                   <div class="text-right">
                     <div>Facturado a</div>
@@ -77,7 +77,7 @@
                       {{ `${record.date} ${record.time}` | ServerToDate('DD/MM/YYYY hh:mm a') }}
                     </div>
                     <div slot="total" slot-scope="record" class="text-right data-record">
-                      {{ record.precio_venta | currency }}
+                      {{ record.precio_venta | currency }} <small>{{ appCurrency }}</small>
                     </div>
                   </a-table>
 
@@ -86,7 +86,7 @@
                   <div class="invoice-payment">
                     <div class="invoice-payment-details">
                       <div class="invoice-payment-method">
-                        <div>Metodo de pago </div>
+                        <div>Método de pago </div>
                         <span>{{ order.method.name }}</span>
                       </div>
                       <div class="invoice-payment-status">
@@ -104,8 +104,8 @@
                         </div>
                         <div class="invoice-payment-oxxo-expired">
                           <div>Caducidad </div>
-                          <span>
-                            Pagar antes de {{ oxxoTime }} 
+                          <span v-if="!orderPaid && !oxxoExpired">
+                            Expira el {{ oxxoTime }} <b>{{ oxxoRemain }}</b>
                           </span>
                           <a-tag color="red" v-if="oxxoExpired && !orderPaid">Expirado</a-tag>
                           <a-tag color="green" v-if="orderPaid">Pagado</a-tag>
@@ -113,7 +113,7 @@
                         <div class="invoice-payment-oxxo-barcode">
                           <div>Codigo de barras </div>
                           <span>
-                            <img :src="order.payment_orders.metadata_object.barcode_url" />
+                            <img :src="oxxoBarcode" />
                           </span>
                         </div>
                       </template>
@@ -123,13 +123,17 @@
                         <span>Sub Total</span>
                         <span>{{ order.subtotal | currency }}</span>
                       </div>
-                      <div class="invoice-totals-discount">
+                      <div class="invoice-totals-subtotal small">
+                        <span>Iva 16%</span>
+                        <span>{{ order.total - order.subtotal | currency }}</span>
+                      </div>
+                      <div class="invoice-totals-discount small">
                         <div>Descuento</div>
                         <span>{{ order.discount | currency }}</span>
                       </div>
                       <div class="invoice-totals-grand">
                         <div>Cantidad Total</div>
-                        <span>{{ order.total | currency }}</span>
+                        <span>{{ order.total | currency }} <small>{{ appCurrency }}</small></span>
                       </div>
                     </div>
                   </div>
@@ -145,19 +149,23 @@
             <div class="invoice-client">
               <a-avatar :size="64" :src="order.client.avatar" />
               <div class="d-flex flex-column ">
-                <span class="font-weight-bold mb-2">{{ order.client | fullName }}</span>
-                <span>{{ order.client.email }}</span>
+                <span class="font-weight-bold">{{ order.client | fullName }}</span>
+                <span class="small">{{ order.client.email }}</span>
               </div>
             </div>
           </div>
           <div class="box_general_3 booking">
-            <h5 class="mb-4">Monto Total</h5>
+            <h5 class="mb-2">Monto Total</h5>
             <h2 class="mb-0">{{ order.total | currency }} <small>{{ appCurrency }}</small></h2>
           </div>
           <div style="gap: 16px;" class="d-flex flex-row justify-content-between d-print-none">
             <a-button size="large" style="flex: 1 1 auto;" @click="shareReport">Compartir</a-button>
             <a-button size="large" style="flex: 1 1 auto;" @click="generateReport">Descargar</a-button>
           </div>
+          <a-button size="large" class="w-100 mt-2" type="primary" @click.stop.prevent="navigateToHome">
+            <b-icon-arrow-left-short></b-icon-arrow-left-short>
+            Volver a inicio
+          </a-button>
         </aside>
         <!-- /asdide -->
       </div>
@@ -174,13 +182,16 @@
   import { sendInvoice } from '@/api/user'
   import { getServerFile } from '@/libs/util'
   import { mapGetters, mapMutations, mapActions } from 'vuex'
+  import { BIconArrowLeftShort } from 'bootstrap-vue'
+
   import moment from 'moment'
 
   export default {
     name: 'InvoicePage',
     components: {
       BreadCrumb,
-      VueHtml2pdf
+      VueHtml2pdf,
+      BIconArrowLeftShort
     },
     data () {
       return {
@@ -274,6 +285,12 @@
       oxxoTime() {
         return this.$moment.unix(this.orderOXXO.expires_at).format('DD/MM/YYYY hh:mm a')
       },
+      oxxoRemain() {
+        return this.$moment.unix(this.orderOXXO.expires_at).fromNow()
+      },
+      oxxoBarcode() {
+        return getServerFile(`files/${this.order.user_id}/barcodes/${this.orderOXXO.reference}.png`)
+      }
     },
     methods: {
       ...mapActions([
@@ -329,6 +346,9 @@
             }
           }
         });
+      },
+      navigateToHome () {
+        this.$router.replace({ name: 'home' })
       }
     },
     mounted() {
@@ -482,6 +502,43 @@
               span {
                 margin-left: 16px;
                 align-self: end;
+                font-weight: 400;
+                b {
+                  color: #bb5504;
+                  background-color: #ffde92;
+                  padding: 0px 10px;
+                  border-radius: 4px;
+                  font-weight: 700;
+                  font-size: 12px;
+                  margin-bottom: 4px;
+                }
+              }
+            }
+
+            &.invoice-payment-method {
+              flex-direction: column;
+              margin: 10px 0;
+
+              span {
+                margin-left: 16px;
+              }
+            }
+
+            &.invoice-payment-oxxo {
+              flex-direction: column;
+              margin: 10px 0;
+
+              span {
+                margin-left: 16px;
+              }
+            }
+
+            &.invoice-payment-status {
+              flex-direction: column;
+              margin: 10px 0;
+
+              span {
+                margin-left: 16px;
               }
             }
 
@@ -517,8 +574,9 @@
       flex-direction: row;
       align-content: center;
       align-items: center;
-      justify-content: space-around;
-      margin-top: 32px;
+      justify-content: flex-start;
+      margin-top: 15px;
+      gap: 5px;
     }
   @media print {
     header, #breadcrumb, footer, #toTop {

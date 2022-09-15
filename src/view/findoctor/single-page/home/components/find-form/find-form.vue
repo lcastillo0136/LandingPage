@@ -3,12 +3,12 @@
     <div class="content">
       <h3 :class="classOnload">¡ENCUENTRE UN MÉDICO!</h3>
       <p :class="classOnload">
-        Puedes realizar búsquedas por nombre, ubicacion o especialidad.
+        Puedes realizar búsquedas por nombre, ubicación o especialidad.
       </p>
       <form method="post" action="/findoctor/list.html" :class="classOnload">
         <div id="custom-search-input">
           <div class="input-group">
-            <input type="text" class=" search-query" placeholder="Ex. Name, Specialization ...." v-model="form.search">
+            <input type="text" class=" search-query" placeholder="Ej. Nombre, Especialización ...." v-model="form.search">
             <input type="submit" class="btn_search" value="Buscar" @click.stop.prevent="handleSearch">
           </div>
           <ul>

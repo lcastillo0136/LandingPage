@@ -6,6 +6,9 @@
         <label :for="'booking_service_' + service_i" class="css-label">{{ service.name }} <strong>{{ service.price | currency }}</strong></label>
       </div>
     </li>
+    <li v-if="services.length <= 0">
+      Sin servicios disponibles
+    </li>
   </ul>
   <skeleton-loading v-else>
     <ul class="treatments clearfix loading">
@@ -35,6 +38,10 @@
       multiple: {
         type: Boolean,
         default: true
+      },
+      loading: {
+        type: Boolean,
+        default: true
       }
     },
     computed: {
@@ -44,9 +51,9 @@
       serviceType () {
         return this.multiple ? 'checkbox' : 'radio'
       },
-      loading () {
-        return this.services.length <= 0
-      },
+      // loading () {
+      //   return this.doctor == null //this.services.length <= 0
+      // },
       services_filtered () {
         return this.services.filter(s => s.active)
       }

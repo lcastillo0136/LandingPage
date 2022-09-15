@@ -1,7 +1,10 @@
 <template>
-  <div class="box_general_2 reviews-container">
+  <div class="box_general_2 reviews-container mt-3 mt-lg-0">
     <h4>Reseñas</h4>
 
+    <small v-if="!active_account" class="text-danger mb-1 d-block">
+      * Obten todos los beneficios, como ocular reseñas, activando tu cuenta <router-link :to="{ name: 'profile-payment' }" class="btn-link focus">aqui</router-link>.
+    </small>
     <a-list item-layout="vertical" size="large" :data-source="reviews" :split="false">
       <a-list-item slot="renderItem" key="item.id" slot-scope="item, index" :class="{ 'disabled': item.banned }">
         <template slot="actions">
@@ -10,8 +13,8 @@
               <span class="arrow_back"></span>
             </a-button>
           </a-tooltip>
-          <span @click="toggleReview(item)">
-            <a-tooltip title="Ocultar" v-if="!item.banned">
+          <span @click="active_account && toggleReview(item)">
+            <a-tooltip :title="active_account ? 'Ocultar' : 'Activa tu cuenta para poder ocultar la reseña'" v-if="!item.banned">
               <a-icon type="eye" />
             </a-tooltip>
             <a-tooltip title="Mostrar" v-else>
@@ -93,7 +96,7 @@
         rules: {
           message: [{ validator: (rule, value, callback) => {
             if ((value === '' || !value)) {
-              callback(new Error('Favor de no dejar este campo vacio'));
+              callback(new Error('Favor de no dejar este campo vacío'));
             } else {
               callback();
             }
@@ -116,6 +119,9 @@
       ]),
       reviews() {
         return this.getUser.comments
+      },
+      active_account() {
+        return this.getUser.active_account && this.$moment.utc(this.getUser.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.getUser.active_account))
       }
     },
     methods: {
@@ -211,9 +217,30 @@
         right: 15px;
         top: 15px;
       }
-
+      .ant-list-item-main {
+        overflow-wrap: anywhere;
+      }
       &.disabled {
         opacity: 0.4;
+      }
+    }
+
+    @media (max-width: 426px) {
+      &.box_general_2, .box_general_2 {
+        padding: 16px;
+      }
+
+      .ant-list-item {
+        .ant-list-item-meta-title {
+          
+        }
+
+        .ant-list-item-extra {
+          position: relative;
+          top: inherit;
+          right: inherit;
+          margin: 0;
+        }
       }
     }
   }
