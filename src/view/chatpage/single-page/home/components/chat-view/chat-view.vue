@@ -189,14 +189,14 @@
           <div slot="title">
             Información de contacto
           </div>
-          <div class="profile-info p-3 mb-3">
+          <div class="profile-info p-3 mb-3" v-if="contact">
             <a-avatar :src="contact.avatar" class=""/>
             <span class="profile-name text-center"><b>{{ contact.full_name }}</b></span>
             <span class="profile-phone">
               <a :href="'tel:'+contact.phone" target="_blank">{{ contact.phone | phone }}</a>
             </span>
           </div>
-          <div class="profile-files p-3">
+          <div class="profile-files p-3" v-if="contact">
             <div class="d-flex justify-content-between">
               <span>Archivos</span>
               <span>{{ contact.files.length }}</span>

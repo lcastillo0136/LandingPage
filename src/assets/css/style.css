@@ -6,7 +6,7 @@ html {
     scroll-behavior: smooth;
 }
 
-@media (max-height:450px) {
+@media (max-height:420px) {
   .contacts-list-container { 
     display: none;
   }
