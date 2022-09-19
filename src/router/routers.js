@@ -141,8 +141,6 @@ export default [
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-settings')
           },
           {
-<<<<<<< HEAD
-=======
             path: 'files.html',
             name: 'profile-files',
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-files')
@@ -173,15 +171,9 @@ export default [
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-patients-ehr')
           },
           {
->>>>>>> mydoctors
             path: 'orders.html',
             name: 'profile-orders',
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-orders')
-          },
-          {
-            path: 'files.html',
-            name: 'profile-files',
-            component: () => import('@/view/' + config.theme + '/profile/pages/profile-files')
           },
           {
             path: 'reviews.html',

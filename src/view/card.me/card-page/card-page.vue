@@ -151,10 +151,10 @@
         
         <div class="quote">{{ card.quote }}</div>
 
-        <b-button variant="primary" @click.stop.prevent="saveContact" class="w-100">Guardar contacto</b-button>
+        <b-button variant="primary" @click.stop.prevent="saveContact" class="w-100" v-if="!isPreview">Guardar contacto</b-button>
         
       </b-card>
-      <footer class="powered-footer">
+      <footer class="powered-footer" v-if="!isPreview">
         <router-link :to="{ name: 'home' }">Onlycards</router-link> powered with <b-icon-heart></b-icon-heart> by <a target="_blank" href="https://www.zibasoft.com/">Zibasoft</a>
       </footer>
     </template>
@@ -209,6 +209,9 @@
         } else {
           return false
         }
+      },
+      isPreview() {
+        return this.$route.meta.preview
       }
     },
     methods: {
@@ -311,6 +314,34 @@
         } else {
           return false;
         }
+      },
+      loadInfo() {
+        getUserInfo(this.hasToken).then(({ data }) => data).then((result) => {
+          this.card = { ... result.data }
+          _.forEach([
+            'social_paypal', 
+            'social_tiktok', 
+            'social_youtube', 
+            'social_linkedin',
+            'social_instagram',
+            'social_twitter',
+            'social_facebook',
+            'personal_url'
+          ], (p) => {
+            this.card[p] = this.validateUrl(this.card[p]);
+          })
+
+          document.title = this.card.full_name
+          this.toDataURL(this.card.avatar, (dataUrl) => {
+            this.card.base_image = dataUrl
+          })
+        }).catch((err) => {
+          setTimeout(() => {
+            // this.$router.replace({ name: 'home' })
+          }, 10000)
+        }).then(() => {
+          this.ready = true
+        })
       }
     },
     created () {
@@ -322,7 +353,6 @@
     mounted() {
       if (this.$route.params && this.$route.params.uuid) {
         this.$fingerprint.get((components) => {
-          debugger
           let _fingerprint = this.$fingerprint.x64hash128(components.map((pair) => { return pair.value }).join(), 31)
           getCard({ 
             fingerprint: _fingerprint,
@@ -356,34 +386,7 @@
           })
         });
       } else if (this.$route.params && this.$route.meta.preview && this.hasToken) {
-        getUserInfo(this.hasToken).then(({ data }) => data).then((result) => {
-          this.card = { ... result.data }
-          
-
-          _.forEach([
-            'social_paypal', 
-            'social_tiktok', 
-            'social_youtube', 
-            'social_linkedin',
-            'social_instagram',
-            'social_twitter',
-            'social_facebook',
-            'personal_url'
-          ], (p) => {
-            this.card[p] = this.validateUrl(this.card[p]);
-          })
-
-          document.title = this.card.full_name
-          this.toDataURL(this.card.avatar, (dataUrl) => {
-            this.card.base_image = dataUrl
-          })
-        }).catch((err) => {
-          setTimeout(() => {
-            // this.$router.replace({ name: 'home' })
-          }, 10000)
-        }).then(() => {
-          this.ready = true
-        })
+        this.loadInfo()
       } else {
         this.$router.replace({ name: 'home' })
       }

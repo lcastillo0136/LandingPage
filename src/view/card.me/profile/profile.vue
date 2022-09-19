@@ -32,7 +32,7 @@
     <div class="container ">
       <div class="row">
         <aside class="col-xl-3 col-lg-4" id="sidebar">
-          <AsideProfile :user="profile"></AsideProfile>
+          <AsideProfile :user="profile" @preview="openPreview"></AsideProfile>
         </aside>
         
         <div class="col-xl-9 col-lg-8">
@@ -40,10 +40,21 @@
         </div>
       </div>
     </div>
+    <a-drawer
+      placement="right"
+      :width="320"
+      :closable="false"
+      :visible="visible_preview"
+      wrapClassName="preview-card"
+      @close="visible_preview = false"
+    >
+      <CardPage ref="previewCard"></CardPage>
+    </a-drawer>
   </main>
 </template>
 <script>
   import AsideProfile from './components/aside-profile'
+  import CardPage from '../card-page'
   import { getServerFile } from '@/libs/util'
   import { mapGetters, mapActions } from 'vuex'
 
@@ -51,6 +62,7 @@
     name: 'Profile',
     data () {
       return {
+        visible_preview: false,
         profile: {
           title: '',
           first_name: '',
@@ -106,7 +118,8 @@
       }
     },
     components: {
-      AsideProfile
+      AsideProfile,
+      CardPage
     },
     computed: {
       ...mapGetters([
@@ -132,6 +145,10 @@
       ]),
       dispachLogout () {
         this.handleLogOut()
+      },
+      openPreview() {
+        this.visible_preview = true
+        this.$refs.previewCard.loadInfo()
       }
     },
     mounted() {
@@ -140,6 +157,7 @@
       } else {
         this.getUserInfo().then(() => {
           if (this.getUser.id) {
+            this.$route.meta.preview = true
             this.profile = {
               ...this.getUser,
               ...{ 
@@ -193,6 +211,22 @@
       padding-bottom: 30px;
       margin-top: 0 !important;
       min-height: 100%;
+    }
+  }
+
+  .preview-card {
+    .ant-drawer-body {
+      .card-container {
+        padding-top: 0px;
+        .card {
+          border: 0px;
+          border-radius: 0;
+          margin-bottom: 0 !important;
+          .card-img {
+            border-radius: 0;
+          }
+        }
+      }
     }
   }
 </style>

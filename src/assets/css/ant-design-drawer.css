@@ -35,11 +35,7 @@
 }
 
 #page {
-  left: 0;
-  transition: left 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
-  display: flex;
-  height: 100%;
-  flex-direction: column;
+  
 }
 
 #page > div {

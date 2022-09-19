@@ -35,9 +35,8 @@
       </a-button>
     </div>
     <div class="button-group d-flex">
-      <a-button type="dashed" href="/p/preview" target="_blank">Preview</a-button>
+      <a-button type="dashed" @click="$emit('preview')">Preview</a-button>
       <a-button type="dashed" v-clipboard:copy="userLink" @click="copyLink">Copiar link</a-button>
-      <!-- <a-button type="dashed">Enviar Email</a-button> -->
     </div>
     <!-- <ul class="contacts">
       <li><h6>Direccion</h6>{{ getUser.address.street }} {{ getUser.address.suburb }}, {{ getUser.address.city}}</li>
