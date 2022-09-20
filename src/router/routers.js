@@ -184,6 +184,11 @@ export default [
             path: 'payment.html',
             name: 'profile-payment',
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-payment')
+          },
+          {
+            path: 'analytics.html',
+            name: 'profile-analytics',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-analytics')
           }
         ]
       }, {

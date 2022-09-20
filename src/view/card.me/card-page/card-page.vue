@@ -168,11 +168,14 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import { getCard, getUserInfo } from '@/api/user'
   import VCard from 'vcard-creator'
+  import VueAnalytics from 'vue-analytics'
 
   import * as _ from 'lodash'
+
 
   export default {
     name: 'CardPage',
@@ -377,6 +380,14 @@
             this.toDataURL(this.card.avatar, (dataUrl) => {
               this.card.base_image = dataUrl
             })
+
+            if (this.card.google_trackid) {
+              // a Promise
+              Vue.use(VueAnalytics, {
+                id: this.card.google_trackid
+              })
+              this.$ga.page('/')
+            }
           }).catch((err) => {
             setTimeout(() => {
               this.$router.replace({ name: 'home' })
