@@ -40,6 +40,7 @@ import 'ant-design-vue/lib/upload/style/index.css';
 import 'ant-design-vue/lib/tooltip/style/index.css';
 import 'ant-design-vue/lib/tag/style/index.css';
 import 'ant-design-vue/lib/divider/style/index.css';
+import 'ant-design-vue/lib/dropdown/style/index.css';
 import 'ant-design-vue/lib/notification/style/index.css';
 import 'ant-design-vue/lib/table/style/index.css';
 import 'ant-design-vue/lib/pagination/style/index.css';
@@ -51,6 +52,7 @@ import 'ant-design-vue/lib/popover/style/index.css';
 import 'ant-design-vue/lib/modal/style/index.css';
 import 'ant-design-vue/lib/drawer/style/index.css';
 import 'ant-design-vue/lib/menu/style/index.css';
+import 'ant-design-vue/lib/list/style/index.css';
 import 'ant-design-vue/lib/tabs/style/index.css';
 import '@/assets/css/ant-design-drawer.css'
 import '@/assets/css/ant-design-menu.css'
