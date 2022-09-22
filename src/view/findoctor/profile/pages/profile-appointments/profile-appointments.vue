@@ -383,7 +383,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-6" v-if="viewModal.data.status">
                 <div class="form-group">
                   <label class="mb-0">Estatus <span>cita</span></label>
                   <div class="font-weight-bold">{{ $t(`appointment_status.${viewModal.data.status.name.toUpperCase()}`.replace(/\s/g, '_')) }}</div>
@@ -399,7 +399,7 @@
           </div>
 
           <div class="col-md-4">
-            <template>
+            <template v-if="viewModal.data.client">
               <span>Nombre</span>
               <div>
                 <strong>{{ viewModal.data.client.first_name }} {{ viewModal.data.client.last_name }}</strong>
@@ -701,8 +701,8 @@
               start: a.start_date, 
               end: a.end_date, 
               editable: this.active_account && this.isProvider,
-              backgroundColor: a.status.color,
-              borderColor: a.status.color,
+              backgroundColor: a.status && a.status.color,
+              borderColor: a.status && a.status.color,
               extendedProps: { ... a }
             }))
           } else {
@@ -711,8 +711,8 @@
               title: ((a.client && `Cliente: ${a.client.first_name} ${a.client.last_name}`) || a.notes || 'Sin informacion') + ((a.item && a.item.name) || ''), 
               start: a.start_date, 
               end: a.end_date,
-              backgroundColor: a.status.color,
-              borderColor: a.status.color,
+              backgroundColor: a.status && a.status.color,
+              borderColor: a.status && a.status.color,
               extendedProps: { ... a }
             }))
           }

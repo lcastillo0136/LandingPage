@@ -6,7 +6,7 @@
           <i class="checkmark">✓</i>
         </div>
         <h1>Pago exitoso</h1> 
-        <p>Recibimos tu solicitud de compra;<br/> tu tarjeta digital se activara en unos instantes</p>
+        <p>Recibimos tu solicitud de compra;<br/> tu perfil se activara en unos instantes</p>
       </div>
     </template>
     <template v-if="oxxoPayment">
@@ -72,20 +72,20 @@
     </template>
     <template v-if="!successPayment && !oxxoPayment && product">
       <div v-if="product">
-        <h3>Activacion de la tarjeta digital - {{ product.precio_venta | currency }}</h3>
+        <h3>Activacion de perfil - {{ product.precio_venta | currency }}</h3>
       </div>
       <a-divider dashed></a-divider>
       <DetailsPayment v-model="account" :loading="showLoading" class="flex-fill"></DetailsPayment>
       <div class="container-login100-form-btn">
         <template v-if="account.methodSelected !== 4">
           <a-button class="btn btn-primary rounded-lg text-white w-100" type="success" :loading="showLoading" @click.stop.prevent="handlePayment" :disabled="!canBill">
-            Pagar y activar tarjeta digital
+            Pagar y activar perfil
           </a-button>
         </template>
         <template v-else>
           <div id="paypal-button-container" class="w-100 text-center"></div>
           <small>
-            Pagar y activar tarjeta digital
+            Pagar y activar perfil
           </small>
         </template>
       </div>

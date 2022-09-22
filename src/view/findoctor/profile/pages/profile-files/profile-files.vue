@@ -28,62 +28,57 @@
         </a-list-item>
       </a-list>
       <a-divider dashed></a-divider>
-      <a-table :columns="columns" :data-source="files" class="table-responsive files-table" rowKey="id" bordered :loading="loading_files">
-        <div slot="name" slot-scope="record" >
-          <a :href="record.url" target="_blank">
-            <small>{{ record.name }}</small>
+
+      <a-list :data-source="files" size="small" class="files-list">
+        <a-list-item slot="renderItem" slot-scope="item, index">
+          <a slot="actions">
+            <a-popconfirm title="¿Estás seguro de eliminar este archivo?" @confirm="() => deleteFile(item)">
+              Borrar
+            </a-popconfirm>
           </a>
-          <div class="d-flex flex-column gap-1 d-md-none mt-2">
-            <a-tag>{{ record.size | prettyBytes }}</a-tag>
-            <a-tag v-if="record.updated_at">
-              {{ record.updated_at | moment('ddd DD/MM/YYYY') }}<br>
-              {{ record.updated_at | moment('hh:mm a') }}
-            </a-tag>
-          </div>
-          <div class="d-flex flex-column gap-1 d-none d-md-flex mt-2">
-            <small>
-              Tamaño: <b>{{ record.size | prettyBytes }}</b>
-            </small>
-            <small v-if="record.updated_at">
-              Ultima modifiacion: <b>{{ record.updated_at | moment('from') }}</b>
-            </small>
-            <small v-if="record.provider">
-              Compartido con: <b class="text-success">{{ record.provider.full_name }}</b>
-            </small>
-          </div>
-        </div>
-        <small slot="tags" slot-scope="record" class="hidden visible-md">
-          <a-tag v-for="tag in record.tags" :key="tag.id">
-            {{ tag }}
-          </a-tag>
-        </small>
-        <span slot="size" slot-scope="record">
-          <small>{{ record.size | prettyBytes }}</small>
-        </span>
-        <small slot="last_date" slot-scope="record" class="text-right d-block">
-          <small v-if="record.updated_at">
-            {{ record.updated_at | moment('dddd DD/MM/YYYY') }}<br>
-            {{ record.updated_at | moment('hh:mm a') }}
-          </small>
-        </small>
-        <div slot="actions" slot-scope="record" class="text-center">
-          <a-dropdown placement="bottomRight">
-            <a-menu slot="overlay">
-              <a-menu-item key="1">
-                <a :href="record.url" target="_blank">Ver</a>
-              </a-menu-item>
-              <a-menu-item key="2">
-                <a-popconfirm title="¿Estás seguro de eliminar este archivo?" @confirm="() => deleteFile(record)">
-                  <a>Borrar</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
-            <a-button shape="circle" type="dashed" >
-              <b-icon-three-dots-vertical></b-icon-three-dots-vertical>
-            </a-button>
-          </a-dropdown>
-        </div>
-      </a-table>
+          <a slot="actions" :href="item.url" target="_blank">Ver</a>
+          <a-list-item-meta>
+            <a slot="title" :href="item.url" target="_blank">{{ item.name }}</a>
+            <template slot="avatar">
+              <template v-if="['jpg', 'jpeg', 'gif', 'bmp', 'png', 'svg', 'ico'].includes(item.extension)">
+                <img :src="item.url" alt="" border="0" />
+              </template>
+              <template v-else-if="['doc', 'docx', 'odt'].includes(item.extension)">
+                <a-icon type="file-word"></a-icon>
+              </template>
+              <template v-else-if="['ppt', 'pptx', 'ott', 'odp'].includes(item.extension)">
+                <a-icon type="file-ppt"></a-icon>
+              </template>
+              <template v-else-if="['xls', 'csv', 'xlsx', 'ods'].includes(item.extension)">
+                <a-icon type="file-excel"></a-icon>
+              </template>
+              <template v-else-if="['avi', 'mp4', 'mpeg', '3gp', 'mkv'].includes(item.extension)">
+                <a-icon type="video-camera"></a-icon>
+              </template>
+              <template v-else-if="['mp3', 'ogg', 'm4a', 'flac', 'wav', 'wma', 'aac'].includes(item.extension)">
+                <a-icon type="customer-service"></a-icon>
+              </template>
+              <template v-else-if="['txt', 'json', 'js', 'xml'].includes(item.extension)">
+                <a-icon type="file-text"></a-icon>
+              </template>
+              <template v-else-if="['pdf'].includes(item.extension)">
+                <a-icon type="file-pdf"></a-icon>
+              </template>
+              <template v-else>
+                {{ item.extension }}
+              </template>
+            </template>
+            <a slot="description">
+              {{ item.size | prettyBytes }}, 
+              {{ item.updated_at | moment('DD MMM YYYY, hh:mm a') }}
+              <small v-if="item.provider">
+                <br>
+                Compartido con: <b class="text-success">{{ item.provider.full_name }}</b>
+              </small>
+            </a>
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
     </div>
   </div>
 </template>
@@ -247,6 +242,48 @@
       .ant-pagination {
         .anticon {
           vertical-align: text-top;
+        }
+      }
+    }
+    .files-list {
+      .ant-list-item {
+        padding: 10px;
+        border-radius: 8px;
+        border-bottom: 0px solid #e8e8e8;
+        &:hover {
+          --tw-bg-opacity: 1;
+          background-color: rgb(244 245 246/var(--tw-bg-opacity));
+        }
+        .ant-list-item-meta-title {
+          margin-bottom: 0;
+          a {
+            color: #000;
+            font-weight: bold;
+            &:hover {
+              text-decoration-line: underline;
+            }
+          }
+        }
+
+        .ant-list-item-meta-description {
+          --tw-text-opacity: 1;
+          color: rgb(107 114 128/var(--tw-text-opacity));
+          font-size: .75rem;
+          line-height: 1rem;
+        }
+      }
+      .ant-list-item-meta-avatar {
+        flex: 0 0 45px;
+        height: 45px;
+        border-radius: 4px;
+        background: #fff;
+        overflow: hidden;
+        border: solid 1px #e0e0e0;
+        font-size: 27px;
+        text-align: center;
+        line-height: 34px;
+        img {
+          max-width: 100%;
         }
       }
     }
