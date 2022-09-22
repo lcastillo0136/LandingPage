@@ -1007,10 +1007,10 @@
     <a-back-top id="toTop">
       <b-icon-chevron-up></b-icon-chevron-up>
     </a-back-top>
+
   </main>
   <!-- /main content -->
 </template>
-
 <script>
   import { getServerFile } from '@/libs/util'
   import { registerCustomer, postOrder, getProduct } from '@/api/data'
@@ -1018,6 +1018,12 @@
   import { BIconPlayFill, BIconArrowRight, BIconGithub, BIconGlobe } from 'bootstrap-vue'
   import RegisterForm from './components/register'
   import Login from './components/login'
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-GVVVD42784');
 
   export default {
     props: {
