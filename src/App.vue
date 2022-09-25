@@ -45,45 +45,45 @@
       ]),
     },
     async mounted () {
-      await this.getTypes().catch((err) => {
-        if (err.data.message) {
-          this.$notification.error({
-            message: `Error: ${err.config.url}`,
-            description: err.data.message, 
-            placement: 'bottomLeft',
-            duration: 5
-          });
-        }
-      })
-      await this.getSorts().catch((err) => {
-        if (err.data.message) {
-          this.$notification.error({
-            message: `Error: ${err.config.url}`,
-            description: err.data.message, 
-            placement: 'bottomLeft',
-            duration: 5
-          });
-        }
-      })
+      // await this.getTypes().catch((err) => {
+      //   if (err.data.message) {
+      //     this.$notification.error({
+      //       message: `Error: ${err.config.url}`,
+      //       description: err.data.message, 
+      //       placement: 'bottomLeft',
+      //       duration: 5
+      //     });
+      //   }
+      // })
+      // await this.getSorts().catch((err) => {
+      //   if (err.data.message) {
+      //     this.$notification.error({
+      //       message: `Error: ${err.config.url}`,
+      //       description: err.data.message, 
+      //       placement: 'bottomLeft',
+      //       duration: 5
+      //     });
+      //   }
+      // })
       await this.getSettings()
 
-      await this.getLocation().then((data) => {}).catch((error) => {
+      // await this.getLocation().then((data) => {}).catch((error) => {
         
-      })
+      // })
       
-      this.settings.CONEKTA_CLIENT && conekta.initConekta(this.settings.CONEKTA_CLIENT)
-      this.settings.PAYPAL_CLIENT && paypal.init(this.settings.PAYPAL_CLIENT, this.settings.CURRENCY)
+      // this.settings.CONEKTA_CLIENT && conekta.initConekta(this.settings.CONEKTA_CLIENT)
+      // this.settings.PAYPAL_CLIENT && paypal.init(this.settings.PAYPAL_CLIENT, this.settings.CURRENCY)
 
-      if (this.hasToken) {
-        await this.getUserInfo().then(() => {}).catch((error) => {
-          this.handleLogOut()
-        })
-      }
+      // if (this.hasToken) {
+      //   await this.getUserInfo().then(() => {}).catch((error) => {
+      //     this.handleLogOut()
+      //   })
+      // }
 
-      if (this.settings.GOOGLE_FIREBASE) {
-        let app = initializeApp({ databaseURL: this.settings.GOOGLE_FIREBASE })
-        this.setFirebase(getDatabase(app))
-      }
+      // if (this.settings.GOOGLE_FIREBASE) {
+      //   let app = initializeApp({ databaseURL: this.settings.GOOGLE_FIREBASE })
+      //   this.setFirebase(getDatabase(app))
+      // }
 
       this.getEvent().then((event) => {
         this.toggleLoading() 

@@ -43,11 +43,21 @@
           <div class="col col-xs-12">
             <div class="clock-grids">
               <div id="clock">
-                <div class="box"><div><div class="time">{{ remainingTime.months }}</div> <span>Meses</span> </div></div>
-                <div class="box"><div><div class="time">{{ remainingTime.days }}</div> <span>Dias</span> </div></div>
-                <div class="box"><div><div class="time">{{ remainingTime.hours }}</div> <span>Horas</span> </div></div>
-                <div class="box"><div><div class="time">{{ remainingTime.minutes }}</div> <span>Minutos</span> </div></div>
-                <div class="box"><div><div class="time">{{ remainingTime.seconds }}</div> <span>Segundos</span> </div></div>
+                <div class="box" v-if="remainingTime.months > 0">
+                  <div><div class="time">{{ remainingTime.months }}</div> <span>Meses</span> </div>
+                </div>
+                <div class="box" v-if="remainingTime.days > 0">
+                  <div><div class="time">{{ remainingTime.days }}</div> <span>Dias</span> </div>
+                </div>
+                <div class="box">
+                  <div><div class="time">{{ remainingTime.hours }}</div> <span>Horas</span> </div>
+                </div>
+                <div class="box">
+                  <div><div class="time">{{ remainingTime.minutes }}</div> <span>Minutos</span> </div>
+                </div>
+                <div class="box">
+                  <div><div class="time">{{ remainingTime.seconds }}</div> <span>Segundos</span> </div>
+                </div>
               </div>
             </div>
           </div>

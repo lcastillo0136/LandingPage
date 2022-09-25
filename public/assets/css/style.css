@@ -6286,7 +6286,7 @@ static-hero-s4
     padding-bottom: 15px;
     height: 110px;
   }
-  .wpo-wedding-date #clock > div:last-child {
+  .wpo-wedding-date #clock > div:nth-child(5n) {
     position: relative;
     right: -70px;
   }
