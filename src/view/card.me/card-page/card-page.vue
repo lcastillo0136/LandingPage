@@ -8,7 +8,7 @@
         tag="article"
         class="mb-md-4 shadow">
         <div v-if="card.phone" class="send-whatsapp">
-          <a :href="`https://wa.me/+52${card.phone}`" target="_blank">
+          <a :href="`https://wa.me/+${card.phone}`" target="_blank">
             <b-icon-whatsapp></b-icon-whatsapp>
           </a>
         </div>
@@ -27,7 +27,12 @@
               <b-icon-calendar2-fill></b-icon-calendar2-fill>
             </div>
             <span>
-              <span>{{ card.bday | moment('DD/MM/YYYY') }}</span>
+              <span>
+                <span class="flex-row">
+                  {{ card.bday | moment('DD/MM/YYYY') }} 
+                  <small class="font-italic ml-2 align-self-center">{{ card.bday | moment('from', 'now', true) }}</small>
+                </span>
+              </span>
               <small>Cumpleaños</small>
             </span>
           </div>
@@ -194,6 +199,17 @@
     },
     components: { 
     },
+    filters: {
+      facebook(val) {
+        return /(?:https?:\/\/)?(?:www\.)?(mbasic.facebook|m\.facebook|facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/g.test(val) ? val : `https://www.facebook.com/${val.replace('https://', '')}`
+      },
+      twitter(val) {
+        return /http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/.test(val) ? val : `https://twitter.com/${val.replace('https://','')}`
+      },
+      youtube(val) {
+        return /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/.test(val) ? val : `https://youtu.be/${val.replace('https://', '')}`
+      }
+    },
     computed: {
       ...mapGetters([
         'hasToken',
@@ -332,6 +348,19 @@
             'personal_url'
           ], (p) => {
             this.card[p] = this.validateUrl(this.card[p]);
+            switch(p) {
+              case 'social_facebook':
+                this.card[p] = this.$options.filters.facebook(this.card[p])
+                break;
+              case 'social_twitter':
+                this.card[p] = this.$options.filters.twitter(this.card[p])
+                break;
+              case 'social_youtube': 
+                this.card[p] = this.$options.filters.youtube(this.card[p])
+                break;
+              default:
+                break;
+            }
           })
 
           document.title = this.card.full_name
@@ -374,6 +403,19 @@
               'personal_url'
             ], (p) => {
               this.card[p] = this.validateUrl(this.card[p]);
+              switch(p) {
+                case 'social_facebook':
+                  this.card[p] = this.$options.filters.facebook(this.card[p])
+                  break;
+                case 'social_twitter':
+                  this.card[p] = this.$options.filters.twitter(this.card[p])
+                  break;
+                case 'social_youtube': 
+                  this.card[p] = this.$options.filters.youtube(this.card[p])
+                  break;
+                default:
+                  break;
+              }
             })
 
             document.title = this.card.full_name

@@ -39,10 +39,7 @@
 }
 
 #page > div {
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  flex: 1 1 auto;
+  
 }
 
 #page::after { display: none; }
