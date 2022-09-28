@@ -146,7 +146,7 @@
               <h2 class="mt-3 m-grey-text text-uppercase">ACTUALIZACIONES A ESTE AVISO DE PRIVACIDAD</h2>
               <p class="mt-3 grey-text regular">Actualizaremos este Aviso de Privacidad de vez en cuando. Cuando hagamos cambios a este Aviso de privacidad, cambiaremos la fecha al comienzo de este Aviso de privacidad. Si realizamos cambios sustanciales en este Aviso de privacidad, notificaremos a las personas por correo electrónico a su dirección de correo electrónico registrada, mediante una publicación destacada en este Sitio o nuestros Servicios, o a través de otros canales de comunicación apropiados. Todos los cambios serán efectivos a partir de la fecha de publicación a menos que se indique lo contrario.</p>
               <h2 class="mt-3 m-grey-text text-uppercase">CONTÁCTENOS</h2>
-              <p class="mt-3 grey-text regular">Si tiene alguna pregunta o solicitud en relación con este Aviso de privacidad u otros asuntos relacionados con la privacidad, envíe un correo electrónico a support@zibasoft.com</p>
+              <p class="mt-3 grey-text regular">Si tiene alguna pregunta o solicitud en relación con este Aviso de privacidad u otros asuntos relacionados con la privacidad, envíe un correo electrónico a <a href="mailto:soporte@zibasoft.com">soporte@zibasoft.com</a></p>
             </div>
           </div>
         </div>

@@ -46,7 +46,7 @@ export const Messages = {
   comment(form) {
     return axios.request({
       baseURL: baseUrl.replace('/api/', '/web/'),
-      url: `contact`,
+      url: `contact/email`,
       data: form,
       headers: {
       },

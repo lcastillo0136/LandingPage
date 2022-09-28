@@ -1,5 +1,5 @@
 <template>
-  <main class="home-page bg-hero wrapper privacy">
+  <main class="home-page bg-hero wrapper privacy" style="display: flex;flex-direction: column;justify-content: space-between;">
     <b-navbar toggleable="md">
       <b-container class="d-flex align-items-center">
         <b-navbar-brand class="mt-0" :to="{ name: 'home' }">
