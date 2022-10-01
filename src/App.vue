@@ -65,7 +65,12 @@
           });
         }
       })
-      await this.getSettings()
+      // await this.getSettings()
+      const data = {}
+      loadSettings().forEach(v => {
+        data[v.name] = v.value
+      })
+      this.$store.commit('setSettings', data)
 
       await this.getLocation().then((data) => {}).catch((error) => {
         

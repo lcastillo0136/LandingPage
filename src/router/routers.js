@@ -1,6 +1,6 @@
 import Main from '@/components/main'
 import config from '@/config'
-
+const _theme = loadSettings().find(f => f.name === 'THEME').value
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
  * meta: {
@@ -38,7 +38,7 @@ export default [
           headerSticky: true,
           requiresAuth: false
         },
-        component: () => import('@/view/' + config.theme + '/single-page/home')
+        component: () => import('@/view/' + (_theme || config.theme) + '/single-page/home')
       },
       {
         path: '/home-2.html',
@@ -50,7 +50,7 @@ export default [
           icon: 'md-home',
           headerSticky: true
         },
-        component: () => import('@/view/' + config.theme + '/single-page/home-2')
+        component: () => import('@/view/' + (_theme || config.theme) + '/single-page/home-2')
       },
       {
         path: '/home-3.html',
@@ -62,7 +62,7 @@ export default [
           icon: 'md-home',
           headerSticky: true
         },
-        component: () => import('@/view/' + config.theme + '/single-page/home-3')
+        component: () => import('@/view/' + (_theme || config.theme) + '/single-page/home-3')
       },
       {
         path: '/home-4.html',
@@ -74,7 +74,7 @@ export default [
           icon: 'md-home',
           headerSticky: true
         },
-        component: () => import('@/view/' + config.theme + '/single-page/home-4')
+        component: () => import('@/view/' + (_theme || config.theme) + '/single-page/home-4')
       }, 
       {
         path: '/list-page.html',
@@ -86,7 +86,7 @@ export default [
           icon: 'md-list',
           headerSticky: false
         },
-        component: () => import('@/view/' + config.theme + '/list-page')
+        component: () => import('@/view/' + (_theme || config.theme) + '/list-page')
       },
       {
         path: '/list-page-:type.html',
@@ -99,7 +99,7 @@ export default [
           icon: 'md-list',
           headerSticky: false
         },
-        component: () => import('@/view/' + config.theme + '/list-page')
+        component: () => import('@/view/' + (_theme || config.theme) + '/list-page')
       },
       {
         path: '/details-page-:id.html',
@@ -111,7 +111,7 @@ export default [
           icon: 'md-details',
           headerSticky: true
         },
-        component: () => import('@/view/' + config.theme + '/details-page')
+        component: () => import('@/view/' + (_theme || config.theme) + '/details-page')
       }, 
       {
         path: '/booking-page.html',
@@ -123,7 +123,7 @@ export default [
           icon: 'md-booking',
           headerSticky: true
         },
-        component: () => import('@/view/' + config.theme + '/booking-page')
+        component: () => import('@/view/' + (_theme || config.theme) + '/booking-page')
       }, 
       {
         path: '/invoice.html',
@@ -136,7 +136,7 @@ export default [
           headerSticky: true,
           // order: 'b2b79525-198e-4c32-a917-82046520d97e'
         },
-        component: () => import('@/view/' + config.theme + '/invoice-page')
+        component: () => import('@/view/' + (_theme || config.theme) + '/invoice-page')
       }, 
       {
         path: '/review.html',
@@ -148,7 +148,7 @@ export default [
           icon: 'md-review',
           headerSticky: true
         },
-        component: () => import('@/view/' + config.theme + '/review-page')
+        component: () => import('@/view/' + (_theme || config.theme) + '/review-page')
       }, 
       {
         path: '/login.html',
@@ -159,7 +159,7 @@ export default [
           notCache: true,
           icon: 'md-user'
         },
-        component: () => import('@/view/' + config.theme + '/login')
+        component: () => import('@/view/' + (_theme || config.theme) + '/login')
       }, 
       {
         path: '/login-2.html',
@@ -170,7 +170,7 @@ export default [
           notCache: true,
           icon: 'md-user'
         },
-        component: () => import('@/view/' + config.theme + '/login-2')
+        component: () => import('@/view/' + (_theme || config.theme) + '/login-2')
       }, 
       {
         path: '/register-doctor.html',
@@ -181,7 +181,7 @@ export default [
           notCache: true,
           icon: 'md-doctor'
         },
-        component: () => import('@/view/' + config.theme + '/register-doctor')
+        component: () => import('@/view/' + (_theme || config.theme) + '/register-doctor')
       }, 
       {
         path: '/register.html',
@@ -192,7 +192,7 @@ export default [
           notCache: true,
           icon: 'md-user'
         },
-        component: () => import('@/view/' + config.theme + '/register')
+        component: () => import('@/view/' + (_theme || config.theme) + '/register')
       }, 
       {
         path: '/contacts.html',
@@ -203,7 +203,7 @@ export default [
           notCache: true,
           icon: 'md-contacts'
         },
-        component: () => import('@/view/' + config.theme + '/contacts')
+        component: () => import('@/view/' + (_theme || config.theme) + '/contacts')
       }, 
       {
         path: '/terms-conditions.html',
@@ -214,7 +214,7 @@ export default [
           notCache: true,
           icon: 'md-contacts'
         },
-        component: () => import('@/view/' + config.theme + '/contacts')
+        component: () => import('@/view/' + (_theme || config.theme) + '/contacts')
       }, 
       {
         path: '/privacy.html',
@@ -225,7 +225,7 @@ export default [
           notCache: true,
           icon: 'md-contacts'
         },
-        component: () => import('@/view/' + config.theme + '/contacts')
+        component: () => import('@/view/' + (_theme || config.theme) + '/contacts')
       }, 
       {
         path: '/profile',
@@ -237,68 +237,68 @@ export default [
           notCache: true,
           icon: 'md-contacts'
         },
-        component: () => import('@/view/' + config.theme + '/profile'),
+        component: () => import('@/view/' + (_theme || config.theme) + '/profile'),
         children: [
           {
             path: 'details.html',
             alias: '/',
             name: 'profile-details',
-            component: () => import('@/view/' + config.theme + '/profile/pages/details')
+            component: () => import('@/view/' + (_theme || config.theme) + '/profile/pages/details')
           },
           {
             path: 'settings.html',
             name: 'profile-settings',
-            component: () => import('@/view/' + config.theme + '/profile/pages/profile-settings')
+            component: () => import('@/view/' + (_theme || config.theme) + '/profile/pages/profile-settings')
           },
           {
             path: 'files.html',
             name: 'profile-files',
-            component: () => import('@/view/' + config.theme + '/profile/pages/profile-files')
+            component: () => import('@/view/' + (_theme || config.theme) + '/profile/pages/profile-files')
           },
           {
             path: 'patient-ehr.html',
             name: 'profile-ehr',
-            component: () => import('@/view/' + config.theme + '/profile/pages/profile-ehr')
+            component: () => import('@/view/' + (_theme || config.theme) + '/profile/pages/profile-ehr')
           },
           {
             path: 'appointments.html',
             name: 'profile-appointments',
-            component: () => import('@/view/' + config.theme + '/profile/pages/profile-appointments')
+            component: () => import('@/view/' + (_theme || config.theme) + '/profile/pages/profile-appointments')
           },
           {
             path: 'patients.html',
             name: 'profile-patients',
-            component: () => import('@/view/' + config.theme + '/profile/pages/profile-patients')
+            component: () => import('@/view/' + (_theme || config.theme) + '/profile/pages/profile-patients')
           },
           {
             path: 'patients/:id',
             name: 'profile-patients-edit',
-            component: () => import('@/view/' + config.theme + '/profile/pages/profile-patients-edit')
+            component: () => import('@/view/' + (_theme || config.theme) + '/profile/pages/profile-patients-edit')
           },
           {
             path: 'patients/:id/consulta',
             name: 'profile-patients-ehr',
-            component: () => import('@/view/' + config.theme + '/profile/pages/profile-patients-ehr')
+            component: () => import('@/view/' + (_theme || config.theme) + '/profile/pages/profile-patients-ehr')
           },
           {
             path: 'orders.html',
             name: 'profile-orders',
-            component: () => import('@/view/' + config.theme + '/profile/pages/profile-orders')
+            component: () => import('@/view/' + (_theme || config.theme) + '/profile/pages/profile-orders')
           },
           {
             path: 'reviews.html',
             name: 'profile-reviews',
-            component: () => import('@/view/' + config.theme + '/profile/pages/profile-reviews')
+            component: () => import('@/view/' + (_theme || config.theme) + '/profile/pages/profile-reviews')
           },
           {
             path: 'payment.html',
             name: 'profile-payment',
-            component: () => import('@/view/' + config.theme + '/profile/pages/profile-payment')
+            component: () => import('@/view/' + (_theme || config.theme) + '/profile/pages/profile-payment')
           }
         ]
       }, {
         path: "*",
-        component: () => import('@/view/' + config.theme + '/404')
+        component: () => import('@/view/' + (_theme || config.theme) + '/404')
       }
     ]
   }

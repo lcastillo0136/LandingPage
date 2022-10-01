@@ -195,7 +195,8 @@ Vue.filter('prettyBytes', function (bytes, decimals, kib, maxunit) {
     if (index != -1) i = index
   }
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
- })
+})
+
 new Vue({
   el: '#app',
   router,
