@@ -89,8 +89,13 @@
           </div>
           <div class="container-login100-form-btn" v-else>
             <a-button class="btn btn-primary rounded-lg text-white w-100" type="success" :loading="showLoading" @click.stop.prevent="handleRegister" :disabled="!canRegister">
-                Registrarse x 1 mes gratis</small>
-              </a-button>
+              Registrarse x 1 mes gratis</small>
+            </a-button>
+            <span>
+              si ya tienes cuenta inicia sesion aqui: 
+              <b-button class="my-1" variant="outline-primary" @click="$bvModal.show('login-1')"size="sm">Iniciar sesion</b-button>
+            </span>
+            <Login></Login>
           </div>
         </a-form-model>
       </div>
