@@ -56,7 +56,7 @@
             </svg>
 
             <p class="hero-description">
-              Hagamos que su trabajo llegue a mas clientes y alcance nuevos horizontes junto con la presentación de su tarjeta digital.
+              Ayudemos a que tu trabajo llegue a más clientes y nuevos horizontes presentando tu tarjeta digital.
             </p>
           </b-col>
           <br class="d-none d-sm-block" />
@@ -77,7 +77,7 @@
             <h2>Tarjeta de presentación digital</h2>
             <div class="my-5">
               <p class="text-muted">
-                Las tarjetas de presentación digitales son una nueva forma de compartir su información de contacto y contenido importante que lo ayudan a hacer crecer su red profesional y su negocio.
+                Las tarjetas de presentación digitales son una excelente manera de compartir su información de contacto y contenido importante que lo ayudará a hacer crecer su red profesional y su negocio.
               </p>
             </div>
             <div class="d-flex flex-row">
@@ -328,7 +328,7 @@
             class="d-flex align-items-center"
           >
             <p class="text-muted">
-              Ofrecemos una variedad de características interesantes que pueden ayudarlo a aumentar su productividad en el trabajo y administrar su proyecto fácilmente.
+              Ofrecemos una variedad de funciones que pueden ayudarlo a aumentar su productividad, así como a administrar su proyecto más fácilmente
             </p>
           </b-col>
           <b-col

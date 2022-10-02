@@ -55,7 +55,7 @@
                 </a-form-model-item>
               </div>
             </div>
-            <DetailsPayment v-model="account" :loading="showLoading"></DetailsPayment>
+            <DetailsPayment v-model="account" :loading="showLoading" v-if="!account.onlyRegister"></DetailsPayment>
             <div class="flex-m w-full p-b-33">
               <div class="contact100-form-checkbox">
                 <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me" v-model="policyTerms">
@@ -71,7 +71,7 @@
               </div>
             </div>
           </div>
-          <div class="container-login100-form-btn">
+          <div class="container-login100-form-btn" v-if="!account.onlyRegister">
             <template v-if="account.methodSelected !== 4">
               <a-button class="btn btn-primary rounded-lg text-white w-100" type="success" :loading="showLoading" @click.stop.prevent="handleRegister" :disabled="!canPay">
                 Registrar y Pagar {{ (product && product.precio_venta) | currency }} <template v-if="settings">{{ settings.CURRENCY.toLowerCase() }}</template><small> por 1 año</small>
@@ -86,6 +86,11 @@
               <div id="paypal-button-container" class="w-100"></div>
               <small>Pagar con PayPal  y registrarse ( {{ (product && product.precio_venta) | currency }} <template v-if="settings">{{ settings.CURRENCY.toLowerCase() }}</template><small> por 1 año de servicio</small>)</small>
             </template>
+          </div>
+          <div class="container-login100-form-btn" v-else>
+            <a-button class="btn btn-primary rounded-lg text-white w-100" type="success" :loading="showLoading" @click.stop.prevent="handleRegister" :disabled="!canRegister">
+                Registrarse x 1 mes gratis</small>
+              </a-button>
           </div>
         </a-form-model>
       </div>
@@ -189,7 +194,8 @@
           token: false,
           paypal: false,
           isValid: false,
-          methodSelected: 0
+          methodSelected: 0,
+          onlyRegister: true
         },
         forgot: {
           open: false
@@ -312,7 +318,10 @@
         return getServerFile('public/company/company_logo.png')
       },
       canPay () {
-        return this.canBill && this.policyTerms && this.form.first_name && this.form.email && this.form.realPassword2 && this.form.realPassword == this.form.realPassword2
+        return this.canBill && this.canRegister
+      },
+      canRegister() {
+        return this.policyTerms && this.form.first_name && this.form.email && this.form.realPassword2 && this.form.realPassword == this.form.realPassword2
       },
       canBill () {
         return this.account.isValid
@@ -362,16 +371,33 @@
             }).then((response) => {
               this.showLoading = false
               if (response.data.success) {
-                this.$notification.success({
-                  message: this.$t('register.messages.success.registered'),
-                  description: 'Generando componentes para tarjeta digital...'
-                })
-                this.form.user_id = response.data.data.id
-                this.form.username = response.data.data.username
-                if (this.account.methodSelected == 1) {
-                  this.sendPaymentCard()
+                if (!this.account.onlyRegister) {
+                  this.$notification.success({
+                    message: this.$t('register.messages.success.registered'),
+                    description: 'Generando componentes para tarjeta digital...'
+                  })
+                  this.form.user_id = response.data.data.id
+                  this.form.username = response.data.data.username
+                  if (this.account.methodSelected == 1) {
+                    this.sendPaymentCard()
+                  } else {
+                    this.sendPayment()
+                  }
                 } else {
-                  this.sendPayment()
+                  this.$notification.success({
+                    message: this.$t('register.messages.success.registered'),
+                    description: 'Generando componentes para tarjeta digital...'
+                  })
+                  this.form.user_id = response.data.data.id
+                  this.form.username = response.data.data.username
+                  this.handleLogin({
+                    userName: this.form.username, 
+                    password: this.form.realPassword, 
+                    remember: true
+                  }).then(() => {
+                    this.$router.push({ name: 'profile-details' })
+                  }).catch((error) => {
+                  });
                 }
               } else {  
               }
