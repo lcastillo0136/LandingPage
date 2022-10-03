@@ -130,5 +130,15 @@ export const getProduct = (key) => {
     baseURL: baseUrl.replace('/api/', '/web/'),
     url: `/products/${key}`,
     method: 'get'
-  })    
+  })
+}
+
+
+export const SendContactMessage = (data) => {
+  return axios.request({
+    baseURL: baseUrl.replace('/api/', '/web/'),
+    url: `/contact/email`,
+    method: 'post',
+    data
+  })
 }

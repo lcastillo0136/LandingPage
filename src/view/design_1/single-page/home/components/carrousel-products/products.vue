@@ -41,7 +41,7 @@
                     <div class="u-layout-col">
                       <div class="u-align-center u-container-style u-layout-cell u-size-60 u-layout-cell-1">
                         <div class="u-container-layout u-valign-top u-container-layout-1" src="">
-                          <h2 class="u-text u-text-body-alt-color u-text-1">TIENDAS EN LINEA</h2>
+                          <h2 class="u-text u-text-body-alt-color u-text-1">TIENDAS EN LÍNEA</h2>
                         </div>
                       </div>
                     </div>
@@ -50,7 +50,7 @@
                     <div class="u-layout-row">
                       <div class="u-align-center u-container-style u-layout-cell u-size-25 u-white u-layout-cell-2">
                         <div class="u-container-layout u-container-layout-2">
-                          <h2 class="u-text u-text-palette-1-light-1 u-text-2">Unete a la digitalización abriendo una tienda en linea ahora&nbsp;</h2>
+                          <h2 class="u-text u-text-palette-1-light-1 u-text-2">Únete a la digitalización abriendo una tienda en línea ahora&nbsp;</h2>
                           <div class="u-align-center u-list u-list-1">
                             <div class="u-repeater u-repeater-1">
                               <div class="u-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle">
@@ -101,7 +101,7 @@
                                       <path d="M438.578,325.094c-7.451-0.743-14.898,1.369-20.792,5.844c-4.695-7.878-12.701-13.467-21.964-14.395  c-7.453-0.742-14.899,1.37-20.792,5.844c-4.695-7.878-12.701-13.467-21.964-14.395c-5.69-0.568-11.372,0.528-16.365,3.069V208.969  c0-8.289-3.526-16.235-9.677-21.8c-6.145-5.56-14.426-8.274-22.721-7.444c-14.799,1.481-26.391,14.863-26.391,30.463v102.35  l-23.566,23.566c-12.523,12.523-17.578,30.291-13.521,47.53l17.891,76.037c7.249,30.811,34.418,52.329,66.07,52.329h72.307  c37.426,0,67.875-30.448,67.875-67.875v-88.567C464.969,339.957,453.377,326.576,438.578,325.094z M448.935,444.125  c0,28.585-23.256,51.841-51.841,51.841h-72.307c-24.175,0-44.927-16.435-50.464-39.968l-17.891-76.037  c-2.776-11.795,0.683-23.953,9.251-32.521l12.229-12.229v27.678c0,4.427,3.589,8.017,8.017,8.017c4.427,0,8.017-3.589,8.017-8.017  V210.188c0-7.465,5.251-13.839,11.956-14.509c3.851-0.387,7.534,0.814,10.366,3.379c2.797,2.531,4.401,6.144,4.401,9.912v141.094  c0,4.427,3.589,8.017,8.017,8.017c4.427,0,8.017-3.589,8.017-8.017v-12.827c0-3.768,1.603-7.381,4.401-9.912  c2.834-2.564,6.515-3.767,10.366-3.379c6.704,0.671,11.956,7.045,11.956,14.51v20.157c0,4.427,3.589,8.017,8.017,8.017  c4.427,0,8.017-3.589,8.017-8.017v-12.827c0-3.768,1.603-7.381,4.401-9.912c2.834-2.564,6.516-3.766,10.366-3.379  c6.704,0.671,11.956,7.045,11.956,14.51v20.158c0,4.427,3.589,8.017,8.017,8.017c4.427,0,8.017-3.589,8.017-8.017v-12.827  c0-3.768,1.603-7.381,4.401-9.912c2.834-2.563,6.513-3.767,10.366-3.378c6.704,0.67,11.956,7.044,11.956,14.509V444.125z"></path>
                                     </svg>
                                   </span>
-                                  <h3 class="u-align-center u-text u-text-4">Administra tus ordenes</h3>
+                                  <h3 class="u-align-center u-text u-text-4">Administra tus órdenes</h3>
                                 </div>
                               </div>
                               <div class="u-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle">
@@ -162,7 +162,7 @@
                                       </g>
                                     </svg>
                                   </span>
-                                  <h3 class="u-align-center u-text u-text-6">Acepta pagos ONLINE tarjetas y Paypal</h3>
+                                  <h3 class="u-align-center u-text u-text-6">Acepta pagos ONLINE tarjetas y PayPal</h3>
                                 </div>
                               </div>
                             </div>

@@ -8,9 +8,11 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import { initializeApp } from 'firebase/app';
   import { getDatabase } from "firebase/database";
   import "firebase/database";
+  import VueAnalytics from 'vue-analytics'
 
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import Loading from '@/components/loading'
@@ -90,6 +92,12 @@
         this.setFirebase(getDatabase(app))
       }
 
+      if (this.settings.GOOGLE_TRACKID) {
+        Vue.use(VueAnalytics, {
+          id: this.settings.GOOGLE_TRACKID
+        })
+        this.$ga.page('/')
+      }
 
       this.toggleLoading()    
     }

@@ -4,6 +4,9 @@
     <carrousel></carrousel>
     <carrousel-products></carrousel-products>
     <company-principles></company-principles>
+    <mision-vision></mision-vision>
+    <contacto></contacto>
+    <footerComponent></footerComponent>
   </main>
   <!-- /main content -->
 </template>
@@ -14,6 +17,9 @@
   import Carrousel from './components/carrousel'
   import CarrouselProducts from './components/carrousel-products'
   import CompanyPrinciples from './components/company-principles'
+  import MisionVision from './components/mision-vision'
+  import Contacto from './components/contacto'
+  import footerComponent from './components/footer'
 
   export default {
     props: {
@@ -28,7 +34,10 @@
       HomeHeader,
       Carrousel,
       CarrouselProducts,
-      CompanyPrinciples
+      CompanyPrinciples,
+      MisionVision,
+      Contacto,
+      footerComponent
     },
     mounted() {
       this.setHeaderVisible(false)
