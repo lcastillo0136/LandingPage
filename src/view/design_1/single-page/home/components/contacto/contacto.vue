@@ -7,7 +7,7 @@
           <a :href="'tel:'+currentSettings.COMPANY_PHONE" class="u-active-none u-btn u-button-style u-hover-none u-none u-text-hover-palette-1-light-1 u-btn-1">
             <span class="u-icon u-text-palette-1-light-1">
               <b-icon-telephone></b-icon-telephone>
-            </span>&nbsp;{{ currentSettings.COMPANY_PHONE }}
+            </span>&nbsp;{{ currentSettings.COMPANY_PHONE | phone }}
           </a>
           <a :href="'mailto:'+ currentSettings.COMPANY_EMAIL" class="u-active-none u-btn u-button-style u-hover-none u-none u-text-hover-palette-1-light-1 u-btn-2">
             <span class="u-icon u-text-palette-1-light-1">
