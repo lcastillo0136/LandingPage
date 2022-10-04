@@ -20,9 +20,9 @@
           <p class="u-text u-text-2">
             Es una empresa líder en desarrollo de software que se especializa en crear soluciones de software innovadoras y de vanguardia para empresas de todos los tamaños.
           </p>
-          <a href="/" class="u-active-palette-1-light-1 u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-text-active-white u-text-body-alt-color u-text-hover-white u-btn-2">
+          <router-link :to="{ name: 'contacts' }" class="u-active-palette-1-light-1 u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-text-active-white u-text-body-alt-color u-text-hover-white u-btn-2">
             Contáctanos
-          </a>
+          </router-link>
         </div>
       </div>
     </div>

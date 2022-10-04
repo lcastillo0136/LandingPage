@@ -206,6 +206,9 @@
                 description: 'En breve nos pondremos en contacto con usted, gracias'
               })
               this.loading = false
+              this.form.email = ''
+              this.form.name = ''
+              this.form.message = ''
             }).catch((error) => {
               this.$notification.error({
                 message: 'Algo salio mal',

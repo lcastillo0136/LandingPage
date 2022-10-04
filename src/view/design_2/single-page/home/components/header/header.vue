@@ -1,9 +1,9 @@
 <template>
   <header class="u-clearfix u-header u-header" id="sec-d9ff">
     <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-      <a href="/" class="u-image u-logo u-image-1">
+      <router-link :to="{ name: 'home' }" class="u-image u-logo u-image-1">
         {{ currentSettings.COMPANY_NAME }}
-      </a>
+      </router-link>
     </div>
   </header>
 
