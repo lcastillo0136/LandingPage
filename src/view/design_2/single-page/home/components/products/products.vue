@@ -44,7 +44,21 @@
   </section>
 </template>
 <script>
+  import { getProducts } from '@/api/data'
+
   export default {
-    name: 'Products'
+    name: 'Products',
+    data() {
+      return {
+        products: []
+      }
+    },
+    mounted() {
+      getProducts().then(r => r.data).then(response => {
+        if (response) {
+          this.products = response.data
+        }
+      })
+    }
   }
 </script>

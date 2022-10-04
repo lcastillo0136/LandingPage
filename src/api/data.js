@@ -133,6 +133,37 @@ export const getProduct = (key) => {
   })
 }
 
+export const getProducts = () => {
+  return axios.request({
+    baseURL: baseUrl.replace('/api/', '/web/'),
+    url: `/products?product_type_id=1`,
+    method: 'get'
+  })
+}
+
+export const getServices = () => {
+  return axios.request({
+    baseURL: baseUrl.replace('/api/', '/web/'),
+    url: `/services?product_type_id=2`,
+    method: 'get'
+  })
+}
+
+export const getProductItem = (slug) => {
+  return axios.request({
+    baseURL: baseUrl.replace('/api/', '/web/'),
+    url: `/products/${slug}`,
+    method: 'get'
+  })
+}
+
+export const getServiceItem = (slug) => {
+  return axios.request({
+    baseURL: baseUrl.replace('/api/', '/web/'),
+    url: `/services/${slug}`,
+    method: 'get'
+  })
+}
 
 export const SendContactMessage = (data) => {
   return axios.request({

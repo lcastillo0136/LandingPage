@@ -297,6 +297,16 @@ export default [
           }
         ]
       }, {
+        path: '/service/:name',
+        name: 'services',
+        meta: {
+          hideInMenu: true,
+          title: 'services.title',
+          notCache: true,
+          icon: 'md-contacts'
+        },
+        component: () => import('@/view/' + (_theme || config.theme) + '/services')
+      }, {
         path: "*",
         component: () => import('@/view/' + (_theme || config.theme) + '/404')
       }
