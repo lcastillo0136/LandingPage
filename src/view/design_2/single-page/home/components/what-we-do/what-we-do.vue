@@ -6,14 +6,14 @@
         <img class="u-image u-image-contain u-image-default u-image-1" src="//images01.nicepage.com/c461c07a441a5d220e8feb1a/71a8b66119c650fbbf7baf03/-min.png" alt="" data-image-width="1245" data-image-height="707">
         <div class="u-expanded-width u-list u-list-1">
           <div class="u-repeater u-repeater-1">
-            <div class="u-align-left u-border-12 u-border-palette-3-light-2 u-container-style u-custom-item u-list-item u-radius-24 u-repeater-item u-shape-round u-video-cover u-white u-list-item-1">
+            <div class="u-align-left u-border-12 u-border-palette-3-light-2 u-container-style u-custom-item u-list-item u-radius-24 u-repeater-item u-shape-round u-video-cover u-white u-list-item-1" v-for="product of products" :key="product.id">
               <div class="u-container-layout u-similar-container u-container-layout-1">
-                <h4 class="u-text u-text-default u-text-palette-3-base u-text-3"> Desarrollo de aplicaciones</h4>
-                <p class="u-text u-text-4">Desarrollo de software a la medida con los mas altos estandares de calidad y servicio.</p>
-                <a href="https://nicepage.com/k/clothing-store-website-templates" class="u-active-none u-border-2 u-border-active-palette-3-base u-border-hover-palette-3-base u-border-palette-3-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-text-active-palette-3-base u-text-body-color u-text-hover-palette-3-base u-btn-1">saber mas</a>
+                <h4 class="u-text u-text-default u-text-palette-3-base u-text-3"> {{ product.name }}</h4>
+                <p class="u-text u-text-4" v-html="product.short_description"></p>
+                <router-link :to="{ name: 'products', params: { name: product.url } }" class="u-active-none u-border-2 u-border-active-palette-3-base u-border-hover-palette-3-base u-border-palette-3-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-text-active-palette-3-base u-text-body-color u-text-hover-palette-3-base u-btn-1">Saber mas</router-link>
               </div>
             </div>
-            <div class="u-align-left u-border-12 u-border-palette-3-base u-container-style u-custom-item u-list-item u-radius-24 u-repeater-item u-shape-round u-white u-list-item-2">
+            <!-- <div class="u-align-left u-border-12 u-border-palette-3-base u-container-style u-custom-item u-list-item u-radius-24 u-repeater-item u-shape-round u-white u-list-item-2">
               <div class="u-container-layout u-similar-container u-container-layout-2">
                 <h4 class="u-text u-text-default u-text-palette-3-base u-text-5"> Tiendas en linea</h4>
                 <p class="u-text u-text-6">Con amplia gama de herramientas te ayudamos a colocar tu tienda en linea.</p>
@@ -33,7 +33,7 @@
                 <p class="u-text u-text-10">Desarrollo y diseño de sitios web a la medida</p>
                 <a href="https://nicepage.com/k/clothing-store-website-templates" class="u-active-none u-border-2 u-border-active-palette-3-base u-border-hover-palette-3-base u-border-palette-3-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-text-active-palette-3-base u-text-body-color u-text-hover-palette-3-base u-btn-4">saber mas</a>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         </p>
@@ -41,8 +41,21 @@
     </section>
 </template>
 <script>
+  import { getProducts } from '@/api/data'
   export default {
-    name: 'WhatWeDo'
+    name: 'WhatWeDo',
+    data() {
+      return {
+        products: []
+      }
+    },
+    mounted() {
+      getProducts().then(r => r.data).then(response => {
+        if (response) {
+          this.products = response.data
+        }
+      })
+    }
   }
 </script>
 <style lang="scss">

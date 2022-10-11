@@ -1,5 +1,5 @@
 <template>
-  <main class="u-body u-contacts-page" data-lang="en">
+  <main class="u-body u-contacts-page u-xl-mode" data-lang="en">
     <header-component></header-component>
     <section class="u-clearfix u-section-1" id="carousel_7be3">
       <div class="u-clearfix u-sheet u-sheet-1">
@@ -44,9 +44,12 @@
                           <a-textarea placeholder="Escríbenos un mensaje" v-model="form.message" rows="4" cols="50" class="u-grey-5 u-input u-input-rectangle"></a-textarea>
                         </a-form-model-item>
                       </div>
-                      <div class="u-align-left u-form-group u-form-submit">
+                      <div class="u-align-left u-form-group u-form-submit d-flex justify-content-between">
                         <a-button class="u-border-none u-btn u-btn-submit u-button-style u-palette-1-base u-btn-1" :loading="loading" @click.stop.prevent="sendContactForm">
-                          Enviar
+                          <b-icon-envelope class="text-white mr-1"></b-icon-envelope> Enviar
+                        </a-button>
+                        <a-button :href="waHref" target="_blank" class="u-border-none u-btn u-btn-submit u-button-style u-palette-1-base u-btn-1 wa-btn" v-if="phone">
+                          <b-icon-whatsapp class="text-white mr-1"></b-icon-whatsapp> Enviar por whatsapp
                         </a-button>
                       </div>
                     </a-form-model>
@@ -126,6 +129,12 @@
       ]),
       currentSettings() {
         return this.settings || {}
+      },
+      phone() {
+        return this.currentSettings.COMPANY_PHONE && this.currentSettings.COMPANY_PHONE.length <= 10 ? `521${this.currentSettings.COMPANY_PHONE}` : (this.currentSettings.COMPANY_PHONE || false)
+      },
+      waHref() {
+        return `https://wa.me/${this.phone}?text=${this.form.message}`
       }
     },
     methods: {
@@ -173,6 +182,10 @@
     mounted() {
       this.setHeaderVisible(false)
       this.setFooterVisible(false)
+
+      if (this.$route.params.message) {
+        this.form.message = this.$route.params.message
+      }
     }
   }
 </script>
@@ -193,18 +206,20 @@
     font-style: normal;
     font-display: swap;
   }
-body.landing {
-  height: 100%;
-  #page {
+
+  body.landing {
     height: 100%;
-    > div {
+    #page {
       height: 100%;
-      main {
+      > div {
         height: 100%;
+        main {
+          height: 100%;
+        }
       }
     }
   }
-}
+
   .u-contacts-page {
     display: flex;
     flex-direction: column;
@@ -212,8 +227,21 @@ body.landing {
     > * {
       flex: 1 1 auto;
     }
+    .d-flex .justify-content-between {
+      *::after {
+        display: none;
+      }
+    }
+    a.u-button-style.wa-btn {
+      height: 41px;
+      display: inline-block;
+      -webkit-appearance: button;
+      line-height: 23px;
+      margin-left: 10px;
+      background: #2ab63f !important;
+    }
     .u-section-1 {
-      box-shadow: inset 1px 1px 5px 4px #ededed;
+      box-shadow: inset 10px 3px 5px 4px #ededed;
     }
     .u-header, .u-footer {
       flex: 0 0 auto;
@@ -221,7 +249,6 @@ body.landing {
 
     .u-section-1 .u-sheet-1 {
       min-height: 700px;
-      max-width: 1140px;
     }
     .u-section-1 .u-layout-wrap-1 {
       margin-top: 60px;

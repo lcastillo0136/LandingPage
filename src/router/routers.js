@@ -307,6 +307,16 @@ export default [
         },
         component: () => import('@/view/' + (_theme || config.theme) + '/services')
       }, {
+        path: '/product/:name',
+        name: 'products',
+        meta: {
+          hideInMenu: true,
+          title: 'products.title',
+          notCache: true,
+          icon: 'md-contacts'
+        },
+        component: () => import('@/view/' + (_theme || config.theme) + '/services')
+      }, {
         path: "*",
         component: () => import('@/view/' + (_theme || config.theme) + '/404')
       }

@@ -34,6 +34,7 @@
 <style lang="scss">
   .u-header {
     z-index: 1;
+    flex: 1 0 auto;
     .u-logo.u-image-1 {
       width: 250px;
       height: 80px;

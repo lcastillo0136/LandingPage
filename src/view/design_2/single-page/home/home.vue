@@ -1,5 +1,5 @@
 <template>
-  <main class="u-body">
+  <main class="u-body u-xl-mode">
     <header-component></header-component>
     <welcome></welcome>
     <services></services>

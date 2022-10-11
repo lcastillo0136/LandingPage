@@ -62,7 +62,7 @@
                                   </div>Integración completa con herramientas comerciales
                               </li>
                           </ul>
-                          <a href="" class="u-active-none u-border-2 u-border-active-palette-1-light-1 u-border-hover-palette-1-light-1 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-text-active-palette-1-light-1 u-text-hover-palette-1-light-1 u-text-palette-1-base u-btn-1">Saber mas</a>
+                          <router-link :to="{ name: 'contacts', params: { message: 'Necesito saber mas información acerca de su producto de panel administrador' } }" class="u-active-none u-border-2 u-border-active-palette-1-light-1 u-border-hover-palette-1-light-1 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-text-active-palette-1-light-1 u-text-hover-palette-1-light-1 u-text-palette-1-base u-btn-1">Saber mas</router-link>
                       </div>
                   </div>
                   <div class="u-align-left u-container-style u-list-item u-repeater-item">
@@ -137,7 +137,8 @@
                                   </div>Pague con Tarjeta de Crédito / Débito, PayPal, Oxxo, etc
                               </li>
                           </ul>
-                          <a href="" class="u-active-none u-border-2 u-border-active-palette-1-light-1 u-border-hover-palette-1-light-1 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-text-active-palette-1-light-1 u-text-hover-palette-1-light-1 u-text-palette-1-base u-btn-2">Saber mas</a>
+                          
+                          <router-link :to="{ name: 'contacts', params: { message: 'Necesito saber mas información acerca de su producto con pasarela de pagos' } }" class="u-active-none u-border-2 u-border-active-palette-1-light-1 u-border-hover-palette-1-light-1 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-text-active-palette-1-light-1 u-text-hover-palette-1-light-1 u-text-palette-1-base u-btn-1">Saber mas</router-link>
                       </div>
                   </div>
                   <div class="u-align-left u-container-style u-list-item u-repeater-item">
@@ -205,7 +206,7 @@
                                   </div>tenemos un delegado de protección de datos que es responsable de la seguridad de los datos
                               </li>
                           </ul>
-                          <a href="" class="u-active-none u-border-2 u-border-active-palette-1-light-1 u-border-hover-palette-1-light-1 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-text-active-palette-1-light-1 u-text-hover-palette-1-light-1 u-text-palette-1-base u-btn-3">Saber mas</a>
+                          <router-link :to="{ name: 'contacts', params: { message: 'Necesito saber mas información acerca de su seguridad en los datos' } }" class="u-active-none u-border-2 u-border-active-palette-1-light-1 u-border-hover-palette-1-light-1 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-text-active-palette-1-light-1 u-text-hover-palette-1-light-1 u-text-palette-1-base u-btn-1">Saber mas</router-link>
                       </div>
                   </div>
                   <div class="u-align-left u-container-style u-list-item u-repeater-item">
@@ -271,7 +272,7 @@
                                   </div>Más seguro: descargue sus archivos de WhatsApp de una manera simple y segura
                               </li>
                           </ul>
-                          <a href="" class="u-active-none u-border-2 u-border-active-palette-1-light-1 u-border-hover-palette-1-light-1 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-text-active-palette-1-light-1 u-text-hover-palette-1-light-1 u-text-palette-1-base u-btn-4">Saber mas</a>
+                          <router-link :to="{ name: 'contacts', params: { message: 'Necesito saber mas información acerca de su producto con chatbot' } }" class="u-active-none u-border-2 u-border-active-palette-1-light-1 u-border-hover-palette-1-light-1 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-text-active-palette-1-light-1 u-text-hover-palette-1-light-1 u-text-palette-1-base u-btn-1">Saber mas</router-link>
                       </div>
                   </div>
                   <div class="u-align-left u-container-style u-list-item u-repeater-item">
@@ -363,7 +364,7 @@
                                   </div>Es una herramienta para equipos y usuarios individuales
                               </li>
                           </ul>
-                          <a href="" class="u-active-none u-border-2 u-border-active-palette-1-light-1 u-border-hover-palette-1-light-1 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-text-active-palette-1-light-1 u-text-hover-palette-1-light-1 u-text-palette-1-base u-btn-5">Saber mas</a>
+                          <router-link :to="{ name: 'contacts', params: { message: 'Tengo una idea nueva y deseo compartirla con alguno de sus agentes' } }" class="u-active-none u-border-2 u-border-active-palette-1-light-1 u-border-hover-palette-1-light-1 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-text-active-palette-1-light-1 u-text-hover-palette-1-light-1 u-text-palette-1-base u-btn-1">Saber mas</router-link>
                       </div>
                   </div>
                   <div class="u-align-left u-container-style u-list-item u-repeater-item">
@@ -433,7 +434,7 @@
                                   </div>Funciona con API gratuitas y de pago
                               </li>
                           </ul>
-                          <a href="" class="u-active-none u-border-2 u-border-active-palette-1-light-1 u-border-hover-palette-1-light-1 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-text-active-palette-1-light-1 u-text-hover-palette-1-light-1 u-text-palette-1-base u-btn-6">Saber mas</a>
+                          <router-link :to="{ name: 'contacts', params: { message: 'Necesito saber mas información acerca de su producto de panel administrador' } }" class="u-active-none u-border-2 u-border-active-palette-1-light-1 u-border-hover-palette-1-light-1 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-text-active-palette-1-light-1 u-text-hover-palette-1-light-1 u-text-palette-1-base u-btn-1">Saber mas</router-link>
                       </div>
                   </div>
               </div>
