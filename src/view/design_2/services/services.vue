@@ -100,6 +100,7 @@
       getServiceItem(this.$route.params.name).then(r => r.data).then(response => {
         if (response) {
           this.service = response.data
+          document.title = `${this.currentSettings.COMPANY_NAME}-${this.service.name}`
         }
       }).catch((error) => {
         this.$notification.error({

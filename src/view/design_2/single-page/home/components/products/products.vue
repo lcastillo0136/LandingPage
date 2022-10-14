@@ -8,7 +8,6 @@
             Nuestros productos están diseñados para aumentar la productividad, mejorar las relaciones con los clientes y agilizar las operaciones. <br>
             ¡Contáctenos hoy para obtener más información sobre nuestros productos y cómo podemos ayudar a su negocio! 
           </p>
-          <a href="https://nicepage.com/c/education-website-mockup" class="u-active-palette-1-light-3 u-btn u-btn-round u-button-style u-hover-palette-1-light-3 u-radius-6 u-text-active-palette-1-base u-text-hover-palette-1-base u-text-palette-1-base u-white u-btn-2">Saber mas</a>
         </div>
       </div>
       <div class="u-expanded-width-md u-expanded-width-sm u-expanded-width-xs u-list u-list-1">
