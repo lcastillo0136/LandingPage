@@ -1,137 +1,225 @@
 <template>
-  <div v-if="profile">
-    <a-form-model class="details-form validate-form" ref="detailsForm" :rules="rules" :model="user">
-      <div class="box_general_2 add_bottom_45">
-        <h4>Datos personales <small class="ml-4 text-black-50">(vistas: {{ profile.viewed || 0 }})</small></h4>
-        <div class="row">
-          <div class="col-md-3 col-sm-12">
-            <a-form-model-item prop="title" label="Titulo">
-              <a-select v-model="profile.title" size="large">
-                <a-select-option value="Dr.">
-                  Dr. (Doctor)
-                </a-select-option>
-                <a-select-option value="Arq.">
-                  Arq. (Arquitecto)
-                </a-select-option>
-                <a-select-option value="Profr.">
-                  Profr. (Profesor/a)
-                </a-select-option>
-                <a-select-option value="Lic.">
-                  Lic. (Licenciado/a)
-                </a-select-option>
-                <a-select-option value="Ing.">
-                  Ing. (Ingeniero/a)
-                </a-select-option>
-                <a-select-option value="Esq.">
-                  Esq. (Esquire)
-                </a-select-option>
-                <a-select-option value="Hon.">
-                  Hon. (Honorable)
-                </a-select-option>
-                <a-select-option value="Jr.">
-                  Jr. (Junior)
-                </a-select-option>
-                <a-select-option value="Mr.">
-                  Mr.
-                </a-select-option>
-                <a-select-option value="Mrs.">
-                  Mrs.
-                </a-select-option>
-                <a-select-option value="Ms.">
-                  Ms.
-                </a-select-option>
-                <a-select-option value="Msgr.">
-                  Msgr. (Monsignor)
-                </a-select-option>
-                <a-select-option value="Rev.">
-                  Rev. (Reverend)
-                </a-select-option>
-                <a-select-option value="Rt. Hon.">
-                  Rt. Hon. (Right Honorable)
-                </a-select-option>
-                <a-select-option value="Sr.">
-                  Sr. (Senior)
-                </a-select-option>
-                <a-select-option value="St.">
-                  St. (Saint)
-                </a-select-option>
-              </a-select>
-            </a-form-model-item>
+  <div class="profile-page" v-if="profile">
+    <a-form-model ref="detailsForm" :rules="rules" :model="user" class="details-form d-flex flex-column" :label-col="{ span: 8 }" :wrapper-col="{ span: 14, offset: 2 }" :colon="false">
+      <b-card class="rounded-0">
+        <figure class="profile-header">
+          <img :src="cover" alt="" class="img-fluid mx-auto d-block"  v-if="isCoverImage"/>
+          <img :src="coverFile" alt="" class="img-fluid mx-auto d-block" v-else/>
+        </figure>
+        <div class="d-flex align-items-center">
+          <div v-if="avatar" class="profile-avatar-container">
+            <a-avatar :size="120" :src="avatar" v-if="isImage" class="shadow-sm bg-white border border-white"/>
+            <a-avatar :size="120" :src="avatarFile"  v-else class="shadow-sm bg-white border border-white"/>
           </div>
-          <div class="col-md-5 col-sm-6">
-            <a-form-model-item prop="first_name" label="Nombre(s)">
-              <a-input type="text" class="" placeholder="Nombre(s)" v-model="profile.first_name" :disabled="saving" size="large">
-              </a-input>
-            </a-form-model-item>
+          <div>
+            <h4 class="card-title">Perfil</h4>
+            <h6 class="card-subtitle text-muted">Actualiza tu foto y datos personales.</h6>
           </div>
-          <div class="col-md-4 col-sm-6">
-            <a-form-model-item prop="last_name" label="Apellido(s)">
-              <a-input type="text" class="" placeholder="Apellido(s)" v-model="profile.last_name" :disabled="saving" size="large">
-              </a-input>
-            </a-form-model-item>
+          <div class="ml-auto">
+            
           </div>
         </div>
-
-        <div class="row">
-          <div class="col-md-3 col-sm-6">
-            <a-form-model-item prop="phone" label="Teléfono móvil">
-              <a-input type="number" class="" placeholder="Teléfono móvil" v-model="profile.phone" :disabled="saving" size="large">
-              </a-input>
-            </a-form-model-item>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <a-form-model-item prop="tel_oficina" label="Teléfono trabajo">
-              <a-input type="number" class="" placeholder="Teléfono trabajo" v-model="profile.tel_oficina" :disabled="saving" size="large">
-              </a-input>
-            </a-form-model-item>
-          </div>
-          <div class="col-md-6 col-sm-6">
-            <a-form-model-item prop="email" label="Correo electrónico">
-              <a-input type="text" class="" placeholder="Correo electrónico" v-model="profile.email" :disabled="saving" size="large">
-              </a-input>
-            </a-form-model-item>
-          </div>
+        <div class="d-flex my-4">
+          <a-form-model-item class="px-1 w-50" :wrapper-col="{ span: 24 }">
+            <small class="text-muted">FOTO DE PERFIL</small>
+            <a-upload-dragger  name="profile-avatar" :multiple="false" :showUploadList="false" :beforeUpload="handleUpload" accept="image/*" :disabled="saving" >
+              <template v-if="avatarFile">
+                <a-avatar shape="square" :size="64" icon="user" :src="avatarFile" />
+                <span class="profile-name ml-4 mr-auto font-weight-bold" >
+                  {{ profile.avatar | filename }}
+                </span>
+              </template>
+              <template v-else>
+                <div class="rounded button-image">
+                  <b-icon-image></b-icon-image>
+                </div>
+                <span class="profile-name ml-4 mr-auto font-weight-bold">
+                  Arrasta aqui o busca una nueva imagen para tu perfil
+                </span>
+              </template>
+              <a-button class=" font-weight-bold" :disabled="saving">Navegar</a-button>
+            </a-upload-dragger>
+          </a-form-model-item>
+          <a-form-model-item class="px-1 w-50" :wrapper-col="{ span: 24 }">
+            <small class="text-muted">FOTO DE PORTADA</small>
+            <a-upload-dragger name="profile-cover" :multiple="false" :showUploadList="false" :beforeUpload="handleCoverUpload" accept="image/*" :disabled="saving" >
+              <template v-if="coverFile">
+                <a-avatar shape="square" :size="64" icon="user" :src="coverFile" />
+                <span class="profile-name ml-4 mr-auto font-weight-bold" >
+                  {{ profile.cover | filename }}
+                </span>
+              </template>
+              <template v-else>
+                <div class="rounded button-image">
+                  <b-icon-image></b-icon-image>
+                </div>
+                <span class="profile-name ml-4 mr-auto font-weight-bold">
+                  Arrasta aqui o busca una nueva imagen para tu portada
+                </span>
+              </template>
+              <a-button class=" font-weight-bold" :disabled="saving">Navegar</a-button>
+            </a-upload-dragger>
+          </a-form-model-item>
         </div>
+        
+        <a-form-model-item prop="title">
+          <template #label>
+            <span>Titulo</span>
+            <br>
+            <small class="text-muted">Palabra o expresión que antecede al nombre</small>
+          </template>
+          <a-select v-model="profile.title" size="large" :disabled="saving">
+            <a-select-option value="Dr.">
+              Dr. (Doctor)
+            </a-select-option>
+            <a-select-option value="Arq.">
+              Arq. (Arquitecto)
+            </a-select-option>
+            <a-select-option value="Profr.">
+              Profr. (Profesor/a)
+            </a-select-option>
+            <a-select-option value="Lic.">
+              Lic. (Licenciado/a)
+            </a-select-option>
+            <a-select-option value="Ing.">
+              Ing. (Ingeniero/a)
+            </a-select-option>
+            <a-select-option value="Esq.">
+              Esq. (Esquire)
+            </a-select-option>
+            <a-select-option value="Hon.">
+              Hon. (Honorable)
+            </a-select-option>
+            <a-select-option value="Jr.">
+              Jr. (Junior)
+            </a-select-option>
+            <a-select-option value="Mr.">
+              Mr.
+            </a-select-option>
+            <a-select-option value="Mrs.">
+              Mrs.
+            </a-select-option>
+            <a-select-option value="Ms.">
+              Ms.
+            </a-select-option>
+            <a-select-option value="Msgr.">
+              Msgr. (Monsignor)
+            </a-select-option>
+            <a-select-option value="Rev.">
+              Rev. (Reverend)
+            </a-select-option>
+            <a-select-option value="Rt. Hon.">
+              Rt. Hon. (Right Honorable)
+            </a-select-option>
+            <a-select-option value="Sr.">
+              Sr. (Senior)
+            </a-select-option>
+            <a-select-option value="St.">
+              St. (Saint)
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
 
-        <div class="row">
-          <div class="col-md-3 col-sm-6">
-            <a-form-model-item prop="bday" label="Fecha de nacimiento">
-              <a-date-picker v-model="profile.bday" size="large" />
-            </a-form-model-item>
-          </div>
+        <a-form-model-item prop="first_name">
+          <template #label>
+            <span>Nombre(s)</span>
+          </template>
+          <a-input type="text" placeholder="Nombre(s)" v-model="profile.first_name" :disabled="saving" size="large">
+          </a-input>
+        </a-form-model-item>
+        
+        <a-form-model-item prop="last_name">
+          <template #label>
+            <span>Apellido(s)</span>
+          </template>
+          <a-input type="text" class="" placeholder="Apellido(s)" v-model="profile.last_name" :disabled="saving" size="large">
+          </a-input>
+        </a-form-model-item>
 
-          <div class="col-md-3">
-            <a-form-model-item prop="gender" label="Género">
-              <a-select v-model="profile.gender" size="large">
-                <a-select-option value="male">
-                  Masculino
-                </a-select-option>
-                <a-select-option value="female">
-                  Femenino
-                </a-select-option>
-                <a-select-option value="other">
-                  Otro
-                </a-select-option>
-                <a-select-option value="not_sure">
-                  No estoy seguro
-                </a-select-option>
-                <a-select-option value="rather_not_say">
-                  Prefiero no decir
-                </a-select-option>
-              </a-select>
-            </a-form-model-item>
-          </div>
-          <div class="col-md-6" style="padding-top: 18px;">
-            <a-form-model-item help="*Hay que guardar para que se reflejen los cambios en el sitio">
-              <a-upload name="file" :multiple="false" accept="image/*" :showUploadList="false" size="large" :beforeUpload="handleUpload">
-                <a-button> <a-icon type="upload" /> Cambiar imagen de perfil </a-button>
-              </a-upload>
-            </a-form-model-item>
-          </div>
-        </div>
-      </div>
+        <a-form-model-item prop="phone">
+          <template #label>
+            <span>Teléfono móvil</span>
+            <br>
+            <small class="text-muted">Numero de teléfono personal</small>
+          </template>
+          <a-input type="number" class="" placeholder="Teléfono móvil" v-model="profile.phone" :disabled="saving" size="large">
+          </a-input>
+        </a-form-model-item>
+
+        <a-form-model-item prop="tel_oficina">
+          <template #label>
+            <span>Teléfono trabajo</span>
+            <br>
+            <small class="text-muted">Numero de teléfono principal de contacto</small>
+          </template>
+          <a-input type="number" class="" placeholder="Teléfono trabajo" v-model="profile.tel_oficina" :disabled="saving" size="large">
+          </a-input>
+        </a-form-model-item>
+        
+        
+        <a-form-model-item prop="bday">
+          <template #label>
+            <span>Fecha de nacimiento</span>
+            <br>
+            <small class="text-muted"></small>
+          </template>
+          <a-date-picker v-model="profile.bday" size="large"  :disabled="saving"/>
+        </a-form-model-item>
+        <a-form-model-item prop="email">
+          <template #label>
+            <span>Correo electrónico</span>
+            <br>
+            <small class="text-muted">Direccion de correo electrónico de contacto</small>
+          </template>
+          <a-input type="text" class="" placeholder="Correo electrónico" v-model="profile.email" :disabled="saving" size="large">
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item prop="gender">
+          <template #label>
+            <span>Género</span>
+            <br>
+            <small class="text-muted"></small>
+          </template>
+          <a-select v-model="profile.gender" size="large" :disabled="saving">
+            <a-select-option value="male">
+              Masculino
+            </a-select-option>
+            <a-select-option value="female">
+              Femenino
+            </a-select-option>
+            <a-select-option value="other">
+              Otro
+            </a-select-option>
+            <a-select-option value="not_sure">
+              No estoy seguro
+            </a-select-option>
+            <a-select-option value="rather_not_say">
+              Prefiero no decir
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
+
+        <a-form-model-item prop="quote">
+          <template #label>
+            <span>Cita</span>
+            <br>
+            <small class="text-muted">Compartenos una frase que te describa</small>
+          </template>
+          <a-input type="text" placeholder="Frase que te describa" v-model="profile.quote" :disabled="saving" size="large">
+          </a-input>
+        </a-form-model-item>
+
+        <a-form-model-item prop="biography" class="align-items-start">
+          <template #label >
+            <span class="d-inline-block mt-2">Biografía</span>
+            <br>
+            <small class="text-muted">Escribe una descripción corta sobre ti mismo</small>
+          </template>
+          <a-textarea :autoSize="true" placeholder="Escribe una descripción corta sobre ti mismo" v-model="profile.biography" :rows="6" :disabled="saving"/>
+        </a-form-model-item>
+      </b-card>
     </a-form-model>
-
+    <!-- 
     <div class="box_general_2 add_bottom_45">
       <h4>Información de cuenta</h4>
       <form ref="registerForm">
@@ -344,66 +432,69 @@
         </div>
       </div>
     </div>
-    <Addressess :profile="profile"></Addressess>
-    <div class="box_general_2 add_bottom_45">
-      <h4>Información profesional</h4>
+    <b-card>
+        <h4 class="card-title">Información profesional</h4>
+        <h6 class="card-subtitle text-muted mb-4">Trayectoria profesional</h6>
 
-      <div class="row">
-        <div class="col-md-3 col-sm-6">
-          <div class="form-group">
-            <label>Profesión</label>
-            <input type="text" class="form-control" placeholder="----------" v-model="profile.profesion" autocomplete="chrome-off">
-          </div>
+        <div class="d-flex">
+          <a-form-model-item prop="profesion" class="px-1 w-25">
+            <small class="text-muted">PROFESIÓN</small>
+            <a-input type="text" placeholder="----------" v-model="profile.profesion" :disabled="saving" size="large">
+            </a-input>
+          </a-form-model-item>
+          <a-form-model-item prop="profesion" class="px-1 w-25">
+            <small class="text-muted">ESPECIALIDAD</small>
+            <a-input type="text" placeholder="----------" v-model="profile.especialidad" :disabled="saving" size="large">
+            </a-input>
+          </a-form-model-item>
+          <a-form-model-item prop="profesion" class="px-1 w-25">
+            <small class="text-muted">CÉDULA PROFESIONAL</small>
+            <a-input type="text" placeholder="----------" v-model="profile.cedula_profesional" :disabled="saving" size="large">
+            </a-input>
+          </a-form-model-item>
+          <a-form-model-item prop="profesion" class="px-1 w-25">
+            <small class="text-muted">COMPAÑÍA / EMPRESA</small>
+            <a-input type="text" placeholder="----------" v-model="profile.company_name" :disabled="saving" size="large">
+            </a-input>
+          </a-form-model-item>
         </div>
-        <div class="col-md-3 col-sm-6">
-          <div class="form-group">
-            <label>Especialidad</label>
-            <input type="text" class="form-control" placeholder="---------" v-model="profile.especialidad" autocomplete="chrome-off">
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <div class="form-group">
-            <label>Cédula Profesional</label>
-            <input type="text" class="form-control" placeholder="----------" v-model="profile.cedula_profesional" autocomplete="chrome-off">
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <div class="form-group">
-            <label>Compañía / Empresa</label>
-            <input type="text" class="form-control" placeholder="" v-model="profile.company_name" autocomplete="chrome-off">
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <label>Habilidades</label>
-        <br>
-        <template v-for="(tag, index) in profile.skills">
-          <a-tooltip v-if="tag.name.length > 20" :key="tag.name" :title="tag.name">
-            <a-tag :key="tag.name" :closable="true" @close="() => handleClose(tag.name)">
-              {{ `${tag.name.slice(0, 20)}...` }}
+        <div>
+          <small class="text-muted mx-1">HABILIDADES</small>
+          <br>
+          <div class="overflow-auto" style="max-height: 500px;">
+            <div class="d-flex shadow-sm rounded p-3 border mb-2 mx-1 align-items-center" v-for="(tag, index) in profile.skills">
+              <a-input type="text" placeholder="Nombre de la habilidad" class="w-50 mr-3" v-model="tag.name" :disabled="saving" ></a-input>
+              <a-input-number class="w-25 mr-auto ant-input-number" v-model="tag.value" :min="1" :max="99" />
+              <a-switch class="mr-3" size="small" v-model="tag.active" />
+              <a-icon type="minus-circle" :style="{ fontSize: '16px', color: 'var(--red)' }"></a-icon>
+            </div>
+            <a-tooltip v-if="tag.name.length > 20" :key="tag.name" :title="tag.name">
+              <a-tag :key="tag.name" :closable="true" @close="() => handleClose(tag.name)">
+                {{ `${tag.name.slice(0, 20)}...` }}
+              </a-tag>
+            </a-tooltip>
+            <a-tag v-else :key="tag.name" :closable="true" @close="() => handleClose(tag.name)">
+              {{ tag.name }}
             </a-tag>
-          </a-tooltip>
-          <a-tag v-else :key="tag.name" :closable="true" @close="() => handleClose(tag.name)">
-            {{ tag.name }}
+          </div>
+          <a-input
+            v-if="inputVisible"
+            ref="input"
+            type="text"
+            size="small"
+            :style="{ width: '78px' }"
+            :value="inputValue"
+            @change="handleInputChange"
+            @blur="handleInputConfirm"
+            @keyup.enter="handleInputConfirm"
+          />
+          <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
+            <a-icon type="plus" /> Agregar
           </a-tag>
-        </template>
-        <a-input
-          v-if="inputVisible"
-          ref="input"
-          type="text"
-          size="small"
-          :style="{ width: '78px' }"
-          :value="inputValue"
-          @change="handleInputChange"
-          @blur="handleInputConfirm"
-          @keyup.enter="handleInputConfirm"
-        />
-        <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
-          <a-icon type="plus" /> Agregar
-        </a-tag>
-      </div>
-    </div>
+        </div>
+      </b-card>
+      <Addressess :profile="profile"></Addressess>
+      
     <div class="box_general_2 add_bottom_30">
       <h4>Información adicional</h4>
       <div class="form-group">
@@ -414,7 +505,7 @@
         <label>Biografía</label>
         <a-textarea :autoSize="true" class="form-control" placeholder="Biografía" v-model="profile.biography" :rows="4"/>
       </div>
-    </div>
+    </div> -->
     <div style="text-align: right;">
       <a-button type="primary" class="save-button" shape="circle" size="large" @click="handleSave" :loading="saving" :disabled="!matchPassword">
         <a-icon type="save" theme="filled" v-if="!saving" />
@@ -433,6 +524,11 @@
   import { PinturaEditor } from 'vue-pintura'
   import { getEditorDefaults } from 'pintura'
   import Addressess from './components/addressess'
+  import * as _ from 'lodash'
+
+  import { Icon } from 'iview';
+
+  import 'iview/dist/styles/iview.css';
 
   export default {
     name: 'ProfileDetails',
@@ -446,7 +542,8 @@
     },
     components: {
       PinturaEditor,
-      Addressess
+      Addressess,
+      Icon
     },
     data () {
       return {
@@ -506,7 +603,11 @@
               }
             }
           }, trigger: 'change' }],
-        }
+        },
+        avatarFile: '',
+        coverFile: '',
+        labelCol: { span: 4 },
+        wrapperCol: { span: 14 },
       }
     },
     watch: {
@@ -517,6 +618,20 @@
             this.$refs.confirmpassword.setCustomValidity("Invalid field")
           } else {
             this.$refs.confirmpassword.setCustomValidity("")
+          }
+        }
+      },
+      cover () {
+        if (!this.isCoverImage) {
+          var reader = new FileReader();
+          reader.onloadend = () => {
+            this.coverFile = reader.result;
+          }
+
+          if (this.cover) {
+            reader.readAsDataURL(this.cover);
+          } else {
+
           }
         }
       }
@@ -538,11 +653,43 @@
           
         }
       },
+      avatar () {
+        return (this.profile && this.profile.avatar) || '/img/blank-profile.webp'
+      },
+      cover () {
+        return (this.profile && this.profile.cover) || '/img/blank-profile.webp'
+      },
+      isImage() {
+        try {
+          if (this.profile.avatar && this.profile.avatar instanceof File) {
+            return false;
+          }
+        } catch(e) { }
+         
+       return true
+      },
+      isCoverImage() {
+        try {
+          if (this.profile.cover && this.profile.cover instanceof File) {
+            return false;
+          }
+        } catch(e) { }
+         
+       return true
+      },
       isProvider() {
         return this.user.role && this.user.role.is_provider
       },
       isClient() {
         return this.user.role && this.user.role.is_client
+      },
+      hasNewProfilePicture() {
+        return this.profile.avatar instanceof File
+      }
+    },
+    filters: {
+      filename(value) {
+        return value && _(value.name).split('/').last()
       }
     },
     methods: {
@@ -582,38 +729,100 @@
       },
       handleSave () {
         this.saving = true
-        this.$refs.registerForm.classList.add('was-validated')
-        if ((this.user_pass.password != "" && this.matchPassword) || this.user_pass.password == '') {
-          this.errors = []
-          updateUser({
-            ...this.profile,
-            ...{
-              bday: this.profile.bday && this.profile.bday.format('YYYY-MM-DD'),
-              phone: (`${this.profile.phone||''}`).replace(/\D/g, ''),
-            }, ...(this.user_pass.password != "" && this.matchPassword ? {
-              password: this.user_pass.password,
-              password_confirmation: this.user_pass.password,
-            } : {})
-          }, this.hasToken).then((response) => {
-            this.profile.avatar = this.getUser.avatar = response.data.data.avatar
-            this.saving = false
-            this.$refs.registerForm.classList.remove('was-validated')
-            this.user_pass.password = this.user_pass.confirmpassword = ''
+        this.$refs.detailsForm.validate().then(valid => {
+          if (valid) {
+            this.errors = []
+            updateUser({
+              ...this.profile,
+              ...{
+                bday: this.profile.bday && this.profile.bday.format('YYYY-MM-DD'),
+                phone: (`${this.profile.phone||''}`).replace(/\D/g, ''),
+              }
+            }, this.hasToken).then((response) => {
+              this.profile.avatar = this.getUser.avatar = response.data.data.avatar
+              this.profile.cover = this.getUser.cover = response.data.data.cover
+              this.coverFile = '';
+              this.avatarFile = '';
+              
+              this.saving = false
+              
+              // this.$refs.registerForm.classList.remove('was-validated')
 
-            this.$notification.success({
-              message: 'Datos guardados',
-              description: 'Los datos del usuario han sido actulizados'
+              this.$notification.success({
+                message: 'Datos guardados',
+                description: 'Los datos del usuario han sido actulizados'
+              })
+            }).catch((error) => {
+              this.saving = false
+              this.errors = error.data.error
             })
-          }).catch((error) => {
+          } else {
             this.saving = false
-            this.errors = error.data.error
-          })
-        } else {
-          this.saving = false  
-        }
+          }
+        }).catch((error) => {
+          this.saving = false
+          this.errors = error.data.error
+        });
+        // if ((this.user_pass.password != "" && this.matchPassword) || this.user_pass.password == '') {
+        //   this.errors = []
+        //   updateUser({
+        //     ...this.profile,
+        //     ...{
+        //       bday: this.profile.bday && this.profile.bday.format('YYYY-MM-DD'),
+        //       phone: (`${this.profile.phone||''}`).replace(/\D/g, ''),
+        //     }, ...(this.user_pass.password != "" && this.matchPassword ? {
+        //       password: this.user_pass.password,
+        //       password_confirmation: this.user_pass.password,
+        //     } : {})
+        //   }, this.hasToken).then((response) => {
+        //     this.profile.avatar = this.getUser.avatar = response.data.data.avatar
+        //     this.saving = false
+        //     this.$refs.registerForm.classList.remove('was-validated')
+        //     this.user_pass.password = this.user_pass.confirmpassword = ''
+
+        //     this.$notification.success({
+        //       message: 'Datos guardados',
+        //       description: 'Los datos del usuario han sido actulizados'
+        //     })
+        //   }).catch((error) => {
+        //     this.saving = false
+        //     this.errors = error.data.error
+        //   })
+        // } else {
+        //   this.saving = false  
+        // }
       },
       handleUpload(file) {
         this.profile.avatar = file
+
+        if (!this.isImage) {
+          var reader  = new FileReader();
+          reader.onloadend = () => {
+            this.avatarFile = reader.result;
+          }
+
+          if (this.avatar) {
+            reader.readAsDataURL(this.avatar);
+          } else {
+
+          }
+        }
+        return false
+      },
+      handleCoverUpload(file) {
+        this.profile.cover = file
+        if (!this.isCoverImage) {
+          var reader  = new FileReader();
+          reader.onloadend = () => {
+            this.coverFile = reader.result;
+          }
+
+          if (this.cover) {
+            reader.readAsDataURL(this.cover);
+          } else {
+
+          }
+        }
         return false
       },
       togglePassword(field) {
@@ -627,120 +836,225 @@
   }
 </script>
 <style lang="scss">
-  .PinturaRoot.PinturaRootComponent.pintura-editor {
-    background: #f5f8fa;
-    &:after {
-      content: none;
+  .profile-page {
+    font-family: 'Poppins', 'Montserrat',  sans-serif;
+    .profile-header {
+      position: relative;
+      overflow: hidden;
+      height: 220px;
+      margin-top: -20px;
+      margin-right: -20px;
+      margin-left: -20px;
     }
-  }
-  .ant-calendar-picker {
-    width: 100%;
-    .ant-input {
-      border-color: #e1e8ed;
-    }
-  }
-  .ant-tag {
-    margin-bottom: 5px;
-  }
-  .was-validated {
-    input.form-control.has-error {
-      border-color: #dc3545;
-    }
-    .invalid-feedback {
-      position: absolute;
-    }
-  }
-  .icon-twitter { color: #00aced; color: rgb(0, 172, 237); }
-  .icon-facebook { color: #3b5998; color: rgb(59, 89, 152); }
-  .icon-googleplus { color: #dd4b39; color: rgb(221, 75, 57); }
-  .icon-rss { color: #f26522; color: rgb(242, 101, 34); }
-  .icon-pinterest { color: #cb2027; color: rgb(203, 32, 39); }
-  .icon-linkedin { color: #007bb6; color: rgb(0, 123, 182); }
-  .icon-youtube { color: #bb0000; color: rgb(187, 0, 0); }
-  .icon-vimeo { color: #1ab7ea; color: rgb(26, 183, 234); }
-  .icon-tumblr { color: #32506d; color: rgb(50, 80, 109); }
-  .icon-instagram { color: #bc2a8d; color: rgb(188, 42, 141); }
-  .icon-flickr { color: #ff0084; color: rgb(255, 0, 132); }
-  .icon-dribbble { color: #ea4c89; color: rgb(234, 76, 137); }
-  .icon-quora { color: #a82400; color: rgb(168, 36, 0); }
-  .icon-foursquare { color: #0072b1; color: rgb(0, 114, 177)}
-  .icon-forrst { color: #5B9A68; color: rgb(91, 154, 104); }
-  .icon-vk { color: #45668e; color: rgb(69, 102, 142); }
-  .icon-wordpress { color: #21759b; color: rgb(33, 117, 155); }
-  .icon-stumbleupon { color: #EB4823; color: rgb(235, 72, 35); }
-  .icon-yahoo { color: #7B0099; color: rgb(123, 0, 153); }
-  .icon-blogger { color: #fb8f3d; color: rgb(251, 143, 61); }
-  .icon-soundcloud { color: #ff3a00; color: rgb(255, 58, 0); }
-  .icon-paypal { color: #003087; color: rgb(0, 48, 135); }
-  .icon-tiktok { 
-    color: #000;
-    text-shadow: -1px -1px 1px #25f4ee, 1px 1px 1px #fe2c55;
-  }
-
-  .ant-btn {
-    &.save-button {
-      width: 50px;
-      position: fixed;
-      bottom: 16px;
-      height: 50px;
-      font-size: 20px;
-      right: 20px;
-    }
-    .anticon {
-      vertical-align: initial;
-    }
-  }
-  .details-form {
-    .ant-form-item-label {
-      line-height: 1;
-      & > label {
-        line-height: 1;
+    .profile-avatar-container {
+      margin-left: 25px;
+      z-index: 100;
+      margin-top: -30px;
+      margin-right: 16px;
+      > span {
+        border-width: 4px !important;
       }
     }
-    .has-feedback .ant-input-affix-wrapper .ant-input-suffix {
-      padding-right: 0
+    .PinturaRoot.PinturaRootComponent.pintura-editor {
+      background: #f5f8fa;
+      &:after {
+        content: none;
+      }
+    }
+    .ant-calendar-picker {
+      width: 100%;
+      .ant-input {
+        
+      }
+    }
+    .ant-tag {
+      margin-bottom: 5px;
+    }
+    .was-validated {
+      input.form-control.has-error {
+        border-color: #dc3545;
+      }
+      .invalid-feedback {
+        position: absolute;
+      }
+    }
+    .icon-twitter { color: #00aced; color: rgb(0, 172, 237); }
+    .icon-facebook { color: #3b5998; color: rgb(59, 89, 152); }
+    .icon-googleplus { color: #dd4b39; color: rgb(221, 75, 57); }
+    .icon-rss { color: #f26522; color: rgb(242, 101, 34); }
+    .icon-pinterest { color: #cb2027; color: rgb(203, 32, 39); }
+    .icon-linkedin { color: #007bb6; color: rgb(0, 123, 182); }
+    .icon-youtube { color: #bb0000; color: rgb(187, 0, 0); }
+    .icon-vimeo { color: #1ab7ea; color: rgb(26, 183, 234); }
+    .icon-tumblr { color: #32506d; color: rgb(50, 80, 109); }
+    .icon-instagram { color: #bc2a8d; color: rgb(188, 42, 141); }
+    .icon-flickr { color: #ff0084; color: rgb(255, 0, 132); }
+    .icon-dribbble { color: #ea4c89; color: rgb(234, 76, 137); }
+    .icon-quora { color: #a82400; color: rgb(168, 36, 0); }
+    .icon-foursquare { color: #0072b1; color: rgb(0, 114, 177)}
+    .icon-forrst { color: #5B9A68; color: rgb(91, 154, 104); }
+    .icon-vk { color: #45668e; color: rgb(69, 102, 142); }
+    .icon-wordpress { color: #21759b; color: rgb(33, 117, 155); }
+    .icon-stumbleupon { color: #EB4823; color: rgb(235, 72, 35); }
+    .icon-yahoo { color: #7B0099; color: rgb(123, 0, 153); }
+    .icon-blogger { color: #fb8f3d; color: rgb(251, 143, 61); }
+    .icon-soundcloud { color: #ff3a00; color: rgb(255, 58, 0); }
+    .icon-paypal { color: #003087; color: rgb(0, 48, 135); }
+    .icon-tiktok { 
+      color: #000;
+      text-shadow: -1px -1px 1px #25f4ee, 1px 1px 1px #fe2c55;
+    }
+
+    .ant-btn {
+      &.save-button {
+        width: 50px;
+        position: fixed;
+        bottom: 16px;
+        height: 50px;
+        font-size: 20px;
+        right: 20px;
+      }
+      .anticon {
+        vertical-align: initial;
+      }
+    }
+
+    .details-form {
+      --border-color: #ececec;
+      --border-color-hover: #40a9ff;
+      --font-size: 13px;
+      gap: 20px;
+      .ant-form-item {
+        display: flex;
+        align-items: center;
+      }
+      .ant-form-item-label {
+        line-height: 1;
+        text-align: left;
+        & > label {
+          line-height: 1;
+        }
+        small.text-muted {
+          margin-top: 2px;
+          display: inline-block;
+          margin-left: 2px;
+          color: #959ba1 !important;
+        }
+      }
+      .has-feedback .ant-input-affix-wrapper .ant-input-suffix {
+        padding-right: 0
+      }
+      
+      .input-checkbox100 {
+        display: none;
+      }
+
+      .label-checkbox100 {
+        margin: 0;
+
+        display: block;
+        position: relative;
+        padding-left: 26px;
+        cursor: pointer;
+      }
+
+      .label-checkbox100 > span.check {
+        font-size: 13px;
+        color: transparent;
+
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-radius: 2px;
+        background: #e6e6e6;
+        left: 0;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%);
+      }
+
+      .input-checkbox100:checked + .label-checkbox100 > span.check {
+        color: #c87ef0;
+      }
+    }
+
+    .card-title {
+      margin-bottom: 0.2rem;
+    }
+
+    .ant-form-item-label {
+      line-height: 10px;
+      label {
+        margin-bottom: 0px;
+      }
+    }
+
+    .ant-input, .ant-select-selection, .ant-input-number {
+      border-color: var(--border-color);
+      font-size: var(--font-size);
+      &:hover, &:focus {
+        border-color: var(--border-color-hover);
+      }
+    }
+
+    .ant-divider {
+      border-color: var(--border-color);
+      width: calc(100% - 0.5rem);
+      min-width: auto;
+    }
+
+    .ant-form-item-control {
+      line-height: 1.5;
     }
     
-    .input-checkbox100 {
-      display: none;
+    .ant-input-number { 
+      .ant-input-number-input {
+        text-align: right;      
+      }
+
+      &:hover {
+        .ant-input-number-input {
+          padding-right: 28px;
+        }
+      }
     }
 
-    .label-checkbox100 {
-      margin: 0;
-
-      display: block;
-      position: relative;
-      padding-left: 26px;
-      cursor: pointer;
-    }
-
-    .label-checkbox100 > span.check {
-      font-size: 13px;
-      color: transparent;
-
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -moz-box;
-      display: -ms-flexbox;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      border-radius: 2px;
-      background: #e6e6e6;
-      left: 0;
-      top: 50%;
-      -webkit-transform: translateY(-50%);
-      -moz-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-      -o-transform: translateY(-50%);
-      transform: translateY(-50%);
-    }
-
-    .input-checkbox100:checked + .label-checkbox100 > span.check {
-      color: #c87ef0;
+    .ant-upload.ant-upload-drag {
+      background: #fff;
+      border-color: #ececec;
+      border-width: 2px;
+      .ant-upload {
+        padding: 12px;
+        .ant-upload-drag-container {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .button-image {
+            background: #ebf2fd;
+            color: #215ad6;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 0 0 auto;
+          }
+          .profile-name {
+            
+          }
+        }
+      }
     }
   }
 </style>

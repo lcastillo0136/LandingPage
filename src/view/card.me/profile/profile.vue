@@ -68,6 +68,7 @@
           first_name: '',
           last_name: '',
           avatar: '',
+          cover: '',
           bday: null,
           biography: '',
           cedula_profesional: '',
@@ -107,7 +108,8 @@
         this.profile = {
           ...this.getUser,
           ...{ 
-            bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD')
+            bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD'),
+            skills: this.getUser.skills && this.getUser.skills.map(s => Object({ ...s, active: !!s.active }))
           }
         }
       },
@@ -115,7 +117,7 @@
         if (!this.hasToken) {
           this.$router.replace({ name: 'home' })
         }
-      }
+      },
     },
     components: {
       AsideProfile,
@@ -161,7 +163,8 @@
             this.profile = {
               ...this.getUser,
               ...{ 
-                bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD')
+                bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD'),
+                skills: this.getUser.skills && this.getUser.skills.map(s => Object({ ...s, active: !!s.active }))
               }
             }
             
@@ -188,6 +191,8 @@
   }
 </script>
 <style lang="scss">
+
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,500&family=Comfortaa:wght@300;400;500&display=swap');
   .home-page {
     &.box_list .wrapper {
       margin-top: 0 !important;

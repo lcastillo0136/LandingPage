@@ -32,8 +32,10 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
+import 'ant-design-vue/lib/avatar/style/index.css';
 import 'ant-design-vue/lib/back-top/style/index.css';
 import 'ant-design-vue/lib/form/style/index.css';
+import 'ant-design-vue/lib/grid/style/index.css';
 import 'ant-design-vue/lib/select/style/index.css';
 import 'ant-design-vue/lib/date-picker/style/index.css';
 import 'ant-design-vue/lib/upload/style/index.css';
@@ -45,6 +47,7 @@ import 'ant-design-vue/lib/notification/style/index.css';
 import 'ant-design-vue/lib/table/style/index.css';
 import 'ant-design-vue/lib/pagination/style/index.css';
 import 'ant-design-vue/lib/input/style/index.css';
+import 'ant-design-vue/lib/input-number/style/index.css';
 import 'ant-design-vue/lib/button/style/index.css';
 import 'ant-design-vue/lib/card/style/index.css';
 import 'ant-design-vue/lib/switch/style/index.css';

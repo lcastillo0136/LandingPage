@@ -1,11 +1,15 @@
 <template>
-  <div class="box_profile aside-profile mb-2">
-    <figure v-if="avatar">
-      <img :src="avatar" alt="" class="img-fluid" v-if="isImage">
-      <img :src="avatarFile" alt="" class="img-fluid" v-else>
+  <div class="box_profile aside-profile mb-2 pb-0">
+    <!-- <figure class="profile-header">
+      <img :src="cover" alt="" class="img-fluid"  v-if="isCoverImage"/>
+      <img :src="coverFile" alt="" class="img-fluid" v-else/>
     </figure>
+    <div v-if="avatar" class="profile-avatar-container">
+      <a-avatar :size="90" :src="avatar" v-if="isImage" class="shadow-sm bg-white"/>
+      <a-avatar :size="90" :src="avatarFile"  v-else class="shadow-sm bg-white"/>
+    </div>
     <template>
-      <small v-if="user.especialidad">
+      <small v-if="user.especialidad" class="d-inline-block">
         {{ user.especialidad }}
       </small>
     </template>
@@ -14,17 +18,17 @@
     </h1>
     <div class="link-cardme">
       <template v-if="active_account">
-          <a-tag color="green">
-            Perfil activo 
-          </a-tag>
+        <a-tag color="green">
+          Perfil activo 
+        </a-tag>
       </template>
       <template v-else>
-          <a-tag color="red">
-            Perfil desactivado
-          </a-tag>
-          <small>
-            <router-link :to="{ name: 'profile-payment' }">Ir a pagar</router-link>
-          </small>
+        <a-tag color="red">
+          Perfil desactivado
+        </a-tag>
+        <small>
+          <router-link :to="{ name: 'profile-payment' }">Ir a pagar</router-link>
+        </small>
       </template>
     </div>
     <div class="position-relative p-3">
@@ -37,7 +41,7 @@
     <div class="button-group d-flex">
       <a-button type="dashed" @click="$emit('preview')">Preview</a-button>
       <a-button type="dashed" v-clipboard:copy="userLink" @click="copyLink">Copiar link</a-button>
-    </div>
+    </div> -->
     <!-- <ul class="contacts">
       <li><h6>Direccion</h6>{{ getUser.address.street }} {{ getUser.address.suburb }}, {{ getUser.address.city}}</li>
       <li v-if="getUser.phone"><h6>Teléfono</h6><a :href="'tel:' + getUser.phone ">{{ getUser.phone | phone }}</a></li>
@@ -45,20 +49,20 @@
     <ul class="contacts">
       <li>
         <router-link :to="{ name: 'profile-details' }">
-          <span>Detalles</span>
-          <i class="arrow_carrot-right"></i>
+          <span>Mis detalles</span>
+          <a-icon type="caret-right"></a-icon>
         </router-link>
       </li>
       <li>
         <router-link :to="{ name: 'profile-orders' }">
           <span>Pagos</span>
-          <i class="arrow_carrot-right"></i>
+          <a-icon type="caret-right"></a-icon>
         </router-link>
       </li>
       <li>
         <router-link :to="{ name: 'profile-analytics' }">
           <span>Analytics</span>
-          <i class="arrow_carrot-right"></i>
+          <a-icon type="caret-right"></a-icon>
         </router-link>
       </li>
       <!-- <li>
@@ -80,14 +84,14 @@
         </router-link>
       </li> -->
     </ul>
-    <b class="pt-4 d-block">
+    <!-- <b class="pt-4 d-block">
       Perfil activo hasta el <br>
       {{ user.active_account | moment('dddd DD, MMM YYYY hh:mm a') }}
     </b>
     <a-divider></a-divider>
     <b>
       Quedan {{ daysRemaining }} dias
-    </b>
+    </b> -->
   </div>
 </template>
 <script>
@@ -109,19 +113,34 @@
       return {
         visible: false,
         avatarFile: '',
+        coverFile: '',
         downloadingQR: false
       }
     },
-    watch:{
+    watch: {
       avatar () {
         if (!this.isImage) {
-          var reader  = new FileReader();
+          var reader = new FileReader();
           reader.onloadend = () => {
             this.avatarFile = reader.result;
           }
 
           if (this.avatar) {
             reader.readAsDataURL(this.avatar);
+          } else {
+
+          }
+        }
+      },
+      cover () {
+        if (!this.isCoverImage) {
+          var reader = new FileReader();
+          reader.onloadend = () => {
+            this.coverFile = reader.result;
+          }
+
+          if (this.cover) {
+            reader.readAsDataURL(this.cover);
           } else {
 
           }
@@ -137,9 +156,21 @@
       avatar () {
         return (this.user && this.user.avatar) || '/img/blank-profile.webp'
       },
+      cover () {
+        return (this.user && this.user.cover) || '/img/blank-profile.webp'
+      },
       isImage() {
         try {
           if (this.user.avatar && this.user.avatar instanceof File) {
+            return false;
+          }
+        } catch(e) { }
+         
+       return true
+      },
+      isCoverImage() {
+        try {
+          if (this.user.cover && this.user.cover instanceof File) {
             return false;
           }
         } catch(e) { }
@@ -199,15 +230,17 @@
       }
     },
     mounted() {
-      this.user
+      // this.user
     }
   }
 </script>
 <style lang="scss">
   .box_profile {
     &.aside-profile {
+      
+    font-family: 'Poppins', 'Montserrat',  sans-serif;
       figure {
-        margin: -1px -26px 12px;
+        margin: -1px -26px -46px;
         position: relative;
         button {
           border-radius: 50%;
@@ -228,6 +261,23 @@
           box-shadow: 0px 0px 8px -3px #424242;
           outline: none;
         }
+        &.profile-header {
+          position: relative;
+          min-height: 150px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          align-items: center;
+          .img-fluid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+          .profile-avatar-container {
+            margin: -1px auto 12px auto;
+          }
+        }
       }
 
       @media (max-width: 991px) {
@@ -247,25 +297,35 @@
         }
       }
       .contacts {
-        border-top: none;
+        border: none;
+        margin-bottom: 0px;
         li {
           margin-bottom: 4px;
           a {
             display: flex;
             align-items: center;
-            color: #639bbe;
-            background: var(--light);
-            border-radius: 6px;
-            padding: 10px;
+            color: #525661;
+            background: #0000;
             margin: 0;
+            font-weight: bold;
+            text-decoration: none;
             span {
+              border-radius: 6px;
+              padding: 7px 20px;
             }
             i {
-              margin-left: auto
+              margin-left: auto;
+              display: none;
             }
             &.router-link-active {
-              color: var(--light);
-              background: var(--cyan);
+              span {
+                color: #141823;
+                background: #f3f4f8;
+              }
+              i {
+                color: var(--primary);
+                display: inline-block;
+              }
             }
           }
         }

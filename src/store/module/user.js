@@ -32,7 +32,10 @@ export default {
   },
   mutations: {
     setAvatar (state, avatarPath) {
-      state.avatarImgPath = avatarPath
+      state.sessionUser.avatar = avatarPath
+    },
+    setCover (state, coverPath) {
+      state.sessionUser.cover = coverPath
     },
     setUserId (state, id) {
       state.userId = id
@@ -94,7 +97,9 @@ export default {
     hasToken : state => state.token,
     favorites: state => state.favList,
     getUser: state => state.sessionUser,
-    appointmentsStatus: state => state.appointments_status
+    appointmentsStatus: state => state.appointments_status,
+    avatar: state => state.sessionUser.avatar,
+    cover: state => state.sessionUser.cover,
   },
   actions: {
     // 登录
@@ -144,7 +149,7 @@ export default {
       return new Promise((resolve, reject) => {
         try {
           getUserInfo(state.token).then(res => {
-            const data = res.data.data
+            const data = { cover: '', ...res.data.data }
             commit('setUser', data)
             resolve(data)
           }).catch(err => {
