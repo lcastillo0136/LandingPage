@@ -16,7 +16,7 @@
           <div class="ProductHeader d-flex spacing-8 flex-column">
             <div class="flex-fill flex-grow-1">
               <span class="loc_amount Text Text-color--gray900 Text-fontSize--36 Text-fontWeight--600" style="line-height: 1;">
-                <span>{{ order.total | currency }}&nbsp;MXN</span>
+                <span>{{ order.total | currency }}&nbsp;{{ this.settings.CURRENCY || "USD" }}</span>
               </span>
             </div>
             <div class="flex-fill flex-grow-1">
@@ -72,9 +72,15 @@
     </template>
     <template v-if="!successPayment && !oxxoPayment">
       <div v-if="product">
-        <h3>Activacion de la tarjeta digital - {{ product.precio_venta | currency }}</h3>
+        <h3 class="mb-5">
+          Activacion de la tarjeta digital 
+          <span class=" float-right text-success">
+            {{ product.precio_venta | currency }} <small>{{ this.settings.CURRENCY || "USD" }}</small>
+          </span>
+          <br>
+          <small>Seleccione el metodo de pago</small>
+        </h3>
       </div>
-      <a-divider dashed></a-divider>
       <DetailsPayment v-model="account" :loading="showLoading" class="flex-fill"></DetailsPayment>
       <div class="container-login100-form-btn">
         <template v-if="account.methodSelected !== 4">

@@ -10,10 +10,21 @@
             <b-button class="rounded-lg mx-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
             <b-button :to="{ name: 'register' }" class="rounded-lg text-white" variant="primary">Registrarte</b-button>
           </div>
-          <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
-            <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
-            <b-button class="rounded-lg mx-1" variant="outline-primary" :to="{ name: 'home' }" >Inicio</b-button>
-            <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
+          <div class="mx-lg-2 d-lg-flex flex-lg-row align-items-center" style="gap: 20px;" v-else>
+            <!-- <b-button class="rounded-lg mx-1" variant="outline-primary" :to="{ name: 'home' }" >Inicio</b-button> -->
+            <b-button :to="{ name: 'profile-payment' }" size="sm" variant="outline-secondary" v-b-tooltip.hover.bottom title="Ir a pagar">
+              <b-icon icon="credit-card" class="mr-2"></b-icon>
+              Pagar ahora
+            </b-button>
+            <a @click="dispachLogout" v-b-tooltip.hover.bottom title="Cerrar sesion">
+              <b-icon-box-arrow-left style="width: 20px; height: 20px;color: var(--gray-dark);"></b-icon-box-arrow-left>
+            </a>
+            <router-link :to="{ name: 'profile-settings' }" v-b-tooltip.hover.bottom title="Ir a configuraciones">
+              <b-icon-gear style="width: 20px; height: 20px;color: var(--gray-dark);"></b-icon-gear>
+            </router-link>
+            <router-link :to="{ name: 'profile-details' }" v-b-tooltip.hover.bottom title="Ver mi perfil">
+              <b-avatar :src="User.avatar"></b-avatar>
+            </router-link>
           </div>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto d-block d-md-none w-100">
@@ -50,6 +61,7 @@
     >
       <CardPage ref="previewCard"></CardPage>
     </a-drawer>
+    <a-back-top />
   </main>
 </template>
 <script>
@@ -193,6 +205,10 @@
 <style lang="scss">
 
   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,500&family=Comfortaa:wght@300;400;500&display=swap');
+  .ant-back-top {
+    right: 25px;
+    bottom: 70px;
+  }
   .home-page {
     &.box_list .wrapper {
       margin-top: 0 !important;

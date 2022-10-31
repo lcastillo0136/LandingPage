@@ -77,12 +77,18 @@
           <i class="arrow_carrot-right"></i>
         </router-link>
       </li> -->
-      <!-- <li>
+      <li>
+        <router-link :to="{ name: 'profile-payment' }">
+          <span>Pay now</span>
+          <a-icon type="caret-right"></a-icon>
+        </router-link>
+      </li>
+      <li>
         <router-link :to="{ name: 'profile-settings' }">
           <span>Configuraciones</span>
-          <i class="arrow_carrot-right"></i>
+          <a-icon type="caret-right"></a-icon>
         </router-link>
-      </li> -->
+      </li>
     </ul>
     <!-- <b class="pt-4 d-block">
       Perfil activo hasta el <br>

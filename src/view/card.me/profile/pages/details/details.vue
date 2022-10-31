@@ -505,8 +505,24 @@
         <label>Biografía</label>
         <a-textarea :autoSize="true" class="form-control" placeholder="Biografía" v-model="profile.biography" :rows="4"/>
       </div>
-    </div> -->
-    <div style="text-align: right;">
+    </div>
+    <b-card  no-body >
+      <b-card-header>
+        Redes sociales
+      </b-card-header>
+      
+        <draggable v-model="myArray" class="list-group list-group-flush" handle=".b-icon">
+          <b-list-group-item href="#" v-for="(element, element_i) in myArray" :key="element.id">
+            <b-icon-grip-vertical></b-icon-grip-vertical>
+            {{ element.id }} {{ element.name }}
+          </b-list-group-item>
+          <a-button slot="footer">Add</a-button>
+        </draggable>
+      
+      <b-card-body>
+      </b-card-body>
+    </b-card> -->
+    <div style="text-align: right;" class="container">
       <a-button type="primary" class="save-button" shape="circle" size="large" @click="handleSave" :loading="saving" :disabled="!matchPassword">
         <a-icon type="save" theme="filled" v-if="!saving" />
       </a-button>
@@ -543,7 +559,8 @@
     components: {
       PinturaEditor,
       Addressess,
-      Icon
+      Icon,
+      draggable,
     },
     data () {
       return {
@@ -608,6 +625,22 @@
         coverFile: '',
         labelCol: { span: 4 },
         wrapperCol: { span: 14 },
+        drag: false,
+        myArray: [{
+          name: 'uno', id: 1
+        }, {
+          name: 'dos', id: 2
+        }, {
+          name: 'tres', id: 3
+        }, {
+          name: 'cuatro', id: 4
+        }, {
+          name: 'cinco', id: 5
+        }, {
+          name: 'seis', id: 6
+        }, {
+          name: 'siete', id: 7
+        }]
       }
     },
     watch: {
@@ -743,7 +776,7 @@
               this.profile.cover = this.getUser.cover = response.data.data.cover
               this.coverFile = '';
               this.avatarFile = '';
-              
+
               this.saving = false
               
               // this.$refs.registerForm.classList.remove('was-validated')
