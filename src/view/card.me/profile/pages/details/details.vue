@@ -215,7 +215,23 @@
             <br>
             <small class="text-muted">Escribe una descripción corta sobre ti mismo</small>
           </template>
-          <a-textarea :autoSize="true" placeholder="Escribe una descripción corta sobre ti mismo" v-model="profile.biography" :rows="6" :disabled="saving"/>
+          <!-- <a-textarea :autoSize="true" placeholder="Escribe una descripción corta sobre ti mismo" v-model="profile.biography" :rows="6" :disabled="saving"/> -->
+          <div style="border: 1px solid #ccc; margin-top: 10px">
+            <Toolbar
+              style="border-bottom: 1px solid #ccc"
+              :editor="editor"
+              :defaultConfig="toolbarConfig"
+              :mode="mode"
+            />
+            <Editor
+              ref="bioEditor"
+              style="height: 500px; overflow-y: hidden;"
+              v-model="profile.biography"
+              :defaultConfig="editorConfig"
+              :mode="mode"
+              @onCreated="onCreated"
+            />
+          </div>
         </a-form-model-item>
       </b-card>
     </a-form-model>
@@ -539,12 +555,20 @@
   import { mapGetters, mapMutations } from 'vuex'
   import { PinturaEditor } from 'vue-pintura'
   import { getEditorDefaults } from 'pintura'
+  import draggable from 'vuedraggable'
+  import { i18nChangeLanguage } from '@wangeditor/editor'
+  import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+
   import Addressess from './components/addressess'
   import * as _ from 'lodash'
 
   import { Icon } from 'iview';
 
   import 'iview/dist/styles/iview.css';
+  import '@wangeditor/editor/dist/css/style.css';
+
+  i18nChangeLanguage('en')
+
 
   export default {
     name: 'ProfileDetails',
@@ -561,11 +585,46 @@
       Addressess,
       Icon,
       draggable,
+      Editor, 
+      Toolbar
     },
     data () {
       return {
         inputVisible: false,
         inputValue: '',
+        editor: null,
+        html: '<p>hello</p>',
+        toolbarConfig: {
+          toolbarKeys: [
+            'headerSelect',
+            'blockquote',
+            'bold',
+            'italic',
+            'insertLink',
+            'bulletedList',
+            'numberedList',
+            'undo',
+            'redo'
+          ]
+        },
+        editorConfig: { 
+          placeholder: 'Escribe una descripción corta sobre ti mismo',
+          MENU_CONF: [],
+          hoverbarKeys: {
+            text: {
+              menuKeys: [
+                'headerSelect',
+                'blockquote',
+                'bold',
+                'italic',
+                'insertLink',
+                'bulletedList',
+                'numberedList'
+              ]
+            }
+          }
+        },
+        mode: 'default', // or 'simple'
         // Pass the editor default configuration options
         editorDefaults: getEditorDefaults(),
         fileList: [],
@@ -762,6 +821,8 @@
       },
       handleSave () {
         this.saving = true
+        this.$refs.bioEditor.editor.disable()
+
         this.$refs.detailsForm.validate().then(valid => {
           if (valid) {
             this.errors = []
@@ -778,6 +839,7 @@
               this.avatarFile = '';
 
               this.saving = false
+              this.$refs.bioEditor.editor.enable()
               
               // this.$refs.registerForm.classList.remove('was-validated')
 
@@ -787,15 +849,19 @@
               })
             }).catch((error) => {
               this.saving = false
+              this.$refs.bioEditor.editor.enable()
               this.errors = error.data.error
             })
           } else {
             this.saving = false
+            this.$refs.bioEditor.editor.enable()
           }
         }).catch((error) => {
           this.saving = false
+          this.$refs.bioEditor.editor.enable()
           this.errors = error.data.error
         });
+
         // if ((this.user_pass.password != "" && this.matchPassword) || this.user_pass.password == '') {
         //   this.errors = []
         //   updateUser({
@@ -862,9 +928,17 @@
         if (field) {
           field.type = field.type == 'password' ? 'text' : 'password'
         }
-      }
+      },
+      onCreated(editor) {
+        this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
+      },
     },
     mounted() {
+    },
+    beforeDestroy() {
+      const editor = this.editor
+      if (editor == null) return
+      editor.destroy() // 组件销毁时，及时销毁编辑器
     }
   }
 </script>
