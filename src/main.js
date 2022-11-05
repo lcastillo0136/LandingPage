@@ -57,6 +57,7 @@ import 'ant-design-vue/lib/drawer/style/index.css';
 import 'ant-design-vue/lib/menu/style/index.css';
 import 'ant-design-vue/lib/list/style/index.css';
 import 'ant-design-vue/lib/tabs/style/index.css';
+import 'ant-design-vue/lib/result/style/index.css';
 import '@/assets/css/ant-design-drawer.css'
 import '@/assets/css/ant-design-menu.css'
 

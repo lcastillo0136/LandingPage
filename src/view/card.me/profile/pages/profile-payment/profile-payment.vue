@@ -1,100 +1,121 @@
 <template>
   <div class="box_general_2 add_bottom_45 d-flex card-columns flex-column profile-payment">
-    <template v-if="successPayment">
-      <div class="success-alert">
-        <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
-          <i class="checkmark">✓</i>
-        </div>
-        <h1>Pago exitoso</h1> 
-        <p>Recibimos tu solicitud de compra;<br/> tu tarjeta digital se activara en unos instantes</p>
-      </div>
+    <template v-if="active_account">
+      <a-result >
+        <template #title>
+          Tu cuenta ya se encuentra activa
+          <br>
+          <img src="/img/account-ready.jpg" class="w-50" />
+          <br>
+          <small>Empieza a darle tu personalidad desde la configuracion</small>
+          <!-- <small>{{ user.active_account | moment('dddd DD, MMM YYYY hh:mm a') }}</small> -->
+        </template>
+        <template #icon>
+        </template>
+        <template #extra>
+          <a-button type="primary" @click="$router.push({ name: 'profile-settings' })">
+            Configurar  <a-icon type="right" />
+          </a-button>
+        </template>
+      </a-result>
     </template>
-    <template v-if="oxxoPayment">
-      <div class="Voucher Voucher-pending" ref="OXXOvoucher" :class="{ 'generando-imagen': showLoading }">
-        <div class="OXXO-container d-flex flex-column">
-          <img src="/img/oxxo.svg" alt="oxxo" class="Icon Voucher-Logo--oxxo loc_logo Icon--square">
-          <div class="ProductHeader d-flex spacing-8 flex-column">
-            <div class="flex-fill flex-grow-1">
-              <span class="loc_amount Text Text-color--gray900 Text-fontSize--36 Text-fontWeight--600" style="line-height: 1;">
-                <span>{{ order.total | currency }}&nbsp;{{ this.settings.CURRENCY || "USD" }}</span>
-              </span>
-            </div>
-            <div class="flex-fill flex-grow-1">
-              <span class="Text Text-color--gray500 Text-fontSize--14 Text-fontWeight--500">
-                <div class="loc_expireDate flex-fill flex-grow-1">
-                  <div class="d-flex spacing-8 flex-row">
-                    <div class="flex-fill w-auto flex-grow-0">Caduca el {{ oxxoTime }}</div>
-                    <div class="flex-fill w-auto flex-grow-0">
-                      <div class="Tag Tag-orange">
-                        <span class="Text Text-color--orange Text-fontSize--11 Text-fontWeight--700">{{ oxxoRemain }}</span>
+    <template v-else>
+      <template v-if="successPayment">
+        <div class="success-alert">
+          <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+            <i class="checkmark">✓</i>
+          </div>
+          <h1>Pago exitoso</h1> 
+          <p>Recibimos tu solicitud de compra;<br/> tu tarjeta digital se activara en unos instantes</p>
+        </div>
+      </template>
+      <template v-if="oxxoPayment">
+        <div class="Voucher Voucher-pending" ref="OXXOvoucher" :class="{ 'generando-imagen': showLoading }">
+          <div class="OXXO-container d-flex flex-column">
+            <img src="/img/oxxo.svg" alt="oxxo" class="Icon Voucher-Logo--oxxo loc_logo Icon--square">
+            <div class="ProductHeader d-flex spacing-8 flex-column">
+              <div class="flex-fill flex-grow-1">
+                <span class="loc_amount Text Text-color--gray900 Text-fontSize--36 Text-fontWeight--600" style="line-height: 1;">
+                  <span>{{ order.total | currency }}&nbsp;{{ this.settings.CURRENCY || "USD" }}</span>
+                </span>
+              </div>
+              <div class="flex-fill flex-grow-1">
+                <span class="Text Text-color--gray500 Text-fontSize--14 Text-fontWeight--500">
+                  <div class="loc_expireDate flex-fill flex-grow-1">
+                    <div class="d-flex spacing-8 flex-row">
+                      <div class="flex-fill w-auto flex-grow-0">Caduca el {{ oxxoTime }}</div>
+                      <div class="flex-fill w-auto flex-grow-0">
+                        <div class="Tag Tag-orange">
+                          <span class="Text Text-color--orange Text-fontSize--11 Text-fontWeight--700">{{ oxxoRemain }}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </span>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="OXXO-barcode">
-            <div class="Barcode loc_barcode">
-              <img :src="oxxoBarcode" />
-              <div style="font-family: monospace; font-size: 14px; margin: 4px;">{{ order.payment_orders.metadata_object.reference | oxxo }}</div>
+            <div class="OXXO-barcode">
+              <div class="Barcode loc_barcode">
+                <img :src="oxxoBarcode" />
+                <div style="font-family: monospace; font-size: 14px; margin: 4px;">{{ order.payment_orders.metadata_object.reference | oxxo }}</div>
+              </div>
             </div>
-          </div>
-          <div class="OXXO-instructions loc_instructionsToPay d-flex flex-column">
-            <div class="flex-fill flex-grow-1">
-              <span class="Text Text-color--gray800 Text-fontSize--14 Text-fontWeight--600">Instrucciones para pagar tu OXXO:</span>
+            <div class="OXXO-instructions loc_instructionsToPay d-flex flex-column">
+              <div class="flex-fill flex-grow-1">
+                <span class="Text Text-color--gray800 Text-fontSize--14 Text-fontWeight--600">Instrucciones para pagar tu OXXO:</span>
+              </div>
+              <div class="flex-fill flex-grow-1">
+                <ol>
+                  <li>
+                    <p>Acude a la tienda OXXO más cercana. <a href="https://www.google.com.mx/maps/search/oxxo/" target="_blank">Encuéntrala aquí</a>.</p>
+                  </li>
+                  <li>
+                    <p>Indica en caja que quieres realizar un pago de <strong>OXXOPay</strong>.</p>
+                  </li>
+                  <li>
+                    <p>Dicta al cajero el número de referencia en esta ficha para que tecleé directamete en la pantalla de venta.</p>
+                  </li>
+                  <li>
+                    <p>Realiza el pago correspondiente con dinero en efectivo.</p>
+                  </li>
+                  <li>
+                    <p>Al confirmar tu pago, el cajero te entregará un comprobante impreso. <strong>En el podrás verificar que se haya realizado correctamente.</strong> Conserva este comprobante de pago.</p>
+                  </li>
+                </ol>
+              </div>
             </div>
-            <div class="flex-fill flex-grow-1">
-              <ol>
-                <li>
-                  <p>Acude a la tienda OXXO más cercana. <a href="https://www.google.com.mx/maps/search/oxxo/" target="_blank">Encuéntrala aquí</a>.</p>
-                </li>
-                <li>
-                  <p>Indica en caja que quieres realizar un pago de <strong>OXXOPay</strong>.</p>
-                </li>
-                <li>
-                  <p>Dicta al cajero el número de referencia en esta ficha para que tecleé directamete en la pantalla de venta.</p>
-                </li>
-                <li>
-                  <p>Realiza el pago correspondiente con dinero en efectivo.</p>
-                </li>
-                <li>
-                  <p>Al confirmar tu pago, el cajero te entregará un comprobante impreso. <strong>En el podrás verificar que se haya realizado correctamente.</strong> Conserva este comprobante de pago.</p>
-                </li>
-              </ol>
+            <div class="OXXO-printInstructions flex-fill flex-grow-1">
+              <button class="HostedVoucherButton" type="button" style="background-color: rgb(100, 92, 252); color: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgb(70, 70, 226) 0px 0px 0px 1px, rgba(60, 66, 87, 0.08) 0px 2px 5px 0px;" @click.stop.prevent="downloadOXXO" v-if="!showLoading">Descargar</button>
             </div>
-          </div>
-          <div class="OXXO-printInstructions flex-fill flex-grow-1">
-            <button class="HostedVoucherButton" type="button" style="background-color: rgb(100, 92, 252); color: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgb(70, 70, 226) 0px 0px 0px 1px, rgba(60, 66, 87, 0.08) 0px 2px 5px 0px;" @click.stop.prevent="downloadOXXO" v-if="!showLoading">Descargar</button>
           </div>
         </div>
-      </div>
-    </template>
-    <template v-if="!successPayment && !oxxoPayment">
-      <div v-if="product">
-        <h3 class="mb-5">
-          Activacion de la tarjeta digital 
-          <span class=" float-right text-success">
-            {{ product.precio_venta | currency }} <small>{{ this.settings.CURRENCY || "USD" }}</small>
-          </span>
-          <br>
-          <small>Seleccione el metodo de pago</small>
-        </h3>
-      </div>
-      <DetailsPayment v-model="account" :loading="showLoading" class="flex-fill"></DetailsPayment>
-      <div class="container-login100-form-btn">
-        <template v-if="account.methodSelected !== 4">
-          <a-button class="btn btn-primary rounded-lg text-white w-100" type="success" :loading="showLoading" @click.stop.prevent="handlePayment" :disabled="!canBill">
-            Pagar y activar tarjeta digital
-          </a-button>
-        </template>
-        <template v-else>
-          <div id="paypal-button-container" class="w-100 text-center"></div>
-          <small>
-            Pagar y activar tarjeta digital
-          </small>
-        </template>
-      </div>
+      </template>
+      <template v-if="!successPayment && !oxxoPayment">
+        <div v-if="product">
+          <h3 class="mb-5">
+            Activacion de la tarjeta digital 
+            <span class=" float-right text-success">
+              {{ product.precio_venta | currency }} <small>{{ this.settings.CURRENCY || "USD" }}</small>
+            </span>
+            <br>
+            <small>Seleccione el metodo de pago</small>
+          </h3>
+        </div>
+        <DetailsPayment v-model="account" :loading="showLoading" class="flex-fill"></DetailsPayment>
+        <div class="container-login100-form-btn">
+          <template v-if="account.methodSelected !== 4">
+            <a-button class="btn btn-primary rounded-lg text-white w-100" type="success" :loading="showLoading" @click.stop.prevent="handlePayment" :disabled="!canBill">
+              Pagar y activar tarjeta digital
+            </a-button>
+          </template>
+          <template v-else>
+            <div id="paypal-button-container" class="w-100 text-center"></div>
+            <small>
+              Pagar y activar tarjeta digital
+            </small>
+          </template>
+        </div>
+      </template>
     </template>
   </div>
 </template>
@@ -228,6 +249,12 @@
       },
       oxxoBarcode() {
         return getServerFile(`files/${this.order.user_id}/barcodes/${this.orderOXXO.reference}.png`)
+      },
+      active_account() {
+        return this.user.active_account && this.$moment.utc(this.user.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.user.active_account))
+      },
+      daysRemaining() {
+        return (this.active_account ? this.$moment.utc(this.user.active_account).diff(this.$moment(), 'days') : 0)
       }
     },
     methods: {
@@ -648,6 +675,14 @@
     }
     @media only screen and (max-width: 450px) {
       padding: 16px;
+    }
+    .ant-result {
+      padding-top: 0;
+      .ant-result-extra {
+        .ant-btn > .anticon {
+          vertical-align: 0;
+        }
+      }
     }
   }
 </style>

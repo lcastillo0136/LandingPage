@@ -1,220 +1,130 @@
 <template>
-  <div v-if="getUser.id">
-    <!-- <h4 class="add_bottom_30">Configuraciones</h4> -->
-    <div class="box_general_2 settings-container">
-      <h4>Configuracion Calendario</h4>
-      <div class="row">
-        <div class="col-md-6 col-sm-6 helper-container">
-          <span class="helper-text">A partir de esta hora se mostraran los horarios de las citas que pueden seleccionar los clientes</span>
-        </div>
-        <div class="col-md-6 col-sm-6">
-          <div class="form-group">
-            <label>Hora Apertura</label>
-            <a-form-model-item prop="start_date">
-              <a-time-picker use12-hours v-model="open_time" size="large" format="h:mm a" />
-            </a-form-model-item>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 col-sm-6 helper-container">
-          <span class="helper-text">Hasta este horario se pintaran las citas disponibles</span>
-        </div>
-        <div class="col-md-6 col-sm-6">
-          <div class="form-group">
-            <label>Hora Cierre</label>
-            <a-form-model-item prop="close_time" style="margin-bottom: 4px;">
-              <a-time-picker use12-hours v-model="close_time" size="large" format="h:mm a" />
-            </a-form-model-item>
-            <a-checkbox v-model="extend_last_appointment" style="margin-bottom: 7px;">
-              <small class="helper-text">Extender el horario si la ultima cita excede la hora de cierre</small>
-            </a-checkbox>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 col-sm-6 helper-container">
-          <span class="helper-text">
-            El calendario que visualiza el proveedor se dividira en espacios del tiempo seleccionado
+  <div v-if="getUser.id" class="settings-container">
+    <a-form-model ref="settingsForm" :rules="rules" :model="user" class="settings-form d-flex flex-column" :label-col="{ span: 8 }" :wrapper-col="{ span: 14, offset: 2 }" :colon="false">
+      <!-- <div class="box_general_2 settings-container">
+        <h4>Servicios</h4>
+
+        <a-button icon="plus" @click="e => editRecord({})" style="margin-bottom: 10px;">Agregar servicio</a-button>
+
+        <a-table :columns="columns_services" :data-source="user.services" :pagination="false" class="add_bottom_30" rowKey="id" bordered>
+          
+          <template slot="price" slot-scope="record">
+            <span>{{ record.price | currency }}</span>
+          </template>
+          <span slot="active" slot-scope="record">
+            <a-tag :color="record.active ? 'green' : 'red'">
+              {{ record.active ? 'Activo' : 'Desactivo' }}
+            </a-tag>
           </span>
-        </div>
-        <div class="col-md-6 col-sm-6">
-          <div class="form-group">
-            <label>Division de horas en el calendario</label>
-            <a-form-model-item prop="date_slot">
-              <a-time-picker v-model="date_slot" size="large" format="HH:mm" />
-            </a-form-model-item>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="box_general_2 settings-container">
-      <h4>Configuracion Servicios</h4>
-
-      <div class="row">
-        <div class="col-md-6 col-sm-6 helper-container">
-          <span class="helper-text">
-            Permitir que el paciente seleccione multiples servicios en en sitio
-          </span>
-        </div>
-        <div class="col-md-6 col-sm-6">
-          <div class="form-group">
-            <a-form-model-item prop="multiple_services">
-              <a-switch v-model="multiple_services"/>
-            </a-form-model-item>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 col-sm-6 helper-container">
-          <span class="helper-text">
-            Cantidad de dias que muestra el calendario
-          </span>
-        </div>
-        <div class="col-md-6 col-sm-6">
-          <div class="form-group">
-            <label>Maximo de dias</label>
-            <a-row>
-              <a-col :span="17">
-                <a-slider :default-value="7" :min="1" :max="31" v-model="max_days" />
-              </a-col>
-              <a-col :span="4">
-                <a-input-number v-model="max_days" :min="1" :max="31" style="marginLeft: 16px" />
-              </a-col>
-            </a-row>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 col-sm-6 helper-container">
-          <span class="helper-text">
-            Muestra los dias disponibles en el calendario a partir del dia actual + los dias aqui seleccionados
-          </span>
-        </div>
-        <div class="col-md-6 col-sm-6">
-          <div class="form-group">
-            <label>Cantidad de dias</label>
-            <a-row>
-              <a-col :span="17">
-                <a-slider :default-value="7" :min="0" :max="7" v-model="next_day" />
-              </a-col>
-              <a-col :span="4">
-                <a-input-number v-model="next_day" :min="0" :max="7" style="marginLeft: 16px" />
-              </a-col>
-            </a-row>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 col-sm-6 helper-container">
-          <span class="helper-text">
-            <div style="background-color: #bce8f14d; width: 20px; height: 20px;display: inline-block;margin-right: 5px;vertical-align: middle;border: solid 1px #bce8f1;"></div>Dias disponibles para seleccionar cita
-          </span>
-        </div>
-        <div class="col-md-6 col-sm-6" v-if="!flag">
-          <FullCalendar :options="calendarOptions" ref="fullCalendar" />
-        </div>
-      </div>
-    </div>
-
-    <div class="box_general_2 settings-container">
-      <h4>Servicios</h4>
-
-      <a-button icon="plus" @click="e => editRecord({})" style="margin-bottom: 10px;">Agregar servicio</a-button>
-
-      <a-table :columns="columns_services" :data-source="user.services" :pagination="false" class="add_bottom_30" rowKey="id" bordered :row-selection="{ selectedRowKeys: [ editingKey.id ], hideDefaultSelections: true, columnWidth: 0 }">
-        
-        <template slot="price" slot-scope="record">
-          <span>{{ record.price | currency }}</span>
-        </template>
-        <span slot="active" slot-scope="record">
-          <a-tag :color="record.active ? 'green' : 'red'">
-            {{ record.active ? 'Activo' : 'Desactivo' }}
-          </a-tag>
-        </span>
-        <template slot="duration" slot-scope="record">
-          <span>{{ record.duration }}</span>
-        </template>
-        <template slot="operation" slot-scope="text, record, index">
-          <div class="editable-row-operations">
-            <span>
-              <a-tooltip>
-                <template slot="title">
-                  Editar registro
-                </template>
-                <a-icon type="edit" :disabled="editingKey !== ''" @click="() => editRecord(record)"/>
-              </a-tooltip>
-              <a-popconfirm
-                title="¿Estás seguro de eliminar este registro?"
-                ok-text="Si"
-                cancel-text="No"
-                @confirm="() => deleteRecord(record)"
-                @cancel="() => cancelRecord({})"
-              >
-
+          <template slot="duration" slot-scope="record">
+            <span>{{ record.duration }}</span>
+          </template>
+          <template slot="operation" slot-scope="text, record, index">
+            <div class="editable-row-operations">
+              <span>
                 <a-tooltip>
                   <template slot="title">
-                    Borrar registro
+                    Editar registro
                   </template>
-                  <a-icon type="delete" :disabled="editingKey !== ''" />
+                  <a-icon type="edit" :disabled="editingKey !== ''" @click="() => editRecord(record)"/>
                 </a-tooltip>
-              </a-popconfirm>
-            </span>
-          </div>
-        </template>
-      </a-table>
+                <a-popconfirm
+                  title="¿Estás seguro de eliminar este registro?"
+                  ok-text="Si"
+                  cancel-text="No"
+                  @confirm="() => deleteRecord(record)"
+                  @cancel="() => cancelRecord({})"
+                >
 
-      <template v-if="editingKey !== ''">
-        <div class="form-update-service">
-          <div class="row">
-            <div class="col-md-4 col-sm-4 helper-container">
-              <div class="form-group">
-                <label>Nombre servicio</label>
-                <a-form-model-item prop="name">
-                  <a-input v-model="editingKey.name" />
-                </a-form-model-item>
+                  <a-tooltip>
+                    <template slot="title">
+                      Borrar registro
+                    </template>
+                    <a-icon type="delete" :disabled="editingKey !== ''" />
+                  </a-tooltip>
+                </a-popconfirm>
+              </span>
+            </div>
+          </template>
+        </a-table>
+
+        <template v-if="editingKey !== ''">
+          <div class="form-update-service">
+            <div class="row">
+              <div class="col-md-4 col-sm-4 helper-container">
+                <div class="form-group">
+                  <label>Nombre servicio</label>
+                  <a-form-model-item prop="name">
+                    <a-input v-model="editingKey.name" />
+                  </a-form-model-item>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-3">
+                <div class="form-group">
+                  <label>Precio</label>
+                  <a-form-model-item prop="price">
+                    <a-input v-model="editPrice" @keyup="e => currencyFormat(editingKey)" @keypress="preventNumericInput($event)" />
+                  </a-form-model-item>
+                </div>
+              </div>
+              
+              <div class="col-md-2 col-sm-2">
+                <div class="form-group">
+                  <label>Activo</label>
+                  <a-form-model-item prop="active">
+                    <a-switch v-model="editActive" size="small" />
+                  </a-form-model-item>
+                </div>
               </div>
             </div>
-            <div class="col-md-3 col-sm-3">
-              <div class="form-group">
-                <label>Precio</label>
-                <a-form-model-item prop="price">
-                  <a-input v-model="editPrice" @keyup="e => currencyFormat(editingKey)" @keypress="preventNumericInput($event)" autocomplete="chrome-off" />
-                </a-form-model-item>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-3">
-              <div class="form-group">
-                <label>Duracion</label>
-                <a-form-model-item prop="duration">
-                  <a-time-picker v-model="editDuration" format="HH:mm" />
-                </a-form-model-item>
-              </div>
-            </div>
-            <div class="col-md-2 col-sm-2">
-              <div class="form-group">
-                <label>Activo</label>
-                <a-form-model-item prop="active">
-                  <a-switch v-model="editActive" size="small" />
-                </a-form-model-item>
+            <div class="row">
+              <div class="col-md-12 col-sm-12" style="text-align: right;">
+                <a-button type="primary" @click="e => saveRecord(editingKey)" style="margin-right: 5px;">Guardar</a-button>
+                <a-button type="secondary" @click="e => cancelRecord(editingKey)">Cancelar</a-button>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12 col-sm-12" style="text-align: right;">
-              <a-button type="primary" @click="e => saveRecord(editingKey)" style="margin-right: 5px;">Guardar</a-button>
-              <a-button type="secondary" @click="e => cancelRecord(editingKey)">Cancelar</a-button>
+          <a-divider/>
+        </template>
+      </div> -->
+      <b-card no-body>
+        <b-card-body>
+          <h3 class="mb-4">
+            Diseño
+            <a-button type="primary" @click="$emit('preview')">Preview</a-button>
+          </h3>
+          <a-form-model-item prop="first_name">
+            <template #label>
+              <span>Posicion de elementos</span>
+              <br>
+              <small class="text-muted">Define que tipo de diseño que mostrara tu tarjeta</small>
+            </template>
+            <div class="d-flex justify-content-center" style="gap: 22px;">
+              <div class="design-1" :class="{ 'choosed': user.design == 'design-1' }" @click="user.design  = 'design-1'">
+                <div class="design-avatar"></div>
+                <div class="design-cover"></div>
+                <div class="design-content"></div>
+              </div>
+              <div class="design-2" :class="{ 'choosed': user.design == 'design-2' }" @click="user.design  = 'design-2'">
+                <div class="design-avatar"></div>
+                <div class="design-cover"></div>
+                <div class="design-content"></div>
+              </div>
+              <div class="design-3" :class="{ 'choosed': user.design == 'design-3' }" @click="user.design  = 'design-3'">
+                <div class="design-avatar"></div>
+                <div class="design-cover"></div>
+                <div class="design-content"></div>
+              </div>
             </div>
-          </div>
-        </div>
-        <a-divider/>
-      </template>
-    </div>
+          </a-form-model-item>
+        </b-card-body>
+      </b-card>
+    </a-form-model>
 
     <div style="text-align: right;">
-      <a-button type="primary" size="large" @click="handleSave" :loading="saving">Guardar</a-button>
+      <a-button type="primary"  class="save-button" shape="circle" size="large" @click="handleSave" :loading="saving">
+        <a-icon type="save" theme="filled" v-if="!saving" />
+      </a-button>
     </div>
   </div>
 </template>
@@ -298,6 +208,10 @@
           },
           dayCellDidMount: this.calendardayRender,
         },
+        labelCol: { span: 4 },
+        wrapperCol: { span: 14 },
+        rules: {},
+        errors: [],
       }
     },
     name: 'ProfileSettings',
@@ -488,21 +402,36 @@
       },
       handleSave () {
         this.saving = true
+        this.errors = []
 
-        this.user.open_time = this.open_time.format('HH:mm')
-        this.user.close_time = this.close_time.format('HH:mm')
-        this.user.date_slot = this.date_slot.format('HH:mm')
+        // this.user.open_time = this.open_time.format('HH:mm')
+        // this.user.close_time = this.close_time.format('HH:mm')
+        // this.user.date_slot = this.date_slot.format('HH:mm')
 
-        this.user.extend_last_appointment = this.extend_last_appointment ? 1 : 0
-        this.user.max_days = this.max_days
-        this.user.next_day = this.next_day
-        this.user.multiple_services = this.multiple_services ? 1 : 0
+        // this.user.extend_last_appointment = this.extend_last_appointment ? 1 : 0
+        // this.user.max_days = this.max_days
+        // this.user.next_day = this.next_day
+        // this.user.multiple_services = this.multiple_services ? 1 : 0
 
-        updateUser(this.user, this.hasToken)
+        updateUser({
+          ...this.user
+        }, this.hasToken)
         .then((response) => response.data)
         .then((response) => {
-          this.user.services = [...response.data.services]
+          // this.user.services = [...response.data.services]
+
           this.saving = false
+          this.$notification.success({
+            message: 'Datos guardados',
+            description: 'Los datos del usuario han sido actualizados'
+          })
+        }).catch((error) => {
+          this.saving = false
+          
+          this.$notification.success({
+            message: 'Error al gauardar',
+            description: 'no se puedo actualiar la información'
+          })
         })
       },
     },
@@ -559,5 +488,358 @@
         display: none;
       }
     }
+    .ant-btn {
+      &.save-button {
+        width: 50px;
+        position: fixed;
+        bottom: 16px;
+        height: 50px;
+        font-size: 20px;
+        right: 20px;
+      }
+      .anticon {
+        vertical-align: initial;
+      }
+    }
+
+    .settings-form {
+      --border-color: #ececec;
+      --border-color-hover: #40a9ff;
+      --font-size: 13px;
+      gap: 20px;
+      .ant-form-item {
+        display: flex;
+        align-items: center;
+      }
+      .ant-form-item-label {
+        line-height: 1;
+        text-align: left;
+        & > label {
+          line-height: 1;
+        }
+        small.text-muted {
+          margin-top: 2px;
+          display: inline-block;
+          margin-left: 2px;
+          color: #959ba1 !important;
+          white-space: normal;
+        }
+      }
+      .has-feedback .ant-input-affix-wrapper .ant-input-suffix {
+        padding-right: 0
+      }
+      
+      .input-checkbox100 {
+        display: none;
+      }
+
+      .label-checkbox100 {
+        margin: 0;
+
+        display: block;
+        position: relative;
+        padding-left: 26px;
+        cursor: pointer;
+      }
+
+      .label-checkbox100 > span.check {
+        font-size: 13px;
+        color: transparent;
+
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-radius: 2px;
+        background: #e6e6e6;
+        left: 0;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%);
+      }
+
+      .input-checkbox100:checked + .label-checkbox100 > span.check {
+        color: #c87ef0;
+      }
+
+      .design-1, .design-2, .design-3 {
+        background: #2c2c2c;
+        height: 120px;
+        max-width: 70px;
+        flex: 1 1 auto;
+        border-radius: 10px;
+        padding: 5px;
+        overflow: hidden;
+        transition: transform 250ms linear;
+        cursor: pointer;
+
+        [class^="design-"] {
+          background: #bdbdbd;
+          border-radius: 8px;
+          border-radius: 8px;
+          min-width: 90%;
+          min-height: 10px;
+        }
+        .design-avatar {
+          position: relative;
+          overflow: hidden;
+          &:before {
+            content: "";
+            position: absolute;
+            width: 37px;
+            height: 37px;
+            background: #757575;
+            border-radius: 37% 37%;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+          }
+
+          &:after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #757575;
+            border-radius: 50%;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+          }
+        }
+
+        &.choosed {
+          background: #12C39A;
+          border: solid 1px #12C39A;
+          opacity: 1;
+          transform: scale(1.1);
+          [class^="design-"] {
+            background: #fff;
+          }
+        }
+      }
+
+      .design-1 {
+        .design-avatar {
+          margin-left: -5px;
+          margin-top: -5px;
+          margin-right: -5px;
+          height: 50px;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+        .design-cover {
+          display: none;
+        }
+        .design-content {
+          height: 100%;
+          margin-top: 6px;
+          height: 6px;
+          min-height: auto;
+          position: relative;
+          margin-top: 7px;
+
+          &:after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            min-width: auto;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #bdbdbd;
+          }
+
+          &:before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            min-width: auto;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #bdbdbd;
+          }
+        }
+
+        &.choosed {
+          .design-content {
+            &:after {
+              background: #fff;
+            }
+
+            &:before {
+              background: #fff;
+            }
+          }
+        }
+      }
+
+      .design-2 {
+        display: flex;
+        flex-direction: column;
+        .design-avatar {
+          border-radius: 50%;
+          min-width: auto;
+          min-height: auto;
+          width: 20px;
+          height: 20px;
+          border: solid 1px #fff;
+          order: 2;
+          flex: 0 0 auto;
+          margin-top: -10px;
+
+          &:before {
+            width: 13px;
+            height: 12px;
+            bottom: -6px;
+          }
+
+          &:after {
+            width: 8px;
+            height: 8px;
+            bottom: 6px;
+          }
+        }
+        .design-cover {
+          flex: 0 0 auto;
+          order: 1;
+          margin-left: -5px;
+          margin-top: -5px;
+          margin-right: -5px;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+          height: 40px
+        }
+        .design-content {
+          flex: 0 1 auto;
+          order: 3;
+          height: 6px;
+          min-height: auto;
+          position: relative;
+          margin-top: 7px;
+
+          &:after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            min-width: auto;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #bdbdbd;
+            
+          }
+
+          &:before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            min-width: auto;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #bdbdbd;
+          }
+        }
+
+        &.choosed {
+          .design-content {
+            &:after {
+              background: #fff;
+            }
+
+            &:before {
+              background: #fff;
+            }
+          }
+        }
+      }
+
+      .design-3 {
+        background: #0000;
+        border: solid 1px #ededed;
+        position: relative;
+        .design-avatar {
+          border-radius: 50%;
+          width: 30px;
+          min-width: auto;
+          min-height: auto;
+          height: 30px;
+          margin: 0 auto;
+          position: relative;
+          z-index: 1;
+          border: solid 1px #fff;
+
+          &:before {
+            width: 19px;
+            height: 18px;
+            bottom: -9px;
+          }
+
+          &:after {
+            width: 11px;
+            height: 11px;
+            bottom: 10px;
+          }
+        }
+        .design-cover {
+          background: #3F4750;
+          position: relative;
+          top: -11px;
+          z-index: 0;
+          height: 85%;
+        }
+        .design-content {
+          position: absolute;
+          top: 38%;
+          min-width: auto;
+          width: 72%;
+          left: 50%;
+          transform: translateX(-50%);
+          height: 6px;
+          min-height: auto;
+          border-radius: 5px;
+
+          &:after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            min-width: auto;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #bdbdbd;
+          }
+
+          &:before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            min-width: auto;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #bdbdbd;
+          }
+        }
+
+        &.choosed {
+          .design-content {
+            background: #bdbdbd;
+          }
+        }
+      }
+    }
+
   }
 </style>

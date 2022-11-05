@@ -1,7 +1,7 @@
 
 @import url('../../../node_modules/pintura/pintura.css');
 @import url('../../../node_modules/photoswipe/dist/photoswipe.css');
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,500&family=Comfortaa:wght@300;400;500&display=swap');
 
 #reccomended .owl-item,
 #reccomended .owl-item.active.center {

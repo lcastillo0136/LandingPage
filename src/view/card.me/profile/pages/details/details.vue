@@ -619,7 +619,8 @@
                 'italic',
                 'insertLink',
                 'bulletedList',
-                'numberedList'
+                'numberedList',
+                'clearStyle'
               ]
             }
           }
@@ -1046,6 +1047,7 @@
           display: inline-block;
           margin-left: 2px;
           color: #959ba1 !important;
+          white-space: normal;
         }
       }
       .has-feedback .ant-input-affix-wrapper .ant-input-suffix {

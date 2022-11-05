@@ -12,13 +12,40 @@
           </div>
           <div class="mx-lg-2 d-lg-flex flex-lg-row align-items-center" style="gap: 20px;" v-else>
             <!-- <b-button class="rounded-lg mx-1" variant="outline-primary" :to="{ name: 'home' }" >Inicio</b-button> -->
-            <b-button :to="{ name: 'profile-payment' }" size="sm" variant="outline-secondary" v-b-tooltip.hover.bottom title="Ir a pagar">
+            <b-button v-if="!active_account" :to="{ name: 'profile-payment' }" size="sm" variant="outline-secondary" v-b-tooltip.hover.bottom title="Ir a pagar">
               <b-icon icon="credit-card" class="mr-2"></b-icon>
               Pagar ahora
+            </b-button>
+            <b-button v-else size="sm" variant="outline-secondary" v-b-tooltip.hover.bottom title="Preview" @click="openPreview">
+              <b-icon icon="eye" class="mr-1"></b-icon>
+              Preview
             </b-button>
             <a @click="dispachLogout" v-b-tooltip.hover.bottom title="Cerrar sesion">
               <b-icon-box-arrow-left style="width: 20px; height: 20px;color: var(--gray-dark);"></b-icon-box-arrow-left>
             </a>
+            <a-dropdown placement="bottomCenter" >
+              <a>
+                <a-icon type="share-alt" style="margin-top: -2px;display: block;font-size: 20px;color: var(--gray-dark);"></a-icon>
+              </a>
+              <a-menu slot="overlay">
+                <a-menu-item key="copy" v-clipboard:copy="userLink" v-clipboard:success="copyLink">
+                  Copiar enlace
+                </a-menu-item>
+                <a-menu-item key="share">
+                  <navigator-share :url="userLink" :title="User.full_name" :text="User.full_name">
+                    <template #clickable>
+                      Compartir Enlace
+                    </template>
+                  </navigator-share>
+                </a-menu-item>
+                <a-menu-divider />
+                <a-menu-item key="qr" class="text-center" @click="downloadQR" :loading="downloadingQR">
+                  Descargar QR
+                  <br>
+                  <vue-qr ref="QRCode" :text="userLink" :size="75" class="qr-image" :margin="5"></vue-qr>
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
             <router-link :to="{ name: 'profile-settings' }" v-b-tooltip.hover.bottom title="Ir a configuraciones">
               <b-icon-gear style="width: 20px; height: 20px;color: var(--gray-dark);"></b-icon-gear>
             </router-link>
@@ -47,7 +74,7 @@
         </aside>
         
         <div class="col-xl-9 col-lg-8">
-          <router-view :user="profile"></router-view>
+          <router-view :user="profile" @preview="openPreview"></router-view>
         </div>
       </div>
     </div>
@@ -59,16 +86,26 @@
       wrapClassName="preview-card"
       @close="visible_preview = false"
     >
-      <CardPage ref="previewCard"></CardPage>
+      <CardPage ref="previewCard" :user="profile"></CardPage>
     </a-drawer>
     <a-back-top />
+    <a-tooltip title="Preview">
+      <div class="preview-favbutton ant-back-top" @click.prevent.stop="openPreview" v-if="visiblePreviewButton">
+        <div class="ant-back-top-content">
+          <a-icon type="eye"></a-icon>
+        </div>
+      </div>
+    </a-tooltip>
   </main>
 </template>
 <script>
   import AsideProfile from './components/aside-profile'
   import CardPage from '../card-page'
-  import { getServerFile } from '@/libs/util'
+  import { getServerFile2, getServerFile } from '@/libs/util'
+  import addEventListener from 'ant-design-vue/es/vc-util/Dom/addEventListener'
+  import getScroll from 'ant-design-vue/es/_util/getScroll';
   import { mapGetters, mapActions } from 'vuex'
+  import NavigatorShare from 'vue-navigator-share'
 
   export default {
     name: 'Profile',
@@ -101,10 +138,12 @@
           quote: '',
           rate: 0,
           rfc: '',
+          design: '',
           services: [
           ],
           skills: [
           ],
+          targetTop: null,
           // active: 1
           // address: {id: 1, user_id: 3, street: "Rio Obi", city: "Guadalupe", suburb: "Dos Rios", postal_code: 67134,…}
           // addresses: [{id: 1, user_id: 3, street: "Rio Obi", city: "Guadalupe", suburb: "Dos Rios", postal_code: 67134,…}]
@@ -113,6 +152,9 @@
           // messages: [{id: 1, order_id: 4, user_id: 3,…}, {id: 2, order_id: 4, user_id: 3,…}]
           // no_licencia: null
         },
+        downloadingQR: false,
+        scrollEvent : null,
+        visiblePreviewButton: false
       }
     },
     watch: {
@@ -133,7 +175,8 @@
     },
     components: {
       AsideProfile,
-      CardPage
+      CardPage,
+      NavigatorShare
     },
     computed: {
       ...mapGetters([
@@ -149,7 +192,13 @@
       },
       appImage () {
         return getServerFile('public/company/company_logo.png')
-      }
+      },
+      userLink() {
+        return getServerFile2(`p/${this.User.uuid_key}.html`)
+      },
+      active_account() {
+        return this.User.active_account && this.$moment.utc(this.User.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.User.active_account))
+      },
     },
     methods: {
       ...mapActions([
@@ -162,7 +211,47 @@
       },
       openPreview() {
         this.visible_preview = true
-        this.$refs.previewCard.loadInfo()
+      },
+      downloadQR () {
+        this.downloadingQR = true
+        this.saveAs(this.$refs.QRCode.$el.src, 'QR.png');
+      },
+      copyLink() {
+        this.$notification.success({
+          message: 'Enlace copiado',
+          description: 'Ya lo puedes compartir con tus contactos'
+        })
+      },
+      saveAs(uri, filename) {
+        var link = document.createElement('a');
+
+        if (typeof link.download === 'string') {
+          link.href = encodeURI(uri);
+          link.download = filename;
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setTimeout(() => {
+            this.downloadingQR = false
+          }, 1000)
+        } else {
+          window.open(uri);
+          this.downloadingQR = false
+        }
+      },
+      handleScroll() {
+        var visibilityHeight = 400
+        var target = () => window;
+
+        var scrollTop = getScroll(target(), true);
+        
+        this.visiblePreviewButton = scrollTop > visibilityHeight
+      }
+    },
+    beforeDestroy: function beforeDestroy() {
+      if (this.scrollEvent) {
+        this.scrollEvent.remove();
       }
     },
     mounted() {
@@ -176,7 +265,8 @@
               ...this.getUser,
               ...{ 
                 bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD'),
-                skills: this.getUser.skills && this.getUser.skills.map(s => Object({ ...s, active: !!s.active }))
+                skills: this.getUser.skills && this.getUser.skills.map(s => Object({ ...s, active: !!s.active })),
+                design: 'design-1'
               }
             }
             
@@ -186,6 +276,9 @@
               })
             }
             this.$nextTick().then(() => {
+              
+              this.scrollEvent = addEventListener(window, 'scroll', this.handleScroll);
+              this.handleScroll();
               setTimeout(() => {
                 if ((window['$']('#sidebar .aside-profile').get(0).offsetHeight + 30) < window.innerHeight) {
                   window['$']('#sidebar').theiaStickySidebar({
@@ -204,7 +297,6 @@
 </script>
 <style lang="scss">
 
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,500&family=Comfortaa:wght@300;400;500&display=swap');
   .ant-back-top {
     right: 25px;
     bottom: 70px;
@@ -232,6 +324,20 @@
       padding-bottom: 30px;
       margin-top: 0 !important;
       min-height: 100%;
+    }
+    .preview-favbutton {
+      right: 25px;
+      bottom: 115px;
+      .ant-back-top-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .anticon-eye {
+          font-size: 25px;
+          margin-top: -1px;
+        }
+      }
     }
   }
 
