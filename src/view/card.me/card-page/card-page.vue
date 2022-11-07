@@ -1,10 +1,16 @@
 <template>
   <main class="card-container" v-if="ready">
     <template v-if="card">
-      <b-card tag="article" class="mb-md-4 shadow" no-body>
-        <template v-if-="card.avatar">
+      <b-card tag="article" class="mb-md-4 shadow" no-body :class="[card.design || '']">
+        <div v-if="card.avatar" class="avatar-container">
           <b-card-img :src="card.avatar" alt="Image" top v-if="isImage"></b-card-img>
           <b-card-img :src="avatarFile" alt="Image" top v-else></b-card-img>
+        </div>
+        <template v-if="card.cover">
+          <div class="image-cover">
+            <b-card-img :src="card.cover" alt="Image" v-if="isCoverImage"></b-card-img>
+            <b-card-img :src="coverFile" alt="Image" v-else></b-card-img>
+          </div>
         </template>
         <b-card-body>
           <div v-if="card.phone" class="send-whatsapp">
@@ -195,6 +201,7 @@
         ready: false,
         avatarFile: '',
         coverFile: '',
+        userData: null
       }
     },
     watch :{
@@ -256,7 +263,7 @@
         return this.getUser || {}
       },
       card() {
-        return this.user || false
+        return this.user || this.userData
       },
       isMobile() {
         if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -443,32 +450,7 @@
       //window.removeEventListener('scroll', this.handleScroll);
     },
     mounted() {
-      if (this.card) {
-        // _.forEach([
-        //   'social_paypal', 
-        //   'social_tiktok', 
-        //   'social_youtube', 
-        //   'social_linkedin',
-        //   'social_instagram',
-        //   'social_twitter',
-        //   'social_facebook',
-        //   'personal_url'
-        // ], (p) => {
-        //   this.card[p] = this.validateUrl(this.card[p]);
-        //   switch(p) {
-        //     case 'social_facebook':
-        //       this.card[p] = this.$options.filters.facebook(this.card[p])
-        //       break;
-        //     case 'social_twitter':
-        //       this.card[p] = this.$options.filters.twitter(this.card[p])
-        //       break;
-        //     case 'social_youtube': 
-        //       this.card[p] = this.$options.filters.youtube(this.card[p])
-        //       break;
-        //     default:
-        //       break;
-        //   }
-        // })
+      if (this.user && this.user.id) {
         this.ready = true
       } else if (this.$route.params && this.$route.params.uuid) {
         this.$fingerprint.get((components) => {
@@ -477,7 +459,7 @@
             fingerprint: _fingerprint,
             uuid: this.$route.params.uuid
           }).then(({ data }) => data).then((result) => {
-            this.card = { ... result.data }
+            this.user = { ... result.data }
 
             _.forEach([
               'social_paypal', 
@@ -489,31 +471,31 @@
               'social_facebook',
               'personal_url'
             ], (p) => {
-              this.card[p] = this.validateUrl(this.card[p]);
+              this.user[p] = this.validateUrl(this.user[p]);
               switch(p) {
                 case 'social_facebook':
-                  this.card[p] = this.$options.filters.facebook(this.card[p])
+                  this.user[p] = this.$options.filters.facebook(this.user[p])
                   break;
                 case 'social_twitter':
-                  this.card[p] = this.$options.filters.twitter(this.card[p])
+                  this.user[p] = this.$options.filters.twitter(this.user[p])
                   break;
                 case 'social_youtube': 
-                  this.card[p] = this.$options.filters.youtube(this.card[p])
+                  this.user[p] = this.$options.filters.youtube(this.user[p])
                   break;
                 default:
                   break;
               }
             })
 
-            document.title = this.card.full_name
-            this.toDataURL(this.card.avatar, (dataUrl) => {
-              this.card.base_image = dataUrl
+            document.title = this.user.full_name
+            this.toDataURL(this.user.avatar, (dataUrl) => {
+              this.user.base_image = dataUrl
             })
 
-            if (this.card.google_trackid) {
+            if (this.user.google_trackid) {
               // a Promise
               Vue.use(VueAnalytics, {
-                id: this.card.google_trackid
+                id: this.user.google_trackid
               })
               this.$ga.page('/')
             }
@@ -809,6 +791,78 @@
           font-style: italic;
           font-weight: normal;
           font-size: 13px;
+        }
+      }
+
+      .image-cover {
+        display: none;
+      }
+      &.design-1 {
+        .avatar-container {
+          position: relative;
+          z-index: 1;
+        }
+        .image-cover {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          display: block;
+        }
+      }
+      &.design-2 {
+        display: flex;
+        .avatar-container {
+          order: 2;
+          border-radius: 50%;
+          border: solid 3px #fff;
+          width: 90px;
+          height: 90px;
+          margin-top: -45px;
+          margin-left: 10px;
+          overflow: hidden;
+          box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+          margin-bottom: 0.25rem;
+        }
+        .image-cover {
+          display: block;
+          order: 1;
+          max-height: 200px;
+          overflow: hidden; 
+        }
+        .card-body {
+          order: 3;
+          .send-whatsapp {
+            top: -68px;
+          }
+        }
+      }
+      &.design-3 {
+        display: flex;
+        margin-top: 80px;
+        overflow: visible !important;
+        border-radius: 50px !important;
+        background: var(--user-background);
+        .avatar-container {
+          border-radius: 50%;
+          border: solid 3px #fff;
+          width: 130px;
+          height: 130px;
+          margin-top: -60px;
+          margin-left: auto;
+          margin-right: auto;
+          overflow: hidden;
+          box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+          margin-bottom: 0.25rem;
+        }
+        .image-cover {
+          display: none;
+        }
+        .card-body {
+          background: transparent;
+          .send-whatsapp {
+            top: -68px;
+          }
         }
       }
     }

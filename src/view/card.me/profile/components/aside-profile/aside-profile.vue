@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="box_profile aside-profile mb-2 pb-0">{{ user.first_name }}
+    <div class="box_profile aside-profile mb-2 pb-0">
       <!-- <figure class="profile-header">
         <img :src="cover" alt="" class="img-fluid"  v-if="isCoverImage"/>
         <img :src="coverFile" alt="" class="img-fluid" v-else/>

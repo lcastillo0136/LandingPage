@@ -91,7 +91,6 @@
         <b-card-body>
           <h3 class="mb-4">
             Diseño
-            <a-button type="primary" @click="$emit('preview')">Preview</a-button>
           </h3>
           <a-form-model-item prop="first_name">
             <template #label>
@@ -414,7 +413,11 @@
         // this.user.multiple_services = this.multiple_services ? 1 : 0
 
         updateUser({
-          ...this.user
+          ...this.user,
+          ...{
+            bday: this.user.bday && this.user.bday.format('YYYY-MM-DD'),
+            phone: (`${this.user.phone||''}`).replace(/\D/g, ''),
+          }
         }, this.hasToken)
         .then((response) => response.data)
         .then((response) => {
@@ -523,6 +526,7 @@
           margin-left: 2px;
           color: #959ba1 !important;
           white-space: normal;
+          line-height: 15px;
         }
       }
       .has-feedback .ant-input-affix-wrapper .ant-input-suffix {
