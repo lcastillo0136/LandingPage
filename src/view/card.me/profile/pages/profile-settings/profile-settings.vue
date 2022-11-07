@@ -116,6 +116,63 @@
               </div>
             </div>
           </a-form-model-item>
+          <a-form-model-item>
+            <template #label>
+              <span>Ocultar teléfono móvil</span>
+              <br>
+              <small class="text-muted">Activar esta opcion evita que se muestre tu numero telefonico personal en la tarjeta</small>
+            </template>
+            <div class="d-flex justify-content-center" style="gap: 22px;">
+              <a-switch v-model="user.hide_personal_phone"></a-switch>
+            </div>
+          </a-form-model-item>
+          <a-form-model-item>
+            <template #label>
+              <span>Ocultar teléfono trabajo</span>
+              <br>
+              <small class="text-muted">Activar esta opcion evita que se muestre tu numero telefonico de oficina en la tarjeta</small>
+            </template>
+            <div class="d-flex justify-content-center" style="gap: 22px;">
+              <a-switch v-model="user.hide_office_phone"></a-switch>
+            </div>
+          </a-form-model-item>
+          <a-form-model-item>
+            <template #label>
+              <span>Ocultar fecha de nacimiento</span>
+              <br>
+              <small class="text-muted">Activar esta opcion evita que se muestre tu fecha de nacimiento y edad en la tarjeta</small>
+            </template>
+            <div class="d-flex justify-content-center" style="gap: 22px;">
+              <a-switch v-model="user.hide_bday"></a-switch>
+            </div>
+          </a-form-model-item>
+          <a-form-model-item>
+            <template #label>
+              <span>Ocultar correo electrónico</span>
+              <br>
+              <small class="text-muted">Activar esta opcion evita que se muestre tu correo electrónico en la tarjeta</small>
+            </template>
+            <div class="d-flex justify-content-center" style="gap: 22px;">
+              <a-switch v-model="user.hide_email"></a-switch>
+            </div>
+          </a-form-model-item>
+        </b-card-body>
+      </b-card>
+      <b-card no-body>
+        <b-card-body>
+          <h3 class="mb-4">
+            Funcionalidad
+          </h3>
+          <a-form-model-item>
+            <template #label>
+              <span>Mostrar boton <i>Guardar contacto</i></span>
+              <br>
+              <small class="text-muted">Activar esta opcion mostrara el boton de <i>Guardar contacto</i> al final de su tarjeta</small>
+            </template>
+            <div class="d-flex justify-content-center" style="gap: 22px;">
+              <a-switch v-model="user.can_save_vcf"></a-switch>
+            </div>
+          </a-form-model-item>
         </b-card-body>
       </b-card>
     </a-form-model>
@@ -513,6 +570,11 @@
       .ant-form-item {
         display: flex;
         align-items: center;
+        border-bottom: dashed 1px var(--border-color);
+        padding-bottom: 10px;
+        &:last-child {
+          border-bottom: none;
+        }
       }
       .ant-form-item-label {
         line-height: 1;

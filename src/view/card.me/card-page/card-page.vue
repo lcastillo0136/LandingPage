@@ -27,7 +27,7 @@
           <b-card-text class="mt-3" v-html="card.biography">
           </b-card-text>
           <div>
-            <div class="caracteristica" v-if="card.bday && isValidBday">
+            <div class="caracteristica" v-if="card.bday && isValidBday && !card.hide_bday">
               <div class="rounded-circle bg-success icon">
                 <b-icon-calendar2-fill></b-icon-calendar2-fill>
               </div>
@@ -49,7 +49,7 @@
                 <a :href="card.personal_url" target="_blank">{{ card.personal_url }}</a>
               </span>
             </div>
-            <div class="caracteristica" v-if="card.phone">
+            <div class="caracteristica" v-if="card.phone && !card.hide_personal_phone">
               <div class="rounded-circle bg-success icon">
                 <b-icon-telephone-fill></b-icon-telephone-fill>
               </div>
@@ -60,7 +60,7 @@
                 <small>Móvil</small>
               </span>
             </div>
-            <div class="caracteristica" v-if="card.tel_oficina">
+            <div class="caracteristica" v-if="card.tel_oficina && !card.hide_office_phone">
               <div class="rounded-circle bg-success icon">
                 <b-icon-telephone-fill></b-icon-telephone-fill>
               </div>
@@ -71,7 +71,7 @@
                 <small>Trabajo</small>
               </span>
             </div>
-            <div class="caracteristica" v-if="card.email">
+            <div class="caracteristica" v-if="card.email && !card.hide_email">
               <div class="rounded-circle bg-success icon">
                 <b-icon-envelope-fill></b-icon-envelope-fill>
               </div>
@@ -161,7 +161,7 @@
           
           <div class="quote">{{ card.quote }}</div>
 
-          <b-button variant="primary" @click.stop.prevent="saveContact" class="w-100" v-if="!isPreview">Guardar contacto</b-button>
+          <b-button variant="primary" @click.stop.prevent="saveContact" class="w-100" v-if="!isPreview && card.can_save_vcf">Guardar contacto</b-button>
         </b-card-body>
       </b-card>
       <footer class="powered-footer" v-if="!isPreview">
@@ -517,6 +517,23 @@
 </script>
 <style lang="scss">
   main.card-container {
+    --w-e-textarea-bg-color: #fff;
+    --w-e-textarea-color: #333;
+    --w-e-textarea-border-color: #ccc;
+    --w-e-textarea-slight-border-color: #e8e8e8;
+    --w-e-textarea-slight-color: #d4d4d4;
+    --w-e-textarea-slight-bg-color: #f5f2f0;
+    --w-e-textarea-selected-border-color: #B4D5FF;
+    --w-e-textarea-handler-bg-color: #4290f7;
+    --w-e-toolbar-color: #595959;
+    --w-e-toolbar-bg-color: #fff;
+    --w-e-toolbar-active-color: #333;
+    --w-e-toolbar-active-bg-color: #f1f1f1;
+    --w-e-toolbar-disabled-color: #999;
+    --w-e-toolbar-border-color: #e8e8e8;
+    --w-e-modal-button-bg-color: #fafafa;
+    --w-e-modal-button-border-color: #d9d9d9;
+    
     display: flex;
     flex: 1 1 auto;
     justify-content: center;
@@ -797,6 +814,15 @@
       .image-cover {
         display: none;
       }
+      blockquote {
+        background-color: var(--w-e-textarea-slight-bg-color);
+        border-left: 8px solid var(--w-e-textarea-selected-border-color);
+        display: block;
+        font-size: 100%;
+        line-height: 1.5;
+        margin: 10px 0;
+        padding: 10px;
+      }
       &.design-1 {
         .avatar-container {
           position: relative;
@@ -823,6 +849,12 @@
           overflow: hidden;
           box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
           margin-bottom: 0.25rem;
+          > img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
         }
         .image-cover {
           display: block;

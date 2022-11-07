@@ -69,6 +69,9 @@
             <small class="text-muted">Palabra o expresión que antecede al nombre</small>
           </template>
           <a-select v-model="profile.title" size="large" :disabled="saving">
+            <a-select-option value="">
+              ----
+            </a-select-option>
             <a-select-option value="Dr.">
               Dr. (Doctor)
             </a-select-option>
@@ -144,6 +147,9 @@
           </template>
           <a-input type="number" class="" placeholder="Teléfono móvil" v-model="profile.phone" :disabled="saving" size="large">
           </a-input>
+          <template #help v-if="profile.hide_personal_phone">
+            <small style="opacity: 0.7;">Este dato no sera mostrado en tu tarjeta</small>
+          </template>
         </a-form-model-item>
 
         <a-form-model-item prop="tel_oficina">
@@ -154,6 +160,9 @@
           </template>
           <a-input type="number" class="" placeholder="Teléfono trabajo" v-model="profile.tel_oficina" :disabled="saving" size="large">
           </a-input>
+          <template #help v-if="profile.hide_office_phone">
+            <small style="opacity: 0.7;">Este dato no sera mostrado en tu tarjeta</small>
+          </template>
         </a-form-model-item>
         
         
@@ -164,6 +173,9 @@
             <small class="text-muted"></small>
           </template>
           <a-date-picker v-model="profile.bday" size="large"  :disabled="saving"/>
+          <template #help v-if="profile.hide_bday">
+            <small style="opacity: 0.7;">Este dato no sera mostrado en tu tarjeta</small>
+          </template>
         </a-form-model-item>
         <a-form-model-item prop="email">
           <template #label>
@@ -173,6 +185,9 @@
           </template>
           <a-input type="text" class="" placeholder="Correo electrónico" v-model="profile.email" :disabled="saving" size="large">
           </a-input>
+          <template #help v-if="profile.hide_email">
+            <small style="opacity: 0.7;">Este dato no sera mostrado en tu tarjeta</small>
+          </template>
         </a-form-model-item>
         <a-form-model-item prop="gender">
           <template #label>
@@ -216,9 +231,8 @@
             <small class="text-muted">Escribe una descripción corta sobre ti mismo</small>
           </template>
           <!-- <a-textarea :autoSize="true" placeholder="Escribe una descripción corta sobre ti mismo" v-model="profile.biography" :rows="6" :disabled="saving"/> -->
-          <div style="border: 1px solid #ccc; margin-top: 10px">
+          <div class="bio-container">
             <Toolbar
-              style="border-bottom: 1px solid #ccc"
               :editor="editor"
               :defaultConfig="toolbarConfig"
               :mode="mode"
@@ -935,6 +949,34 @@
       },
     },
     mounted() {
+      if (!this.isImage) {
+        if (!this.isImage) {
+          var readerAvatar  = new FileReader();
+          readerAvatar.onloadend = () => {
+            this.avatarFile = readerAvatar.result;
+          }
+
+          if (this.profile.avatar) {
+            readerAvatar.readAsDataURL(this.profile.avatar);
+          } else {
+
+          }
+        }
+      }
+      if (!this.isCoverImage) {
+        if (!this.isCoverImage) {
+          var reader  = new FileReader();
+          reader.onloadend = () => {
+            this.coverFile = reader.result;
+          }
+
+          if (this.profile.cover) {
+            reader.readAsDataURL(this.profile.cover);
+          } else {
+
+          }
+        }
+      }
     },
     beforeDestroy() {
       const editor = this.editor
@@ -953,6 +995,13 @@
       margin-top: -20px;
       margin-right: -20px;
       margin-left: -20px;
+      > img {
+        position: absolute;
+        top: 0%;
+        left: 50%;
+        transform: translate(-50%, -10%);
+        min-width: 100%;
+      }
     }
     .profile-avatar-container {
       margin-left: 25px;
@@ -1094,6 +1143,24 @@
 
       .input-checkbox100:checked + .label-checkbox100 > span.check {
         color: #c87ef0;
+      }
+      .ant-switch {
+        opacity: 0.8;
+      }
+      .ant-switch-checked {
+        background: #54bd95;
+      }
+
+      .bio-container {
+        border: 1px solid #f00;
+        margin-top: 10px;
+        overflow: hidden;
+        border-radius: 4px;
+        border-color: var(--border-color);
+        .w-e-toolbar {
+          border-bottom: solid 1px;
+          border-color: var(--border-color);
+        }
       }
     }
 
