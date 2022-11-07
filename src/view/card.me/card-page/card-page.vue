@@ -870,6 +870,7 @@
         }
       }
       &.design-3 {
+        --user-background: #fff;
         display: flex;
         margin-top: 80px;
         overflow: visible !important;
@@ -886,12 +887,18 @@
           overflow: hidden;
           box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
           margin-bottom: 0.25rem;
+          > img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
         }
         .image-cover {
           display: none;
         }
         .card-body {
-          background: transparent;
+          background: #fff;
           .send-whatsapp {
             top: -68px;
           }

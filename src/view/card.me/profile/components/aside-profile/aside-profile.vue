@@ -50,19 +50,28 @@
       <ul class="contacts">
         <li>
           <router-link :to="{ name: 'profile-details' }">
-            <span>Información Personal</span>
+            <span>
+              <a-icon type="user"></a-icon>
+              Información Personal
+            </span>
             <a-icon type="caret-right"></a-icon>
           </router-link>
         </li>
         <li>
           <router-link :to="{ name: 'profile-orders' }">
-            <span>Pagos</span>
+            <span>
+              <a-icon type="container"></a-icon>
+              Pagos
+            </span>
             <a-icon type="caret-right"></a-icon>
           </router-link>
         </li>
         <li>
           <router-link :to="{ name: 'profile-analytics' }">
-            <span>Analytics</span>
+            <span>
+              <a-icon type="area-chart"></a-icon>
+              Analytics
+            </span>
             <a-icon type="caret-right"></a-icon>
           </router-link>
         </li>
@@ -80,13 +89,19 @@
         </li> -->
         <li>
           <router-link :to="{ name: 'profile-payment' }">
-            <span>Pay now</span>
+            <span>
+              <a-icon type="dollar"></a-icon>
+              Pagar ahora
+            </span>
             <a-icon type="caret-right"></a-icon>
           </router-link>
         </li>
         <li>
           <router-link :to="{ name: 'profile-settings' }">
-            <span>Configuraciones</span>
+            <span>
+              <a-icon type="setting"></a-icon>
+              Configuraciones
+            </span>
             <a-icon type="caret-right"></a-icon>
           </router-link>
         </li>
@@ -324,7 +339,9 @@
             }
             i {
               margin-left: auto;
-              display: none;
+              visibility: hidden;
+              display: inline-block;
+              vertical-align: 1px;
             }
             &.router-link-active {
               span {
@@ -333,7 +350,7 @@
               }
               i {
                 color: var(--primary);
-                display: inline-block;
+                visibility: visible;
               }
             }
           }
