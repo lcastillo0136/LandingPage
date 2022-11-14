@@ -189,6 +189,11 @@ export default [
             path: 'analytics.html',
             name: 'profile-analytics',
             component: () => import('@/view/' + config.theme + '/profile/pages/profile-analytics')
+          },
+          {
+            path: 'history.html',
+            name: 'profile-history',
+            component: () => import('@/view/' + config.theme + '/profile/pages/profile-history')
           }
         ]
       }, {

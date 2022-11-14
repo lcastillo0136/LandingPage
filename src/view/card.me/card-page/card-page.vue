@@ -95,60 +95,12 @@
                 </small>
               </span>
             </div>
-            <div class="caracteristica icon-facebook" v-if="card.social_facebook">
+            <div :class="['caracteristica', 'icon-' + (network.network_icon || 'globe')]" v-for="(network) in card.social_networks">
               <div class="rounded-circle bg-success icon">
-                <b-icon-facebook></b-icon-facebook>
+                <i :class="['bi', 'bi-' + (network.network_icon || 'globe')]"></i>
               </div>
               <span>
-                <a :href="(isMobile ? 'fb://facewebmodal/f?href=' : '')+card.social_facebook" target="_blank">{{ card.social_facebook }}</a>
-              </span>
-            </div>
-            <div class="caracteristica icon-twitter" v-if="card.social_twitter">
-              <div class="rounded-circle bg-success icon">
-                <b-icon-twitter></b-icon-twitter>
-              </div>
-              <span>
-                <a :href="card.social_twitter" target="_blank">{{ card.social_twitter }}</a>
-              </span>
-            </div>
-            <div class="caracteristica icon-instagram" v-if="card.social_instagram">
-              <div class="rounded-circle bg-success icon">
-                <b-icon-instagram></b-icon-instagram>
-              </div>
-              <span>
-                <a :href="card.social_instagram" target="_blank">{{ card.social_instagram }}</a>
-              </span>
-            </div>
-            <div class="caracteristica icon-linkedin" v-if="card.social_linkedin">
-              <div class="rounded-circle bg-success icon">
-                <b-icon-linkedin></b-icon-linkedin>
-              </div>
-              <span>
-                <a :href="card.social_linkedin" target="_blank">{{ card.social_linkedin }}</a>
-              </span>
-            </div>
-            <div class="caracteristica icon-youtube" v-if="card.social_youtube">
-              <div class="rounded-circle bg-success icon">
-                <b-icon-youtube></b-icon-youtube>
-              </div>
-              <span>
-                <a :href="card.social_youtube" target="_blank">{{ card.social_youtube }}</a>
-              </span>
-            </div>
-            <div class="caracteristica icon-tiktok" v-if="card.social_tiktok">
-              <div class="rounded-circle bg-success icon">
-                <i class="bi bi-tiktok"></i>
-              </div>
-              <span>
-                <a :href="card.social_tiktok" target="_blank">{{ card.social_tiktok }}</a>
-              </span>
-            </div>
-            <div class="caracteristica icon-paypal" v-if="card.social_paypal">
-              <div class="rounded-circle bg-success icon">
-                <i class="bi bi-paypal"></i>
-              </div>
-              <span>
-                <a :href="card.social_paypal" target="_blank">{{ card.social_paypal }}</a>
+                <a :href="network.network_url" target="_blank">{{ network.network_url }}</a>
               </span>
             </div>
           </div>
@@ -612,16 +564,31 @@
           }
         }
         &.icon-googleplus { 
+          font-size: 19px;
           color: #dd4b39; 
           color: rgb(221, 75, 57); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-rss { 
+          font-size: 19px;
           color: #f26522; 
           color: rgb(242, 101, 34); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-pinterest { 
+          font-size: 19px;
           color: #cb2027; 
           color: rgb(203, 32, 39); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-linkedin { 
           font-size: 19px;
@@ -642,12 +609,27 @@
           }
         }
         &.icon-vimeo { 
+          font-size: 19px;
           color: #1ab7ea; 
           color: rgb(26, 183, 234); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-tumblr { 
+          font-size: 19px;
           color: #32506d; 
           color: rgb(50, 80, 109); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
+          .bi-tumblr::after {
+            content: 't';
+            font-style: normal;
+            font-weight: bold;
+          }
         }
         &.icon-instagram { 
           font-size: 19px;
@@ -659,48 +641,103 @@
           }
         }
         &.icon-flickr { 
+          font-size: 19px;
           color: #ff0084; 
           color: rgb(255, 0, 132); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-dribbble { 
+          font-size: 19px;
           color: #ea4c89; 
-          color: rgb(234, 76, 137); 
+          color: rgb(234, 76, 137);
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          } 
         }
         &.icon-quora { 
+          font-size: 19px;
           color: #a82400; 
           color: rgb(168, 36, 0); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-foursquare { 
+          font-size: 19px;
           color: #0072b1; 
           color: rgb(0, 114, 177);
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-forrst { 
+          font-size: 19px;
           color: #5B9A68; 
           color: rgb(91, 154, 104); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-vk { 
+          font-size: 19px;
           color: #45668e; 
           color: rgb(69, 102, 142); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-wordpress { 
+          font-size: 19px;
           color: #21759b; 
           color: rgb(33, 117, 155); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-stumbleupon { 
+          font-size: 19px;
           color: #EB4823; 
           color: rgb(235, 72, 35); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-yahoo { 
+          font-size: 19px;
           color: #7B0099; 
           color: rgb(123, 0, 153); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-blogger { 
+          font-size: 19px;
           color: #fb8f3d; 
           color: rgb(251, 143, 61); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-soundcloud { 
+          font-size: 19px;
           color: #ff3a00; 
           color: rgb(255, 58, 0); 
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          }
         }
         &.icon-paypal { 
           font-size: 19px;

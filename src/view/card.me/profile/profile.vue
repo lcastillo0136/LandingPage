@@ -356,4 +356,15 @@
       }
     }
   }
+  .modal-content {
+    .ant-form-item-label {
+      line-height: 16px;
+      padding-bottom: 0;
+      label {
+        margin-bottom: 0;
+        line-height: 16px;
+        padding-bottom: 0;
+      }
+    }
+  }
 </style>

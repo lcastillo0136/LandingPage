@@ -96,7 +96,7 @@
             <template #label>
               <span>Posicion de elementos</span>
               <br>
-              <small class="text-muted">Define que tipo de diseño que mostrara tu tarjeta</small>
+              <small class="text-muted">Define el tipo de diseño que mostrara tu tarjeta</small>
             </template>
             <div class="d-flex justify-content-center" style="gap: 22px;">
               <div class="design-1" :class="{ 'choosed': user.design == 'design-1' }" @click="user.design  = 'design-1'">
@@ -459,15 +459,6 @@
       handleSave () {
         this.saving = true
         this.errors = []
-
-        // this.user.open_time = this.open_time.format('HH:mm')
-        // this.user.close_time = this.close_time.format('HH:mm')
-        // this.user.date_slot = this.date_slot.format('HH:mm')
-
-        // this.user.extend_last_appointment = this.extend_last_appointment ? 1 : 0
-        // this.user.max_days = this.max_days
-        // this.user.next_day = this.next_day
-        // this.user.multiple_services = this.multiple_services ? 1 : 0
 
         updateUser({
           ...this.user,

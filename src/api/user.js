@@ -195,6 +195,10 @@ export const updateUser = (user, token) => {
     }
   } catch(e) { }
   
+  if (user.social_networks?.length > 0) {
+    formData.append('social_networks', JSON.stringify(user.social_networks));
+  }
+
   if (user.services?.length > 0) {
     formData.append('services', JSON.stringify(user.services));
   }

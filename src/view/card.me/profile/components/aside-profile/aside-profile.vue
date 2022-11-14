@@ -58,6 +58,15 @@
           </router-link>
         </li>
         <li>
+          <router-link :to="{ name: 'profile-history' }">
+            <span>
+              <a-icon type="idcard"></a-icon>
+              Información Profesional
+            </span>
+            <a-icon type="caret-right"></a-icon>
+          </router-link>
+        </li>
+        <li>
           <router-link :to="{ name: 'profile-orders' }">
             <span>
               <a-icon type="container"></a-icon>
@@ -335,7 +344,7 @@
             text-decoration: none;
             span {
               border-radius: 6px;
-              padding: 7px 20px;
+              padding: 7px 14px;
             }
             i {
               margin-left: auto;
