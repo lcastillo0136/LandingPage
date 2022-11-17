@@ -1630,6 +1630,10 @@ html {
   }
 }
 
+.cursor-move {
+  cursor: move;
+}
+
 @import '../css/util.css';
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'bootstrap-vue/src/index.scss';

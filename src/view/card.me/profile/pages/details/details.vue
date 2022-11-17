@@ -165,7 +165,6 @@
           </template>
         </a-form-model-item>
         
-        
         <a-form-model-item prop="bday">
           <template #label>
             <span>Fecha de nacimiento</span>
@@ -177,6 +176,7 @@
             <small style="opacity: 0.7;">Este dato no sera mostrado en tu tarjeta</small>
           </template>
         </a-form-model-item>
+
         <a-form-model-item prop="email">
           <template #label>
             <span>Correo electrónico</span>
@@ -189,6 +189,7 @@
             <small style="opacity: 0.7;">Este dato no sera mostrado en tu tarjeta</small>
           </template>
         </a-form-model-item>
+
         <a-form-model-item prop="gender">
           <template #label>
             <span>Género</span>
@@ -291,267 +292,71 @@
         </div>
       </form>
     </div>
-    <div class="box_general_2 add_bottom_45">
-      <h4>Redes sociales</h4>
 
-      <div class="row">
-        <div class="col-md-4 col-sm-6">
-          <div class="form-group">
-            <label>Url personal</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <b-icon-link></b-icon-link>
-                </span>
-              </div>
-              <input type="text" class="form-control" placeholder="----------" v-model="profile.personal_url" autocomplete="chrome-off">
-            </div>
-          </div>
-        </div>
-      </div>
-      <a-divider dashed ></a-divider>
-      <div class="row">
-        <div class="col-md-4 col-sm-6">
-          <div class="form-group">
-            <label>Facebook</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text icon-facebook">
-                  <b-icon-facebook></b-icon-facebook>
-                </span>
-              </div>
-              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_facebook" autocomplete="chrome-off">
-              <small id="passwordHelpBlock" class="form-text text-muted">
-                <a-popover placement="bottom">
-                  <template #content>
-                    <img src="/img/urls/facebook-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
-                  </template>
-                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
-                </a-popover>
-              </small>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6">
-          <div class="form-group">
-            <label>Instagram</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text icon-instagram">
-                  <b-icon-instagram></b-icon-instagram>
-                </span>
-              </div>
-              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_instagram" autocomplete="chrome-off">
-              <small id="passwordHelpBlock" class="form-text text-muted">
-                <a-popover placement="bottom">
-                  <template #content>
-                    <img src="/img/urls/instagram-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
-                  </template>
-                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
-                </a-popover>
-              </small>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6">
-          <div class="form-group">
-            <label>Linkedin</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text icon-linkedin">
-                  <b-icon-linkedin></b-icon-linkedin>
-                </span>
-              </div>
-              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_linkedin" autocomplete="chrome-off">
-              <small id="passwordHelpBlock" class="form-text text-muted">
-                <a-popover placement="bottom">
-                  <template #content>
-                    <img src="/img/urls/linkedin-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
-                  </template>
-                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
-                </a-popover>
-              </small>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4 col-sm-6">
-          <div class="form-group">
-            <label>PayPal</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text icon-paypal">
-                  <i class="bi bi-paypal"></i>
-                </span>
-              </div>
-              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_paypal" autocomplete="chrome-off">
-              <small id="passwordHelpBlock" class="form-text text-muted">
-                <a-popover placement="bottom">
-                  <template #content>
-                    <img src="/img/urls/paypal-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
-                  </template>
-                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
-                </a-popover>
-              </small>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6">
-          <div class="form-group">
-            <label>TikTok</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text icon-tiktok">
-                  <i class="bi bi-tiktok"></i>
-                </span>
-              </div>
-              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_tiktok" autocomplete="chrome-off">
-              <small id="passwordHelpBlock" class="form-text text-muted">
-                <a-popover placement="bottom">
-                  <template #content>
-                    <img src="/img/urls/tiktok-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
-                  </template>
-                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
-                </a-popover>
-              </small>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6">
-          <div class="form-group">
-            <label>Twitter</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text icon-twitter">
-                  <b-icon-twitter></b-icon-twitter>
-                </span>
-              </div>
-              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_twitter" autocomplete="chrome-off">
-              <small id="passwordHelpBlock" class="form-text text-muted">
-                <a-popover placement="bottom">
-                  <template #content>
-                    <img src="/img/urls/twitter-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
-                  </template>
-                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
-                </a-popover>
-              </small>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6">
-          <div class="form-group">
-            <label>Youtube</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text icon-youtube">
-                  <b-icon-youtube></b-icon-youtube>
-                </span>
-              </div>
-              <input type="text" class="form-control" placeholder="----------" v-model="profile.social_youtube" autocomplete="chrome-off">
-              <small id="passwordHelpBlock" class="form-text text-muted">
-                <a-popover placement="bottom">
-                  <template #content>
-                    <img src="/img/urls/youtube-url.png" alt="" border="0" style="width: 420px;max-width: 100%;" />
-                  </template>
-                  Copia y pega en el campo la url desde el navegador web.<a-icon type="info-circle" style="vertical-align: baseline;margin-left: 5px;cursor: pointer;"></a-icon>
-                </a-popover>
-              </small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <b-card>
-        <h4 class="card-title">Información profesional</h4>
-        <h6 class="card-subtitle text-muted mb-4">Trayectoria profesional</h6>
+      <h4 class="card-title">Información profesional</h4>
+      <h6 class="card-subtitle text-muted mb-4">Trayectoria profesional</h6>
 
-        <div class="d-flex">
-          <a-form-model-item prop="profesion" class="px-1 w-25">
-            <small class="text-muted">PROFESIÓN</small>
-            <a-input type="text" placeholder="----------" v-model="profile.profesion" :disabled="saving" size="large">
-            </a-input>
-          </a-form-model-item>
-          <a-form-model-item prop="profesion" class="px-1 w-25">
-            <small class="text-muted">ESPECIALIDAD</small>
-            <a-input type="text" placeholder="----------" v-model="profile.especialidad" :disabled="saving" size="large">
-            </a-input>
-          </a-form-model-item>
-          <a-form-model-item prop="profesion" class="px-1 w-25">
-            <small class="text-muted">CÉDULA PROFESIONAL</small>
-            <a-input type="text" placeholder="----------" v-model="profile.cedula_profesional" :disabled="saving" size="large">
-            </a-input>
-          </a-form-model-item>
-          <a-form-model-item prop="profesion" class="px-1 w-25">
-            <small class="text-muted">COMPAÑÍA / EMPRESA</small>
-            <a-input type="text" placeholder="----------" v-model="profile.company_name" :disabled="saving" size="large">
-            </a-input>
-          </a-form-model-item>
-        </div>
-        <div>
-          <small class="text-muted mx-1">HABILIDADES</small>
-          <br>
-          <div class="overflow-auto" style="max-height: 500px;">
-            <div class="d-flex shadow-sm rounded p-3 border mb-2 mx-1 align-items-center" v-for="(tag, index) in profile.skills">
-              <a-input type="text" placeholder="Nombre de la habilidad" class="w-50 mr-3" v-model="tag.name" :disabled="saving" ></a-input>
-              <a-input-number class="w-25 mr-auto ant-input-number" v-model="tag.value" :min="1" :max="99" />
-              <a-switch class="mr-3" size="small" v-model="tag.active" />
-              <a-icon type="minus-circle" :style="{ fontSize: '16px', color: 'var(--red)' }"></a-icon>
-            </div>
-            <a-tooltip v-if="tag.name.length > 20" :key="tag.name" :title="tag.name">
-              <a-tag :key="tag.name" :closable="true" @close="() => handleClose(tag.name)">
-                {{ `${tag.name.slice(0, 20)}...` }}
-              </a-tag>
-            </a-tooltip>
-            <a-tag v-else :key="tag.name" :closable="true" @close="() => handleClose(tag.name)">
-              {{ tag.name }}
-            </a-tag>
+      <div class="d-flex">
+        <a-form-model-item prop="profesion" class="px-1 w-25">
+          <small class="text-muted">PROFESIÓN</small>
+          <a-input type="text" placeholder="----------" v-model="profile.profesion" :disabled="saving" size="large">
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item prop="profesion" class="px-1 w-25">
+          <small class="text-muted">ESPECIALIDAD</small>
+          <a-input type="text" placeholder="----------" v-model="profile.especialidad" :disabled="saving" size="large">
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item prop="profesion" class="px-1 w-25">
+          <small class="text-muted">CÉDULA PROFESIONAL</small>
+          <a-input type="text" placeholder="----------" v-model="profile.cedula_profesional" :disabled="saving" size="large">
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item prop="profesion" class="px-1 w-25">
+          <small class="text-muted">COMPAÑÍA / EMPRESA</small>
+          <a-input type="text" placeholder="----------" v-model="profile.company_name" :disabled="saving" size="large">
+          </a-input>
+        </a-form-model-item>
+      </div>
+      <div>
+        <small class="text-muted mx-1">HABILIDADES</small>
+        <br>
+        <div class="overflow-auto" style="max-height: 500px;">
+          <div class="d-flex shadow-sm rounded p-3 border mb-2 mx-1 align-items-center" v-for="(tag, index) in profile.skills">
+            <a-input type="text" placeholder="Nombre de la habilidad" class="w-50 mr-3" v-model="tag.name" :disabled="saving" ></a-input>
+            <a-input-number class="w-25 mr-auto ant-input-number" v-model="tag.value" :min="1" :max="99" />
+            <a-switch class="mr-3" size="small" v-model="tag.active" />
+            <a-icon type="minus-circle" :style="{ fontSize: '16px', color: 'var(--red)' }"></a-icon>
           </div>
-          <a-input
-            v-if="inputVisible"
-            ref="input"
-            type="text"
-            size="small"
-            :style="{ width: '78px' }"
-            :value="inputValue"
-            @change="handleInputChange"
-            @blur="handleInputConfirm"
-            @keyup.enter="handleInputConfirm"
-          />
-          <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
-            <a-icon type="plus" /> Agregar
+          <a-tooltip v-if="tag.name.length > 20" :key="tag.name" :title="tag.name">
+            <a-tag :key="tag.name" :closable="true" @close="() => handleClose(tag.name)">
+              {{ `${tag.name.slice(0, 20)}...` }}
+            </a-tag>
+          </a-tooltip>
+          <a-tag v-else :key="tag.name" :closable="true" @close="() => handleClose(tag.name)">
+            {{ tag.name }}
           </a-tag>
         </div>
-      </b-card>
-      <Addressess :profile="profile"></Addressess>
-      
-    <div class="box_general_2 add_bottom_30">
-      <h4>Información adicional</h4>
-      <div class="form-group">
-        <label>Cita</label>
-        <input type="text" class="form-control" placeholder="Frase que te describa" v-model="profile.quote" autocomplete="chrome-off">
+        <a-input
+          v-if="inputVisible"
+          ref="input"
+          type="text"
+          size="small"
+          :style="{ width: '78px' }"
+          :value="inputValue"
+          @change="handleInputChange"
+          @blur="handleInputConfirm"
+          @keyup.enter="handleInputConfirm"
+        />
+        <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
+          <a-icon type="plus" /> Agregar
+        </a-tag>
       </div>
-      <div class="form-group">
-        <label>Biografía</label>
-        <a-textarea :autoSize="true" class="form-control" placeholder="Biografía" v-model="profile.biography" :rows="4"/>
-      </div>
-    </div>
-    <b-card  no-body >
-      <b-card-header>
-        Redes sociales
-      </b-card-header>
-      
-        <draggable v-model="myArray" class="list-group list-group-flush" handle=".b-icon">
-          <b-list-group-item href="#" v-for="(element, element_i) in myArray" :key="element.id">
-            <b-icon-grip-vertical></b-icon-grip-vertical>
-            {{ element.id }} {{ element.name }}
-          </b-list-group-item>
-          <a-button slot="footer">Add</a-button>
-        </draggable>
-      
-      <b-card-body>
-      </b-card-body>
-    </b-card> -->
+    </b-card>
+    <Addressess :profile="profile"></Addressess>
+    
+    -->
     <div style="text-align: right;" class="container">
       <a-button type="primary" class="save-button" shape="circle" size="large" @click="handleSave" :loading="saving" :disabled="!matchPassword">
         <a-icon type="save" theme="filled" v-if="!saving" />

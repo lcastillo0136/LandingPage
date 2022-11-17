@@ -939,7 +939,7 @@
 
                   <a-form-model-item prop="policy_terms">
                     <div class="contact100-form-checkbox">
-                      <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me" v-model="policyTerms">
+                      <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me" v-model="form.policy_terms">
                       <label class="label-checkbox100" for="ckb1">
                         <span class="check"><b-icon-check-2 font-scale="1.2"></b-icon-check-2></span>
                         <span class="txt1">
@@ -1019,11 +1019,11 @@
   import RegisterForm from './components/register'
   import Login from './components/login'
 
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
 
-      gtag('config', 'G-GVVVD42784');
+  gtag('config', 'G-GVVVD42784');
 
   export default {
     props: {
@@ -1044,7 +1044,8 @@
           realPassword: '',
           realPassword2: '',
           user_id: '',
-          username: ''
+          username: '',
+          policy_terms: false
         },
         rules: {
           first_name: [{ validator: (rule, value, callback) => {
@@ -1090,6 +1091,7 @@
             }
           }, trigger: 'change' }],
           policy_terms: [{ validator: (rule, value, callback) => {
+            debugger;
             if (!value) {
               callback(new Error('Favor de no dejar este campo vacío'))
             } else {

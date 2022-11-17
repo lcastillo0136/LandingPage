@@ -35,22 +35,57 @@
           </a-form-model-item>
         </b-card-body>
       </b-card> -->
+      <b-card no-body>
+        <b-card-body>
+          <h3 class="mb-4">
+            Información profesional 
+          </h3>
+          <a-form-model-item prop="profesion">
+            <template #label>
+              <span>Profesión</span>
+              <br>
+              <small class="text-muted">Nombre de carrera que actualmente ejerce</small>
+            </template>
+            <a-input type="text" placeholder="Profesión" v-model="user.profesion" :disabled="saving" size="large">
+            </a-input>
+          </a-form-model-item>
+          <a-form-model-item prop="especialidad">
+            <template #label>
+              <span>Especialidad</span>
+              <br>
+              <small class="text-muted">Rama de especialidad que maneja de acuerdo a su carrera profesional</small>
+            </template>
+            <a-input type="text" placeholder="Especialidad" v-model="user.especialidad" :disabled="saving" size="large">
+            </a-input>
+          </a-form-model-item>
+          <a-form-model-item prop="company_name">
+            <template #label>
+              <span>Nombre de empresa actual</span>
+              <br>
+              <small class="text-muted">Nombre de la empresa o negocio en el que trabaja actualmente</small>
+            </template>
+            <a-input type="text" placeholder="Especialidad" v-model="user.company_name" :disabled="saving" size="large">
+            </a-input>
+          </a-form-model-item>
+        </b-card-body>
+      </b-card>
 
       <b-card no-body>
         <h3 class="mb-4 mt-3 mx-3 pt-1 px-1">
           Redes sociales 
           <a-button class="float-right align-middle ml-auto" @click="modal.visible = true" type="primary">
             <b-icon-plus style="font-size: 22px;vertical-align: -6px;" font-scale="1.5"></b-icon-plus>
-            Add
+            Agregar
           </a-button>
         </h3>
+        <small class="mb-4 ml-4 d-block text-muted">Ordena y agrega tus redes sociales o sitios donde te puedan encontrar</small>
 
-        <draggable v-model="user.social_networks" class="list-group list-group-flush" handle=".b-icon" @sort="onSortSocialNetworks">
-          <b-list-group-item href="#" v-for="(element, element_i) in user.social_networks" :key="element.id" @click="openEditSocialNework(element)">
-            <b-icon-grip-vertical></b-icon-grip-vertical>
+        <draggable v-model="user.social_networks" :class="{ 'list-group list-group-flush': true, 'list-group-disabled': saving }" handle=".b-icon" @sort="onSortSocialNetworks">
+          <b-list-group-item href="#" v-for="(element, element_i) in user.social_networks" :key="element.id" @click="!saving && openEditSocialNework(element)">
+            <b-icon-grip-vertical class="cursor-move"></b-icon-grip-vertical>
             <i :icon="element.network_icon || 'globe'" :class="['mx-2', 'icon-' + element.network_icon, 'bi bi-' + (element.network_icon || 'globe') ]"></i>
             {{ element.network_url }}
-            <b-icon-trash-fill class="float-right mt-1 text-danger" @click.stop.prevent="deleteSocialNetwork(element, $event)"></b-icon-trash-fill>
+            <b-icon-trash-fill class="float-right mt-1 text-danger" @click.stop.prevent="!saving && deleteSocialNetwork(element, $event)"></b-icon-trash-fill>
           </b-list-group-item>
         </draggable>
           
@@ -254,6 +289,8 @@
           _icon = 'blogger'
         } else if (url.match(/^(?:(?:http|https):\/\/?(?:www\.|[a-z]{2,3}\.)?|(?:www\.|[a-z]{2,3}\.))?soundcloud\.com/)) {
           _icon = 'soundcloud'
+        } else if (url.match(/^(?:(?:http|https):\/\/?(?:www\.|[a-z]{2,3}\.)?|(?:www\.|[a-z]{2,3}\.))?github\.com/)) {
+          _icon = 'github'
         }
         return _icon
       },
@@ -432,6 +469,12 @@
         &.icon-tumblr { 
           color: #32506d; 
           color: rgb(50, 80, 109); 
+
+          &::after {
+            content: 't';
+            font-style: normal;
+            font-weight: bold;
+          }
         }
         &.icon-instagram {
           color: #bc2a8d; 
@@ -504,6 +547,12 @@
             background-color: #000 !important;
             border: solid 1px #28a745;
           }
+        }
+      }
+      .list-group-disabled {
+        opacity: 0.5;
+        svg , i , a {
+          cursor: text !important;
         }
       }
     }

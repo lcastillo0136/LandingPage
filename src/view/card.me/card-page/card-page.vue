@@ -6,6 +6,17 @@
           <b-card-img :src="card.avatar" alt="Image" top v-if="isImage"></b-card-img>
           <b-card-img :src="avatarFile" alt="Image" top v-else></b-card-img>
         </div>
+        <div class="profile-job-n-name">
+          <h4>
+            {{ card.full_name }}
+          </h4>
+          <small>
+            <span>{{ card.profesion }}</span> 
+            <template v-if="card.company_name">
+              en <span class="font-weight-bold">{{ card.company_name }}</span>
+            </template>
+          </small>
+        </div>
         <template v-if="card.cover">
           <div class="image-cover">
             <b-card-img :src="card.cover" alt="Image" v-if="isCoverImage"></b-card-img>
@@ -18,14 +29,25 @@
               <b-icon-whatsapp></b-icon-whatsapp>
             </a>
           </div>
-          <b-card-title class="mb-1">
+          <b-card-title class="mb-1 profile-name">
             {{ card.title || '' }} {{ card.first_name }}<br>{{ card.last_name }}
           </b-card-title>
-          <b-card-sub-title>
+          <b-card-sub-title class="profile-job">
             {{ card.profesion }} <div v-if="card.company_name" class="company-name">{{ card.company_name }}</div>
           </b-card-sub-title>
           <b-card-text class="mt-3" v-html="card.biography">
           </b-card-text>
+          
+          <div class="social-list">
+            <div :class="['caracteristica', 'icon-' + (social.network_icon || 'globe')]" v-for="(social) in socialsWithIcon">
+              <a :href="social.network_url" target="_blank">
+                <div class="rounded-circle bg-success icon">
+                  <i :class="['bi', 'bi-' + (social.network_icon || 'globe')]"></i>
+                </div>
+              </a>
+            </div>
+          </div>
+
           <div>
             <div class="caracteristica" v-if="card.bday && isValidBday && !card.hide_bday">
               <div class="rounded-circle bg-success icon">
@@ -95,7 +117,7 @@
                 </small>
               </span>
             </div>
-            <div :class="['caracteristica', 'icon-' + (network.network_icon || 'globe')]" v-for="(network) in card.social_networks">
+            <div :class="['caracteristica', 'icon-' + (network.network_icon || 'globe')]" v-for="(network) in socialsWithoutIcon">
               <div class="rounded-circle bg-success icon">
                 <i :class="['bi', 'bi-' + (network.network_icon || 'globe')]"></i>
               </div>
@@ -215,7 +237,7 @@
         return this.getUser || {}
       },
       card() {
-        return this.user || this.userData
+        return this.user && this.user.id ? this.user : this.userData
       },
       isMobile() {
         if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -228,14 +250,14 @@
         return this.$route.meta.preview
       },
       avatar () {
-        return (this.user && this.user.avatar) || '/img/blank-profile.webp'
+        return (this.card && this.card.avatar) || '/img/blank-profile.webp'
       },
       cover () {
-        return (this.user && this.user.cover) || '/img/blank-profile.webp'
+        return (this.card && this.card.cover) || '/img/blank-profile.webp'
       },
       isImage() {
         try {
-          if (this.user.avatar && this.user.avatar instanceof File) {
+          if (this.card.avatar && this.card.avatar instanceof File) {
             return false;
           }
         } catch(e) { }
@@ -244,13 +266,19 @@
       },
       isCoverImage() {
         try {
-          if (this.user.cover && this.user.cover instanceof File) {
+          if (this.card.cover && this.card.cover instanceof File) {
             return false;
           }
         } catch(e) { }
          
        return true
       },
+      socialsWithIcon() {
+        return _.filter(this.card.social_networks, (n) => n.network_icon != 'globe')
+      },
+      socialsWithoutIcon() {
+        return _.filter(this.card.social_networks, { network_icon: 'globe' })
+      }
     },
     methods: {
       saveContact() {
@@ -356,31 +384,6 @@
       loadInfo() {
         getUserInfo(this.hasToken).then(({ data }) => data).then((result) => {
           this.card = { ... result.data }
-          _.forEach([
-            'social_paypal', 
-            'social_tiktok', 
-            'social_youtube', 
-            'social_linkedin',
-            'social_instagram',
-            'social_twitter',
-            'social_facebook',
-            'personal_url'
-          ], (p) => {
-            this.card[p] = this.validateUrl(this.card[p]);
-            switch(p) {
-              case 'social_facebook':
-                this.card[p] = this.$options.filters.facebook(this.card[p])
-                break;
-              case 'social_twitter':
-                this.card[p] = this.$options.filters.twitter(this.card[p])
-                break;
-              case 'social_youtube': 
-                this.card[p] = this.$options.filters.youtube(this.card[p])
-                break;
-              default:
-                break;
-            }
-          })
 
           document.title = this.card.full_name
           this.toDataURL(this.card.avatar, (dataUrl) => {
@@ -411,43 +414,17 @@
             fingerprint: _fingerprint,
             uuid: this.$route.params.uuid
           }).then(({ data }) => data).then((result) => {
-            this.user = { ... result.data }
+            this.userData = { ... result.data }
 
-            _.forEach([
-              'social_paypal', 
-              'social_tiktok', 
-              'social_youtube', 
-              'social_linkedin',
-              'social_instagram',
-              'social_twitter',
-              'social_facebook',
-              'personal_url'
-            ], (p) => {
-              this.user[p] = this.validateUrl(this.user[p]);
-              switch(p) {
-                case 'social_facebook':
-                  this.user[p] = this.$options.filters.facebook(this.user[p])
-                  break;
-                case 'social_twitter':
-                  this.user[p] = this.$options.filters.twitter(this.user[p])
-                  break;
-                case 'social_youtube': 
-                  this.user[p] = this.$options.filters.youtube(this.user[p])
-                  break;
-                default:
-                  break;
-              }
+            document.title = this.userData.full_name
+            this.toDataURL(this.userData.avatar, (dataUrl) => {
+              this.userData.base_image = dataUrl
             })
 
-            document.title = this.user.full_name
-            this.toDataURL(this.user.avatar, (dataUrl) => {
-              this.user.base_image = dataUrl
-            })
-
-            if (this.user.google_trackid) {
+            if (this.userData.google_trackid) {
               // a Promise
               Vue.use(VueAnalytics, {
-                id: this.user.google_trackid
+                id: this.userData.google_trackid
               })
               this.$ga.page('/')
             }
@@ -760,6 +737,23 @@
             border: solid 1px #28a745;
           }
         }
+        &.icon-globe { 
+          font-size: 15px;
+          color: #f1f1f1;
+          span {
+            text-shadow: none;
+          }
+          .bg-success {
+          }
+        }
+        &.icon-github { 
+          font-size: 19px;
+          color: #000;
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+          } 
+        }
 
         &[class*="icon-"] {
           .icon {
@@ -860,6 +854,23 @@
         margin: 10px 0;
         padding: 10px;
       }
+      .profile-job-n-name {
+        display: none;
+      }
+      .social-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        .caracteristica {
+          flex: 0 0 auto;
+          display: inline;
+          border: 0;
+          padding: 0;
+          margin: 0;
+        }
+      }
       &.design-1 {
         .avatar-container {
           position: relative;
@@ -938,6 +949,71 @@
           background: #fff;
           .send-whatsapp {
             top: -68px;
+          }
+        }
+      }
+      &.design-4 {
+        display: flex;
+        .avatar-container {
+          order: 2;
+          border-radius: 0;
+          border: solid 0px #fff;
+          width: 90px;
+          height: 150px;
+          margin-top: -110px;
+          margin-left: 50%;
+          overflow: hidden;
+          box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+          margin-bottom: 0.25rem;
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+          transform: translateX(-150%);
+          > img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+        .profile-job-n-name {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          order: 3;
+          border-radius: 0;
+          border: solid 0px #fff;
+          width: 176px;
+          height: 150px;
+          margin-top: -154px;
+          margin-left: 50%;
+          overflow: hidden;
+          box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+          margin-bottom: 0.25rem;
+          background: #fff;
+          padding: 10px;
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+          transform: translateX(-26%);
+          h4 {
+            font-size: 1.2rem;
+          }
+        }
+        .image-cover {
+          display: block;
+          order: 1;
+          max-height: 200px;
+          overflow: hidden; 
+        }
+        .card-body {
+          order: 4;
+          .send-whatsapp {
+            top: -27px;
+          }
+          .profile-name {
+            display: none;
+          }
+          .profile-job {
+            display: none;
           }
         }
       }

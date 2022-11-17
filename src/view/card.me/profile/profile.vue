@@ -265,8 +265,7 @@
               ...this.getUser,
               ...{ 
                 bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD'),
-                skills: this.getUser.skills && this.getUser.skills.map(s => Object({ ...s, active: !!s.active })),
-                design: 'design-1'
+                skills: this.getUser.skills && this.getUser.skills.map(s => Object({ ...s, active: !!s.active }))
               }
             }
             

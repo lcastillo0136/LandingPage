@@ -99,17 +99,22 @@
               <small class="text-muted">Define el tipo de diseño que mostrara tu tarjeta</small>
             </template>
             <div class="d-flex justify-content-center" style="gap: 22px;">
-              <div class="design-1" :class="{ 'choosed': user.design == 'design-1' }" @click="user.design  = 'design-1'">
+              <div class="design-1" :class="{ 'choosed': user.design == 'design-1' }" @click="user.design = 'design-1'">
                 <div class="design-avatar"></div>
                 <div class="design-cover"></div>
                 <div class="design-content"></div>
               </div>
-              <div class="design-2" :class="{ 'choosed': user.design == 'design-2' }" @click="user.design  = 'design-2'">
+              <div class="design-2" :class="{ 'choosed': user.design == 'design-2' }" @click="user.design = 'design-2'">
                 <div class="design-avatar"></div>
                 <div class="design-cover"></div>
                 <div class="design-content"></div>
               </div>
-              <div class="design-3" :class="{ 'choosed': user.design == 'design-3' }" @click="user.design  = 'design-3'">
+              <div class="design-3" :class="{ 'choosed': user.design == 'design-3' }" @click="user.design = 'design-3'">
+                <div class="design-avatar"></div>
+                <div class="design-cover"></div>
+                <div class="design-content"></div>
+              </div>
+              <div class="design-4" :class="{ 'choosed': user.design == 'design-4' }" @click="user.design = 'design-4'">
                 <div class="design-avatar"></div>
                 <div class="design-cover"></div>
                 <div class="design-content"></div>
@@ -628,7 +633,7 @@
         color: #c87ef0;
       }
 
-      .design-1, .design-2, .design-3 {
+      .design-1, .design-2, .design-3, .design-4 {
         background: #2c2c2c;
         height: 120px;
         max-width: 70px;
@@ -893,6 +898,96 @@
         &.choosed {
           .design-content {
             background: #bdbdbd;
+          }
+        }
+      }
+
+      .design-4 {
+        background: #0000;
+        border: solid 1px #ededed;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        .design-avatar {
+          border-radius: 0;
+          width: 45px;
+          min-width: auto;
+          min-height: auto;
+          height: 30px;
+          position: relative;
+          z-index: 1;
+          flex: 0 0 auto;
+          border: solid 1px #fff;
+          box-shadow: 0px 2px 1px 0px #ededed;
+          border-right-width: 25px;
+          margin-top: 7px;
+
+          &:before {
+            width: 19px;
+            height: 18px;
+            bottom: -9px;
+          }
+
+          &:after {
+            width: 11px;
+            height: 11px;
+            bottom: 10px;
+          }
+        }
+        .design-cover {
+          order: 0;
+          position: absolute;
+          width: 100%;
+          height: 34px;
+          top: 0;
+          left: 0;
+          border-radius: 0;
+        }
+        .design-content {
+          position: relative;
+          height: 6px;
+          min-height: auto;
+          border-radius: 5px;
+          flex: 0 0 auto;
+
+          &:after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            min-width: auto;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #bdbdbd;
+          }
+
+          &:before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            min-width: auto;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #bdbdbd;
+          }
+        }
+
+        &.choosed {
+          .design-content {
+            &:after {
+              background: #fff;
+            }
+
+            &:before {
+              background: #fff;
+            }
+          }
+          .design-avatar {
+            border-color: #3f4750;
+            box-shadow: 0px 2px 1px 0px #3f4750;
           }
         }
       }
