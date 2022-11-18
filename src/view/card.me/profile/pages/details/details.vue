@@ -1,6 +1,6 @@
 <template>
   <div class="profile-page" v-if="profile">
-    <a-form-model ref="detailsForm" :rules="rules" :model="user" class="details-form d-flex flex-column" :label-col="{ span: 8 }" :wrapper-col="{ span: 14, offset: 2 }" :colon="false">
+    <a-form-model ref="detailsForm" :rules="rules" :model="user" class="details-form d-flex flex-column" :label-col="labelCol" :wrapper-col="wrapperCol" :colon="false">
       <b-card class="rounded-0">
         <figure class="profile-header">
           <img :src="cover" alt="" class="img-fluid mx-auto d-block"  v-if="isCoverImage"/>
@@ -19,10 +19,10 @@
             
           </div>
         </div>
-        <div class="d-flex my-4">
-          <a-form-model-item class="px-1 w-50" :wrapper-col="{ span: 24 }">
+        <div class="d-flex flex-column flex-md-row my-4 row-cols-1 row-cols-md-2">
+          <a-form-model-item class="px-md-1" :wrapper-col="{ span: 24 }">
             <small class="text-muted">FOTO DE PERFIL</small>
-            <a-upload-dragger  name="profile-avatar" :multiple="false" :showUploadList="false" :beforeUpload="handleUpload" accept="image/*" :disabled="saving" >
+            <a-upload-dragger class="flex-wrap flex-md-nowrap justify-content-center"  name="profile-avatar" :multiple="false" :showUploadList="false" :beforeUpload="handleUpload" accept="image/*" :disabled="saving" >
               <template v-if="avatarFile">
                 <a-avatar shape="square" :size="64" icon="user" :src="avatarFile" />
                 <span class="profile-name ml-4 mr-auto font-weight-bold" >
@@ -40,12 +40,12 @@
               <a-button class=" font-weight-bold" :disabled="saving">Navegar</a-button>
             </a-upload-dragger>
           </a-form-model-item>
-          <a-form-model-item class="px-1 w-50" :wrapper-col="{ span: 24 }">
+          <a-form-model-item class="px-md-1" :wrapper-col="{ span: 24 }">
             <small class="text-muted">FOTO DE PORTADA</small>
             <a-upload-dragger name="profile-cover" :multiple="false" :showUploadList="false" :beforeUpload="handleCoverUpload" accept="image/*" :disabled="saving" >
               <template v-if="coverFile">
                 <a-avatar shape="square" :size="64" icon="user" :src="coverFile" />
-                <span class="profile-name ml-4 mr-auto font-weight-bold" >
+                <span class="profile-name ml-md-4 mr-auto font-weight-bold" >
                   {{ profile.cover | filename }}
                 </span>
               </template>
@@ -53,7 +53,7 @@
                 <div class="rounded button-image">
                   <b-icon-image></b-icon-image>
                 </div>
-                <span class="profile-name ml-4 mr-auto font-weight-bold">
+                <span class="profile-name ml-md-4 mr-auto font-weight-bold">
                   Arrasta aqui o busca una nueva imagen para tu portada
                 </span>
               </template>
@@ -502,8 +502,24 @@
         },
         avatarFile: '',
         coverFile: '',
-        labelCol: { span: 4 },
-        wrapperCol: { span: 14 },
+        labelCol: { 
+          md: {
+            span: 8
+          },
+          xs: { 
+            span: 24 
+          } 
+        },
+        wrapperCol: { 
+          md: { 
+            span: 14, 
+            offset: 2
+          },
+          xs: { 
+            span: 24, 
+            offset: 0 
+          } 
+        },
         drag: false,
         myArray: [{
           name: 'uno', id: 1
@@ -807,6 +823,9 @@
         transform: translate(-50%, -10%);
         min-width: 100%;
       }
+      @media only screen and (max-width: 750px) {
+        height: 120px;
+      }
     }
     .profile-avatar-container {
       margin-left: 25px;
@@ -815,6 +834,16 @@
       margin-right: 16px;
       > span {
         border-width: 4px !important;
+      }
+
+      @media only screen and (max-width: 750px) {
+        margin-left: 0;
+        margin-right: 8px;
+        .ant-avatar {
+          width: 80px !important;
+          height: 80px !important;
+          border-width: 2px !important;
+        }
       }
     }
     .PinturaRoot.PinturaRootComponent.pintura-editor {
@@ -889,6 +918,10 @@
       .ant-form-item {
         display: flex;
         align-items: center;
+
+        @media only screen and (max-width: 750px) {
+          flex-direction: column;
+        }
       }
       .ant-form-item-label {
         line-height: 1;
@@ -1033,6 +1066,11 @@
           }
           .profile-name {
             
+          }
+
+          @media only screen and (max-width: 750px) {
+            flex-wrap: wrap;
+            justify-content: center;
           }
         }
       }

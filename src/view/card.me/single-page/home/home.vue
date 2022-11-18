@@ -952,8 +952,9 @@
                     </div>
                   </a-form-model-item>
                   <div class="my-2">
-                    <b-button block variant="primary" class="text-white" :loading="showLoading" @click.stop.prevent="handleRegister">Registrate</b-button
-                    >
+                    <b-button block variant="primary" class="text-white" :loading="showLoading" @click.stop.prevent="handleRegister">
+                      Registrarse x <small>1 mes gratis</small>
+                    </b-button>
                   </div>
                   <div class="clearfix">
                     <span class="float-right">o

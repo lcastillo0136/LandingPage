@@ -1,6 +1,6 @@
 <template>
   <div v-if="getUser.id" class="settings-container">
-    <a-form-model ref="settingsForm" :rules="rules" :model="user" class="settings-form d-flex flex-column" :label-col="{ span: 8 }" :wrapper-col="{ span: 14, offset: 2 }" :colon="false">
+    <a-form-model ref="settingsForm" :rules="rules" :model="user" class="settings-form d-flex flex-column" :label-col="labelCol" :wrapper-col="wrapperCol" :colon="false">
       <!-- <div class="box_general_2 settings-container">
         <h4>Servicios</h4>
 
@@ -98,7 +98,7 @@
               <br>
               <small class="text-muted">Define el tipo de diseño que mostrara tu tarjeta</small>
             </template>
-            <div class="d-flex justify-content-center" style="gap: 22px;">
+            <div class="d-none d-md-flex justify-content-center" style="gap: 22px;">
               <div class="design-1" :class="{ 'choosed': user.design == 'design-1' }" @click="user.design = 'design-1'">
                 <div class="design-avatar"></div>
                 <div class="design-cover"></div>
@@ -119,6 +119,23 @@
                 <div class="design-cover"></div>
                 <div class="design-content"></div>
               </div>
+            </div>
+            <div class="d-flex d-md-none">
+              <a-select placeholder="Please select a country" v-model="user.design">
+                <a-select-option value="design-1">
+                  Diseño 1
+                </a-select-option>
+                <a-select-option value="design-2">
+                  Diseño 2
+                </a-select-option>
+                <a-select-option value="design-3">
+                  Diseño 3
+                </a-select-option>
+                <a-select-option value="design-4">
+                  Diseño 4
+                </a-select-option>
+              </a-select>
+              <a-button class="ml-1" type="primary" @click="openPreview">Ver</a-button>
             </div>
           </a-form-model-item>
           <a-form-model-item>
@@ -269,8 +286,24 @@
           },
           dayCellDidMount: this.calendardayRender,
         },
-        labelCol: { span: 4 },
-        wrapperCol: { span: 14 },
+        labelCol: { 
+          md: {
+            span: 8
+          },
+          xs: { 
+            span: 24 
+          } 
+        },
+        wrapperCol: { 
+          md: { 
+            span: 14, 
+            offset: 2
+          },
+          xs: { 
+            span: 24, 
+            offset: 0 
+          } 
+        },
         rules: {},
         errors: [],
       }
@@ -490,6 +523,9 @@
           })
         })
       },
+      openPreview () {
+        this.$emit('preview')
+      }
     },
     mounted() {
       this.$nextTick().then(() => {
@@ -570,6 +606,10 @@
         padding-bottom: 10px;
         &:last-child {
           border-bottom: none;
+        }
+
+        @media only screen and (max-width: 750px) {
+          flex-direction: column;
         }
       }
       .ant-form-item-label {

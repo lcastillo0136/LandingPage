@@ -2,15 +2,18 @@
   <main class="home-page bg-hero wrapper">
     <b-navbar toggleable="md" class="px-0">
       <b-container class="d-flex align-items-center ">
-        <b-navbar-brand class="mt-0" :to="{ name: 'home' }">
-          <img src="/img/logo.svg" style="max-height: 100px;max-width: 100%;" :to="{ name: 'profile' }"/>
+        <b-navbar-brand class="mt-0 d-flex mw-100 row-cols-2" :to="{ name: 'home' }">
+          <img src="/img/logo.svg" style="max-height: 100px;" :to="{ name: 'profile' }"/>
+          <router-link :to="{ name: 'profile-details' }" v-b-tooltip.hover.bottom title="Ver mi perfil" class="ml-auto d-block router-link-exact-active router-link-active text-right d-md-none">
+            <b-avatar :src="User.avatar"></b-avatar>
+          </router-link>
         </b-navbar-brand>
-        <b-navbar-nav class="ml-auto d-none d-md-block">
+        <b-navbar-nav class="ml-auto">
           <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
             <b-button class="rounded-lg mx-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
             <b-button :to="{ name: 'register' }" class="rounded-lg text-white" variant="primary">Registrarte</b-button>
           </div>
-          <div class="mx-lg-2 d-lg-flex flex-lg-row align-items-center" style="gap: 20px;" v-else>
+          <div class="mx-lg-2 d-flex flex-row align-items-center w-100 justify-content-between justify-content-md-end" style="gap: 20px;" v-else>
             <!-- <b-button class="rounded-lg mx-1" variant="outline-primary" :to="{ name: 'home' }" >Inicio</b-button> -->
             <b-button v-if="!active_account" :to="{ name: 'profile-payment' }" size="sm" variant="outline-secondary" v-b-tooltip.hover.bottom title="Ir a pagar">
               <b-icon icon="credit-card" class="mr-2"></b-icon>
@@ -49,20 +52,9 @@
             <router-link :to="{ name: 'profile-settings' }" v-b-tooltip.hover.bottom title="Ir a configuraciones">
               <b-icon-gear style="width: 20px; height: 20px;color: var(--gray-dark);"></b-icon-gear>
             </router-link>
-            <router-link :to="{ name: 'profile-details' }" v-b-tooltip.hover.bottom title="Ver mi perfil">
+            <router-link :to="{ name: 'profile-details' }" v-b-tooltip.hover.bottom title="Ver mi perfil" class="d-none d-md-inline">
               <b-avatar :src="User.avatar"></b-avatar>
             </router-link>
-          </div>
-        </b-navbar-nav>
-        <b-navbar-nav class="ml-auto d-block d-md-none w-100">
-          <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
-            <b-button class="d-block w-100 my-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
-            <b-button :to="{ name: 'register' }" class="text-white w-100 my-1" variant="primary">Registrarte</b-button>
-          </div>
-          <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
-            <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
-            <b-button :to="{ name: 'home' }" class="d-block w-100 my-1" variant="outline-primary">Inicio</b-button>
-            <b-button class="text-white w-100 my-1" variant="primary" @click="dispachLogout">Salir</b-button>
           </div>
         </b-navbar-nav>
       </b-container>
@@ -86,6 +78,7 @@
       wrapClassName="preview-card"
       @close="visible_preview = false"
     >
+      <a-button type="primary" icon="close" class="close-drawer d-md-none" @click.stop.prevent="visible_preview = false">Cerrar preview</a-button>
       <CardPage ref="previewCard" :user="profile"></CardPage>
     </a-drawer>
     <a-back-top />
@@ -341,6 +334,13 @@
   }
 
   .preview-card {
+    .close-drawer {
+      position: absolute;
+      top: 7px;
+      z-index: 1000;
+      margin-left: 7px;
+      opacity: 0.8;
+    }
     .ant-drawer-body {
       .card-container {
         padding-top: 0px;

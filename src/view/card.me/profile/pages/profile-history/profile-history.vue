@@ -1,6 +1,6 @@
 <template>
   <div v-if="getUser.id" class="profile-history-container">
-    <a-form-model ref="perofesionalInfoForm" :rules="rules" :model="user" class="profile-history-form d-flex flex-column" :label-col="{ span: 8 }" :wrapper-col="{ span: 14, offset: 2 }" :colon="false">
+    <a-form-model ref="perofesionalInfoForm" :rules="rules" :model="user" class="profile-history-form d-flex flex-column" :label-col="labelCol" :wrapper-col="wrapperCol" :colon="false">
       <!-- <b-card no-body>
         <b-card-body>
           <h3 class="mb-4">
@@ -141,8 +141,24 @@
     data() {
       return {
         saving: false,
-        labelCol: { span: 4 },
-        wrapperCol: { span: 14 },
+        labelCol: { 
+          md: {
+            span: 8
+          },
+          xs: { 
+            span: 24 
+          } 
+        },
+        wrapperCol: { 
+          md: { 
+            span: 14, 
+            offset: 2
+          },
+          xs: { 
+            span: 24, 
+            offset: 0 
+          } 
+        },
         rules: {},
         errors: [],
         visiblePasswordPanel: false,
@@ -357,6 +373,10 @@
         padding-bottom: 10px;
         &:last-child {
           border-bottom: none;
+        }
+
+        @media only screen and (max-width: 750px) {
+          flex-direction: column;
         }
       }
       .ant-form-item-label {
