@@ -64,6 +64,7 @@
     "vue-sweetalert2": "^3.0.3",
     "vue-video-player": "^5.0.2",
     "vue-wow": "^1.2.0",
+    "vue2-editor": "^2.10.3",
     "vue2-leaflet": "^2.5.2",
     "vue2-perfect-scrollbar": "^1.5.5",
     "vuedraggable": "^2.24.3",

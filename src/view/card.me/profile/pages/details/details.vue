@@ -233,7 +233,7 @@
           </template>
           <!-- <a-textarea :autoSize="true" placeholder="Escribe una descripción corta sobre ti mismo" v-model="profile.biography" :rows="6" :disabled="saving"/> -->
           <div class="bio-container">
-            <Toolbar
+            <!-- <Toolbar
               :editor="editor"
               :defaultConfig="toolbarConfig"
               :mode="mode"
@@ -245,7 +245,8 @@
               :defaultConfig="editorConfig"
               :mode="mode"
               @onCreated="onCreated"
-            />
+            /> -->
+            <vue-editor v-model="profile.biography" :disabled="saving" :editorToolbar="toolbarConfig" :editorOptions="editorConfig"  placeholder="Escribe una descripción corta sobre ti mismo" />
           </div>
         </a-form-model-item>
       </b-card>
@@ -377,6 +378,8 @@
   import draggable from 'vuedraggable'
   import { i18nChangeLanguage } from '@wangeditor/editor'
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+  import { VueEditor, Quill } from "vue2-editor";
+
 
   import Addressess from './components/addressess'
   import * as _ from 'lodash'
@@ -388,6 +391,22 @@
 
   i18nChangeLanguage('en')
 
+  var icons = Quill.import("ui/icons");
+  icons["undo"] = `<svg viewbox="0 0 18 18">
+    <polygon class="ql-fill ql-stroke" points="6 10 4 12 2 10 6 10"></polygon>
+    <path class="ql-stroke" d="M8.09,13.91A4.6,4.6,0,0,0,9,14,5,5,0,1,0,4,9"></path>
+  </svg>`;
+  icons["redo"] = `<svg viewbox="0 0 18 18">
+    <polygon class="ql-fill ql-stroke" points="12 10 14 12 16 10 12 10"></polygon>
+    <path class="ql-stroke" d="M9.91,13.91A4.6,4.6,0,0,1,9,14a5,5,0,1,1,5-5"></path>
+  </svg>`;
+
+  function undoChange() {
+    this.quill.history.undo();
+  }
+  function redoChange() {
+    this.quill.history.redo();
+  }
 
   export default {
     name: 'ProfileDetails',
@@ -405,7 +424,8 @@
       Icon,
       draggable,
       Editor, 
-      Toolbar
+      Toolbar,
+      VueEditor
     },
     data () {
       return {
@@ -413,34 +433,28 @@
         inputValue: '',
         editor: null,
         html: '<p>hello</p>',
-        toolbarConfig: {
-          toolbarKeys: [
-            'headerSelect',
-            'blockquote',
-            'bold',
-            'italic',
-            'insertLink',
-            'bulletedList',
-            'numberedList',
-            'undo',
-            'redo'
-          ]
-        },
+        toolbarConfig: [
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+          ['blockquote', "bold", "italic", "underline", 'strike', 'link', { list: "bullet" }, { list: "ordered" }],
+          ['undo', 'redo']
+        ],
         editorConfig: { 
-          placeholder: 'Escribe una descripción corta sobre ti mismo',
-          MENU_CONF: [],
-          hoverbarKeys: {
-            text: {
-              menuKeys: [
-                'headerSelect',
-                'blockquote',
-                'bold',
-                'italic',
-                'insertLink',
-                'bulletedList',
-                'numberedList',
-                'clearStyle'
-              ]
+          modules: {
+            toolbar: {
+              container: [
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                ['blockquote', "bold", "italic", "underline", 'strike', 'link', { list: "bullet" }, { list: "ordered" }],
+                ['undo', 'redo']
+              ],
+              handlers: {
+                undo: undoChange,
+                redo: redoChange
+              }
+            },
+            history: {
+              delay: 2000,
+              maxStack: 500,
+              userOnly: true
             }
           }
         },
@@ -657,7 +671,6 @@
       },
       handleSave () {
         this.saving = true
-        this.$refs.bioEditor.editor.disable()
 
         this.$refs.detailsForm.validate().then(valid => {
           if (valid) {
@@ -675,9 +688,7 @@
               this.avatarFile = '';
 
               this.saving = false
-              this.$refs.bioEditor.editor.enable()
               
-              // this.$refs.registerForm.classList.remove('was-validated')
 
               this.$notification.success({
                 message: 'Datos guardados',
@@ -698,8 +709,6 @@
           this.errors = error.data.error
         });
 
-        // if ((this.user_pass.password != "" && this.matchPassword) || this.user_pass.password == '') {
-        //   this.errors = []
         //   updateUser({
         //     ...this.profile,
         //     ...{
@@ -709,23 +718,6 @@
         //       password: this.user_pass.password,
         //       password_confirmation: this.user_pass.password,
         //     } : {})
-        //   }, this.hasToken).then((response) => {
-        //     this.profile.avatar = this.getUser.avatar = response.data.data.avatar
-        //     this.saving = false
-        //     this.$refs.registerForm.classList.remove('was-validated')
-        //     this.user_pass.password = this.user_pass.confirmpassword = ''
-
-        //     this.$notification.success({
-        //       message: 'Datos guardados',
-        //       description: 'Los datos del usuario han sido actulizados'
-        //     })
-        //   }).catch((error) => {
-        //     this.saving = false
-        //     this.errors = error.data.error
-        //   })
-        // } else {
-        //   this.saving = false  
-        // }
       },
       handleUpload(file) {
         this.profile.avatar = file
@@ -995,9 +987,25 @@
         overflow: hidden;
         border-radius: 4px;
         border-color: var(--border-color);
-        .w-e-toolbar {
+        .ql-toolbar.ql-snow {
+          border: none;
           border-bottom: solid 1px;
           border-color: var(--border-color);
+          padding-top: 4px;
+          padding-bottom: 0px;
+          button svg {
+            width: 17px;
+            height: 17px;
+          }
+          .ql-formats {
+            margin-bottom: 6px;
+          }
+        }
+        .ql-container.ql-snow {
+          border: none;
+          .ql-editor {
+            min-height: 300px;
+          }
         }
       }
     }

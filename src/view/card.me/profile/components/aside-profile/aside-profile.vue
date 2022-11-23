@@ -115,14 +115,36 @@
           </router-link>
         </li>
       </ul>
-      <!-- <b class="pt-4 d-block">
-        Perfil activo hasta el <br>
-        {{ user.active_account | moment('dddd DD, MMM YYYY hh:mm a') }}
-      </b>
-      <a-divider></a-divider>
-      <b>
-        Quedan {{ daysRemaining }} dias
-      </b> -->
+      <template v-if="active_account">
+        <a-divider class="mb-3 mt-0" dashed></a-divider>
+        <h6 class="text-left mb-2">
+          Tarjeta digital en línea hasta
+          <small>{{ user.active_account | moment('dddd DD, MMM YYYY hh:mm a') }}</small>
+        </h6>
+        <b>
+          <a-progress type="circle" :percent="daysRemainingPercent" :format="percent => `Quedan ${daysRemaining} dias`" />
+        </b>
+      </template>
+      <template v-else>
+        <a-divider class="mb-3 mt-0" dashed></a-divider>
+        <h6 class="text-left mb-2">
+          Tarjeta digital fuera de línea
+          <small class="text-danger">Activa de nuevo tu servicio</small>
+        </h6>
+         
+        <b-button :to="{ name: 'profile-payment' }" size="sm" variant="success" v-b-tooltip.hover.bottom title="Ir a pagar" class="mb-4 mt-2">
+          <b-icon icon="credit-card" class="mr-2"></b-icon>
+          Pagar ahora
+        </b-button>
+      </template>
+      <template v-if="active_account && daysRemaining < 10">
+        <br><br>
+        No te quedes sin tu servicio 
+        <b-button :to="{ name: 'profile-payment' }" size="sm" variant="success" v-b-tooltip.hover.bottom title="Ir a pagar" class="mb-4 mt-2">
+          <b-icon icon="credit-card" class="mr-2"></b-icon>
+          Renovar ahora
+        </b-button>
+      </template>
     </div>
     <!-- <p class="calendar">{{ daysRemaining }} <em>Dias restantes</em></p> -->
   </div>
@@ -227,6 +249,9 @@
       },
       daysRemaining() {
         return (this.active_account ? this.$moment.utc(this.user.active_account).diff(this.$moment(), 'days') : 0)
+      },
+      daysRemainingPercent() {
+        return (this.daysRemaining * 100 / 365)
       }
     },
     methods: {
@@ -394,7 +419,14 @@
         white-space: nowrap;
         cursor: pointer;
       }
-
+      div.ant-progress-circle,
+      div.ant-progress-line {
+        margin-right: 8px;
+        margin-bottom: 8px;
+        .ant-progress-text {
+          width: 90%;
+        }
+      }
     }
   }
       /* First we style the container element.  */

@@ -14,6 +14,14 @@
             </template>
             <a-input v-model="user.google_trackid" size="large" />
           </a-form-model-item>
+          <a-form-model-item prop="google_trackid">
+            <template #label>
+              <span>Cantidad de visitas</span>
+              <br>
+              <small class="text-muted">Nuestro contador de visitas que indica cuantas personas diferentes han entrado a revisar tu tarjeta digital</small>
+            </template>
+            <a-input :value="user.viewed" size="large" disabled />
+          </a-form-model-item>
         </b-card-body>
       </b-card>
     </a-form-model>

@@ -34,7 +34,7 @@
         'hasToken'
       ]),
       cookieEnabled () {
-        return config.cookieExpires === 1
+        return false;//config.cookieExpires === 1
       },
     },
     methods: {

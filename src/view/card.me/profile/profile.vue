@@ -15,7 +15,7 @@
           </div>
           <div class="mx-lg-2 d-flex flex-row align-items-center w-100 justify-content-between justify-content-md-end" style="gap: 20px;" v-else>
             <!-- <b-button class="rounded-lg mx-1" variant="outline-primary" :to="{ name: 'home' }" >Inicio</b-button> -->
-            <b-button v-if="!active_account" :to="{ name: 'profile-payment' }" size="sm" variant="outline-secondary" v-b-tooltip.hover.bottom title="Ir a pagar">
+            <b-button v-if="!active_account" :to="{ name: 'profile-payment' }" size="sm" variant="danger" v-b-tooltip.hover.bottom title="Ir a pagar">
               <b-icon icon="credit-card" class="mr-2"></b-icon>
               Pagar ahora
             </b-button>
