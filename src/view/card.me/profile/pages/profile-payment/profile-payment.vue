@@ -1,20 +1,23 @@
 <template>
   <div class="box_general_2 add_bottom_45 d-flex card-columns flex-column profile-payment">
-    <template v-if="active_account">
+    <template v-if="active_account && daysRemaining > 10 && !addMoreDays">
       <a-result >
         <template #title>
           Tu cuenta ya se encuentra activa
           <br>
           <img src="/img/account-ready.jpg" class="w-50" />
           <br>
-          <small>Empieza a darle tu personalidad desde la configuracion</small>
+          <small>Empieza a darle tu personalidad desde la configuración</small>
           <!-- <small>{{ user.active_account | moment('dddd DD, MMM YYYY hh:mm a') }}</small> -->
         </template>
         <template #icon>
         </template>
         <template #extra>
           <a-button type="primary" @click="$router.push({ name: 'profile-settings' })">
-            Configurar  <a-icon type="right" />
+            Configurar <a-icon type="right" />
+          </a-button>
+          <a-button type="secondary" @click="addMoreDays=true">
+            Agregar otro año <a-icon type="right" />
           </a-button>
         </template>
       </a-result>
@@ -26,7 +29,7 @@
             <i class="checkmark">✓</i>
           </div>
           <h1>Pago exitoso</h1> 
-          <p>Recibimos tu solicitud de compra;<br/> tu tarjeta digital se activara en unos instantes</p>
+          <p>Recibimos tu solicitud de compra;<br/> tu tarjeta digital se activará en unos instantes</p>
         </div>
       </template>
       <template v-if="oxxoPayment">
@@ -70,10 +73,10 @@
                     <p>Acude a la tienda OXXO más cercana. <a href="https://www.google.com.mx/maps/search/oxxo/" target="_blank">Encuéntrala aquí</a>.</p>
                   </li>
                   <li>
-                    <p>Indica en caja que quieres realizar un pago de <strong>OXXOPay</strong>.</p>
+                    <p>Índica en caja que quieres realizar un pago de <strong>OXXOPay</strong>.</p>
                   </li>
                   <li>
-                    <p>Dicta al cajero el número de referencia en esta ficha para que tecleé directamete en la pantalla de venta.</p>
+                    <p>Dicta al cajero el número de referencia en esta ficha para que tecleé directamente en la pantalla de venta.</p>
                   </li>
                   <li>
                     <p>Realiza el pago correspondiente con dinero en efectivo.</p>
@@ -93,12 +96,12 @@
       <template v-if="!successPayment && !oxxoPayment">
         <div v-if="product">
           <h3 class="mb-5">
-            Activacion de la tarjeta digital 
+            Activación de la tarjeta digital 
             <span class=" float-right text-success">
               {{ product.precio_venta | currency }} <small>{{ this.settings.CURRENCY || "USD" }}</small>
             </span>
             <br>
-            <small>Seleccione el metodo de pago</small>
+            <small>Seleccione el método de pago</small>
           </h3>
         </div>
         <DetailsPayment v-model="account" :loading="showLoading" class="flex-fill"></DetailsPayment>
@@ -187,7 +190,8 @@
           method: {},
           payment_orders: {
           }
-        }
+        },
+        addMoreDays: false
       }
     },
     watch: {
@@ -403,6 +407,7 @@
 
         if (readyToSave) {
           postOrder(data).then((response) => {
+            this.addMoreDays = true
             this.order = { ...response.data.data }
             this.showLoading = false
 
@@ -412,15 +417,19 @@
               this.successPayment = true
             }
             this.getUserInfo().then(() => {
-              if (this.getUser.id) {
-                this.user = {
-                  ...this.getUser,
-                  ...{ 
-                    bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD')
-                  }
-                }
-                // this.$router.push({ name: 'profile-orders' })
-              }
+              // if (this.getUser.id) {
+              //   this.user = {
+              //     ...this.getUser,
+              //     ...{ 
+              //       bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD')
+              //     }
+              //   }
+              //   // this.$router.push({ name: 'profile-orders' })
+              // }
+
+              setTimeout(() => {
+                this.$router.push({ name: 'profile-orders' })
+              }, 5000)
             })
           }).catch((error) => {
             this.$notification.error({
