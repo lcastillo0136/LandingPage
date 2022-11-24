@@ -21,7 +21,8 @@ export default {
       required_field: 'Campo nombre requerido'
     },
     email: {
-      required_field: 'Campo correo electrónico requerido'
+      required_field: 'Campo correo electrónico requerido',
+      not_available: 'Correo electrónico no disponible'
     }
   },
   home: {

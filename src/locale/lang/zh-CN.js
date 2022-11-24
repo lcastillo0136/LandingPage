@@ -21,7 +21,8 @@ export default {
       required_field: 'First name required'
     },
     email: {
-      required_field: 'Email required'
+      required_field: 'Email required',
+      not_available: 'Email not available'
     }
   },
   home: {

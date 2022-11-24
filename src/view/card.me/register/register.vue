@@ -89,7 +89,7 @@
           </div>
           <div class="container-login100-form-btn" v-else>
             <a-button class="btn btn-primary rounded-lg text-white w-100" type="success" :loading="showLoading" @click.stop.prevent="handleRegister" :disabled="!canRegister">
-              Registrarse x <small>1 mes gratis</small>
+              Registrarse x <small> 1 mes gratis</small>
             </a-button>
             <span>
               si ya tienes cuenta inicia sesion aqui: 

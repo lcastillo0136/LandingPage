@@ -195,6 +195,16 @@
               <a-switch v-model="user.can_save_vcf"></a-switch>
             </div>
           </a-form-model-item>
+          <a-form-model-item>
+            <template #label>
+              <span>Ocultar boton compartir</span>
+              <br>
+              <small class="text-muted">Activar esta opcion evita que se muestre el boton <i>compartir <a-icon type="share-alt" style="vertical-align: 1px;color: #12C39A;"/></i> en la tarjeta</small>
+            </template>
+            <div class="d-flex justify-content-center" style="gap: 22px;">
+              <a-switch v-model="user.hide_share"></a-switch>
+            </div>
+          </a-form-model-item>
         </b-card-body>
       </b-card>
     </a-form-model>

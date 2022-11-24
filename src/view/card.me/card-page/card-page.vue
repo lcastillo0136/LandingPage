@@ -29,6 +29,29 @@
               <b-icon-whatsapp></b-icon-whatsapp>
             </a>
           </div>
+          <div class="share-card" v-if="!card.hide_share">
+            <a-dropdown>
+              <a>
+                <a-icon type="share-alt" />
+              </a>
+              <a-menu slot="overlay">
+                <a-menu-item key="copy" v-clipboard:copy="userLink" v-clipboard:success="!isPreview && copyLink">
+                  Copiar enlace
+                </a-menu-item>
+                <a-menu-item key="share">
+                  <navigator-share :url="userLink" :title="card.full_name" :text="card.full_name" :on-error="shareError" :on-success="shareSuccess">
+                    <template #clickable>
+                      Compartir Enlace
+                    </template>
+                  </navigator-share>
+                </a-menu-item>
+                <a-menu-divider />
+                <a-menu-item key="qr" class="text-center" @click="showQR" :loading="downloadingQR">
+                  Ver QR
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
+          </div>
           <b-card-title class="mb-1 profile-name">
             {{ card.title || '' }} {{ card.first_name }}<br>{{ card.last_name }}
           </b-card-title>
@@ -141,6 +164,30 @@
       <footer class="powered-footer" v-if="!isPreview">
         <router-link :to="{ name: 'home' }">Onlycards</router-link> powered with <b-icon-heart></b-icon-heart> by <a target="_blank" href="https://www.zibasoft.com/">Zibasoft</a>
       </footer>
+      <b-modal id="modal-user-qr" size="sm" hide-footer centered headerClass="px-2 pt-2 pb-0 border-bottom-0 text-center" bodyClass="px-0">
+        <template #modal-title>Escanear este código</template>
+        <div class="d-block text-center" @click="visibleQRMenu=true">
+          <a-dropdown v-model="visibleQRMenu">
+            <vue-qr ref="QRCode" :text="userLink" :size="255" class="qr-image" :margin="0" :logoMargin="1" logoSrc="/img/icono.png"></vue-qr>
+            <a-menu slot="overlay">
+              <a-menu-item key="copy" v-clipboard:copy="userLink" v-clipboard:success="copyLink">
+                Copiar enlace
+              </a-menu-item>
+              <a-menu-item key="share">
+                <navigator-share :url="userLink" :title="card.full_name" :text="card.full_name" :on-error="shareError" :on-success="shareSuccess">
+                  <template #clickable>
+                    Compartir Enlace
+                  </template>
+                </navigator-share>
+              </a-menu-item>
+              <a-menu-divider />
+              <a-menu-item key="qr" class="text-center" @click="downloadQR" :loading="downloadingQR">
+                Descargar QR
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
+        </div>
+      </b-modal>
     </template>
     <template v-else>
       <div class="d-flex flex-column">
@@ -155,8 +202,10 @@
   import Vue from 'vue'
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import { getCard, getUserInfo } from '@/api/user'
+  import { getServerFile2, getServerFile } from '@/libs/util'
   import VCard from 'vcard-creator'
   import VueAnalytics from 'vue-analytics'
+  import NavigatorShare from 'vue-navigator-share'
 
   import * as _ from 'lodash'
 
@@ -175,7 +224,9 @@
         ready: false,
         avatarFile: '',
         coverFile: '',
-        userData: null
+        userData: null,
+        downloadingQR: false,
+        visibleQRMenu: false
       }
     },
     watch :{
@@ -211,7 +262,8 @@
         }
       }
     },
-    components: { 
+    components: {
+      NavigatorShare
     },
     filters: {
       facebook(val) {
@@ -278,7 +330,10 @@
       },
       socialsWithoutIcon() {
         return _.filter(this.card.social_networks, { network_icon: 'globe' })
-      }
+      },
+      userLink() {
+        return getServerFile2(`p/${this.card.uuid_key}.html`)
+      },
     },
     methods: {
       saveContact() {
@@ -396,6 +451,54 @@
         }).then(() => {
           this.ready = true
         })
+      },
+      copyLink() {
+        this.visibleQRMenu = false
+        this.$notification.success({
+          message: 'Enlace copiado',
+          description: 'Ya lo puedes compartir con tus contactos'
+        })
+      },
+      downloadQR () {
+        this.visibleQRMenu = false
+        this.downloadingQR = true
+        this.saveAs(this.$refs.QRCode.$el.src, 'QR.png');
+      },
+      saveAs(uri, filename) {
+        var link = document.createElement('a');
+
+        if (typeof link.download === 'string') {
+          link.href = encodeURI(uri);
+          link.download = filename;
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setTimeout(() => {
+            this.downloadingQR = false
+          }, 1000)
+        } else {
+          window.open(uri);
+          this.downloadingQR = false
+        }
+      },
+      showQR () {
+        this.visibleQRMenu = false
+        this.$bvModal.show('modal-user-qr')
+      },
+      shareError () {
+        this.visibleQRMenu = false
+        this.$notification.error({
+          message: 'Unable to share on this device',
+          description: 'Your device cant share, please try again on another device'
+        })
+      },
+      shareSuccess() {
+        this.visibleQRMenu = false
+        this.$notification.error({
+          message: 'Unable to share on this device',
+          description: 'Your device cant share, please try again on another device'
+        })
       }
     },
     created () {
@@ -480,6 +583,7 @@
           right: 10px;
           top: -50px;
           color: #fff;
+          z-index: 1;
           a {
             color: #fff;
             border-radius: 50%;
@@ -492,6 +596,34 @@
             align-items: center;
             font-size: 25px;
           }
+        }
+        .share-card {
+          position: absolute;
+          right: 10px;
+          top: -50px;
+          color: #fff;
+          z-index: 1;
+          a {
+            color: #fff;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            background-color: #28a745d1;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            font-size: 25px;
+            i {
+              border: solid 2px;
+              border-radius: 50%;
+              padding: 6px;
+              font-size: 21px;
+            }
+          }
+        }
+        .send-whatsapp + .share-card {
+          top: -101px;
         }
       }
       .caracteristica {
@@ -841,7 +973,6 @@
           font-size: 13px;
         }
       }
-
       .image-cover {
         display: none;
       }
@@ -915,6 +1046,12 @@
           .send-whatsapp {
             top: -68px;
           }
+          .share-card {
+            top: -73px;
+          }
+          .send-whatsapp + .share-card {
+            top: -20px;
+          }
         }
       }
       &.design-3 {
@@ -949,6 +1086,12 @@
           background: #fff;
           .send-whatsapp {
             top: -68px;
+          }
+          .share-card {
+            top: -68px;
+          }
+          .send-whatsapp + .share-card {
+            top: -20px;
           }
         }
       }
@@ -1008,6 +1151,12 @@
           order: 4;
           .send-whatsapp {
             top: -27px;
+          }
+          .share-card {
+            top: -27px;
+          }
+          .send-whatsapp + .share-card {
+            top: 23px;
           }
           .profile-name {
             display: none;

@@ -64,7 +64,7 @@
               <br>
               <small class="text-muted">Nombre de la empresa o negocio en el que trabaja actualmente</small>
             </template>
-            <a-input type="text" placeholder="Especialidad" v-model="user.company_name" :disabled="saving" size="large">
+            <a-input type="text" placeholder="Empresa actual" v-model="user.company_name" :disabled="saving" size="large">
             </a-input>
           </a-form-model-item>
         </b-card-body>

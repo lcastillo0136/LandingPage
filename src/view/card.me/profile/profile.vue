@@ -45,7 +45,7 @@
                 <a-menu-item key="qr" class="text-center" @click="downloadQR" :loading="downloadingQR">
                   Descargar QR
                   <br>
-                  <vue-qr ref="QRCode" :text="userLink" :size="75" class="qr-image" :margin="5"></vue-qr>
+                  <vue-qr ref="QRCode" :text="userLink" :size="75" class="qr-image" :margin="5" logoSrc="/img/icono.png"></vue-qr>
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
