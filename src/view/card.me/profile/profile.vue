@@ -137,6 +137,8 @@
           skills: [
           ],
           targetTop: null,
+          password: '',
+          password_confirmation: ''
           // active: 1
           // address: {id: 1, user_id: 3, street: "Rio Obi", city: "Guadalupe", suburb: "Dos Rios", postal_code: 67134,…}
           // addresses: [{id: 1, user_id: 3, street: "Rio Obi", city: "Guadalupe", suburb: "Dos Rios", postal_code: 67134,…}]
@@ -156,7 +158,10 @@
           ...this.getUser,
           ...{ 
             bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD'),
-            skills: this.getUser.skills && this.getUser.skills.map(s => Object({ ...s, active: !!s.active }))
+            skills: this.getUser.skills && this.getUser.skills.map(s => Object({ ...s, active: !!s.active })),
+            password: '',
+            password_confirmation: ''
+
           }
         }
       },
@@ -258,7 +263,9 @@
               ...this.getUser,
               ...{ 
                 bday: this.getUser.bday && this.$moment(this.getUser.bday, 'YYYY-MM-DD'),
-                skills: this.getUser.skills && this.getUser.skills.map(s => Object({ ...s, active: !!s.active }))
+                skills: this.getUser.skills && this.getUser.skills.map(s => Object({ ...s, active: !!s.active })),
+                password: '',
+                password_confirmation: ''
               }
             }
             

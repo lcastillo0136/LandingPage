@@ -90,6 +90,39 @@
       <b-card no-body>
         <b-card-body>
           <h3 class="mb-4">
+            Información de cuenta
+          </h3>
+          <a-form-model-item :validateStatus="validPassword ? '' : 'error'" :help="errorPasswordMessage">
+            <template #label>
+              <span>Usuario</span>
+              <br>
+              <small class="text-muted">{{ user.username }}</small>
+            </template>
+            <a-collapse v-model="activeKey">
+              <a-collapse-panel key="1">
+                <template #header>
+                  <div class="d-flex justify-content-center align-items-center" style="gap: 22px;">
+                    <a-button type="primary">Actualizar contraseña</a-button>
+                  </div>
+                </template>
+                <div class="mt-3 grid gap-4 grid-cols-2">
+                  <div>
+                    <label>Nueva contraseña</label>
+                    <a-input-password has-feedback ref="inputPassword" v-model="user.password" />
+                  </div>
+                  <div>
+                    <label>Confirmar contraseña</label>
+                    <a-input-password ref="confirmPassword" v-model="user.password_confirmation" />
+                  </div>
+                </div>
+              </a-collapse-panel>
+            </a-collapse>
+          </a-form-model-item>
+        </b-card-body>
+      </b-card>
+      <b-card no-body>
+        <b-card-body>
+          <h3 class="mb-4">
             Diseño
           </h3>
           <a-form-model-item prop="first_name">
@@ -316,6 +349,7 @@
         },
         rules: {},
         errors: [],
+        activeKey: [],
       }
     },
     name: 'ProfileSettings',
@@ -350,7 +384,13 @@
         'hasToken',
         'settings',
         'getUser'
-      ])
+      ]),
+      validPassword () {
+        return this.activeKey.includes('1') ? (this.user.password === this.user.password_confirmation) : null
+      },
+      errorPasswordMessage() {
+        return this.activeKey.includes('1') && !this.validPassword ? (this.user.password === '' ? 'Favor de llenar el campo contraseña' : (this.user.password_confirmation === '' ? 'Favor de confirmar su contraseña' : 'Las contraseñas no coinciden')) : false
+      }
     },
     methods: {
       setConfiguration() {
@@ -508,30 +548,50 @@
         this.saving = true
         this.errors = []
 
-        updateUser({
-          ...this.user,
-          ...{
-            bday: this.user.bday && this.user.bday.format('YYYY-MM-DD'),
-            phone: (`${this.user.phone||''}`).replace(/\D/g, ''),
-          }
-        }, this.hasToken)
-        .then((response) => response.data)
-        .then((response) => {
-          // this.user.services = [...response.data.services]
 
-          this.saving = false
-          this.$notification.success({
-            message: 'Datos guardados',
-            description: 'Los datos del usuario han sido actualizados'
+        if (this.errorPasswordMessage === false) {
+          let _data = {
+            ...this.user,
+            ...{
+              bday: this.user.bday && this.user.bday.format('YYYY-MM-DD'),
+              phone: (`${this.user.phone||''}`).replace(/\D/g, ''),
+            }
+          }
+
+          if (!this.validPassword) {
+            delete _data.password;
+            delete _data.password_confirmation;
+          } 
+
+          updateUser(_data, this.hasToken)
+          .then((response) => response.data)
+          .then((response) => {
+            // this.user.services = [...response.data.services]
+
+            this.saving = false
+            this.$notification.success({
+              message: 'Datos guardados',
+              description: 'Los datos del usuario han sido actualizados'
+            })
+
+            this.activeKey = []
+            this.user.password_confirmation = this.user.password = ''
+          }).catch((error) => {
+            this.saving = false
+            
+            this.$notification.error({
+              message: 'Error al guardar',
+              description: 'no se puedo actualiar la información'
+            })
           })
-        }).catch((error) => {
+        } else {
           this.saving = false
           
-          this.$notification.success({
-            message: 'Error al gauardar',
-            description: 'no se puedo actualiar la información'
+          this.$notification.error({
+            message: 'Error al guardar',
+            description: 'Las contraseñas no coinciden'
           })
-        })
+        }
       },
       openPreview () {
         this.$emit('preview')
@@ -681,6 +741,21 @@
 
       .input-checkbox100:checked + .label-checkbox100 > span.check {
         color: #c87ef0;
+      }
+
+      .ant-collapse-header {
+        .ant-collapse-arrow {
+          display: none;
+        }
+      }
+      .ant-collapse-content-box {
+        label {
+          line-height: 11px;
+          margin: 0;
+          padding: 0;
+          display: block;
+          height: auto;
+        }
       }
 
       .design-1, .design-2, .design-3, .design-4 {

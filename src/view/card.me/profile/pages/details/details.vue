@@ -432,11 +432,11 @@
         inputVisible: false,
         inputValue: '',
         editor: null,
-        html: '<p>hello</p>',
+        html: '',
         toolbarConfig: [
           [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
           ['blockquote', "bold", "italic", "underline", 'strike', 'link', { list: "bullet" }, { list: "ordered" }],
-          ['undo', 'redo']
+          ['undo', 'redo','clean'] 
         ],
         editorConfig: { 
           modules: {
@@ -444,7 +444,7 @@
               container: [
                 [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
                 ['blockquote', "bold", "italic", "underline", 'strike', 'link', { list: "bullet" }, { list: "ordered" }],
-                ['undo', 'redo']
+                ['undo', 'redo','clean'] 
               ],
               handlers: {
                 undo: undoChange,

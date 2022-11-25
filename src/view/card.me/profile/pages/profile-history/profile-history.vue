@@ -1,40 +1,6 @@
 <template>
   <div v-if="getUser.id" class="profile-history-container">
     <a-form-model ref="perofesionalInfoForm" :rules="rules" :model="user" class="profile-history-form d-flex flex-column" :label-col="labelCol" :wrapper-col="wrapperCol" :colon="false">
-      <!-- <b-card no-body>
-        <b-card-body>
-          <h3 class="mb-4">
-            Información de cuenta
-          </h3>
-          <a-form-model-item>
-            <template #label>
-              <span>Usuario</span>
-              <br>
-              <small class="text-muted"></small>
-            </template>
-            <a-collapse v-model="activeKey">
-              <a-collapse-panel key="1">
-                <template #header>
-                  <div class="d-flex justify-content-center align-items-center" style="gap: 22px;">
-                    {{ user.username }}
-                    <a-button type="primary">Actualizar contraseña</a-button>
-                  </div>
-                </template>
-                <div class="mt-3 w-50 ml-auto">
-                  <div>
-                    <label>Nueva contraseña</label>
-                    <a-input-password ref="inputPassword" v-model="user.password" />
-                  </div>
-                  <div>
-                    <label>Confirmar contraseña</label>
-                    <a-input-password ref="confirmPassword" v-model="user.password_confirm" />
-                  </div>
-                </div>
-              </a-collapse-panel>
-            </a-collapse>
-          </a-form-model-item>
-        </b-card-body>
-      </b-card> -->
       <b-card no-body>
         <b-card-body>
           <h3 class="mb-4">
@@ -162,7 +128,6 @@
         rules: {},
         errors: [],
         visiblePasswordPanel: false,
-        activeKey: [],
         modal: {
           newSocial: {
             url: '',
@@ -215,8 +180,8 @@
         }).catch((error) => {
           this.saving = false
           
-          this.$notification.success({
-            message: 'Error al gauardar',
+          this.$notification.error({
+            message: 'Error al guardar',
             description: 'no se puedo actualiar la información'
           })
         })
