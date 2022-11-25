@@ -105,12 +105,12 @@
                     <a-button type="primary">Actualizar contraseña</a-button>
                   </div>
                 </template>
-                <div class="mt-3 grid gap-4 grid-cols-2">
-                  <div>
+                <div class="mt-3 d-flex">
+                  <div class="flex-fill mr-2">
                     <label>Nueva contraseña</label>
                     <a-input-password has-feedback ref="inputPassword" v-model="user.password" />
                   </div>
-                  <div>
+                  <div class="flex-fill">
                     <label>Confirmar contraseña</label>
                     <a-input-password ref="confirmPassword" v-model="user.password_confirmation" />
                   </div>
@@ -131,7 +131,7 @@
               <br>
               <small class="text-muted">Define el tipo de diseño que mostrara tu tarjeta</small>
             </template>
-            <div class="d-none d-md-flex justify-content-center" style="gap: 22px;">
+            <div class="d-none d-lg-flex justify-content-center" style="gap: 22px;">
               <div class="design-1" :class="{ 'choosed': user.design == 'design-1' }" @click="user.design = 'design-1'">
                 <div class="design-avatar"></div>
                 <div class="design-cover"></div>
@@ -152,8 +152,13 @@
                 <div class="design-cover"></div>
                 <div class="design-content"></div>
               </div>
+              <div class="design-5" :class="{ 'choosed': user.design == 'design-5' }" @click="user.design = 'design-5'">
+                <div class="design-avatar"></div>
+                <div class="design-cover"></div>
+                <div class="design-content"></div>
+              </div>
             </div>
-            <div class="d-flex d-md-none">
+            <div class="d-flex d-lg-none">
               <a-select placeholder="Please select a country" v-model="user.design">
                 <a-select-option value="design-1">
                   Diseño 1
@@ -166,6 +171,9 @@
                 </a-select-option>
                 <a-select-option value="design-4">
                   Diseño 4
+                </a-select-option>
+                <a-select-option value="design-5">
+                  Diseño 5
                 </a-select-option>
               </a-select>
               <a-button class="ml-1" type="primary" @click="openPreview">Ver</a-button>
@@ -758,7 +766,7 @@
         }
       }
 
-      .design-1, .design-2, .design-3, .design-4 {
+      .design-1, .design-2, .design-3, .design-4, .design-5 {
         background: #2c2c2c;
         height: 120px;
         max-width: 70px;
@@ -1113,6 +1121,119 @@
           .design-avatar {
             border-color: #3f4750;
             box-shadow: 0px 2px 1px 0px #3f4750;
+          }
+        }
+      }
+
+      .design-5 {
+        display: flex;
+        flex-direction: column;
+        .design-avatar {
+          border-radius: 50%;
+          min-width: auto;
+          min-height: auto;
+          width: 33px;
+          height: 33px;
+          border: solid 1px #fff;
+          order: 2;
+          flex: 0 0 auto;
+          margin-top: -20px;
+          margin-left: 60%;
+          z-index: 2;
+
+          &:before {
+            width: 21px;
+            height: 15px;
+            bottom: -4px;
+          }
+
+          &:after {
+            width: 12px;
+            height: 12px;
+            bottom: 12px;
+          }
+        }
+        .design-cover {
+          flex: 0 0 auto;
+          order: 1;
+          margin-left: -16px;
+          margin-top: -12px;
+          margin-right: -17px;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+          height: 46px;
+          transform: rotateZ(-11deg);
+
+          &:after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            min-width: auto;
+            width: 30%;
+            height: 6px;
+            border-radius: 5px;
+            background: #838181;
+            z-index: 8;
+            transform: rotateZ(11deg);
+            left: 18px;
+          }
+
+          &:before {
+            content: "";
+            position: absolute;
+            top: 28px;
+            min-width: auto;
+            width: 17%;
+            height: 4px;
+            border-radius: 5px;
+            background: #838181;
+            z-index: 8;
+            -webkit-transform: rotateZ(11deg);
+            transform: rotateZ(11deg);
+            left: 17px;
+          }
+        }
+        .design-content {
+          flex: 0 1 auto;
+          order: 3;
+          height: 6px;
+          min-height: auto;
+          position: relative;
+          margin-top: 7px;
+
+          &:after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            min-width: auto;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #bdbdbd;
+            
+          }
+
+          &:before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            min-width: auto;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #bdbdbd;
+          }
+        }
+
+        &.choosed {
+          .design-content {
+            &:after {
+              background: #fff;
+            }
+
+            &:before {
+              background: #fff;
+            }
           }
         }
       }

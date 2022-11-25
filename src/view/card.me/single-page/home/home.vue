@@ -13,7 +13,7 @@
           </div>
           <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
             <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
-            <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
+            <b-button class="rounded-lg text-primary" variant="primary" @click="dispachLogout">Salir</b-button>
           </div>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto d-block d-md-none w-100">
@@ -23,7 +23,7 @@
           </div>
           <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
             <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
-            <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
+            <b-button class="rounded-lg text-primary" variant="primary" @click="dispachLogout">Salir</b-button>
           </div>
         </b-navbar-nav>
       </b-container>

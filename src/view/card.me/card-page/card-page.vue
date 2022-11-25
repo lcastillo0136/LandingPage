@@ -1166,6 +1166,92 @@
           }
         }
       }
+      &.design-5 {
+        display: flex;
+        .avatar-container {
+          order: 2;
+          border-radius: 50%;
+          border: solid 3px #fff;
+          width: 145px;
+          height: 145px;
+          margin-top: -138px;
+          margin-left: calc(100% - 130px);
+          overflow: hidden;
+          box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+          margin-bottom: 0.25rem;
+          position: relative;
+          z-index: 16;
+          > img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+        .image-cover {
+          display: block;
+          order: 1;
+          max-height: 290px;
+          overflow: hidden; 
+        }
+        .profile-job-n-name {
+          display: block;
+          position: absolute;
+          top: 3%;
+          left: 20px;
+          width: 61%;
+          color: #fdfffe;
+          text-shadow: 0 0 2px #00000061;
+          z-index: 21;
+          h4 {
+            font-weight: bold;
+          }
+        }
+        .card-body {
+          order: 3;
+          z-index: 14;
+          padding-top: 0;
+          .send-whatsapp {
+            top: -23px;
+            left: 16px;
+            right: auto;
+          }
+          .share-card {
+            top: -23px;
+            left: 16px;
+            right: auto;
+          }
+          .send-whatsapp + .share-card {
+            left: 70px;
+          }
+          .profile-name {
+            display: none;
+          }
+          .profile-job {
+            display: none;
+          }
+          .card-text {
+            margin-left: -20px;
+            background: #f5f5f5;
+            padding: 1.25rem;
+            margin-right: -20px;
+            color: #4e4e4e;
+            margin-bottom: 1rem;
+          }
+          &:before {
+            content: "";
+            background: #f5f5f5;
+            width: 358px;
+            height: 111px;
+            position: absolute;
+            left: -20px;
+            top: -51px;
+            transform: rotateZ(-11deg);
+            z-index: -1;
+            box-shadow: 0px -4px 6px 1px #ededed59;
+          }
+        }
+      }
     }
     .powered-footer {
       position: fixed;
