@@ -1,5 +1,5 @@
 <template>
-  <main class="card-container" v-if="ready">
+  <main class="card-container" v-if="ready" :class="{ 'homeView': homeView }">
     <template v-if="card">
       <b-card tag="article" class="mb-md-4 shadow" no-body :class="[card.design || '']">
         <div v-if="card.avatar" class="avatar-container">
@@ -161,7 +161,7 @@
           <b-button variant="primary" @click.stop.prevent="saveContact" class="w-100" v-if="!isPreview && card.can_save_vcf">Guardar contacto</b-button>
         </b-card-body>
       </b-card>
-      <footer class="powered-footer" v-if="!isPreview">
+      <footer class="powered-footer" v-if="!isPreview && !homeView">
         <router-link :to="{ name: 'home' }">Onlycards</router-link> powered with <b-icon-heart></b-icon-heart> by <a target="_blank" href="https://www.zibasoft.com/">Zibasoft</a>
       </footer>
       <b-modal id="modal-user-qr" size="sm" hide-footer centered headerClass="px-2 pt-2 pb-0 border-bottom-0 text-center" bodyClass="px-0">
@@ -195,6 +195,17 @@
         <img src="/img/blank-card.png" />
       </div>
     </template>
+    <u-animate-container>
+      <u-animate name="fadeInDown" delay="2s" duration="1s" :iteration="1" :offset="0" animateClass="animated" class="homeView-whatsapp shadow" :begin="false" >
+        Abrir whatsapp
+      </u-animate>
+      <u-animate name="fadeInDown" delay="3s" duration="1s" :iteration="1" :offset="0" animateClass="animated" :begin="false" class="homeView-socialnetworks shadow">
+        Comparte tus redes sociales
+      </u-animate>
+      <u-animate name="fadeInDown" delay="4s" duration="1s" :iteration="1" :offset="0" animateClass="animated" :begin="false"  class="homeView-links shadow">
+        Formas de contacto
+      </u-animate>
+    </u-animate-container>
   </main>
 </template>
 
@@ -217,6 +228,10 @@
         default: function () {
           return { }
         }
+      },
+      homeView: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -310,15 +325,39 @@
       isImage() {
         try {
           if (this.card.avatar && this.card.avatar instanceof File) {
+
+            var reader = new FileReader();
+            reader.onloadend = () => {
+              this.avatarFile = reader.result;
+            }
+
+            if (this.avatar) {
+              reader.readAsDataURL(this.avatar);
+            } else {
+
+            }
             return false;
           }
-        } catch(e) { }
+        } catch(e) { 
+
+        }
          
        return true
       },
       isCoverImage() {
         try {
           if (this.card.cover && this.card.cover instanceof File) {
+
+            var reader = new FileReader();
+            reader.onloadend = () => {
+              this.coverFile = reader.result;
+            }
+
+            if (this.cover) {
+              reader.readAsDataURL(this.cover);
+            } else {
+
+            }
             return false;
           }
         } catch(e) { }
@@ -571,6 +610,7 @@
     justify-content: center;
     padding-top: 20px;
     background-color: #fafafa;
+    z-index: 1;
     .card {
       width: 20rem;
       max-width: 100%;
@@ -1257,6 +1297,123 @@
       position: fixed;
       bottom: 0;
       right: 0;
+    }
+    .homeView-whatsapp {
+      display: none;
+    }
+
+    &.homeView {
+      background-color: transparent;
+      .homeView-whatsapp {
+        display: block;
+        position: absolute;
+        z-index: 1030;
+        background: #fff;
+        border-radius: 5px;
+        padding: 10px;
+        top: 148px;
+        font-weight: bold;
+        left: 57px;
+        &:before {
+          content: '';
+          width: 17px;
+          height: 20px;
+          position: absolute;
+          border: solid 2px;
+          border-color: #0000 #0000 #54bd95 #54bd95;
+          top: 99px;
+          right: 21px;
+          transform: rotateZ(-148deg);
+          z-index: 1030;
+        }
+        &:after {
+          content: '';
+          border: 2px solid #54bd95;
+          border-color: #0000 #0000 #0000 #54bd95;
+          height: 134px;
+          width: 141px;
+          border-radius: 230px 0 0 150px;
+          position: absolute;
+          top: -35px;
+          left: 31px;
+          transform: rotateZ(-51deg);
+          z-index: 1030;
+        }
+      }
+      .homeView-socialnetworks {
+        display: block;
+        position: absolute;
+        z-index: 1030;
+        background: #fff;
+        border-radius: 5px;
+        padding: 10px;
+        top: 319px;
+        font-weight: bold;
+        right: 40px;
+
+        &:before {
+          content: "";
+          width: 17px;
+          height: 20px;
+          position: absolute;
+          border: solid 2px;
+          border-color: #0000 #0000 #54bd95 #54bd95;
+          top: 99px;
+          left: 5px;
+          transform: rotateZ(39deg);
+          z-index: 1030;
+        }
+        &:after {
+          content: "";
+          border: 2px solid #54bd95;
+          border-color: #0000 #0000 #0000 #54bd95;
+          height: 180px;
+          width: 158px;
+          border-radius: 230px 0 0 150px;
+          position: absolute;
+          top: -51px;
+          left: -60px;
+          transform: rotateZ(231deg);
+          z-index: 1030;
+        }
+      }
+      .homeView-links {
+        display: block;
+        position: absolute;
+        z-index: 1030;
+        background: #fff;
+        border-radius: 5px;
+        padding: 10px;
+        top: 510px;
+        font-weight: bold;
+        left: 13px;
+
+        &:before {
+          content: "";
+          width: 17px;
+          height: 20px;
+          position: absolute;
+          border: solid 2px;
+          border-color: #0000 #0000 #54bd95 #54bd95;
+          top: 100px;
+          right: 13px;
+          transform: rotateZ(-140deg);
+          z-index: 1030;
+        }
+        &:after {
+          content: "";
+          border: 2px solid #54bd95;
+          border-color: #0000 #0000 #0000 #54bd95;
+          height: 140px;
+          width: 89px;
+          border-radius: 230px 0 0 150px;
+          position: absolute;
+          top: -16px;
+          right: -8px;
+          transform: rotateZ(-52deg);
+          z-index: 1030;
+        }
+      }
     }
 
     @media only screen and (max-width: 450px) {

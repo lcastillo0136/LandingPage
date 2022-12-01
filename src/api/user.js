@@ -178,6 +178,11 @@ export const deleteAppointment = (appointment, token) => {
 export const updateUser = (user, token) => {
   const formData = new FormData()
 
+  if (!user.password || !user.password_confirmation) {
+    delete user.password;
+    delete user.password_confirmation;
+  } 
+  
   Object.keys(user).forEach((k) => {
     if (user[k] == null) user[k] = ''
     if (typeof user[k] === 'boolean') user[k] = user[k] ? 1 : 0

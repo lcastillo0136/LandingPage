@@ -9,7 +9,7 @@
         <b-navbar-nav class="ml-auto d-none d-md-block">
           <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
             <b-button class="rounded-lg mx-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
-            <b-button :to="{ name: 'register' }" class="rounded-lg text-white" variant="primary">Registrarte</b-button>
+            <b-button :to="{ name: 'register' }" class="rounded-lg text-white" variant="primary">Registrarte gratis</b-button>
           </div>
           <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
             <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
@@ -19,7 +19,7 @@
         <b-navbar-nav class="ml-auto d-block d-md-none w-100">
           <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
             <b-button class="d-block w-100 my-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
-            <b-button :to="{ name: 'register' }" class="text-white w-100 my-1" variant="primary">Registrarte</b-button>
+            <b-button :to="{ name: 'register' }" class="text-white w-100 my-1" variant="primary">Registrarte gratis</b-button>
           </div>
           <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
             <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>

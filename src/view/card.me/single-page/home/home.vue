@@ -9,21 +9,21 @@
         <b-navbar-nav class="ml-auto d-none d-md-block">
           <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
             <b-button class="rounded-lg mx-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
-            <b-button :to="{ name: 'register' }" class="rounded-lg text-white" variant="primary">Registrarte</b-button>
+            <b-button :to="{ name: 'register' }" class="rounded-lg text-white" variant="primary">Registrarte gratis</b-button>
           </div>
           <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
             <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
-            <b-button class="rounded-lg text-primary" variant="primary" @click="dispachLogout">Salir</b-button>
+            <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
           </div>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto d-block d-md-none w-100">
           <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
             <b-button class="d-block w-100 my-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
-            <b-button :to="{ name: 'register' }" class="text-white w-100 my-1" variant="primary">Registrarte</b-button>
+            <b-button :to="{ name: 'register' }" class="text-white w-100 my-1" variant="primary">Registrarte gratis</b-button>
           </div>
           <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
             <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
-            <b-button class="rounded-lg text-primary" variant="primary" @click="dispachLogout">Salir</b-button>
+            <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
           </div>
         </b-navbar-nav>
       </b-container>
@@ -56,16 +56,17 @@
             </svg>
 
             <p class="hero-description">
-              Ayudemos a que tu trabajo llegue a más clientes y nuevos horizontes presentando tu tarjeta digital.
+              Ayudamos a que tu trabajo llegue a más clientes y nuevos horizontes presentando tu tarjeta digital.
             </p>
           </b-col>
           <br class="d-none d-sm-block" />
-          <b-col cols="12" lg="6" md="6" sm="12">
-            <b-img
+          <b-col cols="12" lg="6" md="6" sm="12" v-if="companyCard">
+            <!-- <b-img
               alt="hero image"
               class="img-fluid"
               :src="require(`@/assets/img/hero-img.png`)"
-            ></b-img>
+            ></b-img> -->
+            <CardPage ref="previewCard" :user="companyCard" :homeView="true"></CardPage>
           </b-col>
         </b-row>
       </b-container>
@@ -1015,10 +1016,12 @@
 <script>
   import { getServerFile } from '@/libs/util'
   import { registerCustomer, postOrder, getProduct } from '@/api/data'
+  import { getCard } from '@/api/user'
   import { mapGetters, mapActions, mapMutations } from 'vuex'
   import { BIconPlayFill, BIconArrowRight, BIconGithub, BIconGlobe } from 'bootstrap-vue'
   import RegisterForm from './components/register'
   import Login from './components/login'
+  import CardPage from '../../card-page'
 
   window.dataLayer = window.dataLayer || [];
   function gtag(){ dataLayer.push(arguments); }
@@ -1035,6 +1038,7 @@
       BIconGithub,
       BIconGlobe,
       RegisterForm,
+      CardPage,
       Login
     },
     data () {
@@ -1104,6 +1108,7 @@
         passwordType: 'text',
         passwordType2: 'text',
         policyTerms: false,
+        companyCard: null
       }
     },
     computed: {
@@ -1187,8 +1192,41 @@
       togglePassword2() {
         this.passwordType2 = this.passwordType2 == 'password' ? 'text' : 'password'
       },
+      toDataURL(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+          var reader = new FileReader();
+          reader.onloadend = function() {
+            callback(reader.result);
+          }
+          reader.readAsDataURL(xhr.response);
+        };
+        xhr.open('GET', url);
+        xhr.responseType = 'blob';
+        xhr.send();
+      },
+      loadCompanyCard() {
+        this.$fingerprint.get((components) => {
+          let _fingerprint = this.$fingerprint.x64hash128(components.map((pair) => { return pair.value }).join(), 31)
+          getCard({ 
+            fingerprint: _fingerprint,
+            uuid: '67c41a4e-8340-4a2a-b8bf-49aa399ca842'
+          }).then(({ data }) => data).then((result) => {
+            this.companyCard = { ... result.data }
+
+            this.toDataURL(this.companyCard.avatar, (dataUrl) => {
+              this.companyCard.base_image = dataUrl
+            })
+          }).catch((err) => {
+            
+          }).then(() => {
+            
+          })
+        });
+      }
     },
     mounted() {
+      this.loadCompanyCard()
       this.$nextTick().then(()=>{
         setTimeout(()=> {
           this.togglePassword2()

@@ -64,6 +64,7 @@ import '@/assets/css/ant-design-menu.css'
 
 import '@/assets/css/style.css';
 import '@/assets/scss/main.scss'
+import 'owl.carousel/docs/assets/css/animate.css';
 
 Vue.use(VueQr)
 Vue.use(VueClipboard)

@@ -566,7 +566,7 @@
             }
           }
 
-          if (!this.validPassword) {
+          if (!this.validPassword || !_data.password || !_data.password_confirmation) {
             delete _data.password;
             delete _data.password_confirmation;
           } 
