@@ -1281,7 +1281,7 @@
           &:before {
             content: "";
             background: #f5f5f5;
-            width: 358px;
+            width: 115%;
             height: 111px;
             position: absolute;
             left: -20px;
@@ -1429,6 +1429,19 @@
         margin-top: 10px;
         margin-left: 10px;
         margin-bottom: 5px;
+      }
+      &.homeView {
+        .homeView-whatsapp {
+          display: none;
+        }
+        
+        .homeView-socialnetworks {
+          display: none;
+        }
+
+        .homeView-links {
+          display: none;
+        }
       }
     }
   }

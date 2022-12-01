@@ -31,9 +31,9 @@
     <Login></Login>
     <RegisterForm></RegisterForm>
     <section class="pb-5 bg-hero">
-      <b-container class="pt-5">
+      <b-container class="pt-5 overflow-hidden">
         <b-row>
-          <b-col cols="12" lg="6" md="6" sm="12">
+          <b-col cols="12" lg="6" md="12" sm="12">
             <h1>
               Estamos para <br />
               Aumentar tú <br />
@@ -60,7 +60,7 @@
             </p>
           </b-col>
           <br class="d-none d-sm-block" />
-          <b-col cols="12" lg="6" md="6" sm="12" v-if="companyCard">
+          <b-col cols="12" lg="6" md="12" sm="12" v-if="companyCard">
             <!-- <b-img
               alt="hero image"
               class="img-fluid"
@@ -72,7 +72,7 @@
       </b-container>
     </section>
     <section class="bg-green-light py-5">
-      <b-container>
+      <b-container class="overflow-hidden">
         <b-row>
           <b-col cols="12" lg="6" md="6" sm="12">
             <h2>Tarjeta de presentación digital</h2>
@@ -316,7 +316,7 @@
       </b-container>
     </section>
     <section>
-      <b-container class="pt-5 mt-5">
+      <b-container class="pt-5 mt-5 overflow-hidden">
         <b-row>
           <b-col cols="12" md="4" lg="4" sm="12">
             <h2>Características <br class="d-none d-lg-block" />disponibles</h2>
@@ -1009,7 +1009,9 @@
     <a-back-top id="toTop">
       <b-icon-chevron-up></b-icon-chevron-up>
     </a-back-top>
-
+    <a href="https://wa.me/5218181175165?text=¡Hola! Podrías darme más información de Onlycards" target="_blank" class="whatsapp-chat-link">
+      <img src="/whatsapp_chat.png" alt="" border="0" />
+    </a>
   </main>
   <!-- /main content -->
 </template>
@@ -1241,9 +1243,26 @@
   .home-page.landing {
     background: #dbf0eb;
     background: linear-gradient(119deg, #dbf0eb 0%, #f9f9f9ef 32%, #f9f9f9 66%, #dbf0eb 100%);
+    
     .navbar {
       min-height: 100px;
     }
+    
+    .bg-dark.bg-darker {
+      background-color: #28292c !important;
+    }
+    
+    .whatsapp-chat-link {
+      position: fixed;
+      top: 250px;
+      right: -6px;
+      z-index: 1030; 
+      
+      img {
+        width: 172px;
+      }
+    }
+    
     @media only screen and (max-width: 450px) {
       .bg-hero {
         margin-top: -166px !important;
@@ -1256,9 +1275,9 @@
           max-width: 100%;
         }
       }
-    }
-    .bg-dark.bg-darker {
-      background-color: #28292c !important;
+      .whatsapp-chat-link {
+        right: -114px;
+      }
     }
   }
   .register-form {
