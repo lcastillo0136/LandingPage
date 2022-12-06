@@ -611,6 +611,8 @@
     padding-top: 20px;
     background-color: #fafafa;
     z-index: 1;
+    min-height: 100%;
+
     .card {
       width: 20rem;
       max-width: 100%;
@@ -918,13 +920,67 @@
           .bg-success {
           }
         }
-        &.icon-github { 
+        &.icon-github {
           font-size: 19px;
           color: #000;
           .bg-success {
             background-color: #fff !important;
             border: solid 1px #28a745;
           } 
+        }
+        &.icon-onlycards {
+          font-size: 19px;
+          color: #000;
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+            overflow: hidden;
+          }
+          .bi-onlycards {
+            display: block;
+            background-image: url(/favicon.ico);
+            background-size: 90%;
+            background-repeat: no-repeat;
+            background-position: 2px 2px;
+            width: 33px;
+            height: 33px;
+          }
+        }
+        &.icon-mercado-shops {
+          font-size: 19px;
+          color: #000;
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+            overflow: hidden;
+          }
+          .bi-mercado-shops {
+            display: inline-block;
+            background-image: url(/img/mercado-shops.png);
+            background-size: 90%;
+            background-repeat: no-repeat;
+            background-position: 2px 2px;
+            width: 33px;
+            height: 33px;
+          }
+        }
+        &.icon-mercado-libre {
+          font-size: 19px;
+          color: #000;
+          .bg-success {
+            background-color: #fff !important;
+            border: solid 1px #28a745;
+            overflow: hidden;
+          }
+          .bi-mercado-libre {
+            display: inline-block;
+            background-image: url(/img/mercado-libre.png);
+            background-size: 90%;
+            background-repeat: no-repeat;
+            background-position: 2px 2px;
+            width: 33px;
+            height: 33px;
+          }
         }
 
         &[class*="icon-"] {
@@ -1032,7 +1088,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        justify-content: space-between;
+        justify-content: flex-start;
         margin-bottom: 10px;
         .caracteristica {
           flex: 0 0 auto;
@@ -1233,6 +1289,9 @@
           order: 1;
           max-height: 290px;
           overflow: hidden; 
+          img {
+            border-radius: 0;
+          }
         }
         .profile-job-n-name {
           display: block;
@@ -1245,6 +1304,7 @@
           z-index: 21;
           h4 {
             font-weight: bold;
+            margin-bottom: 0;
           }
         }
         .card-body {
@@ -1281,12 +1341,12 @@
           &:before {
             content: "";
             background: #f5f5f5;
-            width: 115%;
-            height: 111px;
+            width: 200%;
+            height: 160px;
             position: absolute;
             left: -20px;
-            top: -51px;
-            transform: rotateZ(-11deg);
+            top: -84px;
+            transform: rotateZ(-10deg);
             z-index: -1;
             box-shadow: 0px -4px 6px 1px #ededed59;
           }
@@ -1298,7 +1358,7 @@
       bottom: 0;
       right: 0;
     }
-    .homeView-whatsapp {
+    .homeView-whatsapp, .homeView-socialnetworks, .homeView-links {
       display: none;
     }
 
@@ -1419,10 +1479,12 @@
     @media only screen and (max-width: 450px) {
       padding-top: 0;
       flex-direction: column;
+      justify-content: flex-start;
       .card {
         width: 100%;
         border-radius: 0;
         border: none;
+        box-shadow: none !important;
       }
       .powered-footer {
         position: static;

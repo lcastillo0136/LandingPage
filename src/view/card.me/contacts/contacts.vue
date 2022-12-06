@@ -71,7 +71,7 @@
                     </div>
                     <div class="dbox w-100 d-flex align-items-start">
                       <div class="icon d-flex align-items-center justify-content-center">
-                        <a-icon type="link"></a-icon>
+                        <a-icon type="global"></a-icon>
                       </div>
                       <div class="text pl-4">
                         <p><span>Sitio web</span> <a target="_blank" href="https://www.zibasoft.com/">Zibasoft</a></p>
@@ -95,9 +95,15 @@
                       <a-form-model-item has-feedback label="Mensaje" prop="message">
                         <a-textarea v-model="contactForm.message" type="text" autocomplete="off" cols="30" rows="5"/>
                       </a-form-model-item>
-                      <a-button type="primary" :loading="sending" @click.stop.prevent="sendMessage">
-                        Enviar Mensaje
-                      </a-button>
+                      <div class="d-flex justify-content-between">
+                        <a-button type="primary" :loading="sending" @click.stop.prevent="sendMessage" icon="mail">
+                          Enviar Mensaje
+                        </a-button>
+                        <a-button type="primary" :loading="sending" @click.stop.prevent="sendWaMessage" class="whatsapp-button">
+                          <b-icon-whatsapp class="mr-1"></b-icon-whatsapp>
+                          Enviar Whatsapp
+                        </a-button>
+                      </div>
                     </a-form-model>
                   </div>
                 </div>
@@ -153,13 +159,13 @@
             { required: true, message: 'Favor de llenar con su nombre', trigger: 'blur' },
           ],
           message: [
-            { required: true, message: 'No se pueden enviar mensajes vacios', trigger: 'blur' },
+            { required: true, message: 'No se pueden enviar mensajes vacíos', trigger: 'blur' },
           ],
           subject: [
-            { required: true, message: 'Cual es el motivo del mensaje', trigger: 'blur' },
+            { required: true, message: '¿Cuál es el motivo del mensaje?', trigger: 'blur' },
           ],
           email: [
-            { required: true, message: 'Favor de llenar con su correo para estar en contacto', trigger: 'blur' },
+            { required: true, message: 'Favor de llenar con su correo para seguir en contacto', trigger: 'blur' },
             { 
               validator(rule, value, callback) {
                 var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -245,6 +251,29 @@
 
           }
         });
+      },
+      sendWaMessage () {
+        this.$refs.contactForm.validate(valid => {
+          if (valid) {
+
+            this.sending = true
+            let _message = `Buen día Onlycards %0a%0aFavor de contactarme con un agente %0a%0aNombre: ${this.contactForm.name}%0aRazón: ${this.contactForm.subject} %0aEmail: ${this.contactForm.email} %0aMensaje: ${this.contactForm.message}`
+            window.open('https://wa.me/5218181175165?text=' + _message, '_blank')
+
+            this.$refs.contactForm.clearValidate()
+
+            this.contactForm.name = ''
+            this.contactForm.subject = ''
+            this.contactForm.message = ''
+            this.contactForm.email = ''
+
+            this.$nextTick().then(() => {
+              this.sending = false 
+            })
+          } else {
+
+          }
+        });
       }
     },
 }
@@ -298,6 +327,16 @@
           margin-bottom: 0rem;
         }
       }
+    }
+
+    .anticon {
+      vertical-align: 0;
+    }
+
+    .whatsapp-button {
+      background: var(--green) !important;
+      color: var(--white) !important;
+      border-color: var(--green);
     }
   }
 </style>

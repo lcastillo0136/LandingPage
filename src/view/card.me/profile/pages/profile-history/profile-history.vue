@@ -272,7 +272,14 @@
           _icon = 'soundcloud'
         } else if (url.match(/^(?:(?:http|https):\/\/?(?:www\.|[a-z]{2,3}\.)?|(?:www\.|[a-z]{2,3}\.))?github\.com/)) {
           _icon = 'github'
+        } else if (url.match(/^(?:(?:http|https):\/\/?(?:www\.|[a-z]{2,3}\.)?|(?:www\.|[a-z]{2,3}\.))?onlycards\.me/)) {
+          _icon = 'onlycards'
+        } else if (url.match(/^(?:(?:http|https):\/\/?(?:www\.|[a-z]+\.))?mercadoshops\.com/)) {
+          _icon = 'mercado-shops'
+        } else if (url.match(/^(?:(?:http|https):\/\/?(?:www\.|[a-z]+\.))?mercadolibre\.com/)) {
+          _icon = 'mercado-libre'
         }
+
         return _icon
       },
       openEditSocialNework (record) {
@@ -532,6 +539,51 @@
             background-color: #000 !important;
             border: solid 1px #28a745;
           }
+        }
+        &.icon-onlycards {
+          font-size: 19px;
+          color: #000;
+          
+          display: inline-block;
+          background-image: url(/img/icono.png);
+          background-size: 19px;
+          background-repeat: no-repeat;
+          background-position: 0px 0px;
+          width: 19px;
+          height: 19px;
+          vertical-align: middle;
+          margin-left: 6px !important;
+          margin-right: 4px !important;
+        }
+        &.icon-mercado-shops {
+          font-size: 19px;
+          color: #000;
+          
+          display: inline-block;
+          background-image: url(/img/mercado-shops.png);
+          background-size: 19px;
+          background-repeat: no-repeat;
+          background-position: 0px 0px;
+          width: 19px;
+          height: 19px;
+          vertical-align: middle;
+          margin-left: 6px !important;
+          margin-right: 4px !important;
+        }
+        &.icon-mercado-libre {
+          font-size: 19px;
+          color: #000;
+          
+          display: inline-block;
+          background-image: url(/img/mercado-libre.png);
+          background-size: 19px;
+          background-repeat: no-repeat;
+          background-position: 0px 0px;
+          width: 19px;
+          height: 19px;
+          vertical-align: middle;
+          margin-left: 6px !important;
+          margin-right: 4px !important;
         }
       }
       .list-group-disabled {
