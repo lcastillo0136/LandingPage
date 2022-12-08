@@ -692,7 +692,7 @@
 
               this.$notification.success({
                 message: 'Datos guardados',
-                description: 'Los datos del usuario han sido actulizados'
+                description: 'Los datos del usuario han sido actualizados'
               })
             }).catch((error) => {
               this.saving = false

@@ -427,3 +427,13 @@ export const getServerFile = (path) => {
 export const getServerFile2 = (path) => {
   return `${baseUrl.replace('api/', '')}${path.replace('public/', '')}` 
 }
+
+export const cleanString = (string1) => {
+  return stripHtml(`${(string1||'')}`.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))
+}
+
+export const stripHtml = (html) => {
+  let tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+}

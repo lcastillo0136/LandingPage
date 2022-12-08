@@ -727,5 +727,8 @@ export default {
   },
   privacy: {
     title: 'Privacy'
+  },
+  faq: {
+    title: 'FAQ'
   }
 }

@@ -36,6 +36,7 @@ import 'ant-design-vue/lib/avatar/style/index.css';
 import 'ant-design-vue/lib/back-top/style/index.css';
 import 'ant-design-vue/lib/button/style/index.css';
 import 'ant-design-vue/lib/card/style/index.css';
+import 'ant-design-vue/lib/collapse/style/index.css';
 import 'ant-design-vue/lib/date-picker/style/index.css';
 import 'ant-design-vue/lib/divider/style/index.css';
 import 'ant-design-vue/lib/drawer/style/index.css';

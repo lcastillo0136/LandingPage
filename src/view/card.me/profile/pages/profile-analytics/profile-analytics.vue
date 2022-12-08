@@ -100,7 +100,7 @@
 
           this.$notification.success({
             message: 'Datos guardados',
-            description: 'Los datos analiticos del usuario han sido actulizados'
+            description: 'Los datos analiticos del usuario han sido actualizados'
           })
         }).catch((error) => {
           this.saving = false

@@ -8,20 +8,24 @@
        
         <b-navbar-nav class="ml-auto d-none d-md-block">
           <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
+            <b-nav-item :to="{ name: 'faq' }" class="font-weight-bold">Preguntas frecuentes</b-nav-item>
             <b-button class="rounded-lg mx-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
             <b-button :to="{ name: 'register' }" class="rounded-lg text-white" variant="primary">Registrarte gratis</b-button>
           </div>
           <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
+            <b-nav-item :to="{ name: 'faq' }" class="font-weight-bold">Preguntas frecuentes</b-nav-item>
             <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
             <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
           </div>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto d-block d-md-none w-100">
           <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
+            <b-nav-item :to="{ name: 'faq' }" class="font-weight-bold">Preguntas frecuentes</b-nav-item>
             <b-button class="d-block w-100 my-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
             <b-button :to="{ name: 'register' }" class="text-white w-100 my-1" variant="primary">Registrarte gratis</b-button>
           </div>
           <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
+            <b-nav-item :to="{ name: 'faq' }" class="font-weight-bold">Preguntas frecuentes</b-nav-item>
             <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
             <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
           </div>
@@ -36,7 +40,7 @@
           <b-col cols="12" lg="6" md="12" sm="12">
             <h1>
               Estamos para <br />
-              Aumentar tú <br />
+              Aumentar tu <br />
               Productividad
             </h1>
             <svg
@@ -399,359 +403,357 @@
         </b-row>
       </b-container>
     </section>
-    <div class="bg-section-product">
-      <section>
-        <b-container class="pt-5 mt-5">
-          <b-row>
-            <b-col lg="6" md="6" sm="12">
-              <h2>
-                ¿Qué beneficios <br class="d-none d-lg-block" />
-                obtendrás?
-              </h2>
-              <div class="d-flex flex-column mt-5">
-                <div class="my-1 d-flex flex-row align-items-center">
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM15.6318 19.8961L21.8379 13.4961L20.4021 12.1039L14.8858 17.7926L11.5695 14.6357L10.1905 16.0843L14.2245 19.9243L14.9421 20.6074L15.6318 19.8961Z"
-                      fill="#54BD95"
-                    />
-                  </svg>
-                  <p class="ml-2 mb-0">Enlaces a tus redes sociales</p>
-                </div>
-                <div class="my-1 d-flex flex-row align-items-center">
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM15.6318 19.8961L21.8379 13.4961L20.4021 12.1039L14.8858 17.7926L11.5695 14.6357L10.1905 16.0843L14.2245 19.9243L14.9421 20.6074L15.6318 19.8961Z"
-                      fill="#54BD95"
-                    />
-                  </svg>
-                  <p class="ml-2 mb-0">Chat directo con tu WhatsApp</p>
-                </div>
-                <div class="my-1 d-flex flex-row align-items-center">
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM15.6318 19.8961L21.8379 13.4961L20.4021 12.1039L14.8858 17.7926L11.5695 14.6357L10.1905 16.0843L14.2245 19.9243L14.9421 20.6074L15.6318 19.8961Z"
-                      fill="#54BD95"
-                    />
-                  </svg>
-                  <p class="ml-2 mb-0">Ubicación de tu negocio</p>
-                </div>
-                <div class="my-1 d-flex flex-row align-items-center">
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM15.6318 19.8961L21.8379 13.4961L20.4021 12.1039L14.8858 17.7926L11.5695 14.6357L10.1905 16.0843L14.2245 19.9243L14.9421 20.6074L15.6318 19.8961Z"
-                      fill="#54BD95"
-                    />
-                  </svg>
-                  <p class="ml-2 mb-0">1 año de servicio</p>
-                </div>
-                <div class="my-1 d-flex flex-row align-items-center">
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM15.6318 19.8961L21.8379 13.4961L20.4021 12.1039L14.8858 17.7926L11.5695 14.6357L10.1905 16.0843L14.2245 19.9243L14.9421 20.6074L15.6318 19.8961Z"
-                      fill="#54BD95"
-                    />
-                  </svg>
-                  <p class="ml-2 mb-0">Incluye código QR</p>
-                </div>
+    <section class="bg-section-product">
+      <b-container class="pt-5 mt-5">
+        <b-row>
+          <b-col lg="6" md="6" sm="12">
+            <h2>
+              ¿Qué beneficios <br class="d-none d-lg-block" />
+              obtendrás?
+            </h2>
+            <div class="d-flex flex-column mt-5">
+              <div class="my-1 d-flex flex-row align-items-center">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM15.6318 19.8961L21.8379 13.4961L20.4021 12.1039L14.8858 17.7926L11.5695 14.6357L10.1905 16.0843L14.2245 19.9243L14.9421 20.6074L15.6318 19.8961Z"
+                    fill="#54BD95"
+                  />
+                </svg>
+                <p class="ml-2 mb-0">Enlaces a tus redes sociales</p>
               </div>
+              <div class="my-1 d-flex flex-row align-items-center">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM15.6318 19.8961L21.8379 13.4961L20.4021 12.1039L14.8858 17.7926L11.5695 14.6357L10.1905 16.0843L14.2245 19.9243L14.9421 20.6074L15.6318 19.8961Z"
+                    fill="#54BD95"
+                  />
+                </svg>
+                <p class="ml-2 mb-0">Chat directo con tu WhatsApp</p>
+              </div>
+              <div class="my-1 d-flex flex-row align-items-center">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM15.6318 19.8961L21.8379 13.4961L20.4021 12.1039L14.8858 17.7926L11.5695 14.6357L10.1905 16.0843L14.2245 19.9243L14.9421 20.6074L15.6318 19.8961Z"
+                    fill="#54BD95"
+                  />
+                </svg>
+                <p class="ml-2 mb-0">Ubicación de tu negocio</p>
+              </div>
+              <div class="my-1 d-flex flex-row align-items-center">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM15.6318 19.8961L21.8379 13.4961L20.4021 12.1039L14.8858 17.7926L11.5695 14.6357L10.1905 16.0843L14.2245 19.9243L14.9421 20.6074L15.6318 19.8961Z"
+                    fill="#54BD95"
+                  />
+                </svg>
+                <p class="ml-2 mb-0">1 año de servicio</p>
+              </div>
+              <div class="my-1 d-flex flex-row align-items-center">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM15.6318 19.8961L21.8379 13.4961L20.4021 12.1039L14.8858 17.7926L11.5695 14.6357L10.1905 16.0843L14.2245 19.9243L14.9421 20.6074L15.6318 19.8961Z"
+                    fill="#54BD95"
+                  />
+                </svg>
+                <p class="ml-2 mb-0">Incluye código QR</p>
+              </div>
+            </div>
+          </b-col>
+          <b-col lg="6" md="6" sm="12">
+            <b-img
+              alt="hero"
+              :src="require(`@/assets/img/hero-img-2.png`)"
+              class="img-fluid"
+            ></b-img>
+          </b-col>
+        </b-row>
+      </b-container>
+    </section>
+    <section class="pb-5">
+      <b-container class="mt-5">
+        <div class="d-flex flex-column">
+          <h2 class="mx-auto">
+            Nuestros Precios
+          </h2>
+          <p class="text-muted mx-auto text-700">
+            Elija el plan que mejor se adapte a sus necesidades, no dude en contactarnos
+          </p>
+
+          <b-row class="mx-lg-5 mt-2">
+            <b-col cols="12" lg="4" md="4" sm="12" class="mt-2">
+              <b-card class="rounded-lg shadow" no-body>
+                <b-card-body class="d-flex flex-column">
+                  <div class="text-center flex-fill d-flex flex-column">
+                    <h4>¡Gratis!</h4>
+                    <p class="text-muted">Atrévete a probar tus superpoderes</p>
+                    <span class="d-inline">
+                      <div class="money">&#36;0</div>
+                    </span>
+                    <div class="light-green p-3 justify-content-between mt-4 rounded-lg d-flex flex-column flex-fill">
+                      <div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+                          <span class="ml-2">Recibe el primer mes gratis</span>
+                        </div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+                          <span class="ml-2">Código QR único</span>
+                        </div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+                          <span class="ml-2">Funcionalidad para compartir</span>
+                        </div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+                          <span class="ml-2">Función de agregar contacto</span>
+                        </div>
+                      </div>
+                      <b-button :to="{ name: 'register' }" block class="rounded-lg btn-white shadow-sm">
+                        Registrate gratis
+                      </b-button>
+                    </div>
+                  </div>
+                </b-card-body>
+              </b-card>
             </b-col>
-            <b-col lg="6" md="6" sm="12">
-              <b-img
-                alt="hero"
-                :src="require(`@/assets/img/hero-img-2.png`)"
-                class="img-fluid"
-              ></b-img>
+            <b-col cols="12" lg="4" md="4" sm="12" class="mt-2">
+              <b-card class="rounded-lg primary-card shadow" bg-variant="primary" no-body>
+                <b-card-body class="d-flex flex-column">
+                  <div class="text-center text-white position-relative flex-fill d-flex flex-column">
+                    <h4>Anualidad</h4>
+                    <p>
+                      Extiende el poder
+                    </p>
+                    <span class="d-inline">
+                      <div class="money">&#36;10 USD</div>
+                    </span>
+                    <div class="bg-white p-3 justify-content-between mt-4 rounded-lg d-flex flex-column flex-fill">
+                      <div class="text-black">
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+                          <span class="ml-2">Recibe primer mes gratis</span>
+                        </div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+                          <span class="ml-2">Recibe 1 año de servicio</span>
+                        </div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+                          <span class="ml-2">Código QR único</span>
+                        </div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+                          <span class="ml-2">Funcionalidad para compartir</span>
+                        </div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+                          <span class="ml-2">Función de agregar contacto</span>
+                        </div>
+                      </div>
+                      <b-button :to="{ name: 'register' }" block variant="primary text-white" class="rounded-lg">
+                        Registrate ahora
+                      </b-button>
+                    </div>
+                  </div>
+                </b-card-body>
+              </b-card>
+            </b-col>
+            <b-col cols="12" lg="4" md="4" sm="12" class="mt-2">
+              <b-card class="rounded-lg shadow" no-body>
+                <b-card-body class="d-flex flex-column">
+                  <div class="text-center flex-fill d-flex flex-column">
+                    <h4>Negocio</h4>
+                    <p class="text-muted mb-1">Revela nuevos superpoderes</p>
+                    <span class="d-inline">
+                      <div class="money">
+                        <small class="fs-30 text-muted">Próximamente</small>
+                      </div>
+                    </span>
+                    <div class="light-green p-3 justify-content-between mt-4 rounded-lg d-flex flex-column flex-fill">
+                      <div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg
+                            width="26"
+                            height="26"
+                            viewBox="0 0 26 26"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+
+                          <span class="ml-2">Registra a tus socios</span>
+                        </div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg
+                            width="26"
+                            height="26"
+                            viewBox="0 0 26 26"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+
+                          <span class="ml-2">Diseño personalizado</span>
+                        </div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+                          <span class="ml-2">Código QR para cada socio</span>
+                        </div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+                          <span class="ml-2">Funcionalidad para compartir</span>
+                        </div>
+                        <div class="d-flex flex-row my-3 align-items-center">
+                          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
+                              fill="#54BD95"
+                            />
+                          </svg>
+                          <span class="ml-2">Función de agregar contacto</span>
+                        </div>
+                      </div>
+                      <b-button :to="{ name: 'contacts' }" block class="rounded-lg btn-white shadow-sm">Contacto</b-button>
+                    </div>
+                  </div>
+                </b-card-body>
+              </b-card>
             </b-col>
           </b-row>
-        </b-container>
-      </section>
-      <section class="pb-5">
-        <b-container class="mt-5">
-          <div class="d-flex flex-column">
-            <h2 class="mx-auto">
-              Nuestros Precios
-            </h2>
-            <p class="text-muted mx-auto text-700">
-              Elija el plan que mejor se adapte a sus necesidades, no dude en contactarnos
-            </p>
-
-            <b-row class="mx-lg-5 mt-2">
-              <b-col cols="12" lg="4" md="4" sm="12" class="mt-2">
-                <b-card class="rounded-lg shadow" no-body>
-                  <b-card-body class="d-flex flex-column">
-                    <div class="text-center flex-fill d-flex flex-column">
-                      <h4>¡Gratis!</h4>
-                      <p class="text-muted">Atrévete a probar tus superpoderes</p>
-                      <span class="d-inline">
-                        <div class="money">&#36;0</div>
-                      </span>
-                      <div class="light-green p-3 justify-content-between mt-4 rounded-lg d-flex flex-column flex-fill">
-                        <div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-                            <span class="ml-2">Recibe el primer mes gratis</span>
-                          </div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-                            <span class="ml-2">Código QR único</span>
-                          </div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-                            <span class="ml-2">Funcionalidad para compartir</span>
-                          </div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-                            <span class="ml-2">Función de agregar contacto</span>
-                          </div>
-                        </div>
-                        <b-button :to="{ name: 'register' }" block class="rounded-lg btn-white shadow-sm">
-                          Registrate gratis
-                        </b-button>
-                      </div>
-                    </div>
-                  </b-card-body>
-                </b-card>
-              </b-col>
-              <b-col cols="12" lg="4" md="4" sm="12" class="mt-2">
-                <b-card class="rounded-lg primary-card shadow" bg-variant="primary" no-body>
-                  <b-card-body class="d-flex flex-column">
-                    <div class="text-center text-white position-relative flex-fill d-flex flex-column">
-                      <h4>Anualidad</h4>
-                      <p>
-                        Extiende el poder
-                      </p>
-                      <span class="d-inline">
-                        <div class="money">&#36;10 USD</div>
-                      </span>
-                      <div class="bg-white p-3 justify-content-between mt-4 rounded-lg d-flex flex-column flex-fill">
-                        <div class="text-black">
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-                            <span class="ml-2">Recibe primer mes gratis</span>
-                          </div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-                            <span class="ml-2">Recibe 1 año de servicio</span>
-                          </div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-                            <span class="ml-2">Código QR único</span>
-                          </div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-                            <span class="ml-2">Funcionalidad para compartir</span>
-                          </div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-                            <span class="ml-2">Función de agregar contacto</span>
-                          </div>
-                        </div>
-                        <b-button :to="{ name: 'register' }" block variant="primary text-white" class="rounded-lg">
-                          Registrate ahora
-                        </b-button>
-                      </div>
-                    </div>
-                  </b-card-body>
-                </b-card>
-              </b-col>
-              <b-col cols="12" lg="4" md="4" sm="12" class="mt-2">
-                <b-card class="rounded-lg shadow" no-body>
-                  <b-card-body class="d-flex flex-column">
-                    <div class="text-center flex-fill d-flex flex-column">
-                      <h4>Negocio</h4>
-                      <p class="text-muted mb-1">Revela nuevos superpoderes</p>
-                      <span class="d-inline">
-                        <div class="money">
-                          <small class="fs-30 text-muted">Próximamente</small>
-                        </div>
-                      </span>
-                      <div class="light-green p-3 justify-content-between mt-4 rounded-lg d-flex flex-column flex-fill">
-                        <div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg
-                              width="26"
-                              height="26"
-                              viewBox="0 0 26 26"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-
-                            <span class="ml-2">Registra a tus socios</span>
-                          </div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg
-                              width="26"
-                              height="26"
-                              viewBox="0 0 26 26"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-
-                            <span class="ml-2">Diseño personalizado</span>
-                          </div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-                            <span class="ml-2">Código QR para cada socio</span>
-                          </div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-                            <span class="ml-2">Funcionalidad para compartir</span>
-                          </div>
-                          <div class="d-flex flex-row my-3 align-items-center">
-                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26ZM12.8355 16.2959L17.8779 11.0959L16.4421 9.70358L12.0894 14.1923L9.5295 11.7554L8.15054 13.204L11.4281 16.324L12.1458 17.0072L12.8355 16.2959Z"
-                                fill="#54BD95"
-                              />
-                            </svg>
-                            <span class="ml-2">Función de agregar contacto</span>
-                          </div>
-                        </div>
-                        <b-button :to="{ name: 'contacts' }" block class="rounded-lg btn-white shadow-sm">Contacto</b-button>
-                      </div>
-                    </div>
-                  </b-card-body>
-                </b-card>
-              </b-col>
-            </b-row>
-          </div>
-        </b-container>
-      </section>
-    </div>
+        </div>
+      </b-container>
+    </section>
 
     <section class="bg-dark text-white pt-5 pb-4">
       <b-container>
@@ -861,6 +863,7 @@
             <b-row style="justify-content: end !important; text-align: right;">
               <b-col lg="4" md="4" sm="12" cols="12" class="d-flex flex-column mt-3" >
                 <b-link :to="{ name: 'terms-conditions' }" class="text-white">Terminos y condiciones</b-link>
+                <b-link :to="{ name: 'faq' }" class="text-white">Preguntas Frecuentes</b-link>
                 <b-link :to="{ name: 'contacts' }" class="text-white">Contactanos</b-link>
               </b-col>
             </b-row>

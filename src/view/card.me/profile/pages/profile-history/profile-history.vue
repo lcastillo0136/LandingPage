@@ -182,7 +182,7 @@
           
           this.$notification.error({
             message: 'Error al guardar',
-            description: 'no se puedo actualiar la información'
+            description: 'no se puedo actualizar la información'
           })
         })
       },

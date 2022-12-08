@@ -118,6 +118,17 @@ export default [
         component: () => import('@/view/' + config.theme + '/contacts')
       }, 
       {
+        path: '/faq.html',
+        name: 'faq',
+        meta: {
+          hideInMenu: true,
+          title: 'faq.title',
+          notCache: true,
+          icon: 'md-contacts'
+        },
+        component: () => import('@/view/' + config.theme + '/faq')
+      }, 
+      {
         path: '/profile',
         alias: '/profile.html',
         name: 'profile',

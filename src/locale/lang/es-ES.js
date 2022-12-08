@@ -724,5 +724,8 @@ export default {
   },
   privacy: {
     title: 'Privacidad'
+  },
+  faq: {
+    title: 'Preguntas frecuentes'
   }
 }
