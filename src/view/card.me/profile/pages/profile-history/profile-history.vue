@@ -179,10 +179,17 @@
           })
         }).catch((error) => {
           this.saving = false
-          
-          this.$notification.error({
-            message: 'Error al guardar',
-            description: 'no se puedo actualizar la información'
+          // this.$notification.error({
+          //   message: 'Error al guardar',
+          //   description: 'no se puedo actualizar la información'
+          // })
+          _.each(error.data.error, (e, p) => {
+            _.each(e, (ee) => {
+              this.$notification.error({
+                message: 'Error al guardar',
+                description: this.$t(`errors.${p}.${ee}`)
+              })
+            })
           })
         })
       },
