@@ -1,48 +1,6 @@
 <template>
   <div>
     <div class="box_profile aside-profile mb-2 pb-0">
-      <!-- <figure class="profile-header">
-        <img :src="cover" alt="" class="img-fluid"  v-if="isCoverImage"/>
-        <img :src="coverFile" alt="" class="img-fluid" v-else/>
-      </figure>
-      <div v-if="avatar" class="profile-avatar-container">
-        <a-avatar :size="90" :src="avatar" v-if="isImage" class="shadow-sm bg-white"/>
-        <a-avatar :size="90" :src="avatarFile"  v-else class="shadow-sm bg-white"/>
-      </div>
-      <template>
-        <small v-if="user.especialidad" class="d-inline-block">
-          {{ user.especialidad }}
-        </small>
-      </template>
-      <h1 v-if="user && user.first_name" class="mb-0">
-        
-      </h1>
-      <div class="link-cardme">
-        <template v-if="active_account">
-          <a-tag color="green">
-            Perfil activo 
-          </a-tag>
-        </template>
-        <template v-else>
-          <a-tag color="red">
-            Perfil desactivado
-          </a-tag>
-          <small>
-            <router-link :to="{ name: 'profile-payment' }">Ir a pagar</router-link>
-          </small>
-        </template>
-      </div>
-      <div class="position-relative p-3">
-        <vue-qr :text="userLink" :size="200" :margin="10" ref="QRCode"></vue-qr>
-        <a-button class="download-message" @click="downloadQR" :loading="downloadingQR">
-          <a-icon type="download"></a-icon>
-          Descargar QR
-        </a-button>
-      </div>
-      <div class="button-group d-flex">
-        <a-button type="dashed" @click="$emit('preview')">Preview</a-button>
-        <a-button type="dashed" v-clipboard:copy="userLink" @click="copyLink">Copiar link</a-button>
-      </div> -->
       <!-- <ul class="contacts">
         <li><h6>Direccion</h6>{{ getUser.address.street }} {{ getUser.address.suburb }}, {{ getUser.address.city}}</li>
         <li v-if="getUser.phone"><h6>Teléfono</h6><a :href="'tel:' + getUser.phone ">{{ getUser.phone | phone }}</a></li>
@@ -84,12 +42,15 @@
             <a-icon type="caret-right"></a-icon>
           </router-link>
         </li>
-        <!-- <li>
+        <li>
           <router-link :to="{ name: 'profile-files' }">
-            <span>Archivos</span>
-            <i class="arrow_carrot-right"></i>
+            <span>
+              <a-icon type="folder"></a-icon>
+              Archivos
+            </span>
+            <a-icon type="caret-right"></a-icon>
           </router-link>
-        </li> -->
+        </li>
         <!-- <li>
           <router-link :to="{ name: 'profile-reviews' }">
             <span>Reseñas</span>

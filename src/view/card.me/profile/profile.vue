@@ -53,7 +53,15 @@
               <b-icon-gear style="width: 20px; height: 20px;color: var(--gray-dark);"></b-icon-gear>
             </router-link>
             <router-link :to="{ name: 'profile-details' }" v-b-tooltip.hover.bottom title="Ver mi perfil" class="d-none d-md-inline">
-              <b-avatar :src="User.avatar"></b-avatar>
+              <template v-if="typeAsImage">
+                <b-avatar :src="User.avatar"></b-avatar>
+              </template>
+              <template v-else>
+                <video class="shadow-sm bg-white border border-white ant-avatar ant-avatar-circle ant-avatar-image" autoplay loop muted style="object-fit: cover;">
+                  <source :src="videoAvatarSrc" id="video_here">
+                    Your browser does not support HTML5 video.
+                </video>
+              </template>
             </router-link>
           </div>
         </b-navbar-nav>
@@ -197,6 +205,15 @@
       active_account() {
         return this.User.active_account && this.$moment.utc(this.User.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.User.active_account))
       },
+      typeAsImage() {
+        return !(['mp4', 'avi', 'mp3', 'mov', 'mkv', 'flv', 'vob', 'avi', 'wmv'].includes(this.avatarExtension))
+      },
+      videoAvatarSrc () {
+        return (!this.typeAsImage && this.User.avatar instanceof File && URL.createObjectURL(this.User.avatar)) || this.User.avatar
+      },
+      avatarExtension () {
+        return this.User.avatar && this.User.avatar.slice((this.User.avatar.lastIndexOf(".") - 1 >>> 0) + 2)
+      }
     },
     methods: {
       ...mapActions([
