@@ -751,11 +751,24 @@
         color: #c87ef0;
       }
 
+      .ant-collapse {
+        background: #0000;
+        border: none;
+        .ant-collapse-item {
+          border: none;
+        }
+        .ant-collapse-content {
+          border: none;
+        }
+      }
+
       .ant-collapse-header {
+        border: none;
         .ant-collapse-arrow {
           display: none;
         }
       }
+
       .ant-collapse-content-box {
         label {
           line-height: 11px;
@@ -1238,6 +1251,5 @@
         }
       }
     }
-
   }
 </style>

@@ -9,8 +9,9 @@ export default {
       max_limit: 'Se alcanzó el límite máximo de caracteres de la contraseña'
     },
     email: {
-      not_available: 'Correo electrónico no disponible',
-      not_valid: 'Correo electrónico no valido'
+      not_available: 'El correo electrónico ya esta en uso',
+      not_valid: 'El correo electrónico no es valido',
+      required_field: 'Campo correo electrónico requerido',
     },
     too_many_request: 'Demasiadas solicitudes, por favor espere',
     phone: {
@@ -19,10 +20,6 @@ export default {
     },
     first_name: {
       required_field: 'Campo nombre requerido'
-    },
-    email: {
-      required_field: 'Campo correo electrónico requerido',
-      not_available: 'Correo electrónico no disponible'
     }
   },
   home: {

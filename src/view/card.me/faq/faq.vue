@@ -129,7 +129,7 @@
             }, {
               id: 4,
               header: '¿Puedo ver un ejemplo de una tarjeta digital?',
-              content: '<p>¡Claro!</p><p>En este enlace podrás ver la tarjeta digital de <a href="http://cardme-api.zibasoft.com/p/67c41a4e-8340-4a2a-b8bf-49aa399ca842.html" target="_blank">Zibasoft</a><br>O escaneando este código QR: <br> <img src="/img/zibasoft-qr.png" alt="Zibasoft" border="0" /></p>'
+              content: '<p>¡Claro!</p><p>En este enlace podrás ver la tarjeta digital de <a href="https://api.onlycards.me/p/67c41a4e-8340-4a2a-b8bf-49aa399ca842.html" target="_blank">Zibasoft</a><br>O escaneando este código QR: <br> <img src="/img/zibasoft-qr.png" alt="Zibasoft" border="0" /></p>'
             }, {
               id: 5,
               header: '¿Cuentan con tarjeta física y cuál sería su costo?',

@@ -8,8 +8,16 @@
         </figure>
         <div class="d-flex align-items-center">
           <div v-if="avatar" class="profile-avatar-container">
-            <a-avatar :size="120" :src="avatar" v-if="isImage" class="shadow-sm bg-white border border-white"/>
-            <a-avatar :size="120" :src="avatarFile"  v-else class="shadow-sm bg-white border border-white"/>
+            <template v-if="typeAsImage">
+              <a-avatar :size="120" :src="avatar" v-if="isImage" class="shadow-sm bg-white border border-white"/>
+              <a-avatar :size="120" :src="avatarFile"  v-else class="shadow-sm bg-white border border-white"/>
+            </template>
+            <template v-else>
+              <video class="shadow-sm bg-white border border-white ant-avatar ant-avatar-circle ant-avatar-image" autoplay loop muted>
+                <source :src="videoAvatarSrc" id="video_here">
+                  Your browser does not support HTML5 video.
+              </video>
+            </template>
           </div>
           <div>
             <h4 class="card-title">Perfil</h4>
@@ -22,9 +30,17 @@
         <div class="d-flex flex-column flex-md-row my-4 row-cols-1 row-cols-md-2">
           <a-form-model-item class="px-md-1" :wrapper-col="{ span: 24 }">
             <small class="text-muted">FOTO DE PERFIL</small>
-            <a-upload-dragger class="flex-wrap flex-md-nowrap justify-content-center"  name="profile-avatar" :multiple="false" :showUploadList="false" :beforeUpload="handleUpload" accept="image/*" :disabled="saving" >
+            <a-upload-dragger class="flex-wrap flex-md-nowrap justify-content-center"  name="profile-avatar" :multiple="false" :showUploadList="false" :beforeUpload="handleUpload" accept="image/*,video/*" :disabled="saving" >
               <template v-if="avatarFile">
-                <a-avatar shape="square" :size="64" icon="user" :src="avatarFile" />
+                <template v-if="typeAsImage">
+                  <a-avatar shape="square" :size="64" icon="user" :src="avatarFile" />
+                </template>
+                <template v-else>
+                  <video muted class="rounded button-image">
+                    <source :src="videoAvatarSrc" id="video_here">
+                      Your browser does not support HTML5 video.
+                  </video>
+                </template>
                 <span class="profile-name ml-4 mr-auto font-weight-bold" >
                   {{ profile.avatar | filename }}
                 </span>
@@ -231,95 +247,16 @@
             <br>
             <small class="text-muted">Escribe una descripción corta sobre ti mismo</small>
           </template>
-          <!-- <a-textarea :autoSize="true" placeholder="Escribe una descripción corta sobre ti mismo" v-model="profile.biography" :rows="6" :disabled="saving"/> -->
           <div class="bio-container">
-            <!-- <Toolbar
-              :editor="editor"
-              :defaultConfig="toolbarConfig"
-              :mode="mode"
-            />
-            <Editor
-              ref="bioEditor"
-              style="height: 500px; overflow-y: hidden;"
-              v-model="profile.biography"
-              :defaultConfig="editorConfig"
-              :mode="mode"
-              @onCreated="onCreated"
-            /> -->
             <vue-editor v-model="profile.biography" :disabled="saving" :editorToolbar="toolbarConfig" :editorOptions="editorConfig"  placeholder="Escribe una descripción corta sobre ti mismo" />
           </div>
         </a-form-model-item>
       </b-card>
     </a-form-model>
     <!-- 
-    <div class="box_general_2 add_bottom_45">
-      <h4>Información de cuenta</h4>
-      <form ref="registerForm">
-        <div class="row">
-          <div class="col-md-4 col-sm-4">
-            <div class="form-group">
-              <label>Usuario</label>
-              <input type="text" class="form-control" placeholder="Usuario" :value="profile.username" autocomplete="off" disabled>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-4">
-            <div class="form-group was-validated">
-              <label>Contraseña</label>
-              <div class="hideShowPassword-wrapper">
-                <input type="password" class="form-control" placeholder="Contraseña" v-model="user_pass.password" autocomplete="off" ref="password" :class="{ 'has-error is-invalid': !matchPassword }">
-                <button type="button" role="button" aria-label="Mostrar contraseña" title="Mostra contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.password);user_pass.passwordVisible=true" v-if="!user_pass.passwordVisible">Mostrar</button>
-
-                <button type="button" role="button" aria-label="Ocultar contraseña" title="Ocultar contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.password);user_pass.passwordVisible=false" v-else>Ocultar</button>
-                <div class="invalid-feedback">
-                  Las contraseñas no coinciden
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-4">
-            <div class="form-group">
-              <label>Confirmar contraseña</label>
-              <div class="hideShowPassword-wrapper">
-                <input type="password" class="form-control" placeholder="Confirmar contraseña" v-model="user_pass.confirmpassword" autocomplete="off" ref="confirmpassword" :class="{ 'has-error is-invalid': !matchPassword } ">
-                <button type="button" role="button" aria-label="Mostrar contraseña" title="Mostra contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.confirmpassword);user_pass.password2Visible=true" v-if="!user_pass.password2Visible">Mostrar</button>
-
-                <button type="button" role="button" aria-label="Ocultar contraseña" title="Ocultar contraseña" tabindex="0" class="my-toggle hideShowPassword-toggle-show" aria-pressed="false" @click.stop.prevent="togglePassword($refs.confirmpassword);user_pass.password2Visible=false" v-else>Ocultar</button>
-                <div class="invalid-feedback">
-                  {{ $t('register.messages.error.incorrect_password') }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
 
     <b-card>
-      <h4 class="card-title">Información profesional</h4>
-      <h6 class="card-subtitle text-muted mb-4">Trayectoria profesional</h6>
 
-      <div class="d-flex">
-        <a-form-model-item prop="profesion" class="px-1 w-25">
-          <small class="text-muted">PROFESIÓN</small>
-          <a-input type="text" placeholder="----------" v-model="profile.profesion" :disabled="saving" size="large">
-          </a-input>
-        </a-form-model-item>
-        <a-form-model-item prop="profesion" class="px-1 w-25">
-          <small class="text-muted">ESPECIALIDAD</small>
-          <a-input type="text" placeholder="----------" v-model="profile.especialidad" :disabled="saving" size="large">
-          </a-input>
-        </a-form-model-item>
-        <a-form-model-item prop="profesion" class="px-1 w-25">
-          <small class="text-muted">CÉDULA PROFESIONAL</small>
-          <a-input type="text" placeholder="----------" v-model="profile.cedula_profesional" :disabled="saving" size="large">
-          </a-input>
-        </a-form-model-item>
-        <a-form-model-item prop="profesion" class="px-1 w-25">
-          <small class="text-muted">COMPAÑÍA / EMPRESA</small>
-          <a-input type="text" placeholder="----------" v-model="profile.company_name" :disabled="saving" size="large">
-          </a-input>
-        </a-form-model-item>
-      </div>
       <div>
         <small class="text-muted mx-1">HABILIDADES</small>
         <br>
@@ -535,21 +472,6 @@
           } 
         },
         drag: false,
-        myArray: [{
-          name: 'uno', id: 1
-        }, {
-          name: 'dos', id: 2
-        }, {
-          name: 'tres', id: 3
-        }, {
-          name: 'cuatro', id: 4
-        }, {
-          name: 'cinco', id: 5
-        }, {
-          name: 'seis', id: 6
-        }, {
-          name: 'siete', id: 7
-        }]
       }
     },
     watch: {
@@ -610,6 +532,12 @@
          
        return true
       },
+      typeAsImage() {
+        return !this.isImage ? this.profile.avatar.type.indexOf('image/') > -1 : !(['mp4', 'avi', 'mp3', 'mov', 'mkv', 'flv', 'vob', 'avi', 'wmv'].includes(this.avatarExtension))
+      },
+      videoAvatarSrc () {
+        return (!this.isImage && !this.typeAsImage && URL.createObjectURL(this.profile.avatar)) || this.profile.avatar
+      },
       isCoverImage() {
         try {
           if (this.profile.cover && this.profile.cover instanceof File) {
@@ -627,6 +555,9 @@
       },
       hasNewProfilePicture() {
         return this.profile.avatar instanceof File
+      },
+      avatarExtension () {
+        return this.profile.avatar.slice((this.profile.avatar.lastIndexOf(".") - 1 >>> 0) + 2)
       }
     },
     filters: {
@@ -688,7 +619,6 @@
               this.avatarFile = '';
 
               this.saving = false
-              
 
               this.$notification.success({
                 message: 'Datos guardados',
@@ -696,42 +626,43 @@
               })
             }).catch((error) => {
               this.saving = false
-              this.$refs.bioEditor.editor.enable()
-              this.errors = error.data.error
+              
+              _.each(error.data.error, (e, p) => {
+                _.each(e, (ee) => {
+                  this.$notification.error({
+                    message: 'Error al guardar',
+                    description: this.$t(`errors.${p}.${ee}`)
+                  })
+                })
+              })
             })
           } else {
             this.saving = false
-            this.$refs.bioEditor.editor.enable()
           }
         }).catch((error) => {
           this.saving = false
-          this.$refs.bioEditor.editor.enable()
-          this.errors = error.data.error
         });
-
-        //   updateUser({
-        //     ...this.profile,
-        //     ...{
-        //       bday: this.profile.bday && this.profile.bday.format('YYYY-MM-DD'),
-        //       phone: (`${this.profile.phone||''}`).replace(/\D/g, ''),
-        //     }, ...(this.user_pass.password != "" && this.matchPassword ? {
-        //       password: this.user_pass.password,
-        //       password_confirmation: this.user_pass.password,
-        //     } : {})
       },
       handleUpload(file) {
-        this.profile.avatar = file
+        if (file.type.indexOf('video/') > -1 && file.size / (1024 * 1024) > 50) {
+          this.$notification.error({
+            message: 'Error al seleccionar el archivo',
+            description: 'El tamaño del video debe ser menor a 5 MB'
+          })
+        } else {
+          this.profile.avatar = file
 
-        if (!this.isImage) {
-          var reader  = new FileReader();
-          reader.onloadend = () => {
-            this.avatarFile = reader.result;
-          }
+          if (!this.isImage) {
+            var reader  = new FileReader();
+            reader.onloadend = () => {
+              this.avatarFile = reader.result;
+            }
 
-          if (this.avatar) {
-            reader.readAsDataURL(this.avatar);
-          } else {
+            if (this.avatar) {
+              reader.readAsDataURL(this.avatar);
+            } else {
 
+            }
           }
         }
         return false
@@ -825,6 +756,19 @@
       margin-top: -30px;
       margin-right: 16px;
       > span {
+        border-width: 4px !important;
+      }
+
+      > video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        -o-object-fit: cover;
+        object-fit: cover;
+        width: 120px;
+        height: 120px;
+        line-height: 120px;
+        font-size: 18px;
         border-width: 4px !important;
       }
 
@@ -1071,6 +1015,7 @@
             justify-content: center;
             align-items: center;
             flex: 0 0 auto;
+            object-fit: cover;
           }
           .profile-name {
             

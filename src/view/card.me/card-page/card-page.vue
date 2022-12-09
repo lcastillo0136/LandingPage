@@ -3,8 +3,16 @@
     <template v-if="card">
       <b-card tag="article" class="mb-md-4 shadow" no-body :class="[card.design || '']">
         <div v-if="card.avatar" class="avatar-container">
-          <b-card-img :src="card.avatar" alt="Image" top v-if="isImage"></b-card-img>
-          <b-card-img :src="avatarFile" alt="Image" top v-else></b-card-img>
+          <template v-if="typeAsImage">
+            <b-card-img :src="card.avatar" alt="Image" top v-if="isImage"></b-card-img>
+            <b-card-img :src="avatarFile" alt="Image" top v-else></b-card-img>
+          </template>
+          <template v-else>
+            <video class="shadow-sm bg-white border border-white ant-avatar ant-avatar-circle ant-avatar-image" autoplay loop muted>
+              <source :src="videoAvatarSrc" id="video_here">
+                Your browser does not support HTML5 video.
+            </video>
+          </template>
         </div>
         <div class="profile-job-n-name">
           <h4>
@@ -344,6 +352,12 @@
          
        return true
       },
+      typeAsImage() {
+        return !this.isImage ? this.card.avatar.type.indexOf('image/') > -1 : !(['mp4', 'avi', 'mp3', 'mov', 'mkv', 'flv', 'vob', 'avi', 'wmv'].includes(this.avatarExtension))
+      },
+      videoAvatarSrc () {
+        return (!this.isImage && !this.typeAsImage && URL.createObjectURL(this.card.avatar)) || this.card.avatar
+      },
       isCoverImage() {
         try {
           if (this.card.cover && this.card.cover instanceof File) {
@@ -373,6 +387,9 @@
       userLink() {
         return getServerFile2(`p/${this.card.uuid_key}.html`)
       },
+      avatarExtension () {
+        return this.card.avatar.slice((this.card.avatar.lastIndexOf(".") - 1 >>> 0) + 2)
+      }
     },
     methods: {
       saveContact() {
@@ -1102,6 +1119,15 @@
         .avatar-container {
           position: relative;
           z-index: 1;
+          > video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;    
+            border: none !important;
+            border-radius: 0;
+          }
         }
         .image-cover {
           position: absolute;
@@ -1129,6 +1155,15 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+          }
+          > video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;    
+            border: none !important;
+            border-radius: 0;
           }
         }
         .image-cover {
@@ -1174,6 +1209,15 @@
             height: 100%;
             object-fit: cover;
           }
+          > video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;    
+            border: none !important;
+            border-radius: 0;
+          }
         }
         .image-cover {
           display: none;
@@ -1212,6 +1256,15 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+          }
+          > video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;    
+            border: none !important;
+            border-radius: 0;
           }
         }
         .profile-job-n-name {
@@ -1281,6 +1334,13 @@
             display: block;
             width: 100%;
             height: 100%;
+            object-fit: cover;
+          }
+          > video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
             object-fit: cover;
           }
         }
