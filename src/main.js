@@ -36,6 +36,7 @@ import 'ant-design-vue/lib/avatar/style/index.css';
 import 'ant-design-vue/lib/back-top/style/index.css';
 import 'ant-design-vue/lib/button/style/index.css';
 import 'ant-design-vue/lib/card/style/index.css';
+import 'ant-design-vue/lib/carousel/style/index.css';
 import 'ant-design-vue/lib/collapse/style/index.css';
 import 'ant-design-vue/lib/date-picker/style/index.css';
 import 'ant-design-vue/lib/divider/style/index.css';
@@ -60,6 +61,8 @@ import 'ant-design-vue/lib/tabs/style/index.css';
 import 'ant-design-vue/lib/tag/style/index.css';
 import 'ant-design-vue/lib/tooltip/style/index.css';
 import 'ant-design-vue/lib/upload/style/index.css';
+import 'video.js/dist/video-js.css'
+
 import '@/assets/css/ant-design-drawer.css'
 import '@/assets/css/ant-design-menu.css'
 
@@ -81,7 +84,7 @@ Vue.use(Moment, {
 })
 Vue.use(VueSkeletonLoading)
 // Vue.use(DisableAutocomplete)
-
+Vue.use(VueVideoPlayer)
 Vue.use(VueNativeNotification, {
   requestOnNotify: true
 })

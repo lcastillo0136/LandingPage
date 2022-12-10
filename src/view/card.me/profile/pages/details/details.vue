@@ -317,7 +317,6 @@
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
   import { VueEditor, Quill } from "vue2-editor";
 
-
   import Addressess from './components/addressess'
   import * as _ from 'lodash'
 

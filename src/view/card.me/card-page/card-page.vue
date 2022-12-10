@@ -68,6 +68,19 @@
           </b-card-sub-title>
           <b-card-text class="mt-3" v-html="card.biography">
           </b-card-text>
+
+          <a-carousel arrows class="mb-3">
+            <div slot="prevArrow" slot-scope="props" class="custom-slick-arrow" style="left: 10px;zIndex: 1">
+              <a-icon type="left-circle" />
+            </div>
+            <div slot="nextArrow" slot-scope="props" class="custom-slick-arrow" style="right: 10px">
+              <a-icon type="right-circle" />
+            </div>
+            <div v-for="(file_image) in cardImages">
+              <img :src="file_image.url" border="0" :alt="file_image.name" />
+              <img :src="file_image.url" border="0" :alt="file_image.name" class="background-clone" />
+            </div>
+          </a-carousel>
           
           <div class="social-list">
             <div :class="['caracteristica', 'icon-' + (social.network_icon || 'globe')]" v-for="(social) in socialsWithIcon">
@@ -78,6 +91,7 @@
               </a>
             </div>
           </div>
+
 
           <div>
             <div class="caracteristica" v-if="card.bday && isValidBday && !card.hide_bday">
@@ -156,6 +170,17 @@
                 <a :href="network.network_url" target="_blank">{{ network.network_url }}</a>
               </span>
             </div>
+          </div>
+
+          <div v-if="cardPDF" class="mb-3 card-pdf">
+            <iframe :src="cardPDF.url" border="0"></iframe>
+          </div>
+          <div v-if="cardVideo" class="mb-3 card-video">
+            <video-player  class="video-player-box"
+                 ref="videoPlayer"
+                 :options="playerOptions"
+                 :playsinline="true">
+            </video-player>
           </div>
           
           <div class="skills">
@@ -389,6 +414,39 @@
       },
       avatarExtension () {
         return this.card.avatar.slice((this.card.avatar.lastIndexOf(".") - 1 >>> 0) + 2)
+      },
+      cardImages() {
+        return this.card && _.filter((this.card.files || []), (f) => {
+          const extension = f.extension || (f.path && f.path.slice((f.path.lastIndexOf(".") - 2 >>> 0) + 3)) || f.name.slice((f.name.lastIndexOf(".") - 2 >>> 0) + 3)
+
+          return f.type.indexOf('image/') != -1 || ['jpg','jpng','png','gif','bmp'].includes(extension)
+        })
+      },
+      cardPDF() {
+        return this.card && _.find((this.card.files || []), (f) => {
+          const extension = f.extension || (f.path && f.path.slice((f.path.lastIndexOf(".") - 2 >>> 0) + 3)) || f.name.slice((f.name.lastIndexOf(".") - 2 >>> 0) + 3)
+
+          return f.type.indexOf('application/pdf') != -1 || ['pdf'].includes(extension)
+        })
+      },
+      cardVideo() {
+        return this.card && _.find((this.card.files || []), (f) => {
+          const extension = f.extension || (f.path && f.path.slice((f.path.lastIndexOf(".") - 2 >>> 0) + 3)) || f.name.slice((f.name.lastIndexOf(".") - 2 >>> 0) + 3)
+
+          return (f.type.indexOf('video/') != -1 || ['mp4', 'avi', 'mp3', 'mov', 'mkv', 'flv', 'vob', 'avi', 'wmv'].includes(extension))
+        })
+      },
+      playerOptions() {
+        return {
+          muted: true,
+          language: 'en',
+          playbackRates: [0.7, 1.0, 1.5, 2.0],
+          sources: [{
+            type: "video/mp4",
+            src: this.cardVideo && this.cardVideo.url
+          }],
+          poster: "/static/images/author.jpg",
+        }
       }
     },
     methods: {
@@ -1532,6 +1590,90 @@
           right: -8px;
           transform: rotateZ(-52deg);
           z-index: 1030;
+        }
+      }
+    }
+
+    .ant-carousel {
+      margin-left: -20px;
+      margin-right: -20px;
+      
+      .slick-slide {
+        text-align: center;
+        height: 160px;
+        line-height: 160px;
+        background: #4fb76721;
+        overflow: hidden;
+        
+        img {
+          display: block;
+          object-fit: cover;
+          max-width: 100%;
+          max-height: 100%;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 7;
+
+          &.background-clone {
+            opacity: 0.5;
+            transform: translateX(0%) scale(1);
+            left: 0;
+            top: 0;
+            z-index: 1;
+            width: 100%;
+            filter: blur(8px);
+            -webkit-filter: blur(8px);
+          }
+        }
+        
+        > div {
+          height: 100%;
+          > div {
+            height: 100%;
+            position: relative;
+          }
+        }
+      }
+      
+      .custom-slick-arrow {
+        width: 25px;
+        height: 25px;
+        font-size: 25px;
+        color: #fff;
+        background-color: #1f2d3d1c;
+        border-radius: 50%;
+      }
+      
+      .custom-slick-arrow:before {
+        display: none;
+      }
+
+      .custom-slick-arrow:hover {
+        
+      }
+    }
+
+    .card-pdf {
+      border: 0;
+      margin-left: -20px;
+      margin-right: -20px;
+      min-width: 100%;
+      height: 500px;
+      iframe {
+        border: 0;
+      }
+    }
+    .card-video {
+      border: 0;
+      margin-left: -20px;
+      margin-right: -20px;
+      min-width: 100%;
+      .video-player {
+        width: 100%;
+        .video-js {
+          width: 100%;
+          height: 250px;
         }
       }
     }
