@@ -29,9 +29,9 @@
       </b-container>
     </b-navbar>
     <Login></Login>
-    <div class="bg-white flex-fill py-4 pb-5">
+    <div class="flex-fill py-4 pb-5">
       <div class="container d-flex flex-column justify-content-between mb-5">
-        <div class="search-header">
+        <div class="search-header shadow-sm">
           <h2>Resuelve tus dudas</h2>
           <a-input placeholder="Preguntas frecuentes" v-model="search_concept">
             <svg class="absolute w-5 h-5 transform -translate-y-1/2 top-1/2 left-5" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" slot="prefix">
@@ -62,7 +62,7 @@
       <b-container>
         <b-row>
           <b-col cols="12" lg="6" md="6" sm="6">
-            <h6>@ 2022 powered with <b-icon-heart></b-icon-heart> by <a target="_blank" href="https://www.zibasoft.com/">Zibasoft</a></h6>
+            <h6>@ 2022 powered with <b-icon-heart-fill style="color: hotpink; margin: 0px 5px;"></b-icon-heart-fill> by <a target="_blank" href="https://www.zibasoft.com/">Zibasoft</a></h6>
           </b-col>
           <b-col cols="12" lg="6" md="6" sm="6">
             <div class="clearfix">
@@ -145,13 +145,45 @@
             }, {
               id: 2,
               header: '¿Qué uso le dan a mi información?',
-              content: '<p>Nosotros solo pedimos la información que tu deseas mostrar en tu tarjeta digital, toda la información almacenada en nuestros servidores está completamente encriptada y no se comparte / compartirá por ningún medio externo a tu tarjeta digital.</p>'
+              content: '<p>Nosotros solo pedimos la información que tu deseas mostrar en tu tarjeta digital, toda la información almacenada en nuestros servidores está completamente encriptada y no se comparte ni compartirá por ningún medio externo a tu tarjeta digital.</p>'
             }, {
               id: 3,
               header: '¿Cómo puedo borrar mi información de sus servidores?',
               content: '<p>Lamentamos que nuestro servicio no fuera lo que tu buscabas.</p><p>Envianos un mensaje a nuestro número de WhatsApp <a href="https://wa.me/+5218181175165?text=Borrar mis datos" target="_blank">(818) 117-5165</a> en donde uno de nuestros agentes te atenderá y te guiara por el proceso para dar de baja tu información.</p><p>Al realizar este proceso ten en cuenta que tu tarjeta digital quedara desactivada definitivamente y tus clientes ya no podrán acceder por ninguno de nuestros medios.</p>'
             }]
           },
+          profile: {
+            title: 'Mi tarjeta digital',
+            questions: [{
+              id: 1,
+              header: '¿Cómo puedo cambiar mi foto de perfil?',
+              content: '<p>Fácilmente desde el apartado de Información Personal cuentas con el botón de <i>Foto de perfil</i> puedes seleccionar tu foto de perfil personal, el logotipo de tu empresa, la marca de tu producto, etc.</p>'
+            }, {
+              id: 2,
+              header: '¿Cómo puedo cambiar el diseño de mi tarjeta?',
+              content: '<p>Dentro del perfil de tu tarjeta digital cuentas con el apartado de <i>Configuraciones</i> y la sección de <i>diseño</i>.</p><p>Contamos con diferentes diseños para que elijas el que más se ajuste a tu personalidad.</p>'
+            }, {
+              id: 3,
+              header: '¿Puedo bloquear mi información para que solo lo vean personas con autorización?',
+              content: '<p>Desde el apartado de <i>Configuración</i> puedes definir tu código de seguridad que limita que personas puedan ver tu información.</p>'
+            }, {
+              id: 4,
+              header: '¿Por qué no se ve mi foto de portada en mi tarjeta digital?',
+              content: '<p>Si ya cargaste tu imagen de <i>foto de portada</i> revisa que el diseño que tienes asignado en tu tarjeta sea uno con foto de portada visible.</p>'
+            }, {
+              id: 5,
+              header: '¿Cuántas redes sociales o enlaces puedo ingresar?',
+              content: '<p>Actualmente no contamos con un límite de registro de redes sociales o enlaces, así que coparte todos tus medios de contacto!.</p>'
+            }, {
+              id: 6,
+              header: 'Realicé mi pago anual pero mi tarjeta no aparece activa.',
+              content: '<p>Lamentamos el inconveniente.</p><p>Envianos un mensaje a nuestro número de WhatsApp <a href="https://wa.me/+5218181175165?text=Mi cuenta no se activo y ya pague" target="_blank">(818) 117-5165</a> en donde uno de nuestros agentes te atenderá y resolverá al instante.</p>'
+            }, {
+              id: 7,
+              header: '¿Puedo crear una tarjeta digital para mi negocio o producto?',
+              content: '<p>Claro que puedes crear tarjeta digital para negocio, servicio, producto, perfil laboral, etc.</p><p>Cuentas con las herramientas para cambiar la imagen de perfil o logo y agregar un archivo PDF con el menú, detalles o tu hoja de vida.</p>'
+            }]
+          }
           // troubleshooting: {
           //   title: 'Problemas',
           //   questions: [{
@@ -224,7 +256,7 @@
       padding-top: 30px !important;
     }
     .search-header {
-      background: #e8f0ff;
+      background: #fff;
       border-radius: 20px;
       text-align: center;
       padding-left: 132px;

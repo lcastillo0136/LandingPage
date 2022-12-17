@@ -149,7 +149,7 @@ export default {
       return new Promise((resolve, reject) => {
         try {
           getUserInfo(state.token).then(res => {
-            const data = { cover: '', ...res.data.data }
+            const data = { cover: '', security_code: '', enable_security_code: false, ...res.data.data }
             commit('setUser', data)
             resolve(data)
           }).catch(err => {

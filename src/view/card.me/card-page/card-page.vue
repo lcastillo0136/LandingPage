@@ -1,6 +1,6 @@
 <template>
-  <main class="card-container" v-if="ready" :class="{ 'homeView': homeView }">
-    <template v-if="card">
+  <main class="card-container" v-if="ready" :class="{ 'homeView': homeView, 'blocked-card': blockedCard }">
+    <template v-if="card && !blockedCard">
       <b-card tag="article" class="mb-md-4 shadow" no-body :class="[card.design || '']">
         <div v-if="card.avatar" class="avatar-container">
           <template v-if="typeAsImage">
@@ -222,6 +222,27 @@
         </div>
       </b-modal>
     </template>
+    <template v-else-if="blockedCard">
+      <div class="blocked-container">
+        <b-card class="border-0 shadow p-4">
+          <div class="d-flex align-items-center flex-column">
+            <div class="lock-icon mb-3" :class="{ 'open': security_valid, 'error': security_error }">
+              <b-icon-key-fill rotate="90"></b-icon-key-fill>
+            </div>
+            <h2 class="font-weight-normal">
+              Codigo de seguridad
+            </h2>
+            <span>Ingrese el código de 4 dígitos</span>
+          </div>
+          <security-code @done="scReady" :valid="security_valid"></security-code>
+          <div class="" style="height: 50px" class="mt-5">
+            <a-button type="primary" size="large" :disabled="!security_valid" class="w-100 h-100 h5" @click="openCard" >
+              Ver tarjeta
+            </a-button>
+          </div>
+        </b-card>
+      </div>
+    </template>
     <template v-else>
       <div class="d-flex flex-column">
         <h2>No se encontro la tarjeta</h2>
@@ -250,6 +271,8 @@
   import VCard from 'vcard-creator'
   import VueAnalytics from 'vue-analytics'
   import NavigatorShare from 'vue-navigator-share'
+  import SecurityCode from './components/security-code'
+  import Cookies from 'js-cookie'
 
   import * as _ from 'lodash'
 
@@ -265,7 +288,15 @@
       homeView: {
         type: Boolean,
         default: false
+      },
+      preview: {
+        type: Boolean,
+        default: false
       }
+    },
+    components: {
+      NavigatorShare,
+      SecurityCode
     },
     data() {
       return {
@@ -274,7 +305,9 @@
         coverFile: '',
         userData: null,
         downloadingQR: false,
-        visibleQRMenu: false
+        visibleQRMenu: false,
+        security_valid: false,
+        security_error: false
       }
     },
     watch :{
@@ -309,9 +342,6 @@
           }
         }
       }
-    },
-    components: {
-      NavigatorShare
     },
     filters: {
       facebook(val) {
@@ -447,6 +477,11 @@
           }],
           poster: "/static/images/author.jpg",
         }
+      },
+      blockedCard() {
+        let _cookie = !!Cookies.get('sc-open')
+
+        return this.card.enable_security_code && this.homeView === false && this.preview === false && _cookie !== true
       }
     },
     methods: {
@@ -613,6 +648,20 @@
           message: 'Unable to share on this device',
           description: 'Your device cant share, please try again on another device'
         })
+      },
+      scReady(code) {
+        this.security_valid = this.security_error = false
+        if (this.card.security_code == code) {
+          this.security_valid = true
+        } else {
+          this.security_error = true
+        }
+      },
+      openCard() {
+        Cookies.set('sc-open', true, {
+          expires: new Date(new Date().getTime() + 15 * 60 * 1000)
+        })
+        this.card.enable_security_code = false
       }
     },
     created () {
@@ -1678,6 +1727,86 @@
       }
     }
 
+    &.blocked-card {
+      padding-top: 0;
+      .blocked-container {
+        background: #e1f3ff;
+        flex: 1 1 auto;
+      }
+      .card {
+        min-width: 700px;
+        height: auto !important;
+        margin-top: 74px;
+        margin-left: auto;
+        margin-right: auto;
+
+        .lock-icon {
+          background: #e1f3ff;
+          width: 110px;
+          height: 110px;
+          border-radius: 50%;
+          display: flex;
+          flex-direction: column;
+          align-content: center;
+          align-items: center;
+          justify-content: center;
+          color: #1994ff;
+          position: relative;
+          padding-top: 8px;
+          transition: all 250ms linear;
+
+          &:before {
+            content: '';
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            border: solid 2px;
+            border-radius: 50%;
+          }
+          &:after {
+            content: '';
+            width: 19px;
+            height: 17px;
+            position: absolute;
+            border-top: solid 2px;
+            border-left: solid 2px;
+            border-right: solid 2px;
+            border-top-left-radius: 50%;
+            border-top-right-radius: 50%;
+            top: 28px;
+            transform: rotateY(360deg);
+            transform-origin: right;
+            transition: all 250ms linear;
+          }
+
+          &.open {
+            background-color: #e5ffec;
+            color: #11b746;
+            &:after {
+              height: 20px;
+              top: 26px;
+              transform: rotateY(180deg);
+            }
+          }
+
+          &.error {
+            background-color: #ffebef;
+            color: #fb435c;
+            &:after {
+              
+            }
+          }
+        }
+
+        @media only screen and (max-width: 720px) {
+          min-width: auto;
+          margin-left: 15px;
+          margin-right: 15px;
+          width: auto;
+          border-radius: 20px;
+        }
+      }
+    }
     @media only screen and (max-width: 450px) {
       padding-top: 0;
       flex-direction: column;

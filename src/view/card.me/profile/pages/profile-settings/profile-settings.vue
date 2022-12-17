@@ -224,27 +224,29 @@
       <b-card no-body>
         <b-card-body>
           <h3 class="mb-4">
-            Funcionalidad
+            Seguridad
           </h3>
           <a-form-model-item>
             <template #label>
-              <span>Mostrar boton <i>Guardar contacto</i></span>
+              <span>Activar codigo de seguridad</span>
               <br>
-              <small class="text-muted">Activar esta opcion mostrara el boton de <i>Guardar contacto</i> al final de su tarjeta</small>
+              <small class="text-muted">Activar esta opcion bloqueara todo acceso a tu tajeta digital y solo podran verla aquiellas personas que cuenten con tu codigo de seguridad.</small>
             </template>
             <div class="d-flex justify-content-center" style="gap: 22px;">
-              <a-switch v-model="user.can_save_vcf"></a-switch>
+              <a-switch v-model="user.enable_security_code"></a-switch>
             </div>
           </a-form-model-item>
           <a-form-model-item>
             <template #label>
-              <span>Ocultar boton compartir</span>
+              <span>Codigo de seguridad</span>
               <br>
-              <small class="text-muted">Activar esta opcion evita que se muestre el boton <i>compartir <a-icon type="share-alt" style="vertical-align: 1px;color: #12C39A;"/></i> en la tarjeta</small>
+              <small class="text-muted">Define el codigo de 4 digitos con el cual daras acceso a tu tarjeta si tenes activo el filtro de seguridad</small>
             </template>
-            <div class="d-flex justify-content-center" style="gap: 22px;">
-              <a-switch v-model="user.hide_share"></a-switch>
-            </div>
+            <a-input class="input-security-code" v-model="user.security_code" size="large" :disabled="!user.enable_security_code" read-only type="number" max="9999" min="0">
+              <label slot="addonAfter" @click="generateSecurityCode">
+                Generar
+              </label>
+            </a-input>
           </a-form-model-item>
         </b-card-body>
       </b-card>
@@ -603,6 +605,9 @@
       },
       openPreview () {
         this.$emit('preview')
+      },
+      generateSecurityCode () {
+        this.user.security_code = (""+Math.random()).substring(2,6)
       }
     },
     mounted() {
@@ -671,7 +676,6 @@
         vertical-align: initial;
       }
     }
-
     .settings-form {
       --border-color: #ececec;
       --border-color-hover: #40a9ff;
@@ -1247,6 +1251,18 @@
             &:before {
               background: #fff;
             }
+          }
+        }
+      }
+
+      .input-security-code {
+        .ant-input-group-addon {
+          background: var(--blue);
+          color: var(--white);
+          cursor: pointer;
+          label {
+            margin-bottom: 0;
+            cursor: pointer;
           }
         }
       }

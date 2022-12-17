@@ -87,7 +87,7 @@
       @close="visible_preview = false"
     >
       <a-button type="primary" icon="close" class="close-drawer d-md-none" @click.stop.prevent="visible_preview = false">Cerrar preview</a-button>
-      <CardPage ref="previewCard" :user="profile"></CardPage>
+      <CardPage ref="previewCard" :user="profile" :preview="true"></CardPage>
     </a-drawer>
     <a-back-top />
     <a-tooltip title="Preview">

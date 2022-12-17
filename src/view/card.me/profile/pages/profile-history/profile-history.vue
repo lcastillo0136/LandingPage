@@ -200,6 +200,7 @@
           this.$refs.modalForm.validate().then(valid => {
             if (valid) {
               if (!this.user.social_networks) this.$set(this.user, 'social_networks', [])
+              if (!(this.modal.newSocial.url||'').match(/^((http|https):\/\/)/)) this.modal.newSocial.url = 'http://' + this.modal.newSocial.url
 
               if (this.modal.newSocial.url && this.modal.newSocial.id == false) {
                 this.user.social_networks.push({
@@ -213,7 +214,7 @@
               } else {
                 let _n = _.find(this.user.social_networks, { id: this.modal.newSocial.id })
                 if (_n) {
-                  _n.network_url = this.modal.newSocial.url
+                  _n.network_url = this.modal.newSocial.url || ''
                   _n.network_icon = this.getIcon(this.modal.newSocial.url) || 'globe'
                 }
                 this.modal.newSocial.url = ''

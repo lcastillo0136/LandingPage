@@ -875,7 +875,7 @@
       <b-container>
         <b-row>
           <b-col cols="12" lg="6" md="6" sm="6">
-            <h6>@ 2022 powered with <b-icon-heart></b-icon-heart> by <a target="_blank" href="https://www.zibasoft.com/">Zibasoft</a></h6>
+            <h6>@ 2022 powered with <b-icon-heart style="color: hotpink; margin: 2px 5px;"></b-icon-heart> by <a target="_blank" href="https://www.zibasoft.com/">Zibasoft</a></h6>
           </b-col>
           <b-col cols="12" lg="6" md="6" sm="6">
             <div class="clearfix">
