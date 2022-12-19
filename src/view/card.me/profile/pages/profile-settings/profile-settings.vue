@@ -250,6 +250,34 @@
           </a-form-model-item>
         </b-card-body>
       </b-card>
+
+      <b-card no-body>
+        <b-card-body>
+          <h3 class="mb-4">
+            Notificaciones
+          </h3>
+          <a-form-model-item>
+            <template #label>
+              <span>Notificación de falta de pago en número de WhatsApp</span>
+              <br>
+              <small class="text-muted">Activar esta opción autoriza notificarle a su número de WhatsApp que su tarjeta está suspendida por falta de pago cuando un cliente intente visualizar su tarjeta.</small>
+            </template>
+            <div class="d-flex justify-content-center" style="gap: 22px;">
+              <a-switch v-model="user.notification_payment_whatsapp"></a-switch>
+            </div>
+          </a-form-model-item>
+          <a-form-model-item>
+            <template #label>
+              <span>Notificación de falta de pago en correo electrónico</span>
+              <br>
+              <small class="text-muted">Activar esta opción autoriza notificarle a su correo electrónico que su tarjeta está suspendida por falta de pago cuando un cliente intente visualizar su tarjeta.</small>
+            </template>
+            <div class="d-flex justify-content-center" style="gap: 22px;">
+              <a-switch v-model="user.notification_payment_email"></a-switch>
+            </div>
+          </a-form-model-item>
+        </b-card-body>
+      </b-card>
     </a-form-model>
 
     <div style="text-align: right;">
@@ -261,7 +289,7 @@
 </template>
 <script>
   import { updateUser } from '@/api/user'
-  import '@fullcalendar/core/vdom' // solves problem with Vite
+  import '@fullcalendar/core/vdom'
   import FullCalendar from '@fullcalendar/vue'
   import dayGridPlugin from '@fullcalendar/daygrid'
   import interactionPlugin from '@fullcalendar/interaction'
@@ -699,6 +727,9 @@
         text-align: left;
         & > label {
           line-height: 1;
+          span {
+            white-space: break-spaces;
+          }
         }
         small.text-muted {
           margin-top: 2px;

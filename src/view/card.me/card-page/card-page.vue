@@ -1,6 +1,6 @@
 <template>
   <main class="card-container" v-if="ready" :class="{ 'homeView': homeView, 'blocked-card': blockedCard }">
-    <template v-if="card && !blockedCard">
+    <template v-if="card && !blockedCard && active_account">
       <b-card tag="article" class="mb-md-4 shadow" no-body :class="[card.design || '']">
         <div v-if="card.avatar" class="avatar-container">
           <template v-if="typeAsImage">
@@ -222,7 +222,7 @@
         </div>
       </b-modal>
     </template>
-    <template v-else-if="blockedCard">
+    <template v-else-if="blockedCard && active_account">
       <div class="blocked-container">
         <b-card class="border-0 shadow p-4">
           <div class="d-flex align-items-center flex-column">
@@ -244,9 +244,11 @@
       </div>
     </template>
     <template v-else>
-      <div class="d-flex flex-column">
-        <h2>No se encontro la tarjeta</h2>
-        <img src="/img/blank-card.png" />
+      <div class="d-flex flex-column" style="max-width: 500px;">
+        <h2>Servicio suspendido</h2>
+        <img src="/img/blocked-card.png" class="blocked-card mt-3"/>
+        <h3>
+          Para reactivar el servicio, acceda a su perfil y en el apartado de <i>Pagar ahora</i> realiza su pago y el servicio se activa automáticamente</h3>
       </div>
     </template>
     <u-animate-container>
@@ -482,7 +484,10 @@
         let _cookie = !!Cookies.get('sc-open')
 
         return this.card.enable_security_code && this.homeView === false && this.preview === false && _cookie !== true
-      }
+      },
+      active_account() {
+        return this.card.active_account && this.$moment.utc(this.card.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.card.active_account)) && this.preview == false
+      },
     },
     methods: {
       saveContact() {
@@ -1807,6 +1812,11 @@
         }
       }
     }
+
+    .blocked-card {
+      width: 500px;
+    }
+
     @media only screen and (max-width: 450px) {
       padding-top: 0;
       flex-direction: column;
