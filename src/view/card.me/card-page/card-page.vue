@@ -247,8 +247,9 @@
       <div class="d-flex flex-column" style="max-width: 500px;">
         <h2>Servicio suspendido</h2>
         <img src="/img/blocked-card.png" class="blocked-card mt-3"/>
-        <h3>
-          Para reactivar el servicio, acceda a su perfil y en el apartado de <i>Pagar ahora</i> realiza su pago y el servicio se activa automáticamente</h3>
+        <h5 class="mt-5">
+          Para reactivar el servicio, acceda a su perfil y en el apartado de <i>Pagar ahora</i> realiza su pago y el servicio se activa automáticamente
+        </h5>
       </div>
     </template>
     <u-animate-container>
@@ -261,6 +262,9 @@
       <u-animate name="fadeInDown" delay="4s" duration="1s" :iteration="1" :offset="0" animateClass="animated" :begin="false"  class="homeView-links shadow">
         Formas de contacto
       </u-animate>
+      <!-- <u-animate name="fadeInDown" delay="5s" duration="1s" :iteration="1" :offset="0" animateClass="animated" :begin="false"  class="homeView-card shadow">
+        Esta es tu tarjeta digital
+      </u-animate> -->
     </u-animate-container>
   </main>
 </template>
@@ -379,7 +383,7 @@
         }
       },
       isPreview() {
-        return this.$route.meta.preview
+        return this.$route.meta.preview || this.preview === true
       },
       avatar () {
         return (this.card && this.card.avatar) || '/img/blank-profile.webp'
@@ -486,7 +490,7 @@
         return this.card.enable_security_code && this.homeView === false && this.preview === false && _cookie !== true
       },
       active_account() {
-        return this.card.active_account && this.$moment.utc(this.card.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.card.active_account)) && this.preview == false
+        return (this.card.active_account && this.$moment.utc(this.card.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.card.active_account))) || this.preview === true
       },
     },
     methods: {
@@ -1530,7 +1534,7 @@
       bottom: 0;
       right: 0;
     }
-    .homeView-whatsapp, .homeView-socialnetworks, .homeView-links {
+    .homeView-whatsapp, .homeView-socialnetworks, .homeView-links, .homeView-card {
       display: none;
     }
 
@@ -1646,6 +1650,19 @@
           z-index: 1030;
         }
       }
+      .homeView-card {
+        display: block;
+        position: absolute;
+        z-index: 1030;
+        background: #fff;
+        border-radius: 5px;
+        padding: 10px;
+        top: -32px;
+        font-weight: bold;
+        left: 50%;
+        font-size: 18px;
+        transform: translateX(-50%);
+      }
     }
 
     .ant-carousel {
@@ -1728,6 +1745,11 @@
         .video-js {
           width: 100%;
           height: 250px;
+          .vjs-big-play-button {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
         }
       }
     }

@@ -250,20 +250,19 @@
           </a-form-model-item>
         </b-card-body>
       </b-card>
-
       <b-card no-body>
         <b-card-body>
           <h3 class="mb-4">
             Notificaciones
           </h3>
-          <a-form-model-item>
+          <a-form-model-item :extra="user.phone ? '' : 'No se puede enviar notificación si no cuenta con número de teléfono registrado'">
             <template #label>
               <span>Notificación de falta de pago en número de WhatsApp</span>
               <br>
               <small class="text-muted">Activar esta opción autoriza notificarle a su número de WhatsApp que su tarjeta está suspendida por falta de pago cuando un cliente intente visualizar su tarjeta.</small>
             </template>
             <div class="d-flex justify-content-center" style="gap: 22px;">
-              <a-switch v-model="user.notification_payment_whatsapp"></a-switch>
+              <a-switch v-model="user.notification_payment_whatsapp" :disabled="!user.phone"></a-switch>
             </div>
           </a-form-model-item>
           <a-form-model-item>

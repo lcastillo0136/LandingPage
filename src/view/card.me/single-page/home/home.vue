@@ -13,8 +13,8 @@
             <b-button :to="{ name: 'register' }" class="rounded-lg text-white" variant="primary">Registrarte gratis</b-button>
           </div>
           <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
-            <b-nav-item :to="{ name: 'faq' }" class="font-weight-bold">Preguntas frecuentes</b-nav-item>
-            <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
+            <b-nav-item :to="{ name: 'faq' }" class="font-weight-bold mr-4">Preguntas frecuentes</b-nav-item>
+            <b-button :to="{ name: 'profile-details' }" class="rounded-lg mr-2" variant="outline-primary">Mi tarjeta</b-button>
             <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
           </div>
         </b-navbar-nav>

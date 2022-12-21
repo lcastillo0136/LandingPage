@@ -74,6 +74,17 @@ export default [
         component: () => import('@/view/' + config.theme + '/login')
       }, 
       {
+        path: '/mail-href',
+        name: 'mail-href',
+        meta: {
+          hideInMenu: true,
+          title: 'mail-href.title',
+          notCache: true,
+          icon: 'md-user'
+        },
+        component: () => import('@/view/' + config.theme + '/login')
+      }, 
+      {
         path: '/register.html',
         name: 'register',
         meta: {

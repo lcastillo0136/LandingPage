@@ -730,5 +730,8 @@ export default {
   },
   faq: {
     title: 'FAQ'
+  },
+  mail_href: {
+    title: 'Inicio de sesion'
   }
 }

@@ -8,20 +8,24 @@
        
         <b-navbar-nav class="ml-auto d-none d-md-block">
           <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
+            <b-nav-item :to="{ name: 'faq' }" class="font-weight-bold">Preguntas frecuentes</b-nav-item>
             <b-button class="rounded-lg mx-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
             <b-button :to="{ name: 'register' }" class="rounded-lg text-white" variant="primary">Registrarte gratis</b-button>
           </div>
           <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
-            <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
+            <b-nav-item :to="{ name: 'faq' }" class="font-weight-bold mr-4">Preguntas frecuentes</b-nav-item>
+            <b-button :to="{ name: 'profile-details' }" class="rounded-lg mr-2" variant="outline-primary">Mi tarjeta</b-button>
             <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
           </div>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto d-block d-md-none w-100">
           <div class="mx-lg-5 d-lg-flex flex-lg-row" v-if="!hasToken">
+            <b-nav-item :to="{ name: 'faq' }" class="font-weight-bold">Preguntas frecuentes</b-nav-item>
             <b-button class="d-block w-100 my-1" variant="outline-primary" @click="$bvModal.show('login-1')">Entrar</b-button>
             <b-button :to="{ name: 'register' }" class="text-white w-100 my-1" variant="primary">Registrarte gratis</b-button>
           </div>
           <div class="mx-lg-2 d-lg-flex flex-lg-row" v-else>
+            <b-nav-item :to="{ name: 'faq' }" class="font-weight-bold">Preguntas frecuentes</b-nav-item>
             <b-nav-item :to="{ name: 'profile-details' }">Hola, <b>@{{ User.username }}</b></b-nav-item>
             <b-button class="rounded-lg text-white" variant="primary" @click="dispachLogout">Salir</b-button>
           </div>
@@ -133,7 +137,7 @@
             }, {
               id: 5,
               header: '¿Cuentan con tarjeta física y cuál sería su costo?',
-              content: '<p ><del>¡Claro!</del></p><p>Por el momento no contamos con el servicio de tarjetas física para compartir <i>con un toque</i> su tarjeta en dispositivos con tecnología <b>NFC</b>.</p><p>¡Seguimos avanzando para poder ofrecerte todos los servicios que te ayudaran a conseguir más clientes!</p>'
+              content: '<p><del class="text-muted">¡Claro!</del></p><p>Por el momento no contamos con el servicio de tarjetas física para compartir <i>con un toque</i> su tarjeta en dispositivos con tecnología <b>NFC</b>.</p><p>¡Seguimos avanzando para poder ofrecerte todos los servicios que te ayudaran a conseguir más clientes!</p>'
             }]
           },
           security: {
@@ -181,7 +185,15 @@
             }, {
               id: 7,
               header: '¿Puedo crear una tarjeta digital para mi negocio o producto?',
-              content: '<p>Claro que puedes crear tarjeta digital para negocio, servicio, producto, perfil laboral, etc.</p><p>Cuentas con las herramientas para cambiar la imagen de perfil o logo y agregar un archivo PDF con el menú, detalles o tu hoja de vida.</p>'
+              content: '<p>Claro que puedes crear tarjeta digital para negocio, servicio, producto, perfil laboral, etc.</p><p>Cuentas con las herramientas para cambiar la imagen de perfil o logo y agregar un archivo <b>PDF</b> con el menú, detalles o tu hoja de vida.</p>'
+            }, {
+              id: 8,
+              header: '¿Puedo colocar un video como <b>foto</b> de perfil?',
+              content: '<p><b>¡Claro!</b></p><p>tu tarjeta digital permite la utiliacion de videos cortos como foto de perfil siempre y cuando no exeda el tamaño de <b>5Mb</b> y sea un formato valido de archivo de video como <b>.avi, .flv, .mp4</b>, etc.</p>'
+            }, {
+              id: 9,
+              header: '¿Puedo agregar <b>archivos, fotos o videos</b> a mi terjeta digital?',
+              content: '<p><b>¡Claro!</b></p><p>Desde el apartado de <i>Archivos</i> en el perfil de tu tarjeta digital puedes agregar diferentes tipos de archivos siempre y cuando se cumplan las siguientes condiciones:<ul class="ml-5 mt-3"><li>No debe de exceder el tamaño mayor a <b>5Mb</b></li><li>Solo se pueden agregar hasta 10 <b>imágenes o fotos</b></li><li>Solo se puede agregar 1 archivo <b>PDF</b></li><li>Solo se puede agregar un archivo de <b>video</b></li></ul></p>'
             }]
           }
           // troubleshooting: {
