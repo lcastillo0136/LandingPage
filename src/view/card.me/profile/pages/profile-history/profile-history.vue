@@ -37,7 +37,13 @@
       </b-card>
 
       <b-card no-body>
-        <h3 class="mb-4 mt-3 mx-3 pt-1 px-1">
+        <h3 class="mt-3 mx-3 pt-1 px-1">
+          Habilidades
+        </h3>
+        <skills-tags :user="user" :saving="saving"></skills-tags>
+      </b-card>
+      <b-card no-body>
+        <h3 class="mb-0 mt-3 mx-3 pt-1 px-1">
           Redes sociales 
           <a-button class="float-right align-middle ml-auto" @click="modal.visible = true" type="primary">
             <b-icon-plus style="font-size: 22px;vertical-align: -6px;" font-scale="1.5"></b-icon-plus>
@@ -58,6 +64,7 @@
         <b-card-body>
         </b-card-body>
       </b-card>
+
     </a-form-model>
 
     <a-modal title="Agregar url o red social" :visible="modal.visible" @ok="addNewSocial" @cancel="() => modal.visible = false" class="profile-history-modal">
@@ -88,6 +95,7 @@
   import { mapGetters } from 'vuex'
   import draggable from 'vuedraggable'
   import Addressess from '../details/components/addressess'
+  import SkillsTags from '../../components/skills-tags'
 
   import _ from 'lodash'
 
@@ -103,6 +111,7 @@
     components: {
       Addressess,
       draggable,
+      SkillsTags
     },
     data() {
       return {

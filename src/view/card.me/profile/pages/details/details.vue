@@ -237,7 +237,7 @@
             <br>
             <small class="text-muted">Compartenos una frase que te describa</small>
           </template>
-          <a-input type="text" placeholder="Frase que te describa" v-model="profile.quote" :disabled="saving" size="large">
+          <a-input type="textarea" placeholder="Frase que te describa" v-model="profile.quote" :disabled="saving" size="large" autoSize>
           </a-input>
         </a-form-model-item>
 
