@@ -1,7 +1,7 @@
 <template>
   <main class="home-page bg-hero wrapper">
     <b-navbar toggleable="md" class="px-0">
-      <b-container class="d-flex align-items-center ">
+      <b-container class="d-flex align-items-center " id="v-step-0">
         <b-navbar-brand class="mt-0 d-flex mw-100 row-cols-2" :to="{ name: 'home' }">
           <img src="/img/logo.svg" style="max-height: 100px;" :to="{ name: 'profile' }"/>
           <router-link :to="{ name: 'profile-details' }" v-b-tooltip.hover.bottom title="Ver mi perfil" class="ml-auto d-block router-link-exact-active router-link-active text-right d-md-none">
@@ -19,14 +19,14 @@
               <b-icon icon="credit-card" class="mr-2"></b-icon>
               Pagar ahora
             </b-button>
-            <b-button v-else size="sm" variant="outline-secondary" v-b-tooltip.hover.bottom title="Preview" @click="openPreview">
+            <b-button v-else size="sm" variant="outline-secondary" v-b-tooltip.hover.bottom title="Preview" @click="openPreview" id="previewBtn">
               <b-icon icon="eye" class="mr-1"></b-icon>
               Preview
             </b-button>
             <a @click="dispachLogout" v-b-tooltip.hover.bottom title="Cerrar sesion">
               <b-icon-box-arrow-left style="width: 20px; height: 20px;color: var(--gray-dark);"></b-icon-box-arrow-left>
             </a>
-            <a-dropdown placement="bottomCenter" >
+            <a-dropdown placement="bottomCenter" id="shareLinks">
               <a>
                 <a-icon type="share-alt" style="margin-top: -2px;display: block;font-size: 20px;color: var(--gray-dark);"></a-icon>
               </a>
@@ -107,6 +107,7 @@
   import getScroll from 'ant-design-vue/es/_util/getScroll';
   import { mapGetters, mapActions } from 'vuex'
   import NavigatorShare from 'vue-navigator-share'
+  import Cookies from 'js-cookie'
 
   export default {
     name: 'Profile',
@@ -292,7 +293,96 @@
               })
             }
             this.$nextTick().then(() => {
-              
+              const disableTour = Cookies.get('disable_tour')
+
+              if (!disableTour) {
+                introJs().setOptions({
+                  tooltipClass: 'guide-box',
+                  steps: [{
+                    title: 'Bienvenido',
+                    intro: 'Aquí comienza la configuración de su tarjeta digital'
+                  }, {
+                    title: 'Vista previa',
+                    intro: 'Con este botón puede ver como va la edición de su tarjeta antes de <b>Guardar</b> sus cambios',
+                    element: document.querySelector('#previewBtn')
+                  }, {
+                    title: 'Compartir tu tarjeta',
+                    intro: 'Puedes compartir tu tarjeta como URL o descargar tu código <b>QR</b>',
+                    element: document.querySelector('#shareLinks')
+                  }, {
+                    title: 'Sube tu foto o video',
+                    intro: 'Puedes subir tu foto o un video corto como perfil y una imagen como portada',
+                    element: document.querySelector('#profilePicture')
+                  }, {
+                    title: 'Información profesional',
+                    intro: 'Actualiza tu información de empresa, profesión y medios de contacto',
+                    element: document.querySelector('#profileHistory')
+                  }, {
+                    title: 'Histórico de pagos',
+                    intro: 'Listado de tus pagos realizados para tu suscripción',
+                    element: document.querySelector('#profilePayments')
+                  }, {
+                    title: 'Onlycards Analytics',
+                    intro: 'Revisa cuantas veces han visitado tu tarjeta',
+                    element: document.querySelector('#profileAnalytics')
+                  }, {
+                    title: 'Archivos',
+                    intro: 'Solo agrega tus archivos aquí y serán mostrados de manera automática en tu tarjeta',
+                    element: document.querySelector('#profileFiles')
+                  }, {
+                    title: 'Pagar ahora',
+                    intro: 'En cualquier momento puedo agregar 1 año más a tu suscripción o reactivarla desde este apartado',
+                    element: document.querySelector('#goToPay')
+                  }, {
+                    title: 'Configuraciones',
+                    intro: 'Elige tu diseño, cambia tu contraseña, agrega seguridad, etc.',
+                    element: document.querySelector('#profileSettings')
+                  }, {
+                    title: 'Tarjeta activa hasta',
+                    intro: 'Aquí te mostraremos siempre el tiempo que durara tu tarjeta activa.',
+                    element: document.querySelector('#profileRemind')
+                  }],
+                  doneLabel: 'Listo',
+                  nextLabel: 'Siguiente',
+                  prevLabel: 'Anterior',
+                  stepNumbersOfLabel: 'de',
+                  dontShowAgainLabel: 'No mostrar de nuevo'
+                }).onbeforechange(({ id }) => {
+                  switch(id) {
+                    case 'previewBtn':
+                      // this.openPreview()
+                      break; 
+                    case 'shareLinks':
+                      this.visible_preview = false
+                      break;
+                    case 'profileHistory':
+                      this.$router.push({ name: 'profile-history' })
+                      break;
+                    case 'profilePayments':
+                      this.$router.push({ name: 'profile-orders' })
+                      break;
+                    case 'profileAnalytics':
+                      this.$router.push({ name: 'profile-analytics' })
+                      break;
+                    case 'profileFiles':
+                      this.$router.push({ name: 'profile-files' })
+                      break;
+                    case 'goToPay':
+                      this.$router.push({ name: 'profile-payment' })
+                      break;
+                    case 'profileSettings':
+                      this.$router.push({ name: 'profile-settings' })
+                      break;
+                  }
+                }).oncomplete(() => {
+                  this.$router.push({ name: 'profile-details' })
+                }).onexit(() => {
+                  Cookies.set('disable_tour', 'disabled', { expires: 366 })
+                }).start();
+              } else {
+                Cookies.set('disable_tour', 'disabled', { expires: 366 })
+              }
+
               this.scrollEvent = addEventListener(window, 'scroll', this.handleScroll);
               this.handleScroll();
               setTimeout(() => {
@@ -389,5 +479,43 @@
         padding-bottom: 0;
       }
     }
+  }
+  .guide-box {
+    min-width: 450px;
+    max-width: 100%;
+    color: #54bd95;
+    .introjs-bullets ul li a {
+      background: #92d5bb;
+      &.active {
+        background: #4ca382;
+      }
+    }
+    .introjs-skipbutton {
+      font-weight: normal;
+      color: #15a886;
+    }
+    .introjs-tooltipbuttons {
+      border-top: none;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      .introjs-button {
+        float: none;
+        border: none;
+        background: #61c29d;
+        color: #fff;
+        text-shadow: none;
+        &.introjs-prevbutton {
+          background: #f4f4f4;
+          color: #9e9e9e;
+        }
+        &:focus {
+          box-shadow: 0 0 0 0.2rem rgb(97 194 157 / 28%);
+        }
+      }
+    }
+  }
+  .introjs-helperLayer {
+    box-shadow: rgb(33 33 33 / 15%) 0px 0px 1px 2px, rgb(33 33 33 / 17%) 0px 0px 0px 5000px !important;
   }
 </style>

@@ -27,7 +27,7 @@
             
           </div>
         </div>
-        <div class="d-flex flex-column flex-md-row my-4 row-cols-1 row-cols-md-2">
+        <div class="d-flex flex-column flex-md-row my-4 row-cols-1 row-cols-md-2" id="profilePicture">
           <a-form-model-item class="px-md-1" :wrapper-col="{ span: 24 }">
             <small class="text-muted">FOTO DE PERFIL</small>
             <a-upload-dragger class="flex-wrap flex-md-nowrap justify-content-center"  name="profile-avatar" :multiple="false" :showUploadList="false" :beforeUpload="handleUpload" accept="image/*,video/*" :disabled="saving" >

@@ -6,7 +6,6 @@ import VueWow from 'vue-wow'
 import Moment from 'vue-moment'
 import VueClipboard from 'vue-clipboard2'
 import VueQr from 'vue-qr'
-
 import { BootstrapVue, BootstrapVueIcons, IconsPlugin } from 'bootstrap-vue'
 import * as Antd from 'ant-design-vue'
 
@@ -90,6 +89,7 @@ Vue.use(VueNativeNotification, {
 })
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+
 Vue.config.productionTip = false
 Vue.prototype.$config = config
 

@@ -1668,6 +1668,17 @@ html {
   }
 }
 
+.introjs-tooltip {
+  .introjs-tooltip-header {
+    min-height: auto;
+    .introjs-tooltip-title {
+      min-height: auto;
+      font-size: 18px !important;
+      line-height: 1.5 !important;
+    }
+  }
+}
+
 @import '../css/util.css';
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'bootstrap-vue/src/index.scss';

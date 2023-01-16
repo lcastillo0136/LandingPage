@@ -131,7 +131,7 @@
               <br>
               <small class="text-muted">Define el tipo de diseño que mostrara tu tarjeta</small>
             </template>
-            <div class="d-none d-lg-flex justify-content-center" style="gap: 22px;">
+            <div class="d-none d-xl-flex justify-content-center" style="gap: 22px;">
               <div class="design-1" :class="{ 'choosed': user.design == 'design-1' }" @click="user.design = 'design-1'">
                 <div class="design-avatar"></div>
                 <div class="design-cover"></div>
@@ -158,7 +158,7 @@
                 <div class="design-content"></div>
               </div>
             </div>
-            <div class="d-flex d-lg-none">
+            <div class="d-flex d-xl-none">
               <a-select placeholder="Please select a country" v-model="user.design">
                 <a-select-option value="design-1">
                   Diseño 1

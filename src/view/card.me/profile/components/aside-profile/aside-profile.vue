@@ -6,7 +6,7 @@
         <li v-if="getUser.phone"><h6>Teléfono</h6><a :href="'tel:' + getUser.phone ">{{ getUser.phone | phone }}</a></li>
       </ul> -->
       <ul class="contacts">
-        <li>
+        <li id="profileDetails">
           <router-link :to="{ name: 'profile-details' }">
             <span>
               <a-icon type="user"></a-icon>
@@ -15,7 +15,7 @@
             <a-icon type="caret-right"></a-icon>
           </router-link>
         </li>
-        <li>
+        <li id="profileHistory">
           <router-link :to="{ name: 'profile-history' }">
             <span>
               <a-icon type="idcard"></a-icon>
@@ -24,7 +24,7 @@
             <a-icon type="caret-right"></a-icon>
           </router-link>
         </li>
-        <li>
+        <li id="profilePayments">
           <router-link :to="{ name: 'profile-orders' }">
             <span>
               <a-icon type="container"></a-icon>
@@ -33,7 +33,7 @@
             <a-icon type="caret-right"></a-icon>
           </router-link>
         </li>
-        <li>
+        <li id="profileAnalytics">
           <router-link :to="{ name: 'profile-analytics' }">
             <span>
               <a-icon type="area-chart"></a-icon>
@@ -42,7 +42,7 @@
             <a-icon type="caret-right"></a-icon>
           </router-link>
         </li>
-        <li>
+        <li id="profileFiles">
           <router-link :to="{ name: 'profile-files' }">
             <span>
               <a-icon type="folder"></a-icon>
@@ -57,7 +57,7 @@
             <i class="arrow_carrot-right"></i>
           </router-link>
         </li> -->
-        <li>
+        <li id="goToPay">
           <router-link :to="{ name: 'profile-payment' }">
             <span>
               <a-icon type="dollar"></a-icon>
@@ -66,7 +66,7 @@
             <a-icon type="caret-right"></a-icon>
           </router-link>
         </li>
-        <li>
+        <li id="profileSettings">
           <router-link :to="{ name: 'profile-settings' }">
             <span>
               <a-icon type="setting"></a-icon>
@@ -78,7 +78,7 @@
       </ul>
       <template v-if="active_account">
         <a-divider class="mb-3 mt-0" dashed></a-divider>
-        <h6 class="text-left mb-2">
+        <h6 class="text-left mb-2" id="profileRemind">
           Tarjeta digital en línea hasta
           <small>{{ user.active_account | moment('dddd DD, MMM YYYY hh:mm a') }}</small>
         </h6>
@@ -88,7 +88,7 @@
       </template>
       <template v-else>
         <a-divider class="mb-3 mt-0" dashed></a-divider>
-        <h6 class="text-left mb-2">
+        <h6 class="text-left mb-2" id="profileOffline">
           Tarjeta digital fuera de línea
           <small class="text-danger">Activa de nuevo tu servicio</small>
         </h6>
