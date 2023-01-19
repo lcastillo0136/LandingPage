@@ -101,6 +101,26 @@
         if (response) {
           this.service = response.data
           document.title = `${this.currentSettings.COMPANY_NAME}-${this.service.name}`
+
+          // this.$ga.page({
+          //   page: window.location.pathname,
+          //   title: `${this.currentSettings.COMPANY_NAME}-${this.service.name}`,
+          //   location: window.location.href
+          // })
+
+          gtag('page', window.location.pathname)
+          gtag('title', `${this.currentSettings.COMPANY_NAME}-${this.service.name}`)
+          gtag('location', window.location.href)
+          gtag('pageTitle', `${this.currentSettings.COMPANY_NAME}-${this.service.name}`)
+
+          // this.$ga.ecommerce.addItem({
+          //   id: this.service.id,
+          //   name: `${this.currentSettings.COMPANY_NAME}-${this.service.name}`,
+          //   sku: this.service.sku,
+          //   category: this.service.category && this.service.category.name,
+          //   price: this.service.precio_venta,
+          //   quantity: '1'
+          // })
         }
       }).catch((error) => {
         this.$notification.error({

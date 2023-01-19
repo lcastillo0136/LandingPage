@@ -19,5 +19,12 @@
     <script type="text/javascript" src="/jquery/bootstrap-datepicker.js"></script>
     <script type="text/javascript" src="/js/conekta.js"></script>
     <script type="text/javascript" src="<%= process.env.VUE_APP_API_ENDPOINT.replace('/api/', '') %>/web/settings?jsonp=loadSettings"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XV64R0DM8G"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+    </script>
   </body>
 </html>

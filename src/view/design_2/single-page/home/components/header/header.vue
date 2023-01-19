@@ -1,9 +1,20 @@
 <template>
   <header class="u-clearfix u-header u-header" id="sec-d9ff">
-    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1 d-flex flex-md-row flex-column align-items-center">
       <router-link :to="{ name: 'home' }" class="u-image u-logo u-image-1">
         {{ currentSettings.COMPANY_NAME }}
       </router-link>
+      <div class="d-flex flex-column ml-auto">
+        <a :href="'https://wa.me/+521' + currentSettings.COMPANY_PHONE" target="_blank" class="text-success">
+          <b-icon-whatsapp></b-icon-whatsapp>
+          {{ currentSettings.COMPANY_PHONE | phone }}
+        </a>
+        <a :href="'mailto:'+currentSettings.COMPANY_EMAIL">
+          <b-icon-envelope></b-icon-envelope>
+          {{ currentSettings.COMPANY_EMAIL }}
+        </a>
+        <b-button :to="{ name: 'contacts' }" variant="outline-primary" size="sm" class="">Contacto</b-button>
+      </div>
     </div>
   </header>
 
@@ -36,7 +47,7 @@
     z-index: 1;
     flex: 1 0 auto;
     .u-logo.u-image-1 {
-      width: 250px;
+      width: 303px;
       height: 80px;
       overflow: hidden;
       display: block;
@@ -45,7 +56,7 @@
       letter-spacing: normal;
       text-transform: lowercase;
       display: flex;
-      font-size: 40px;
+      font-size: 70px;
       flex-direction: row;
       align-content: center;
       justify-content: center;
@@ -59,5 +70,9 @@
         transform: translate(-50%, -50%);
       }
     }
+  }
+
+  @media (max-width: 575px) {
+
   }
 </style>

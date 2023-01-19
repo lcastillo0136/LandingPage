@@ -13,7 +13,7 @@
       <div class="u-expanded-width-md u-expanded-width-sm u-expanded-width-xs u-list u-list-1">
         <div class="u-repeater u-repeater-1">
           <div class="u-container-style u-list-item u-repeater-item" v-for="product of products" :key="product.id">
-            <div class="u-container-layout u-similar-container u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xl u-container-layout-2">
+            <div class="u-container-layout u-similar-container u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xl u-container-layout-2" @click="$router.push({ name: 'products', params: { name: product.url } })">
               <template v-if="product.images && product.images.length > 0">
                 <img alt="" class="u-expanded-width u-image u-image-contain u-image-default u-image-1" data-image-width="300" data-image-height="90" :src="product.images[0].preview">
               </template>

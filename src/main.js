@@ -6,6 +6,7 @@ import VueWow from 'vue-wow'
 import Moment from 'vue-moment'
 import VueClipboard from 'vue-clipboard2'
 import VueQr from 'vue-qr'
+import VueHead from 'vue-head'
 
 import { BootstrapVue, BootstrapVueIcons, IconsPlugin } from 'bootstrap-vue'
 
@@ -77,6 +78,11 @@ Vue.use(AudioPlayer)
 
 Vue.use(VueNativeNotification, {
   requestOnNotify: true
+})
+
+Vue.use(VueHead, {
+  separator: '-',
+  complement: 'Zibasoft',
 })
 
 Vue.config.productionTip = false

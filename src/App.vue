@@ -12,7 +12,6 @@
   import { initializeApp } from 'firebase/app';
   import { getDatabase } from "firebase/database";
   import "firebase/database";
-  import VueAnalytics from 'vue-analytics'
 
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import Loading from '@/components/loading'
@@ -46,6 +45,25 @@
         'handleLogOut'
       ]),
     },
+    head: {
+      title: function() {
+        if (this.settings) {
+          return {
+            inner: this.settings.COMPANY_NAME,
+          }
+        }
+      },
+      meta: function() {
+        if (this.doc) {
+          return [
+            {
+              name: 'description',
+              content: 'Es una empresa líder en desarrollo de software que se especializa en crear soluciones de software innovadoras y de vanguardia para empresas de todos los tamaños',
+            },
+          ]
+        }
+      },
+    },
     async mounted () {
       await this.getTypes().catch((err) => {
         if (err.data.message) {
@@ -74,9 +92,9 @@
       })
       this.$store.commit('setSettings', data)
 
-      await this.getLocation().then((data) => {}).catch((error) => {
+      // await this.getLocation().then((data) => {}).catch((error) => {
         
-      })
+      // })
       
       conekta.initConekta(this.settings.CONEKTA_CLIENT)
       paypal.init(this.settings.PAYPAL_CLIENT, this.settings.CURRENCY)
@@ -93,10 +111,19 @@
       }
 
       if (this.settings.GOOGLE_TRACKID) {
-        Vue.use(VueAnalytics, {
-          id: this.settings.GOOGLE_TRACKID
-        })
-        this.$ga.page('/')
+        gtag('config', this.settings.GOOGLE_TRACKID);
+        gtag('page', '/')
+        gtag('title', 'Zibasoft')
+        gtag('location', window.location.href)
+        gtag('pageTitle', 'Zibasoft')
+        // Vue.use(VueAnalytics, {
+        //   id: this.settings.GOOGLE_TRACKID
+        // })
+        // this.$ga.page({
+        //   page: '/',
+        //   title: 'Zibasoft',
+        //   location: window.location.href
+        // })
       }
 
       this.toggleLoading()    

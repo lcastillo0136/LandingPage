@@ -704,5 +704,11 @@ export default {
   },
   invoice_page: {
     title: 'Detalles de la orden'
+  },
+  products: {
+    title: 'Producto'
+  },
+  services: {
+    title: 'Servicio'
   }
 }

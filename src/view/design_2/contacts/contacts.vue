@@ -186,6 +186,16 @@
       if (this.$route.params.message) {
         this.form.message = this.$route.params.message
       }
+
+      // this.$ga.page({
+      //   page: window.location.pathname,
+      //   title: `${this.currentSettings.COMPANY_NAME}-contactanos`,
+      //   location: window.location.href
+      // })
+      gtag('page', window.location.pathname)
+      gtag('title', `${this.currentSettings.COMPANY_NAME}-contactanos`)
+      gtag('location', window.location.href)
+      gtag('pageTitle', `${this.currentSettings.COMPANY_NAME}-contactanos`)
     }
   }
 </script>

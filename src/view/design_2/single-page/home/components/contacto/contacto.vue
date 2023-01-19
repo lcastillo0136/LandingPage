@@ -251,8 +251,11 @@
         display: none;
       }
     }
-    div.u-repeater-1 {
-      grid-template-columns: repeat(3, calc(33.3333% - 15.75px));
+
+    @media (min-width: 875px) {
+      div.u-repeater-1 {
+        grid-template-columns: repeat(3, calc(33.3333% - 15.75px));
+      }
     }
     .u-social-icons-1.u-social-icons {
       width: auto;
