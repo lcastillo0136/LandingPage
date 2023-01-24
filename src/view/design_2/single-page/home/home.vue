@@ -2,6 +2,7 @@
   <main class="u-body u-xl-mode">
     <header-component></header-component>
     <welcome></welcome>
+    <mission-vision></mission-vision>
     <services></services>
     <products></products>
     <whats-included></whats-included>
@@ -20,12 +21,14 @@
   import Contacto from './components/contacto'
   import WhatWeDo from './components/what-we-do'
   import WhatsIncluded from './components/whats-included'
+  import MissionVision from './components/mission-vision'
   import footerComponent from './components/footer'
 
   export default {
     name: 'Home',
     components: {
       HeaderComponent,
+      MissionVision,
       Welcome,
       Services,
       Products,

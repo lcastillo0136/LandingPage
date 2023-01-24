@@ -9,6 +9,7 @@
 
 <script>
   import Vue from 'vue'
+  import config from '@/config'
   import { initializeApp } from 'firebase/app';
   import { getDatabase } from "firebase/database";
   import "firebase/database";
@@ -17,6 +18,8 @@
   import Loading from '@/components/loading'
   import * as conekta from '@/libs/conekta'
   import * as paypal from '@/libs/paypal'
+
+  const _theme = loadSettings().find(f => f.name === 'THEME').value
 
   export default {
     name: 'App',
@@ -44,6 +47,19 @@
         'getUserInfo',
         'handleLogOut'
       ]),
+      addMetaTag(attrs) {
+        var meta = document.createElement('meta');
+        Object.keys(attrs).forEach((p) => {
+          meta[p] = attrs[p]
+        })
+        document.getElementsByTagName('head')[0].appendChild(meta);
+      },
+      addRichSEO(content) {
+        const script = document.createElement('script');
+        script.setAttribute('type', 'application/ld+json');
+        script.textContent = JSON.stringify(content);
+        document.head.appendChild(script);
+      }
     },
     head: {
       title: function() {
@@ -109,6 +125,21 @@
         let app = initializeApp({ databaseURL: this.settings.GOOGLE_FIREBASE })
         this.setFirebase(getDatabase(app))
       }
+
+      this.addMetaTag({
+        name: 'title',
+        content: 'Zibasoft'
+      })
+      this.addMetaTag({
+        name: 'description',
+        content: 'Es una empresa líder en desarrollo de software que se especializa en crear soluciones de software innovadoras y de vanguardia para empresas de todos los tamaños'
+      })
+      this.addRichSEO({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "url": window.location.href,
+        "logo": require('@/view/' + (_theme || config.theme) + '/single-page/home/images/logo-zibasoft.png')
+      })
 
       if (this.settings.GOOGLE_TRACKID) {
         gtag('config', this.settings.GOOGLE_TRACKID);

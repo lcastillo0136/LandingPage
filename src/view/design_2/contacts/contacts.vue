@@ -44,7 +44,7 @@
                           <a-textarea placeholder="Escríbenos un mensaje" v-model="form.message" rows="4" cols="50" class="u-grey-5 u-input u-input-rectangle"></a-textarea>
                         </a-form-model-item>
                       </div>
-                      <div class="u-align-left u-form-group u-form-submit d-flex justify-content-between">
+                      <div class="u-align-left u-form-group u-form-submit d-flex justify-content-between flex-wrap" style="gap: 5px;">
                         <a-button class="u-border-none u-btn u-btn-submit u-button-style u-palette-1-base u-btn-1" :loading="loading" @click.stop.prevent="sendContactForm">
                           <b-icon-envelope class="text-white mr-1"></b-icon-envelope> Enviar
                         </a-button>
@@ -246,8 +246,7 @@
       height: 41px;
       display: inline-block;
       -webkit-appearance: button;
-      line-height: 23px;
-      margin-left: 10px;
+      line-height: 41px;
       background: #2ab63f !important;
     }
     .u-section-1 {
