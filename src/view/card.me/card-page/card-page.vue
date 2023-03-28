@@ -1,5 +1,5 @@
 <template>
-  <main class="card-container" v-if="ready" :class="{ 'homeView': homeView, 'blocked-card': blockedCard }">
+  <main class="card-container" v-if="ready" :class="{ 'homeView': homeView, 'blocked-card': blockedCard, 'create-card': createCardView }">
     <template v-if="card && !blockedCard && active_account">
       <b-card tag="article" class="mb-md-4 shadow" no-body :class="[card.design || '']">
         <div v-if="card.avatar" class="avatar-container">
@@ -46,15 +46,15 @@
                 <a-menu-item key="copy" v-clipboard:copy="userLink" v-clipboard:success="!isPreview && copyLink">
                   Copiar enlace
                 </a-menu-item>
-                <a-menu-item key="share">
+                <a-menu-item key="share" v-if="!isPreview">
                   <navigator-share :url="userLink" :title="card.full_name" :text="card.full_name" :on-error="shareError" :on-success="shareSuccess">
                     <template #clickable>
                       Compartir Enlace
                     </template>
                   </navigator-share>
                 </a-menu-item>
-                <a-menu-divider />
-                <a-menu-item key="qr" class="text-center" @click="showQR" :loading="downloadingQR">
+                <a-menu-divider  v-if="!isPreview"/>
+                <a-menu-item key="qr" class="text-center" @click="showQR" :loading="downloadingQR" v-if="!isPreview">
                   Ver QR
                 </a-menu-item>
               </a-menu>
@@ -69,7 +69,7 @@
           <b-card-text class="mt-3" v-html="card.biography">
           </b-card-text>
 
-          <a-carousel arrows class="mb-3">
+          <a-carousel arrows class="mb-3" v-if="cardImages && cardImages.length > 0">
             <div slot="prevArrow" slot-scope="props" class="custom-slick-arrow" style="left: 10px;zIndex: 1">
               <a-icon type="left-circle" />
             </div>
@@ -252,9 +252,9 @@
         </h5>
       </div>
     </template>
-    <u-animate-container>
+    <u-animate-container v-if="!createCardView">
       <u-animate name="fadeInDown" delay="2s" duration="1s" :iteration="1" :offset="0" animateClass="animated" class="homeView-whatsapp shadow" :begin="false" >
-        Abrir whatsapp
+        Abrir whatsapp y ver QR
       </u-animate>
       <u-animate name="fadeInDown" delay="3s" duration="1s" :iteration="1" :offset="0" animateClass="animated" :begin="false" class="homeView-socialnetworks shadow">
         Comparte tus redes sociales
@@ -296,6 +296,10 @@
         default: false
       },
       preview: {
+        type: Boolean,
+        default: false
+      },
+      createCardView: {
         type: Boolean,
         default: false
       }
@@ -1558,7 +1562,7 @@
           border: solid 2px;
           border-color: #0000 #0000 #54bd95 #54bd95;
           top: 99px;
-          right: 21px;
+          left: 86px;
           transform: rotateZ(-148deg);
           z-index: 1030;
         }
@@ -1837,6 +1841,20 @@
 
     .blocked-card {
       width: 500px;
+    }
+
+    &.create-card {
+      background-color: #0000;
+      padding-top: 0;
+      justify-content: end;
+      .shadow {
+        box-shadow: none !important;
+      }
+      .card {
+        margin-bottom: 0 !important;
+        border-radius: 0;
+        border: 0;
+      }
     }
 
     @media only screen and (max-width: 450px) {

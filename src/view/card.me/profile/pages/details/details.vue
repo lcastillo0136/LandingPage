@@ -161,7 +161,7 @@
             <br>
             <small class="text-muted">Numero de teléfono personal</small>
           </template>
-          <a-input type="number" class="" placeholder="Teléfono móvil" v-model="profile.phone" :disabled="saving" size="large">
+          <a-input type="number" class="" placeholder="Teléfono móvil" v-model="profile.phone" :disabled="saving" size="large" @paste="pastePhone">
           </a-input>
           <template #help v-if="profile.hide_personal_phone">
             <small style="opacity: 0.7;">Este dato no sera mostrado en tu tarjeta</small>
@@ -616,6 +616,7 @@
               this.profile.cover = this.getUser.cover = response.data.data.cover
               this.coverFile = '';
               this.avatarFile = '';
+              this.profile.phone = response.data.data.phone
 
               this.saving = false
 
@@ -690,6 +691,10 @@
       onCreated(editor) {
         this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
       },
+      pastePhone(e) {
+        this.profile.phone = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '')
+        e.preventDefault()
+      }
     },
     mounted() {
       if (!this.isImage) {

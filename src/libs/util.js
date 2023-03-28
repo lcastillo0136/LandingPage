@@ -437,3 +437,11 @@ export const stripHtml = (html) => {
   tmp.innerHTML = html;
   return tmp.textContent || tmp.innerText || "";
 }
+
+export const getBase64 = (img) => {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => resolve(reader.result));
+    reader.readAsDataURL(img);
+  })
+}

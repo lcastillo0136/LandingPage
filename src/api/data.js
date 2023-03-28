@@ -67,9 +67,54 @@ export const getDoctorBooking = (data) => {
 }
 
 export const registerCustomer = (data) => {
+  const formData = new FormData()
+
+  if (!data.password || !data.password_confirmation) {
+    delete data.password;
+    delete data.password_confirmation;
+  } 
+  
+  Object.keys(data).forEach((k) => {
+    if (data[k] == null) data[k] = ''
+    if (typeof data[k] === 'boolean') data[k] = data[k] ? 1 : 0
+      
+    if (!Array.isArray(data[k]) && data[k]) {
+      formData.append(k, data[k]);
+    } else {
+
+    }
+  });
+
+  try {
+    if (data.avatar && data.avatar instanceof File) {
+      formData.append('avatar', data.avatar, 'avatar');
+    }
+  } catch(e) { }
+
+  try {
+    if (data.cover && data.cover instanceof File) {
+      formData.append('cover', data.cover, 'cover');
+    }
+  } catch(e) { }
+  
+  if (data.social_networks?.length > 0) {
+    formData.append('social_networks', JSON.stringify(data.social_networks));
+  }
+
+  if (data.services?.length > 0) {
+    formData.append('services', JSON.stringify(data.services));
+  }
+
+  if (data.skills?.length > 0) {
+    formData.append('skills_tags', JSON.stringify(data.skills.map(s => s.name)));
+  }
+
+  if (data.addresses?.length > 0) {
+    formData.append('addresses', JSON.stringify(data.addresses));
+  }
   return axios.request({
     url: `clients/register`,
-    data: data,
+    data: formData,
     method: 'post'
   })
 }
