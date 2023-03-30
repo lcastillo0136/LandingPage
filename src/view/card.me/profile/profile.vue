@@ -201,7 +201,7 @@
         return getServerFile('public/company/company_logo.png')
       },
       userLink() {
-        return getServerFile2(`p/${this.User.uuid_key}.html`)
+        return getServerFile2(`@${this.User.username}`)
       },
       active_account() {
         return this.User.active_account && this.$moment.utc(this.User.active_account).isValid() && this.$moment().utc().isBefore(this.$moment.utc(this.User.active_account))

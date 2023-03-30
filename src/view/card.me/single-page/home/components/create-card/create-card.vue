@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div class="d-flex flex-row create-card-container w-75">
-      <div class="flex-fill d-flex flex-column align-items-center p-4">
+  <div id="create_card">
+    <div class="d-flex flex-column flex-lg-row create-card-container mx-4 mx-lg-auto">
+      <div class="flex-fill d-flex flex-column align-items-center p-3 p-lg-4">
         <div class="flex-fill flex-row w-100">
           <div class="flex-fill d-flex flex-column align-items-center">
             <label>Avatar</label>
@@ -44,38 +44,38 @@
             </a-upload>
           </div>
         </div>
-        <div class="flex-fill flex-row w-100" style="gap: 10px;">
-          <a-form-model-item prop="first_name" label="Nombre">
+        <div class="flex-fill d-flex flex-column flex-lg-row w-100" style="gap: 10px;">
+          <a-form-model-item prop="first_name" label="Nombre" class="flex-fill">
             <a-input type="text" class="" placeholder="Nombre" v-model="user.first_name" size="large" :disabled="loading" @change="updateUsername">
             </a-input>
           </a-form-model-item>
-          <a-form-model-item prop="last_name" label="Apellido">
+          <a-form-model-item prop="last_name" label="Apellido" class="flex-fill">
             <a-input type="text" class="" placeholder="Apellido" v-model="user.last_name" size="large" :disabled="loading" @change="updateUsername">
             </a-input>
           </a-form-model-item>
         </div>
-        <div class="flex-fill flex-row w-100" style="gap: 10px;">
-          <a-form-model-item prop="email" label="Correo electronico">
+        <div class="flex-fill d-flex flex-column flex-lg-row w-100" style="gap: 10px;">
+          <a-form-model-item prop="email" label="Correo electronico" class="flex-fill">
             <a-input type="text" class="" placeholder="Correo electronico" v-model="user.email" size="large" :disabled="loading">
             </a-input>
           </a-form-model-item>
-          <a-form-model-item prop="phone" label="Telefono (opcional)">
+          <a-form-model-item prop="phone" label="Telefono (opcional)" class="flex-fill">
             <a-input type="text" class="" placeholder="Telefono" v-model="user.phone" size="large" :disabled="loading">
             </a-input>
           </a-form-model-item>
         </div>
-        <div class="flex-fill flex-row w-100" style="gap: 10px;">
-          <a-form-model-item prop="company_name" label="Empresa (opcional)">
+        <div class="flex-fill d-flex flex-column flex-lg-row w-100" style="gap: 10px;">
+          <a-form-model-item prop="company_name" label="Empresa (opcional)" class="flex-fill">
             <a-input type="text" class="" placeholder="Empresa" v-model="user.company_name" size="large" :disabled="loading">
             </a-input>
           </a-form-model-item>
-          <a-form-model-item prop="especialidad" label="Profesion (opcional)">
+          <a-form-model-item prop="especialidad" label="Profesion (opcional)" class="flex-fill">
             <a-input type="text" class="" placeholder="Profesion" v-model="user.profesion" size="large" :disabled="loading">
             </a-input>
           </a-form-model-item>
         </div>
-        <div class="flex-fill flex-row w-100" style="gap: 10px;">
-          <a-form-model-item prop="company_name" label="Empresa (opcional)">
+        <div class="flex-fill d-flex flex-column flex-lg-row w-100" style="gap: 10px;">
+          <a-form-model-item prop="company_name" label="Diseño">
             <a-select class="" v-model="user.design" size="large" :disabled="loading">
               <a-select-option value="design-1">Diseño 1</a-select-option>
               <a-select-option value="design-2">Diseño 2</a-select-option>
@@ -85,11 +85,14 @@
             </a-select>
           </a-form-model-item>
         </div>
-        <div class="flex-fill flex-row w-100" style="gap: 10px;">
-          <a-form-model-item prop="username" label="Nombre usuario">
+        <div class="flex-fill flex-row w-100 username-field" style="gap: 10px;">
+          <a-form-model-item prop="username" label="Nombre usuario" :help="'https://www.onlycards.me/@' + (user.username||'')">
             <a-input type="text" class="" placeholder="Nombre usuario" v-model="user.username" size="large" :disabled="loading">
-               <span slot="addonBefore" class="font-weight-bold">
+               <span slot="addonBefore" class="font-weight-bold d-none d-lg-inline">
                  https://www.onlycards.me/@
+               </span>
+               <span slot="addonBefore" class="font-weight-bold d-inline d-lg-none">
+                 @
                </span>
             </a-input>
           </a-form-model-item>
@@ -257,9 +260,20 @@
     overflow: hidden;
     margin-right: auto;
     margin-left: auto;
+    @media only screen and (min-width: 1000px) {
+      max-width: 75%;
+    }
     .ant-form-item-label {
       line-height: 16px;
       margin-bottom: 0;
+    }
+    .username-field {
+      .ant-form-explain {
+        display: none;
+        @media only screen and (max-width: 720px) {
+          display: block;
+        }
+      }
     }
   }
   .create-card-button {

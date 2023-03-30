@@ -66,7 +66,7 @@
         <b-row>
           <b-col cols="12" lg="12" md="12" sm="12" class="mt-sm-5">
             <h2>Increibles beneficios</h2>
-            <div class="d-flex flex-row">
+            <div class="d-flex flex-column flex-md-row">
               <div class="d-flex flex-column">
                 <div class="d-flex flex-row mt-4">
                   <div class="d-flex align-items-start">
@@ -802,7 +802,7 @@
           let _fingerprint = this.$fingerprint.x64hash128(components.map((pair) => { return pair.value }).join(), 31)
           getCard({ 
             fingerprint: _fingerprint,
-            uuid: '67c41a4e-8340-4a2a-b8bf-49aa399ca842'
+            username: 'zibasoft'
           }).then(({ data }) => data).then((result) => {
             this.companyCard = { ... result.data }
 

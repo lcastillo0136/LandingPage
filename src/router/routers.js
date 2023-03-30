@@ -26,6 +26,7 @@ export default [
       },
       {
         path: '/p/:uuid.html',
+        alias: '@:uuid',
         name: 'card-page',
         meta: {
           hideInMenu: true,

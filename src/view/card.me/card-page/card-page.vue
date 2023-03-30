@@ -450,7 +450,7 @@
         return _.filter(this.card.social_networks, { network_icon: 'globe' })
       },
       userLink() {
-        return getServerFile2(`p/${this.card.uuid_key}.html`)
+        return getServerFile2(`@${this.card.username}`)
       },
       avatarExtension () {
         return this.card.avatar.slice((this.card.avatar.lastIndexOf(".") - 1 >>> 0) + 2)
@@ -691,7 +691,7 @@
           let _fingerprint = this.$fingerprint.x64hash128(components.map((pair) => { return pair.value }).join(), 31)
           getCard({ 
             fingerprint: _fingerprint,
-            uuid: this.$route.params.uuid
+            username: this.$route.params.uuid
           }).then(({ data }) => data).then((result) => {
             this.userData = { ... result.data }
 

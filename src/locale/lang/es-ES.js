@@ -20,6 +20,9 @@ export default {
     },
     first_name: {
       required_field: 'Campo nombre requerido'
+    },
+    username: {
+      not_available: 'El nombre de usuario ya existe, favor de elegir uno diferente'
     }
   },
   home: {

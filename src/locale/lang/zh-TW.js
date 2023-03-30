@@ -10,7 +10,8 @@ export default {
     },
     email: {
       not_available: 'Email not available',
-      not_valid: 'Email not valid'
+      not_valid: 'Email not valid',
+      required_field: 'Email required',
     },
     too_many_request: 'Too many request, please wait',
     phone: {
@@ -20,9 +21,8 @@ export default {
     first_name: {
       required_field: 'First name required'
     },
-    email: {
-      required_field: 'Email required',
-      not_available: 'Email not available'
+    username: {
+      not_available: 'Username already exists, please choose a new one'
     }
   },
   home: {

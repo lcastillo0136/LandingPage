@@ -200,7 +200,7 @@
         return this.user.role && this.user.role.is_client
       },
       userLink() {
-        return getServerFile2(`p/${this.user.uuid_key}.html`)
+        return getServerFile2(`@${this.user.username}`)
       },
       appImage () {
         return getServerFile('public/company/company_logo.png')

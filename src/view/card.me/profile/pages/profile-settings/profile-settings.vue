@@ -92,12 +92,24 @@
           <h3 class="mb-4">
             Información de cuenta
           </h3>
-          <a-form-model-item :validateStatus="validPassword ? '' : 'error'" :help="errorPasswordMessage">
+          <a-form-model-item prop="username">
             <template #label>
               <span>Usuario</span>
-              <br>
-              <small class="text-muted">{{ user.username }}</small>
             </template>
+            <a-input v-model="user.username" size="large" class="">
+
+              <span slot="addonBefore" class="font-weight-bold cursor-pointer" role="button" v-clipboard:copy="userLink" v-clipboard:success="copyLink">
+                 https://www.onlycards.me/@
+               </span>
+            </a-input>
+          </a-form-model-item>
+          <a-form-model-item :validateStatus="validPassword ? '' : 'error'" :help="errorPasswordMessage">
+            <template #label>
+              <span>Contraseña</span>
+              <br>
+              <small class="text-muted">Actualiza y confirma tu contraseña</small>
+            </template>
+            
             <a-collapse v-model="activeKey">
               <a-collapse-panel key="1">
                 <template #header>
@@ -295,6 +307,7 @@
   import timeGridPlugin from '@fullcalendar/timegrid'
   import esLocale from '@fullcalendar/core/locales/es'
   import { mapGetters } from 'vuex'
+  import { getServerFile2, getServerFile } from '@/libs/util'
   import _ from 'lodash'
 
   esLocale.week.dow = 0
@@ -427,7 +440,10 @@
       },
       errorPasswordMessage() {
         return this.activeKey.includes('1') && !this.validPassword ? (this.user.password === '' ? 'Favor de llenar el campo contraseña' : (this.user.password_confirmation === '' ? 'Favor de confirmar su contraseña' : 'Las contraseñas no coinciden')) : false
-      }
+      },
+      userLink() {
+        return getServerFile2(`@${this.user.username}`)
+      },
     },
     methods: {
       setConfiguration() {
@@ -620,6 +636,13 @@
               message: 'Error al guardar',
               description: 'no se puedo actualizar la información'
             })
+
+            Object.keys(error.data.error).every((e) => {
+              this.$notification.error({
+                message: 'Error al guardar',
+                description: this.$t(`errors.${e}.${error.data.error[e]}`)
+              })
+            })
           })
         } else {
           this.saving = false
@@ -635,7 +658,13 @@
       },
       generateSecurityCode () {
         this.user.security_code = (""+Math.random()).substring(2,6)
-      }
+      },
+      copyLink() {
+        this.$notification.success({
+          message: 'Enlace copiado',
+          description: 'Ya lo puedes compartir con tus contactos'
+        })
+      },
     },
     mounted() {
       this.$nextTick().then(() => {

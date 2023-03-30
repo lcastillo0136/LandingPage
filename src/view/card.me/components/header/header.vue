@@ -29,12 +29,21 @@
    <b-navbar toggleable="sm" variant="header-container">
     <b-navbar-toggle target="" v-b-toggle.sidebar-1></b-navbar-toggle>
     <b-sidebar id="sidebar-1" title="" shadow>
-      <div class="px-3 py-2">
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-          in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-        </p>
-        <b-img src="https://picsum.photos/500/500/?image=54" fluid thumbnail></b-img>
+      <div class="px-3 py-2 d-flex flex-column h-100">
+        <ul class="m-0 p-0 list-unstyled">
+          <b-nav-item :to="{ name: 'home' }" v-b-toggle.sidebar-1>Inicio</b-nav-item>
+          <b-nav-item href="#designs" @click="scrollIntoView" v-b-toggle.sidebar-1>Diseños</b-nav-item>
+          <b-nav-item href="#create_card" @click="scrollIntoView" v-b-toggle.sidebar-1>Crear tu tarjeta</b-nav-item>
+          <b-nav-item :to="{name: 'contacts' }" v-b-toggle.sidebar-1>Contacto</b-nav-item>
+        </ul>
+        <div class="mt-auto" v-if="hasToken">
+          <ul class="m-0 p-0 list-unstyled">
+            <b-nav-item :to="{ name: 'profile-details' }" v-b-toggle.sidebar-1><b-icon-person class="mr-1"></b-icon-person>Informacion personal</b-nav-item>
+            <b-nav-item :to="{ name: 'profile-settings' }" v-b-toggle.sidebar-1><b-icon-gear class="mr-1"></b-icon-gear>Configuraciones</b-nav-item>
+            <b-nav-item @click="dispachLogout" v-b-toggle.sidebar-1><b-icon-box-arrow-left class="mr-1"></b-icon-box-arrow-left>Salir</b-nav-item>
+          </ul>
+        </div>
+        <b-button v-b-toggle.sidebar-1 :to="{ name: 'login' }" variant="outline-primary" v-else>Iniciar sesion</b-button>
       </div>
     </b-sidebar>
     <b-navbar-brand class="mt-0" :to="{ name: 'home' }">
@@ -45,7 +54,7 @@
       <b-navbar-nav>
         <b-nav-item :to="{ name: 'home' }">Inicio</b-nav-item>
         <b-nav-item href="#designs" @click="scrollIntoView">Diseños</b-nav-item>
-        <b-nav-item href="#create_card">Crear tu tarjeta</b-nav-item>
+        <b-nav-item href="#create_card" @click="scrollIntoView">Crear tu tarjeta</b-nav-item>
         <b-nav-item :to="{name: 'contacts' }">Contacto</b-nav-item>
 
         <!-- Navbar dropdowns -->
@@ -76,6 +85,8 @@
 </template>
 <script>
   import { mapGetters, mapActions, mapMutations } from 'vuex'
+  import animateScrollTo from 'animated-scroll-to'
+
   export default {
     name: 'Header',
     computed: {
@@ -104,11 +115,7 @@
         const href = event.target.getAttribute('href')
         const el = href ? document.querySelector(href) : null
         if (el) {
-          window.scrollTo({
-            left: 0, 
-            top: el.offsetTop,
-            behavior: 'smooth'
-          })
+          animateScrollTo(el)
         }
       },
       dispachLogout () {

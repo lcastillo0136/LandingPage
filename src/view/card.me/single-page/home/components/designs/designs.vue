@@ -1,6 +1,6 @@
 <template>
-  <div class="design-container">
-    <h2 class="text-center mt-3">Fabulosos diseños</h2>
+  <div class="design-container" id="designs">
+    <h2 class="text-center mt-3 d-none d-md-block ">Fabulosos diseños</h2>
     <div class="d-md-none">
       <h2 class="text-center mt-3">Fabulosos diseños</h2>
       <a-carousel class="design-list" draggable :slidesToShow="slidesToShow" :centerMode="true" arrows id="designs">
@@ -70,7 +70,6 @@
         </div>
       </a-carousel>
     </div>
-
   </div>
 </template>
 <script>
@@ -109,6 +108,7 @@
     &.ant-carousel .slick-slide h3 {
       color: #fff;
     }
+
     .design-card > div {
       background: #fff;
       height: auto;
@@ -131,23 +131,26 @@
         left: 5%;
       }
     }
+
     .custom-slick-arrow.slick-arrow {
       z-index: 1;
       height: 273px;
       top: 21px;
       width: 60px;
     }
+
     .design-card {
       display: flex !important;
       justify-content: center;
     }
-    
   }
+
   .design-container {
     position: relative;
     height: 684px;
     display: flex;
     flex-direction: column;
+    
     .floating-hand-container {
       width: 100%;
       .floating-hand {
@@ -222,11 +225,15 @@
         }
       }
     }
+
     .design-carousel-container {
       display: inline-block;
       width: 500px;
       flex: 1 1 auto;
-      
+    }
+
+    @media only screen and (max-width: 720px) { 
+      height: auto;
     }
   }
 </style>

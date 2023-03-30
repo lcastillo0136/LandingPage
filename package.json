@@ -17,6 +17,7 @@
     "@liripeng/vue-audio-player": "^1.5.0",
     "@wangeditor/editor": "^5.1.22",
     "@wangeditor/editor-for-vue": "^1.0.2",
+    "animated-scroll-to": "^2.3.0",
     "ant-design-vue": "^1.5.1",
     "axios": "^0.18.0",
     "bootstrap": "^4.6.1",
