@@ -744,16 +744,21 @@
     
     display: flex;
     flex: 1 1 auto;
-    justify-content: center;
+    justify-content: flex-start;
     padding-top: 20px;
+    padding-bottom: 20px;
     background-color: #fafafa;
     z-index: 1;
     min-height: 100%;
+    flex-direction: column;
+    align-items: center;
 
     .card {
-      width: 20rem;
-      max-width: 100%;
+      min-width: 20rem;
+      width: 100%;
+      max-width: 450px;
       border-radius: 20px;
+      flex: 1 1 auto;
       .card-body {
         background-color: #fff;
         position: relative;
